@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<property-mapping>
+  <query type="EQEmu.Spawns.Spawn2">
+    <insert>
+      <sql>
+        <![CDATA[
+        INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area) VALUES
+        ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>SpawnGroupId</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>PathGrid</param>
+      <param>RoamAreaId</param>
+    </insert>
+    <update>
+      <sql>
+        <![CDATA[
+        UPDATE spawn2 SET 
+        spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, 
+        z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10} WHERE
+        WHERE id = {11} AND zone = '{1}';
+        ]]>
+      </sql>
+      <param>SpawnGroupId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>Variance</param>
+      <param>PathGrid</param>
+      <param>RoamAreaId</param>
+      <param>Id</param>
+    </update>
+    <delete>
+      <sql>
+        <![CDATA[
+          DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+</property-mapping>

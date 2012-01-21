@@ -1,0 +1,1 @@
+﻿Plugins directory - assemblies (dlls) that reside in this directory will be automatically loaded by the application

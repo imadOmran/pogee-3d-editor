@@ -1,0 +1,34 @@
+﻿<m:RibbonTab x:Class="GridsPlugin.GridsRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Grids"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="Query">
+        <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
+        <m:RibbonButton Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />
+        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Zone Grids">
+        <TextBlock Text="{Binding Path=Grids.Count}" />
+        <ListView ItemsSource="{Binding Grids}" SelectedItem="{Binding SelectedGrid}" />
+        <m:RibbonButton Label="New Grid" Name="NewGridButton" Click="NewGridButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Grid">
+        <TextBlock Text="{Binding Path=SelectedGrid.Waypoints.Count}" />
+        <ListView ItemsSource="{Binding Path=SelectedGrid.Waypoints}" SelectedItem="{Binding SelectedWaypoint}" />
+        <m:RibbonButton Label="Edit Grid" Name="EditGridButton" Click="EditGridButton_Click" />
+        <m:RibbonButton Label="Remove Grid" Name="RemoveGridButton" Click="RemoveGridButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Waypoint">
+        <m:RibbonButton Label="Edit Waypoint" Name="EditWaypointButton" Click="EditWaypointButton_Click" />
+        <m:RibbonButton Label="Move To Waypoint" Click="MoveToButton_Click" />
+        <m:RibbonButton Label="Remove Waypoint" Name="RemoveWaypointButton" Click="RemoveWaypointButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Options">
+        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+    </m:RibbonGroup>
+</m:RibbonTab>

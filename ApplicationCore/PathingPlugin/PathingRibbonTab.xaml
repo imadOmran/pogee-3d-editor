@@ -1,0 +1,45 @@
+﻿<m:RibbonTab x:Class="PathingPlugin.PathingRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Pathing"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="File">
+        <m:RibbonButton Label="New" Command="{Binding NewCommand}" />
+        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Save" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="Save As" Command="{Binding SaveCommand}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Properties">
+        <TextBlock Text="{Binding NodeCount,StringFormat=Total Nodes:{0}}" />
+        <TextBlock Text="{Binding DisconnectedNodesCount,StringFormat=Disconnected Nodes:{0}}" />
+        <ListView Name="DisconnectedNodesListView" ItemsSource="{Binding Path=DisconnectedNodes}" MouseDoubleClick="DisconnectedNodesListView_MouseDoubleClick" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Nodes">
+        <Label>Nodes</Label>
+        <ListView ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}" />
+        <m:RibbonButton Label="New Node" Command="{Binding NewNodeCommand}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <TextBlock Margin="15,0,0,0" Text="{Binding Path=SelectedNode.Id}" />
+        <m:RibbonTextBox Label="X" Text="{Binding Path=SelectedNode.X,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
+        <m:RibbonTextBox Label="Y" Text="{Binding Path=SelectedNode.Y,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
+        <m:RibbonTextBox Label="Z" Text="{Binding Path=SelectedNode.Z,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
+
+        <m:RibbonButton Label="Move To Node" Command="{Binding NodeSelectedCommand}" Click="MoveToButton_Click" />
+        <m:RibbonButton Label="Remove Node" Command="{Binding RemoveNodeCommand}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Unreachable Nodes">
+        <TextBlock Text="{Binding Path=UnreachableNodes.Count,StringFormat={}{0}}" />
+        <ListView Name="UnreachableNodesListView" ItemsSource="{Binding Path=UnreachableNodes}" MouseDoubleClick="UnreachableNodesListView_MouseDoubleClick" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Options">
+        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+        <m:RibbonCheckBox Label="Two Way Connect" IsChecked="{Binding UseTwoWayConnect}" />
+        <m:RibbonCheckBox Label="Warp Connect" IsChecked="{Binding UseWarpConnect}" />
+        <m:RibbonCheckBox Label="Auto Connect" ToolTip="Automatically connect new nodes to selected node" IsChecked="{Binding AutoConnect}" />
+    </m:RibbonGroup>
+</m:RibbonTab>

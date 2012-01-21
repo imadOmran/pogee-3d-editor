@@ -1,0 +1,30 @@
+﻿<m:RibbonTab x:Class="SpawnsPlugin.SpawnsRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Spawns"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="Query">
+        <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
+        <m:RibbonButton Label="Get Update Query" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Spawns">        
+        <TextBlock Text="{Binding Path=Spawns.Count}" />
+        <ListView ItemsSource="{Binding Spawns}" SelectedItem="{Binding SelectedSpawn}" />
+        <m:RibbonButton Label="New Spawn" Name="NewSpawnButton" Click="NewSpawnButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <m:RibbonButton Label="Remove Spawn" Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" />
+        <m:RibbonButton Label="Edit Spawn" Name="EditSpawnButton" Click="EditSpawnButton_Click" />
+        <m:RibbonButton Label="PEQ PHP Editor" Name="PHPEditorButton" Click="PHPEditorButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Options">
+        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+        <m:RibbonTextBox Label="Default Grid" Text="{Binding DefaultGrid}" />
+        <m:RibbonTextBox Label="Default Roam Area" Text="{Binding DefaultRoamArea}" />
+        <m:RibbonTextBox Label="Default Spawn Group" Text="{Binding DefaultSpawnGroup}" />
+    </m:RibbonGroup>
+</m:RibbonTab>

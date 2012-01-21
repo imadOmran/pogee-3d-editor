@@ -1,0 +1,28 @@
+﻿<Window x:Class="ApplicationCore.DatabaseConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DatabaseConfigWindow" Height="150" Width="300" Background="#FFF5EFEF">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>        
+        <TextBlock Margin="10,0,0,0" Text="Host" Grid.Row="0" />
+        <TextBox Grid.Row="0" Grid.Column="1" />
+
+        <TextBlock Margin="10,0,0,0" Text="UserName" Grid.Row="1" />
+        <TextBox Grid.Row="1" Grid.Column="1" />
+
+        <TextBlock Margin="10,0,0,0" Text="Password" Grid.Row="2" />
+        <TextBox Grid.Row="2" Grid.Column="1" />
+        
+        <Button Content="Connect" Grid.Row="3" Margin="0,10,0,0" Height="30" VerticalAlignment="Top" />       
+        
+    </Grid>
+</Window>
