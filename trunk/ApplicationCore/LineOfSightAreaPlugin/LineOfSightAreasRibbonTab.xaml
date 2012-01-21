@@ -1,0 +1,32 @@
+﻿<m:RibbonTab x:Class="LineOfSightAreaPlugin.LineOfSightAreasRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Line of Sight Areas"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="File">
+        <m:RibbonButton Label="New" Command="{Binding NewCommand}" />
+        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Save" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="Save As" Command="{Binding SaveCommand}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Zone Areas">
+        <TextBlock Text="{Binding Path=Areas.Count}" />
+        <ListView ItemsSource="{Binding Areas}" SelectedItem="{Binding SelectedArea}" />
+        <m:RibbonButton Label="Remove Area" Name="RemoveAreaButton" Click="RemoveAreaButton_Click" />        
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <m:RibbonTextBox Label="Min Z" Text="{Binding Path=SelectedArea.MinZ}" />
+        <m:RibbonTextBox Label="Max Z" Text="{Binding Path=SelectedArea.MaxZ}" />
+        
+        <ListView ItemsSource="{Binding Path=Areas.Vertices}" SelectedItem="{Binding SelectedVertex}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="New Area">
+        <m:RibbonTextBox Label="Min Z" Text="{Binding DefaultMinZ}" />
+        <m:RibbonTextBox Label="Max Z" Text="{Binding DefaultMaxZ}" />
+        <m:RibbonButton Label="Create New Area" Name="NewAreaButton" Click="NewAreaButton_Click" />
+    </m:RibbonGroup>
+</m:RibbonTab>

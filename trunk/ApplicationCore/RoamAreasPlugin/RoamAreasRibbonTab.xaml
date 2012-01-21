@@ -1,0 +1,27 @@
+﻿<m:RibbonTab x:Class="RoamAreasPlugin.RoamAreasRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Roam Areas"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="Query">
+        <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
+        <m:RibbonButton Label="Save Query" Click="RibbonButton_Click"></m:RibbonButton>
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Zone Areas">
+        <TextBlock Text="{Binding Path=Areas.Count}" />
+        <ListView ItemsSource="{Binding Areas}" SelectedItem="{Binding SelectedArea}" />
+        <m:RibbonButton Label="New Area" Click="RibbonButton_Click_1" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <m:RibbonButton Label="Edit Roam Area" Name="EditSpawnButton" Click="EditSpawnButton_Click" />
+        <ListView ItemsSource="{Binding Path=Areas.Vertices}" SelectedItem="{Binding SelectedVertex}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Default Values">
+        <m:RibbonTextBox Label="Max Z" Text="{Binding DefaultMaxZ}" />
+        <m:RibbonTextBox Label="Min Z" Text="{Binding DefaultMinZ}" />
+    </m:RibbonGroup>
+</m:RibbonTab>

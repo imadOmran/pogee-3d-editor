@@ -1,0 +1,90 @@
+﻿<m:RibbonWindow x:Class="ApplicationCore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+        xmlns:my="clr-namespace:ApplicationCore"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"                        
+        Title="3D Object Editor" Height="350" Width="825">    
+    <m:RibbonWindow.DataContext>
+        <my:MainWindowViewModel />
+    </m:RibbonWindow.DataContext>
+    <Grid>
+        <DockPanel>
+            <Grid Height="30" DockPanel.Dock="Bottom">
+                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">  
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.X,StringFormat={}{0:F3}}" Width="75" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Y,StringFormat={}{0:F3}}" Width="75" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Z,StringFormat={}{0:F3}}" Width="75" />                    
+                    <Label Margin="20,0,0,0">Zoom Sensitivity</Label>
+                    <Slider VerticalAlignment="Center" Minimum="0.01" Maximum="1" 
+                            Value="{Binding ElementName=View3D,Path=ZoomSensitivity}" 
+                            IsSnapToTickEnabled="True" TickFrequency="0.1" Width="121" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=ZoomSensitivity}" />
+                    <Button Margin="45,0,0,0" Click="ViewClippingButton_Click">
+                        <Button.Content>
+                            <Grid>
+                                <TextBlock Text="Cross Section View" />
+                                <Popup Name="ViewClippingPopup" Margin="0,-300,0,101" IsOpen="False" StaysOpen="False"  Width="133" Height="200">
+                                    <StackPanel Background="White">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Min X</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.XMin}" />
+                                            <Button x:Name="ViewClippingXMin" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Max X</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.XMax}" />
+                                            <Button x:Name="ViewClippingXMax" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Min Y</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.YMin}" />
+                                            <Button x:Name="ViewClippingYMin" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Max Y</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.YMax}" />
+                                            <Button x:Name="ViewClippingYMax" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Min Z</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.ZMin}" />
+                                            <Button x:Name="ViewClippingZMin" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label>Max Z</Label>
+                                            <TextBox Text="{Binding Path=ViewClipping.ZMax}" />
+                                            <Button x:Name="ViewClippingZMax" Content="Here" Click="ViewClippingFieldButton_Click" />
+                                        </StackPanel>                             
+                                        <Button Content="Reset All" Click="ResetViewClippingButton_Click" />
+                                    </StackPanel>                                       
+                                </Popup>
+                            </Grid>
+                        </Button.Content>                        
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <m:Ribbon DockPanel.Dock="Top" ItemsSource="{Binding RibbonItems}" Name="ribbon" SelectedIndex="1">
+                <m:Ribbon.ApplicationMenu>
+                    <m:RibbonApplicationMenu SmallImageSource="/Images/EverQuest.ico" >  
+                        <m:RibbonApplicationSplitMenuItem Name="DatabaseConnectRibbonButton" Header="Connect to Database" Click="DatabaseConnectRibbonButton_Click">
+                        </m:RibbonApplicationSplitMenuItem>
+                        <m:RibbonSeparator />
+                        <m:RibbonApplicationMenuItem Header="Exit" Name="ExitMenuItem" Click="ExitMenuItem_Click" />
+                    </m:RibbonApplicationMenu>
+                </m:Ribbon.ApplicationMenu>
+            </m:Ribbon>
+            <Grid>
+                <DockPanel>                    
+                    <Grid> 
+                    <!--<my:PropertyEditorWindow DockPanel.Dock="Right" />-->
+                        <h:HelixViewport3D Name="View3D" CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" 
+                                   MouseDoubleClick="View3D_MouseDoubleClick" MouseLeftButtonUp="View3D_MouseLeftButtonUp" MouseLeftButtonDown="View3D_MouseLeftButtonDown" MouseMove="View3D_MouseMove">                            
+                        </h:HelixViewport3D>                        
+                        <Rectangle Name="SelectionRectangle" Stroke="Aqua" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="View3D_MouseLeftButtonUp" />                                                
+                    </Grid>
+                </DockPanel>                    
+            </Grid>
+        </DockPanel>
+    </Grid>
+</m:RibbonWindow>
