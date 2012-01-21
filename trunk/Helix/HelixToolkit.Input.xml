@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HelixToolkit.Input</name>
+    </assembly>
+    <members>
+        <member name="E:HelixToolkit.Input.SpaceNavigatorDecorator.ConnectionChanged">
+            <summary>
+            Event when a property has been changed
+            </summary>
+        </member>
+    </members>
+</doc>
