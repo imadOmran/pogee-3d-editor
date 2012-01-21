@@ -1,0 +1,8 @@
+<Configuration>
+  <Database>peq</Database>
+  <User>user</User>
+  <Password>password</Password>
+  <Host>localhost</Host>
+  <Port>3306</Port>
+  <PEQEditorUrl>http://localhost</PEQEditorUrl>
+</Configuration>
