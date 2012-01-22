@@ -1,8 +1,8 @@
 #summary Pathing Plugin.
 
-= Path Plugin =
+= Pathing Plugin =
 
-The Path plugin will create a new tab on the application's ribbon menu.
+The Pathing plugin will create a new tab on the application's ribbon menu.
 
 This plugin allows opening/saving pathing data (.path) files.
 
