@@ -32,7 +32,14 @@ namespace MapPlugin
             private set
             {
                 _map = value;
+
+                if (_map3d != null)
+                {
+                    _map3d.Dispose();
+                }
+
                 _map3d = new EQEmuDisplay3D.MapDisplay3D(_map);
+
                 if(_viewClipping != null)
                 {
                     _map3d.Clipping = _viewClipping;
