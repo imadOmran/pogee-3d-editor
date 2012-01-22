@@ -13,7 +13,7 @@ using EQEmu;
 
 namespace EQEmuDisplay3D
 {
-    public class PathDisplay3D : IDisplay3D
+    public class PathDisplay3D : IDisplay3D, IDisposable
     {
         private Dictionary<EQEmu.Path.Node, Model3DCollection> _mapping = new Dictionary<EQEmu.Path.Node, Model3DCollection>();
         //private Dictionary<EQEmu.Path.Node, Point3D> _mappingOrigin = new Dictionary<EQEmu.Path.Node, Point3D>();
@@ -241,6 +241,24 @@ namespace EQEmuDisplay3D
             foreach (EQEmu.Path.Neighbor neighbor in node.Neighbors)
             {
                 CreateNode(neighbor.Node);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_clipping != null)
+            {
+                _clipping.OnClippingChanged -= Clipping_OnClippingChanged;
+            }
+
+            if (_path != null)
+            {
+                _path.NodeAdded -= path_NodeAdded;
+                _path.NodeRemoved -= path_NodeRemoved;
+                foreach (var n in _path.Nodes)
+                {
+                    n.PropertyChanged -= node_PropertyChanged;
+                }
             }
         }
     }

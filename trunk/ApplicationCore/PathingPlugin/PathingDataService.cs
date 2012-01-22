@@ -34,9 +34,20 @@ namespace PathingPlugin
             get { return _path; }
             set
             {
+                if (_path != null)
+                {
+                    _path.NodeAdded -= path_NodeAdded;
+                    _path.NodeRemoved -= path_NodeRemoved;
+                }
+
                 _path = value;
                 _path.NodeAdded += new EQEmu.Path.Path.NodeModifiedHandler( path_NodeAdded );
                 _path.NodeRemoved += new EQEmu.Path.Path.NodeModifiedHandler(path_NodeRemoved);
+
+                if (_path3d != null)
+                {
+                    _path3d.Dispose();
+                }
 
                 _path3d = new EQEmuDisplay3D.PathDisplay3D(_path);                
 
