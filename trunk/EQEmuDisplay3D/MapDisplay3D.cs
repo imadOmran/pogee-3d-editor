@@ -12,7 +12,7 @@ using EQEmu.Map;
 
 namespace EQEmuDisplay3D
 {
-    public class MapDisplay3D : IDisplay3D
+    public class MapDisplay3D : IDisplay3D, IDisposable
     {
         private readonly EQEmu.Map.Map _map;
 
@@ -74,6 +74,14 @@ namespace EQEmuDisplay3D
         {
             _map = map;
             UpdateAll();
+        }
+
+        public void Dispose()
+        {
+            if (_clipping != null)
+            {
+                _clipping.OnClippingChanged -= clipping_OnClippingChanged;
+            }
         }
     }
 }
