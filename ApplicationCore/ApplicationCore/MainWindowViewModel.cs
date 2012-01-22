@@ -168,7 +168,7 @@ namespace ApplicationCore
                 }
                 catch (System.Exception e)
                 {
-                    System.Windows.MessageBox.Show(e.Message);
+                    System.Windows.MessageBox.Show(e.Message, control.ToString());
                 }
             }
         }
