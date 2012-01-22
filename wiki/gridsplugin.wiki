@@ -17,3 +17,5 @@ At any given time only one grid and the waypoints associated with that grid will
 *LMB + LCTRL*: Set the currently selected waypoint's heading to point to the clicked location
 
 *LMB + LALT*: Move the currently selected waypoint's location to the clicked location
+
+http://pogee-3d-editor.googlecode.com/files/grids-plugin.PNG
