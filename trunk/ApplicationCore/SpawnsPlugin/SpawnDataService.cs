@@ -55,6 +55,12 @@ namespace SpawnsPlugin
             {
                 _zoneSpawns = value;
 
+
+                if (_spawn3d != null)
+                {
+                    _spawn3d.Dispose();
+                }
+
                 _spawn3d = new EQEmuDisplay3D.Spawn2Display3D(_zoneSpawns);
 
                 if (_viewClipping != null)
