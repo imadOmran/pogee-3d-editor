@@ -66,7 +66,11 @@ namespace ApplicationCore
             }
 
             var vm = DataContext as MainWindowViewModel;
-            vm.WorldMouseClickAt(point, ribbon.SelectedItem, null);
+
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                vm.WorldMouseClickAt(point, ribbon.SelectedItem, null);
+            }
         }
 
         private void View3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
