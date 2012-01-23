@@ -93,9 +93,18 @@ namespace SpawnsPlugin
 
                 if(Keyboard.IsKeyDown(Key.LeftCtrl) && SelectedSpawn != null)
                 {
+                    if (SelectedSpawns != null)
+                    {
+                        foreach (var s in SelectedSpawns)
+                        {
+                            s.LookAt(p);
+                        }
+                    }
+
                     SelectedSpawn.LookAt(p);
                     //TODO visual update hack
                     SelectedSpawn = SelectedSpawn;
+                    SelectedSpawns = SelectedSpawns;
                     return;
                 }
 
@@ -105,13 +114,35 @@ namespace SpawnsPlugin
                     {
                         CreateNewSpawn(p);
                     }
+                    return;
                 }
 
-                var spawn = SpawnsService.ZoneSpawns.GetNearestSpawn(p);
-
-                if (spawn != null)
+                List<EQEmu.Spawns.Spawn2> selSpawns = new List<EQEmu.Spawns.Spawn2>();
+                foreach (var s in SpawnsService.ZoneSpawns.Spawns.Where(
+                    x =>
+                    {
+                        var spt = new Point3D(x.X, x.Y, x.Z);
+                        Transform3D.TryTransform(spt, out spt);
+                        return e.CheckSelection(spt);
+                    }))
                 {
-                    SelectedSpawn = spawn;
+                    selSpawns.Add(s);
+                }
+
+                if (selSpawns.Count > 0)
+                {
+                    SelectedSpawn = selSpawns.ElementAt(0);
+                    SelectedSpawns = selSpawns;
+                }
+                else
+                {
+                    var spawn = SpawnsService.ZoneSpawns.GetNearestSpawn(p);
+
+                    if (spawn != null)
+                    {
+                        SelectedSpawn = spawn;
+                        SelectedSpawns = null;
+                    }
                 }
 
                 //SpawnsService.World3DMouseClickAt(e.PointInWorld);
@@ -133,6 +164,26 @@ namespace SpawnsPlugin
             }
         }
 
+        public override IEnumerable<EQEmu.Spawns.Spawn2> SelectedSpawns
+        {
+            get
+            {
+                if (SpawnsService != null)
+                {
+                    return SpawnsService.SelectedSpawns;
+                }
+                else return null;
+            }
+            set
+            {
+                if (SpawnsService != null)
+                {
+                    SpawnsService.SelectedSpawns = value;
+                    NotifyPropertyChanged("SelectedSpawns");
+                }
+            }
+        }
+
 
         public override EQEmu.Spawns.Spawn2 SelectedSpawn
         {
@@ -149,6 +200,7 @@ namespace SpawnsPlugin
                 if (SpawnsService != null)
                 {
                     SpawnsService.SelectedSpawn = value;
+                    NotifyPropertyChanged("SelectedSpawn");
                 }                
             }
         }

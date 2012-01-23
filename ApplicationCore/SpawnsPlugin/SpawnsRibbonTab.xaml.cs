@@ -111,8 +111,21 @@ namespace SpawnsPlugin
             //TODO use commanding
             if (SpawnsViewModel.SelectedSpawn != null)
             {
-                var window = new PropertyEditorWindow(SpawnsViewModel.SelectedSpawn);
-                window.ShowDialog();
+                if (SpawnsViewModel.SelectedSpawns != null)
+                {
+                    var window = new PropertyEditorWindow(SpawnsViewModel.SelectedSpawns);
+                    window.ShowDialog();
+
+                    //TODO fix - hack to update display
+                    SpawnsViewModel.SelectedSpawns = SpawnsViewModel.SelectedSpawns;
+                }
+                else
+                {
+                    var window = new PropertyEditorWindow(SpawnsViewModel.SelectedSpawn);
+                    window.ShowDialog();
+                }
+
+                //TODO fix - this is a hack to update the display
                 SpawnsViewModel.SelectedSpawn = SpawnsViewModel.SelectedSpawn;
             }
         }
