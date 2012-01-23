@@ -103,6 +103,15 @@ namespace SpawnsPlugin
                     SpawnsViewModel.SpawnsService.ZoneSpawns.RemoveSpawn(SpawnsViewModel.SelectedSpawn);
                     SpawnsViewModel.SelectedSpawn = null;
                 }
+
+                if (SpawnsViewModel.SelectedSpawns != null)
+                {
+                    foreach (var s in SpawnsViewModel.SelectedSpawns)
+                    {
+                        SpawnsViewModel.SpawnsService.ZoneSpawns.RemoveSpawn(s);
+                        SpawnsViewModel.SelectedSpawns = null;
+                    }
+                }
             }
         }
 
@@ -148,6 +157,15 @@ namespace SpawnsPlugin
             if (SpawnsViewModel.SelectedSpawn != null)
             {
                 System.Diagnostics.Process.Start(SpawnsViewModel.Service.DBConfiguration.PEQEditorUrl + "index.php?action=59&zoneid=&editor=spawn&z="+ SpawnsViewModel.SpawnsService.Zone + "&spawngroup=" + SpawnsViewModel.SpawnsService.SelectedSpawn.SpawnGroupId);
+            }
+        }
+
+        private void ViewQueryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SpawnsViewModel.SpawnsService != null && SpawnsViewModel.SpawnsService.ZoneSpawns != null)
+            {
+                var window = new TextWindow(SpawnsViewModel.SpawnsService.ZoneSpawns.GetSQL());
+                window.ShowDialog();
             }
         }
     }
