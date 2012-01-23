@@ -9,7 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="Query">
         <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
-        <m:RibbonButton Label="Get Update Query" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />
+        <m:RibbonButton Label="Save Update Query" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />
+        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Spawns">        
         <TextBlock Text="{Binding Path=Spawns.Count}" />
