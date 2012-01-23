@@ -87,5 +87,7 @@ namespace SpawnsPlugin
 
 
         abstract public void CreateNewSpawn(System.Windows.Media.Media3D.Point3D p);
+
+        abstract public IEnumerable<EQEmu.Spawns.Spawn2> SelectedSpawns { get; set; }
     }
 }

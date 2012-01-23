@@ -13,6 +13,15 @@ namespace EQEmuDisplay3D
 {
     public class Spawn2Display3D : IDisplay3D
     {
+        [Flags]
+        public enum DisplayFlags
+        {
+            None,
+            Green,
+            DarkGray,
+            Rainbow
+        }
+
         private Dictionary<EQEmu.Spawns.Spawn2, Model3DCollection> _mapping = new Dictionary<EQEmu.Spawns.Spawn2, Model3DCollection>();
         private readonly EQEmu.Spawns.ZoneSpawns _zoneSpawns;
 
@@ -81,7 +90,7 @@ namespace EQEmuDisplay3D
             }
         }
 
-        public void ShowSpawn(EQEmu.Spawns.Spawn2 spawn)
+        public void ShowSpawn(EQEmu.Spawns.Spawn2 spawn,DisplayFlags flags=DisplayFlags.None)
         {
             if (spawn == null)
             {
@@ -92,7 +101,7 @@ namespace EQEmuDisplay3D
             {
                 //Model3DGroup group = Model as Model3DGroup;
                 //group.Children.Clear();
-                CreateSpawn(spawn);
+                CreateSpawn(spawn,flags);
             }
         }
 
@@ -108,7 +117,7 @@ namespace EQEmuDisplay3D
             _mapping[spawn] = null;
         }
 
-        private void CreateSpawn(EQEmu.Spawns.Spawn2 spawn)
+        private void CreateSpawn(EQEmu.Spawns.Spawn2 spawn,DisplayFlags flags)
         {
             Model3DGroup group = Model as Model3DGroup;
 
@@ -122,21 +131,6 @@ namespace EQEmuDisplay3D
                     group.Children.Remove(model);
                 }
             }
-
-            //try
-            //{
-            //    if (_mapping[spawn] != null)
-            //    {
-            //        foreach (Model3D model in _mapping[spawn])
-            //        {
-            //            group.Children.Remove(model);
-            //        }
-            //    }
-            //}
-            //catch (KeyNotFoundException)
-            //{
-            //    //nothing needs to be done
-            //}
 
             MeshBuilder builder = new MeshBuilder();
             Point3D p = new Point3D(spawn.X,spawn.Y,spawn.Z);
@@ -155,19 +149,30 @@ namespace EQEmuDisplay3D
             };
 
             GeometryModel3D box;
-            Material mat;
+            Material mat = Materials.White;
 
-            if(spawn.RoamAreaId > 0)
+            if (flags == DisplayFlags.None)
             {
-                mat = Materials.Red;
+                if (spawn.RoamAreaId > 0)
+                {
+                    mat = Materials.Red;
+                }
+                else if (spawn.GridId > 0)
+                {
+                    mat = Materials.Yellow;
+                }
             }
-            else if ( spawn.GridId > 0 )
+            else if (flags == DisplayFlags.Green)
             {
-                mat = Materials.Yellow;
+                mat = Materials.Green;
             }
-            else
+            else if (flags == DisplayFlags.DarkGray)
             {
-                mat = Materials.White;
+                mat = Materials.DarkGray;
+            }
+            else if (flags == DisplayFlags.Rainbow)
+            {
+                mat = Materials.Rainbow;
             }
             
             box = new GeometryModel3D(builder.ToMesh(), mat);

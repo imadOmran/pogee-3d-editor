@@ -98,13 +98,41 @@ namespace SpawnsPlugin
             }
         }
 
-        private BoxVisual3D _cursor = new BoxVisual3D()
+        //private BoxVisual3D _cursor = new BoxVisual3D()
+        //{
+        //    Width = 5,
+        //    Length = 5,
+        //    Height = 0.1,
+        //    Material = Materials.Green
+        //};
+
+        private IEnumerable<EQEmu.Spawns.Spawn2> _selectedSpawns = null;
+        public IEnumerable<EQEmu.Spawns.Spawn2> SelectedSpawns
         {
-            Width = 5,
-            Length = 5,
-            Height = 0.1,
-            Material = Materials.Green
-        };
+            get { return _selectedSpawns; }
+            set
+            {
+                if (_selectedSpawns != null && value != null)
+                {
+                    foreach (var s in _selectedSpawns.Where(x => { return x != _selectedSpawn && !value.Contains(x) ; }))
+                    {
+                        _spawn3d.ShowSpawn(s, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.None);
+                    }                 
+                }
+
+                _selectedSpawns = value;
+
+                if (_selectedSpawns != null)
+                {
+                    foreach (var s in _selectedSpawns.Where(x => { return x != _selectedSpawn; }))
+                    {
+                        _spawn3d.ShowSpawn(s, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.Rainbow);
+                    }
+                }
+
+                NotifyPropertyChanged("SelectedSpawns");
+            }
+        }
 
         private EQEmu.Spawns.Spawn2 _selectedSpawn = null;
         public EQEmu.Spawns.Spawn2 SelectedSpawn
@@ -112,15 +140,21 @@ namespace SpawnsPlugin
             get { return _selectedSpawn; }
             set
             {
-                _modelVisual.Children.Remove(_cursor);
+                //_modelVisual.Children.Remove(_cursor);
+
+                if (_selectedSpawn != null && _selectedSpawn != value)
+                {
+                    _spawn3d.ShowSpawn(_selectedSpawn, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.None);
+                }
+
                 _selectedSpawn = value;
                 if (_selectedSpawn != null)
                 {
-                    _cursor.Center = new Point3D(_selectedSpawn.X, _selectedSpawn.Y, _selectedSpawn.Z);
-                    _modelVisual.Children.Add(_cursor);
+                    //_cursor.Center = new Point3D(_selectedSpawn.X, _selectedSpawn.Y, _selectedSpawn.Z);
+                    //_modelVisual.Children.Add(_cursor);
 
                     // TODO visual should update automatically
-                    _spawn3d.ShowSpawn(_selectedSpawn);
+                    _spawn3d.ShowSpawn(_selectedSpawn, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.Green);
 
 
                     //bring this spawns grid into view
