@@ -1,115 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <property-mapping>
 
-  <query type="EQEmu.RoamAreas.ZoneRoamAreas">
-    <select>
-      <sql>
-        <![CDATA[
-        SELECT id,min_z,max_z,spawn_random,pause_time,pause_variance,zone FROM roam_areas WHERE zone = '{0}';
-        ]]>
-      </sql>
-      <param>Zone</param>
-      <store field="max_z" type="float">MaxZ</store>
-      <store field="min_z" type="float">MinZ</store>
-      <store field="pause_time" type="int">PauseTime</store>
-      <store field="pause_variance" type="int">PauseVariance</store>
-      <store field="spawn_random" type="bool">SpawnRandom</store>
-      <store field="zone" type="string">Zone</store>
-      <store field="id" type="int">Id</store>
-    </select>
-  </query>
-
-  <query type="EQEmu.RoamAreas.RoamAreaEntry">
-    <update>
-      <sql>
-        <![CDATA[
-UPDATE roam_area_vertices SET x = {0}, y = {1} WHERE num = {2} AND roam_area_id = {3} AND zone = '{4}';        
-        ]]>        
-      </sql>
-      <param>X</param>
-      <param>Y</param>
-      <param>Number</param>
-      <param>RoamAreaId</param>
-      <param>Zone</param>
-    </update>
-    <insert>
-      <sql>
-        <![CDATA[
-INSERT INTO roam_area_vertices (num,roam_area_id,zone,x,y) VALUES ({0},{1},'{2}',{3},{4});        
-        ]]>
-      </sql>
-      <param>Number</param>
-      <param>RoamAreaId</param>
-      <param>Zone</param>
-      <param>X</param>
-      <param>Y</param>
-    </insert>
-    <delete>
-      <sql>
-        <![CDATA[
-DELETE FROM roam_area_vertices WHERE num = {0} AND roam_area_id = {1} AND zone = '{2}';       
-        ]]>
-      </sql>
-      <param>Number</param>
-      <param>RoamAreaId</param>
-      <param>Zone</param>
-    </delete>
-  </query>
-
-  <query type="EQEmu.RoamAreas.RoamArea">
-    <select>
-      <sql>
-        <![CDATA[
-SELECT x,y,num,roam_area_id,zone FROM roam_area_vertices WHERE roam_area_id = '{0}' AND zone = '{1}' ORDER BY num; 
-        ]]>
-      </sql>
-      <param>Id</param>
-      <param>Zone</param>
-      <store field="x" type="float">X</store>
-      <store field="y" type="float">Y</store>
-      <store field="num" type="int">Number</store>
-      <store field="roam_area_id" type="int">RoamAreaId</store>
-      <store field="zone" type="string">Zone</store>
-    </select>
-    <insert>
-      <sql>
-        <![CDATA[
-INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_variance) VALUES ({0},'{1}',{2},{3},{4},{5},{6});        
-        ]]>
-      </sql>
-      <param>Id</param>
-      <param>Zone</param>
-      <param>MaxZ</param>
-      <param>MinZ</param>
-      <param>SpawnRandom</param>
-      <param>PauseTime</param>
-      <param>PauseVariance</param>
-    </insert>
-    <update>
-      <sql>
-        <![CDATA[
-UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance {4} WHERE zone = '{5}' AND id = {6};
-        ]]>        
-      </sql>
-      <param>MaxZ</param>
-      <param>MinZ</param>
-      <param>SpawnRandom</param>
-      <param>PauseTime</param>
-      <param>PauseVariance</param>
-      <param>Zone</param>
-      <param>Id</param>
-    </update>
-    <delete>
-      <sql>
-        <![CDATA[
-DELETE FROM roam_areas WHERE zone = '{0}' AND id = {1};        
-        ]]>
-      </sql>
-      <param>Zone</param>
-      <param>Id</param>
-    </delete>
-  </query>
-  
   <query type="EQEmu.Grids.ZoneGrids">
     <select>
       <sql>
@@ -152,25 +43,7 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
     </select>
   </query>
 
-  <query type="EQEmu.Grids.Waypoint">
-    <insert>
-      <sql>
-        <![CDATA[  
-  INSERT INTO grid_entries (gridid,zoneid,number,x,y,z,heading,pause,running,name) VALUES
-  (@GridID,{0},{1},{2:0.###},{3:0.###},{4:0.###},{5},{6},{7},'{8}');
-        ]]>        
-      </sql>
-      <param>ZoneId</param>
-      <param>Number</param>
-      <param>X</param>
-      <param>Y</param>
-      <param>Z</param>
-      <param>Heading</param>
-      <param>PauseTime</param>
-      <param>Running</param>
-      <param>Name</param>
-    </insert>
-    <!-- EQEMU compatibility
+  <query type="EQEmu.Grids.Waypoint">     
     <insert>
       <sql>
         <![CDATA[  
@@ -186,7 +59,7 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
       <param>Heading</param>
       <param>PauseTime</param>
     </insert>
-    -->
+    
     <delete>
       <sql>
         <![CDATA[
@@ -195,28 +68,8 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
       </sql>
       <param>ZoneId</param>
       <param>Number</param>
-    </delete>
-    <update>
-      <sql>
-        <![CDATA[
-  UPDATE grid_entries SET
-  x = {0:F3}, y = {1:F3}, z = {2:F3}, heading = {4}, pause = {5}, running = {6}, name = '{7}'
-  WHERE gridid = @GridID AND zoneid = {8} AND number = {9};
-        ]]>
-      </sql>
-      <param>X</param>
-      <param>Y</param>
-      <param>Z</param>
-      <param>Number</param>
-      <param>Heading</param>
-      <param>PauseTime</param>
-      <param>Running</param>
-      <param>Name</param>
-      <param>ZoneId</param>
-      <param>Number</param>
-    </update>
-    
-    <!-- EQEMU compatibility
+    </delete>    
+     
     <update>
       <sql>
         <![CDATA[
@@ -233,8 +86,7 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
       <param>PauseTime</param>
       <param>ZoneId</param>
       <param>Number</param>
-    </update>    
-    -->
+    </update>       
     
   </query>
 
@@ -252,35 +104,11 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
       <store field="gridid" type="int">GridId</store>
       <store field="number" type="int">Number</store>
       <store field="heading" type="float">Heading</store>
-      <store field="pause" type="int">PauseTime</store>
-      <store field="name" type="string">Name</store>
-      <store field="running" type="bool">Running</store>
-      <store field="x" type="float">X</store>
-      <store field="y" type="float">Y</store>
-      <store field="z" type="float">Z</store>
-    </select>
-    
-    <!-- EQEMU compatibility
-    <select>
-      <sql>
-        <![CDATA[
-        SELECT * FROM grid_entries WHERE gridid = {0} AND zoneid = {1};
-        ]]>
-      </sql>
-      <param>Id</param>
-      <param>ZoneId</param>
-
-      <store field="zoneid" type="int">ZoneId</store>
-      <store field="gridid" type="int">GridId</store>
-      <store field="number" type="int">Number</store>
-      <store field="heading" type="float">Heading</store>
       <store field="pause" type="int">PauseTime</store>            
       <store field="x" type="float">X</store>
       <store field="y" type="float">Y</store>
       <store field="z" type="float">Z</store>
-    </select>    
-    -->
-    
+    </select>      
     <insert>
       <sql>
         <![CDATA[
@@ -396,55 +224,13 @@ SELECT name FROM items WHERE id = {0};
       <store field="x" type="float">X</store>
       <store field="y" type="float">Y</store>
       <store field="z" type="float">Z</store>
-      <store field="roam_area" type="int">RoamAreaId</store>
-      <store field="respawntime" type="int">RespawnTime</store>
-      <store field="spawngroupID" type="int">SpawnGroupId</store>
-      <store field="id" type="int">Id</store>
-    </select>
-    
-    <!-- EQEMU compatibility
-    <select>
-      <sql>
-        <![CDATA[
-        SELECT * FROM spawn2 WHERE zone='{0}';
-        ]]>
-      </sql>
-      <param>Zone</param>
-      <store field="zone" type="string">Zone</store>
-      <store field="pathgrid" type="int">GridId</store>
-      <store field="heading" type="float">Heading</store>
-      <store field="x" type="float">X</store>
-      <store field="y" type="float">Y</store>
-      <store field="z" type="float">Z</store>
       <store field="respawntime" type="int">RespawnTime</store>
       <store field="spawngroupID" type="int">SpawnGroupId</store>
       <store field="id" type="int">Id</store>
     </select>            
-    -->
-    
   </query>
   
   <query type="EQEmu.Spawns.Spawn2">
-    <insert>
-      <sql>
-        <![CDATA[
-INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area) VALUES
-({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
-        ]]>
-      </sql>
-      <param>Id</param>
-      <param>Zone</param>
-      <param>SpawnGroupId</param>
-      <param>X</param>
-      <param>Y</param>
-      <param>Z</param>
-      <param>Heading</param>
-      <param>RespawnTime</param>
-      <param>GridId</param>
-      <param>RoamAreaId</param>
-    </insert>
-    
-    <!-- EQEMU compatibility
      <insert>
       <sql>
         <![CDATA[
@@ -461,31 +247,7 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid) VAL
       <param>Heading</param>
       <param>RespawnTime</param>
       <param>GridId</param>
-    </insert>   
-    -->
-    
-    <update>
-      <sql>
-        <![CDATA[
-UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}
-WHERE id = {11} AND zone = '{1}';
-        ]]>
-      </sql>
-      <param>SpawnGroupId</param>
-      <param>Zone</param>
-      <param>Version</param>
-      <param>X</param>
-      <param>Y</param>
-      <param>Z</param>
-      <param>Heading</param>
-      <param>RespawnTime</param>
-      <param>Variance</param>
-      <param>GridId</param>
-      <param>RoamAreaId</param>
-      <param>Id</param>
-    </update>
-    
-    <!-- EQEMU compatibility
+    </insert>            
      <update>
       <sql>
         <![CDATA[
@@ -505,8 +267,6 @@ WHERE id = {10} AND zone = '{1}';
       <param>GridId</param>
       <param>Id</param>
     </update>   
-    -->
-    
     <delete>
       <sql>
         <![CDATA[
