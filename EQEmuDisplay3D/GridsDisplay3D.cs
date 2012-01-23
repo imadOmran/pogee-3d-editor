@@ -43,7 +43,15 @@ namespace EQEmuDisplay3D
                     foreach ( EQEmu.Grids.Grid old in e.OldItems ) {
                         old.Waypoints.CollectionChanged -= Waypoints_CollectionChanged;
                     }
-                    return;
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    foreach (EQEmu.Grids.Grid @new in e.NewItems.Cast<EQEmu.Grids.Grid>())
+                    {
+                        @new.Waypoints.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Waypoints_CollectionChanged);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
