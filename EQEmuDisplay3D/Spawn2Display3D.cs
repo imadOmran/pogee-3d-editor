@@ -11,7 +11,7 @@ using EQEmu.Grids;
 
 namespace EQEmuDisplay3D
 {
-    public class Spawn2Display3D : IDisplay3D
+    public class Spawn2Display3D : IDisplay3D, IDisposable
     {
         [Flags]
         public enum DisplayFlags
@@ -92,7 +92,7 @@ namespace EQEmuDisplay3D
 
         public void ShowSpawn(EQEmu.Spawns.Spawn2 spawn,DisplayFlags flags=DisplayFlags.None)
         {
-            if (spawn == null)
+            if (spawn == null || !_zoneSpawns.Spawns.Contains(spawn))
             {
                 //UpdateAll();
                 return;
@@ -191,6 +191,19 @@ namespace EQEmuDisplay3D
             foreach (Model3D model in collection)
             {
                 group.Children.Add(model);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_clipping != null)
+            {
+                _clipping.OnClippingChanged -= this.clipping_OnClippingChanged;
+            }
+
+            if (_zoneSpawns != null)
+            {
+                _zoneSpawns.Spawns.CollectionChanged -= this.Spawns_CollectionChanged;
             }
         }
     }
