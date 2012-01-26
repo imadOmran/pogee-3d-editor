@@ -53,23 +53,27 @@ namespace ApplicationCore
         void PropertyEditorWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             PropertyEditorWindowViewModel vm = DataContext as PropertyEditorWindowViewModel;
+
             if (_items != null && vm.Item != null)
             {
+
+                //get the properties that have changed on the source object - these changes need propagated down
+                List<PropertyInfo> changedProperties = new List<PropertyInfo>();
+                foreach (KeyValuePair<PropertyInfo, object> entry in _itemCopy)
+                {
+                    var val = entry.Key.GetValue(vm.Item, null);
+
+                    if (!Object.Equals(val, entry.Value))
+                    {
+                        changedProperties.Add(entry.Key);
+                    }
+                }
+
+                if (changedProperties.Count == 0) return;
+
                 var value = System.Windows.MessageBox.Show("Write to all items selected?", "Write to all items?", MessageBoxButton.YesNo);
                 if (value == MessageBoxResult.Yes)
                 {
-                    //get the properties that have changed on the source object - these changes need propagated down
-                    List<PropertyInfo> changedProperties = new List<PropertyInfo>();                    
-                    foreach (KeyValuePair<PropertyInfo, object> entry in _itemCopy)
-                    {
-                        var val = entry.Key.GetValue(vm.Item, null);
-
-                        if ( !Object.Equals(val,entry.Value) )
-                        {
-                            changedProperties.Add(entry.Key);
-                        }
-                    }
-
                     foreach (var item in _items.Where( x => { return x != vm.Item; } ) )
                     {
                         foreach (var p in changedProperties)

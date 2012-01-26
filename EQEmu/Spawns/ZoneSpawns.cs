@@ -120,6 +120,8 @@ namespace EQEmu.Spawns
 
         public Spawn2 GetNewSpawn()
         {
+            //TODO remove hardcoded queries - in case schema changes
+
             Spawn2 spawn = new Spawn2(_queryConfig);
             spawn.Zone = _zone;  
 

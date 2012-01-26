@@ -370,6 +370,17 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
     </delete>
   </query>
 
+  <query-extension type="EQEmu.Spawns.SpawnGroupAggregator" name="GetMaxID">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT MAX(id) AS id FROM spawngroup;        
+        ]]>
+      </sql>
+      <store field="id" type="int">Id</store>
+    </select>
+  </query-extension>
+
   <query-extension type="EQEmu.GroundSpawns.GroundSpawn" name="GetItemName">
     <select>
       <sql>
@@ -422,6 +433,97 @@ SELECT name FROM items WHERE id = {0};
     </select>            
     -->
     
+  </query>
+
+  <query type="EQEmu.Spawns.SpawnGroupAggregator">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM spawngroup WHERE id = {0};        
+        ]]>        
+      </sql>
+      <param>FilterById</param>
+      <store field="id" type="int">Id</store>
+      <store field="name" type="string">Name</store>
+      <store field="delay" type="int">RoamingDelay</store>
+      <store field="spawn_limit" type="short">SpawnLimit</store>
+      <store field="dist" type="float">RoamingDistance</store>
+      <store field="min_x" type="float">MinRoamingX</store>
+      <store field="min_y" type="float">MinRoamingY</store>
+      <store field="max_x" type="float">MaxRoamingX</store>
+      <store field="max_y" type="float">MaxRoamingY</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.Spawns.SpawnEntry">
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM spawnentry WHERE npcID = {0} AND spawngroupID = {1};        
+        ]]>
+      </sql>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>
+    </delete>
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
+        ]]>        
+      </sql>
+      <param>Chance</param>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>      
+    </update>
+  </query>
+
+  <query type="EQEmu.Spawns.SpawnGroup">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT spawnentry.*, npc_types.name AS npcname, npc_types.level AS level FROM spawnentry INNER JOIN npc_types ON npc_types.id = spawnentry.npcID WHERE spawngroupID = {0};         
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="spawngroupID" type="int">SpawnGroupID</store>
+      <store field="npcID" type="int">NpcID</store>
+      <store field="chance" type="short">Chance</store>
+      <store field="npcname" type="string">NpcName</store>
+      <store field="level" type="short">NpcLevel</store>
+    </select>
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE spawngroup SET delay = {0}, spawn_limit = {1}, dist = {2}, min_x = {3}, max_x = {4}, min_y = {5}, max_y = {6}, name = '{7}' WHERE id = {8};
+        ]]>
+      </sql>
+      <param>RoamingDelay</param>
+      <param>SpawnLimit</param>
+      <param>RoamingDistance</param>
+      <param>MinRoamingX</param>
+      <param>MaxRoamingX</param>
+      <param>MinRoamingY</param>
+      <param>MaxRoamingY</param>
+      <param>Name</param>
+      <param>Id</param>
+    </update>
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO spawngroup (id,name,delay,spawn_limit,dist,min_x,max_x,min_y,max_y)
+VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8});
+        ]]>
+      </sql>
+      <!--0--><param>Id</param>
+      <!--1--><param>Name</param>
+      <!--2--><param>RoamingDelay</param>
+      <!--3--><param>SpawnLimit</param>
+      <!--4--><param>RoamingDistance</param>
+      <!--5--><param>MinRoamingX</param>
+      <!--6--><param>MaxRoamingX</param>
+      <!--7--><param>MinRoamingY</param>
+      <!--8--><param>MaxRoamingY</param>
+    </insert>
   </query>
   
   <query type="EQEmu.Spawns.Spawn2">

@@ -118,12 +118,12 @@ namespace SpawnsPlugin
             get { return _selectedSpawns; }
             set
             {
-                if (_selectedSpawns != null && value != null)
+                if (_selectedSpawns != null)
                 {
-                    foreach (var s in _selectedSpawns.Where(x => { return x != _selectedSpawn && !value.Contains(x) ; }))
+                    foreach (var s in _selectedSpawns.Where( x => { return x != _selectedSpawn; }) )
                     {
                         _spawn3d.ShowSpawn(s, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.None);
-                    }                 
+                    }
                 }
 
                 _selectedSpawns = value;

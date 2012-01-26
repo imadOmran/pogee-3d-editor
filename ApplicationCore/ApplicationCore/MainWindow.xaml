@@ -77,11 +77,20 @@
             <Grid>
                 <DockPanel>                    
                     <Grid> 
+                        <TabControl Name="MainTabControl">
                     <!--<my:PropertyEditorWindow DockPanel.Dock="Right" />-->
-                        <h:HelixViewport3D Name="View3D" CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" 
-                                   MouseDoubleClick="View3D_MouseDoubleClick" MouseLeftButtonUp="View3D_MouseLeftButtonUp" MouseLeftButtonDown="View3D_MouseLeftButtonDown" MouseMove="View3D_MouseMove">                            
-                        </h:HelixViewport3D>                        
-                        <Rectangle Name="SelectionRectangle" Stroke="Aqua" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="View3D_MouseLeftButtonUp" />                                                
+                            <TabItem>
+                                <TabItem.Header>
+                                    <Label>3D World</Label>
+                                </TabItem.Header>
+                                <Grid>
+                                    <h:HelixViewport3D Name="View3D" CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" 
+                                   MouseDoubleClick="View3D_MouseDoubleClick" MouseLeftButtonUp="View3D_MouseLeftButtonUp" MouseLeftButtonDown="View3D_MouseLeftButtonDown" MouseMove="View3D_MouseMove">
+                                    </h:HelixViewport3D>
+                                    <Rectangle Name="SelectionRectangle" Stroke="Aqua" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="View3D_MouseLeftButtonUp" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
                     </Grid>
                 </DockPanel>                    
             </Grid>

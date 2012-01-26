@@ -206,6 +206,8 @@ namespace EQEmu.Database
                             break;
                         case "long": etype = SelectQueryFieldStore.DataTypes.Long;
                             break;
+                        case "short": etype = SelectQueryFieldStore.DataTypes.Short;
+                            break;
                         default:
                             etype = SelectQueryFieldStore.DataTypes.String;
                             break;
@@ -286,7 +288,8 @@ namespace EQEmu.Database
             Float,
             String,
             Bool,
-            Long
+            Long,
+            Short
         }
 
         private string _column;

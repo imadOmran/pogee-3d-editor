@@ -38,7 +38,14 @@ namespace ApplicationCore
             //MainWindowViewModel vm = DataContext as MainWindowViewModel;            
             var vm = DataContext as MainWindowViewModel;            
             View3D.Camera = vm.Container.Resolve<ProjectionCamera>();
-            View3D.CameraInertiaFactor = 0.2;            
+            View3D.CameraInertiaFactor = 0.2;
+
+            var tabControls = vm.ResolveTabEditorControls();
+            foreach (var c in tabControls)
+            {
+                MainTabControl.Items.Add(
+                    new TabItem() { Header = c.TabTitle, Content = c });
+            }
 
             //initializes the camera - there's probably a better spot to do this
             this.Activated += new EventHandler(MainWindow_Activated);
@@ -75,8 +82,14 @@ namespace ApplicationCore
 
         private void View3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            bool selectionBox = _selectionInProgress;
+            UpdateSelectionRectangle();            
             HideSelectionRectangle();
-            var rect = SelectionRectangle;
+
+            if (_selectionBoxEndPoint == _selectionBoxStartPoint)
+            {
+                selectionBox = false;
+            }
 
             var pt = View3D.FindNearestPoint(e.GetPosition(View3D));
             /*
@@ -96,13 +109,20 @@ namespace ApplicationCore
 
             var vm = DataContext as MainWindowViewModel;
 
-            double largeX = _selectionBoxEndPoint.X > _selectionBoxStartPoint.X ? _selectionBoxEndPoint.X : _selectionBoxStartPoint.X;
-            double smallX = largeX == _selectionBoxEndPoint.X ? _selectionBoxStartPoint.X : _selectionBoxEndPoint.X;
-            double largeY = _selectionBoxEndPoint.Y > _selectionBoxStartPoint.Y ? _selectionBoxEndPoint.Y : _selectionBoxStartPoint.X;
-            double smallY = largeY == _selectionBoxEndPoint.Y ? _selectionBoxStartPoint.Y : _selectionBoxEndPoint.Y;
 
-            vm.WorldMouseClickAt(point, ribbon.SelectedItem,
-                (point3D) =>
+            Func<Point3D, bool> action = (Func<Point3D, bool>)((x) =>
+                {
+                    return false;
+                });
+
+            if (selectionBox)
+            {
+                double largeX = _selectionBoxEndPoint.X > _selectionBoxStartPoint.X ? _selectionBoxEndPoint.X : _selectionBoxStartPoint.X;
+                double smallX = largeX == _selectionBoxEndPoint.X ? _selectionBoxStartPoint.X : _selectionBoxEndPoint.X;
+                double largeY = _selectionBoxEndPoint.Y > _selectionBoxStartPoint.Y ? _selectionBoxEndPoint.Y : _selectionBoxStartPoint.X;
+                double smallY = largeY == _selectionBoxEndPoint.Y ? _selectionBoxStartPoint.Y : _selectionBoxEndPoint.Y;
+
+                action = (point3D) =>
                 {
                     var p2d = HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(View3D.Viewport,point3D);
 
@@ -115,7 +135,26 @@ namespace ApplicationCore
                     {
                         return false;
                     }
-                });
+                };
+            }
+
+            vm.WorldMouseClickAt(point, ribbon.SelectedItem, new ViewModels.Editors.IsPointInsideSelectionBox(action));
+
+            //vm.WorldMouseClickAt(point, ribbon.SelectedItem,
+            //    (point3D) =>
+            //    {
+            //        var p2d = HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(View3D.Viewport,point3D);
+
+            //        if (p2d.X <= largeX && p2d.X >= smallX &&
+            //            p2d.Y <= largeY && p2d.Y >= smallY)
+            //        {
+            //            return true;
+            //        }
+            //        else
+            //        {
+            //            return false;
+            //        }
+            //    });
         }
 
         private void ViewClippingButton_Click(object sender, RoutedEventArgs e)
