@@ -254,6 +254,24 @@ namespace EQEmu.Spawns
             Entries.Remove(entry);
         }
 
+        public void RemoveAllEntries()
+        {
+            foreach (var entry in Entries)
+            {
+                if (NeedsInserted.Contains(entry))
+                {
+                    //this waypoint was not retrieved from the database
+                    NeedsInserted.Remove(entry);
+                }
+                else
+                {
+                    //waypoint was in the database
+                    NeedsDeleted.Add(entry);                    
+                }
+            }
+            Entries.Clear();
+        }
+
         public override string UpdateString
         {
             get
@@ -264,6 +282,16 @@ namespace EQEmu.Spawns
                 {
                     sql += base.UpdateString;
                 }
+                sql += GetQuery(Entries);
+                return sql;
+            }
+        }
+
+        public override string DeleteString
+        {
+            get
+            {
+                string sql = base.DeleteString;
                 sql += GetQuery(Entries);
                 return sql;
             }

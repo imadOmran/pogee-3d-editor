@@ -46,6 +46,7 @@ namespace EQEmu.Spawns
             {
                 NeedsDeleted.Add(group);
             }
+            group.RemoveAllEntries();
             _spawnGroups.Remove(group);
         }
 
