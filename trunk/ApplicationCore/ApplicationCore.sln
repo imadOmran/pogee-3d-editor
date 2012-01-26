@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineOfSightAreaPlugin", "Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroundSpawnsPlugin", "GroundSpawnsPlugin\GroundSpawnsPlugin.csproj", "{E94B5E83-FEA1-4863-BF9E-1913DB07A8C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnGroupPlugin", "SpawnGroupPlugin\SpawnGroupPlugin.csproj", "{80AC7EAF-8689-4398-9E26-4289B81762A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +169,16 @@ Global
 		{E94B5E83-FEA1-4863-BF9E-1913DB07A8C2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E94B5E83-FEA1-4863-BF9E-1913DB07A8C2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E94B5E83-FEA1-4863-BF9E-1913DB07A8C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{80AC7EAF-8689-4398-9E26-4289B81762A2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -148,6 +148,12 @@ namespace ApplicationCore
                     Then.Register().WithTypeName().UsingSingletonMode()
                     )
 
+                .Include(
+                    x => x.DecoratedWith<AutoRegisterAttribute>() && x.Implements<UserControls.ITabEditorControl>(),
+                    Then.Register().WithTypeName().UsingSingletonMode()
+                    )
+                    
+
                 .ApplyAutoRegistration();
         }
 
@@ -175,6 +181,11 @@ namespace ApplicationCore
 
         private Dictionary<DataServices.IModel3DProvider, ModelVisual3D> _modelMapping =
             new Dictionary<DataServices.IModel3DProvider, ModelVisual3D>();
+
+        public IEnumerable<UserControls.ITabEditorControl> ResolveTabEditorControls()
+        {
+            return _container.ResolveAll<UserControls.ITabEditorControl>();
+        }
 
         private void SubscribeTo3DChanges()
         {

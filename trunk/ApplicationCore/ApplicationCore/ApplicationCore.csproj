@@ -109,6 +109,7 @@
       <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IEditorControl.cs" />
+    <Compile Include="UserControls\ITabEditorControl.cs" />
     <Compile Include="UserControls\Ribbon\IRibbonItem.cs" />
     <Compile Include="UserControls\Ribbon\Tabs\IRibbonTab.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -177,9 +178,11 @@
   <ItemGroup>
     <Content Include="config.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="connection.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Plugins\plugins.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

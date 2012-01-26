@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FF3C817F-BA5C-4850-9CB9-2376DAF69DEF}</ProjectGuid>
+    <ProjectGuid>{80AC7EAF-8689-4398-9E26-4289B81762A2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EQEmu</RootNamespace>
-    <AssemblyName>EQEmu</AssemblyName>
+    <RootNamespace>SpawnGroupPlugin</RootNamespace>
+    <AssemblyName>SpawnGroupPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,62 +31,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\MySql\Assemblies\v4.0\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data.Entity">
-      <HintPath>..\MySql\Assemblies\v4.0\MySql.Data.Entity.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Web">
-      <HintPath>..\MySql\Assemblies\v4.0\MySql.Web.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\Configuration.cs" />
-    <Compile Include="Database\DatabaseObject.cs" />
-    <Compile Include="Database\FieldMapping.cs" />
-    <Compile Include="Database\ManageDatabase.cs" />
-    <Compile Include="Database\QueryHelper.cs" />
-    <Compile Include="Doors\Door.cs" />
-    <Compile Include="Doors\DoorManager.cs" />
-    <Compile Include="Functions.cs" />
-    <Compile Include="Grids\Grid.cs" />
-    <Compile Include="Grids\Waypoint.cs" />
-    <Compile Include="Grids\ZoneGrids.cs" />
-    <Compile Include="Database\IDatabaseObject.cs" />
-    <Compile Include="Database\IManageDatabase.cs" />
-    <Compile Include="GroundSpawns\GroundSpawn.cs" />
-    <Compile Include="GroundSpawns\ZoneGroundSpawns.cs" />
-    <Compile Include="LineOfSightAreas\LineOfSightArea.cs" />
-    <Compile Include="Map\Map.cs" />
-    <Compile Include="Map\MapStructs.cs" />
-    <Compile Include="Path\Path.cs" />
-    <Compile Include="Path\PathEventArgs.cs" />
-    <Compile Include="Path\Neighbor.cs" />
-    <Compile Include="Path\Node.cs" />
-    <Compile Include="Path\PathStructs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoamAreas\RoamArea.cs" />
-    <Compile Include="RoamAreas\RoamAreaEntry.cs" />
-    <Compile Include="RoamAreas\ZoneRoamAreas.cs" />
-    <Compile Include="Spawns\Spawn2.cs" />
-    <Compile Include="Spawns\SpawnGroup.cs" />
-    <Compile Include="Spawns\SpawnGroupAggregator.cs" />
-    <Compile Include="Spawns\ZoneSpawns.cs" />
-    <Compile Include="Types.cs" />
+    <Compile Include="SpawnGroupEditTab.xaml.cs">
+      <DependentUpon>SpawnGroupEditTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpawnGroupEditTabViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Page Include="SpawnGroupEditTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EQEmu\EQEmu.csproj">
+      <Project>{FF3C817F-BA5C-4850-9CB9-2376DAF69DEF}</Project>
+      <Name>EQEmu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">
+      <Project>{DDC35EA0-1A5D-44C4-95DF-DA0D40998585}</Project>
+      <Name>ApplicationCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
