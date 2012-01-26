@@ -524,6 +524,14 @@ VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8});
       <!--7--><param>MinRoamingY</param>
       <!--8--><param>MaxRoamingY</param>
     </insert>
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM spawngroup WHERE id = {0};        
+        ]]>
+      </sql>
+      <param>Id</param>
+    </delete>
   </query>
   
   <query type="EQEmu.Spawns.Spawn2">
