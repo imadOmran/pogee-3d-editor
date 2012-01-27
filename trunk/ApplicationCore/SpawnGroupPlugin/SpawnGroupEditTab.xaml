@@ -4,26 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" Width="729" HorizontalAlignment="Left" Background="#FFCECECE">
+             d:DesignHeight="418" Width="729" HorizontalAlignment="Left" Background="#FFCECECE">
     <Grid>
         <DockPanel>
             <Grid DockPanel.Dock="Right" Width="246" Margin="15,15,15,15" Background="White">
                 <StackPanel Orientation="Horizontal">
                     <Label>Filter</Label>
-                    <TextBox VerticalAlignment="Top" Width="150" Height="26" />
-                    <Button VerticalAlignment="Top" Margin="3" Content="Add" />
+                    <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
+                    <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
                 </StackPanel>
                 <StackPanel>
                 </StackPanel>
-                <ListView Margin="0,31,0,0">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="ID" Width="50" />
-                            <GridViewColumn Header="Name" Width="100" />
-                            <GridViewColumn Header="Level" Width="40" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <DataGrid Name="NPCsDataGrid" Margin="0,31,0,0" ItemsSource="{Binding Path=NPCFilter}" />
             </Grid>
             <Grid>
                 <DockPanel>

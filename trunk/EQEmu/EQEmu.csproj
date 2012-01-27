@@ -77,6 +77,7 @@
     <Compile Include="RoamAreas\RoamArea.cs" />
     <Compile Include="RoamAreas\RoamAreaEntry.cs" />
     <Compile Include="RoamAreas\ZoneRoamAreas.cs" />
+    <Compile Include="Spawns\NPC.cs" />
     <Compile Include="Spawns\Spawn2.cs" />
     <Compile Include="Spawns\SpawnGroup.cs" />
     <Compile Include="Spawns\SpawnGroupAggregator.cs" />

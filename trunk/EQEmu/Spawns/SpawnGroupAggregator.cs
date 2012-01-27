@@ -92,62 +92,17 @@ namespace EQEmu.Spawns
             SpawnGroup sg = _spawnGroups.Where(x => { return x.Id == id; }).FirstOrDefault();
             if (sg != null) return sg;
 
-            if (_connection.State != System.Data.ConnectionState.Open)
+            string sql = String.Format(SelectString, SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+            var row = results.FirstOrDefault();
+            if (row != null)
             {
-                _connection.Open();
+                sg = new SpawnGroup(_connection, _queryConfig);
+                sg.SetProperties(Queries, row);
+                _spawnGroups.Add(sg);
+                sg.Created();
+                sg.GetEntries();
             }
-
-            if (_connection.State == System.Data.ConnectionState.Open)
-            {
-                MySqlDataReader rdr = null;
-                try
-                {
-                    string sql = String.Format(SelectString, SelectArgValues);
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    rdr = cmd.ExecuteReader();
-
-                    List<string> fields = new List<string>();
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        fields.Add(rdr.GetName(i));
-                    }
-                    
-                    while (rdr.Read())
-                    {
-                        sg = new SpawnGroup(_connection,_queryConfig);
-
-                        foreach (var item in _queries.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(sg, item, rdr);
-                            }
-                        }
-
-                        _spawnGroups.Add(sg);
-                        sg.Created();
-                    }
-                    rdr.Close();                    
-                }
-                catch (Exception e)
-                {
-                    //TODO log this
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
-                }                
-            }
-            else
-            {
-                throw new Exception("Database connection not open");
-            }
-
-            if (sg != null) sg.GetEntries();
 
             return sg;
         }
