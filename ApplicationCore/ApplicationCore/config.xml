@@ -477,6 +477,20 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
     </update>
   </query>
 
+  <query type="EQEmu.Spawns.NPCAggregator">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM npc_types WHERE name LIKE '{0}' LIMIT 25;        
+        ]]>
+      </sql>
+      <param>FilterName</param>
+      <store field="name" type="string">Name</store>
+      <store field="level" type="int">Level</store>
+      <store field="id" type="int">Id</store>
+    </select>
+  </query>
+
   <query type="EQEmu.Spawns.SpawnGroup">
     <select>
       <sql>

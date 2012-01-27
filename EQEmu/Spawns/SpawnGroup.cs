@@ -177,6 +177,12 @@ namespace EQEmu.Spawns
             get { return _entries; }
         }
 
+        public SpawnEntry CreateEntry()
+        {
+            var entry =  new SpawnEntry(_queryConfig);            
+            return entry;
+        }
+
         public void GetEntries()
         {
             MySqlDataReader rdr = null;
@@ -238,6 +244,20 @@ namespace EQEmu.Spawns
             : base(queryConfig)
         {
             _connection = connection;
+        }
+
+        public void AddEntry(SpawnEntry entry)
+        {
+            var count = _entries.Count(
+                x =>
+                {
+                    return x.SpawnGroupID == entry.SpawnGroupID && x.NpcID == entry.NpcID;
+                });
+            if( count == 0 )
+            {
+                NeedsInserted.Add(entry);
+                _entries.Add(entry);
+            }
         }
 
         public void RemoveEntry(SpawnEntry entry)

@@ -12,11 +12,15 @@ namespace SpawnGroupPlugin
     public class SpawnGroupEditTabViewModel : ApplicationCore.ViewModels.ViewModelBase
     {
         private readonly SpawnGroupAggregator _manager;
+        private readonly NPCAggregator _npcFinder;
 
-        public SpawnGroupEditTabViewModel(SpawnGroupAggregator manager)
+        public SpawnGroupEditTabViewModel(SpawnGroupAggregator manager, NPCAggregator finder)
         {
             if (manager == null) throw new NullReferenceException("null parameter");
             _manager = manager;
+            _npcFinder = finder;
+
+            finder.Lookup("test");
             RemoveSelectedEntryCommand = new DelegateCommand(
                 x =>
                 {
@@ -107,12 +111,34 @@ namespace SpawnGroupPlugin
                 x =>
                 {
                     _manager.RemoveSpawnGroup(SelectedSpawnGroup);
-                    SelectedSpawnGroup = null;
+
+                    if (_manager.SpawnGroups.Count() > 0)
+                    {
+                        SelectedSpawnGroup = _manager.SpawnGroups.ElementAt(0);
+                    }
+                    else SelectedSpawnGroup = null;
                 },
                 x =>
                 {
                     return SelectedSpawnGroup != null;
                 });
+        }
+
+        public ICollection<NPC> NPCFilter
+        {
+            get { return _npcFinder.NPCs; }
+        }
+        
+        private string _npcFilterString;
+        public string NPCFilterString
+        {
+            get { return _npcFilterString; }
+            set
+            {
+                _npcFilterString = value;
+                _npcFinder.Lookup(value);
+                NotifyPropertyChanged("NPCFilterString");
+            }
         }
         
         private SpawnGroup _selectedSpawnGroup = null;

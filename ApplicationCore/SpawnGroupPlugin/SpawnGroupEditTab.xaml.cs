@@ -32,6 +32,23 @@ namespace SpawnGroupPlugin
             InitializeComponent();
             DataContext = viewModel;
             EntriesDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(EntriesDataGrid_AutoGeneratingColumn);
+            NPCsDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCsDataGrid_AutoGeneratingColumn);            
+        }
+
+        void NPCsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            var header = e.Column.Header.ToString();
+
+            switch (header)
+            {
+                case "Name":
+                case "Level":
+                    e.Column.IsReadOnly = true;
+                    break;
+                default:
+                    e.Cancel = true;
+                    break;
+            }
         }
 
         public SpawnGroupEditTabViewModel ViewModel
@@ -62,6 +79,24 @@ namespace SpawnGroupPlugin
         public string TabTitle
         {
             get { return "Spawn Groups"; }
+        }
+
+        private void AddNPCButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedSpawnGroup != null)
+            {
+                foreach (EQEmu.Spawns.NPC npc in NPCsDataGrid.SelectedItems)
+                {
+                    var entry = ViewModel.SelectedSpawnGroup.CreateEntry();
+                    entry.Chance = (short)npc.Level;
+                    entry.NpcID = npc.Id;
+                    entry.SpawnGroupID = ViewModel.SelectedSpawnGroup.Id;
+                    entry.NpcName = npc.Name;
+                    entry.NpcLevel = (short)npc.Level;
+                    entry.Created();
+                    ViewModel.SelectedSpawnGroup.AddEntry(entry);
+                }
+            }
         }
     }
 }
