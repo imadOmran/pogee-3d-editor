@@ -100,6 +100,7 @@
     <Compile Include="DataServices\IDataService.cs" />
     <Compile Include="DataServices\IModel3DProvider.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Helpers\Math.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="PropertyEditorWindow.xaml.cs">
       <DependentUpon>PropertyEditorWindow.xaml</DependentUpon>

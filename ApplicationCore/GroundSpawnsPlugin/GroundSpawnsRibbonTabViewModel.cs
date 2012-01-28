@@ -62,7 +62,7 @@ namespace GroundSpawnsPlugin
                     {
                         var pt3d = new Point3D(x.MidPoint.X, x.MidPoint.Y, x.MaxZ);
                         pt3d = Transform3D.Transform(pt3d);
-                        return e.CheckSelection(pt3d);
+                        return e.CheckSelection(pt3d,0);
                     });
                     if (selections.Count() > 0)
                     {

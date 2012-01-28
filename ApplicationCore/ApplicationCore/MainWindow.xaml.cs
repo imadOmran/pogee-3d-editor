@@ -110,8 +110,9 @@ namespace ApplicationCore
             var vm = DataContext as MainWindowViewModel;
 
 
-            Func<Point3D, bool> action = (Func<Point3D, bool>)((x) =>
+            Func<Point3D,double, bool> action = (Func<Point3D,double,bool>)((x,y) =>
                 {
+                    y = -1.0;
                     return false;
                 });
 
@@ -122,13 +123,26 @@ namespace ApplicationCore
                 double largeY = _selectionBoxEndPoint.Y > _selectionBoxStartPoint.Y ? _selectionBoxEndPoint.Y : _selectionBoxStartPoint.X;
                 double smallY = largeY == _selectionBoxEndPoint.Y ? _selectionBoxStartPoint.Y : _selectionBoxEndPoint.Y;
 
-                action = (point3D) =>
+                action = (point3D,distance) =>
                 {
                     var p2d = HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(View3D.Viewport,point3D);
 
                     if (p2d.X <= largeX && p2d.X >= smallX &&
                         p2d.Y <= largeY && p2d.Y >= smallY)
                     {
+                        if (distance > 0)
+                        {
+                            var hitTestPoint = View3D.FindNearestPoint(p2d);
+                            if (hitTestPoint != null)
+                            {
+                                if (Helpers.Math.Distance(point3D, (Point3D)hitTestPoint) <= distance)
+                                {
+                                    return true;
+                                }
+                                else return false;
+                            }
+                            else return false;
+                        }
                         return true;
                     }
                     else
