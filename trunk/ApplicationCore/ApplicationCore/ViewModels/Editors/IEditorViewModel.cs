@@ -20,7 +20,7 @@ namespace ApplicationCore.ViewModels.Editors
         }
     }
 
-    public delegate bool IsPointInsideSelectionBox(Point3D p);
+    public delegate bool IsPointInsideSelectionBox(Point3D p,double hitTestDistance);
 
     public interface IEditorViewModel : IViewModel
     {

@@ -123,7 +123,8 @@ namespace SpawnsPlugin
                     {
                         var spt = new Point3D(x.X, x.Y, x.Z);
                         Transform3D.TryTransform(spt, out spt);
-                        return e.CheckSelection(spt);
+                        double dist = 5.0;
+                        return e.CheckSelection(spt,dist);
                     }))
                 {
                     selSpawns.Add(s);
