@@ -168,6 +168,11 @@ namespace EQEmu.Spawns
             }
         }
 
+        public int ChanceTotal
+        {
+            get { return Entries.Sum(x => { return x.Chance; }); }
+        }
+
         #endregion
 
         private MySqlConnection _connection;
@@ -212,9 +217,9 @@ namespace EQEmu.Spawns
 
                     if (_entries.Where(x => x.NpcID == entry.NpcID).FirstOrDefault() == null)
                     {
-                        _entries.Add(entry);
+                        AddEntry(entry);
+                        entry.Created();
                     }
-                    entry.Created();
                 }
                 rdr.Close();
 
@@ -257,6 +262,17 @@ namespace EQEmu.Spawns
             {
                 NeedsInserted.Add(entry);
                 _entries.Add(entry);
+                entry.ObjectDirtied += new Database.ObjectDirtiedHandler(entry_ObjectDirtied);
+            }
+            OnSpawnChanceTotalChanged();
+        }
+
+        private void entry_ObjectDirtied(object sender, EventArgs args)
+        {
+            SpawnEntry entry = sender as SpawnEntry;
+            if (entry != null)
+            {
+                OnSpawnChanceTotalChanged();
             }
         }
 
@@ -272,6 +288,8 @@ namespace EQEmu.Spawns
             }
 
             Entries.Remove(entry);
+            entry.ObjectDirtied -= entry_ObjectDirtied;
+            OnSpawnChanceTotalChanged();
         }
 
         public void RemoveAllEntries()
@@ -290,6 +308,7 @@ namespace EQEmu.Spawns
                 }
             }
             Entries.Clear();
+            OnSpawnChanceTotalChanged();
         }
 
         public override string UpdateString
@@ -331,5 +350,18 @@ namespace EQEmu.Spawns
         {
             get { return Entries.Where(x => x.Dirty).ToList<Database.IDatabaseObject>(); }
         }
+
+        public event SpawnChanceTotalChangedHandler SpawnChanceTotalChanged;
+
+        private void OnSpawnChanceTotalChanged()
+        {
+            var e = SpawnChanceTotalChanged;
+            if (e != null)
+            {
+                e(this, new EventArgs());
+            }
+        }
     }
+
+    public delegate void SpawnChanceTotalChangedHandler(SpawnGroup sender,EventArgs e);
 }
