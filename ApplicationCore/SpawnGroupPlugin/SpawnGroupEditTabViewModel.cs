@@ -20,7 +20,6 @@ namespace SpawnGroupPlugin
             _manager = manager;
             _npcFinder = finder;
 
-            finder.Lookup("test");
             RemoveSelectedEntryCommand = new DelegateCommand(
                 x =>
                 {

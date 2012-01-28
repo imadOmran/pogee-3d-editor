@@ -317,6 +317,16 @@ namespace EQEmu.Spawns
             }
         }
 
+        public override string InsertString
+        {
+            get
+            {
+                string sql = base.InsertString;
+                sql += GetQuery(Entries);
+                return sql;
+            }
+        }
+
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { return Entries.Where(x => x.Dirty).ToList<Database.IDatabaseObject>(); }

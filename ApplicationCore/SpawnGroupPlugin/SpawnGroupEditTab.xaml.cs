@@ -43,6 +43,7 @@ namespace SpawnGroupPlugin
             {
                 case "Name":
                 case "Level":
+                case "Id":
                     e.Column.IsReadOnly = true;
                     break;
                 default:
@@ -88,7 +89,7 @@ namespace SpawnGroupPlugin
                 foreach (EQEmu.Spawns.NPC npc in NPCsDataGrid.SelectedItems)
                 {
                     var entry = ViewModel.SelectedSpawnGroup.CreateEntry();
-                    entry.Chance = (short)npc.Level;
+                    entry.Chance = 0;
                     entry.NpcID = npc.Id;
                     entry.SpawnGroupID = ViewModel.SelectedSpawnGroup.Id;
                     entry.NpcName = npc.Name;
