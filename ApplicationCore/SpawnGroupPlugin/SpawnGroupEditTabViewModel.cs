@@ -157,6 +157,16 @@ namespace SpawnGroupPlugin
                 {
                     return SelectedSpawnGroup != null && SelectedSpawnGroup.Entries.Count > 0;
                 });
+
+            ClearCacheCommand = new DelegateCommand(
+                x =>
+                {
+                    _manager.ClearCache();
+                },
+                x =>
+                {
+                    return _manager.SpawnGroups.Count() > 0;
+                });
         }
 
         public ICollection<NPC> NPCFilter
@@ -195,10 +205,12 @@ namespace SpawnGroupPlugin
 
                 NotifyPropertyChanged("SelectedSpawnGroup");
                 NotifyPropertyChanged("ChanceTotal");
+
                 NextIdCommand.RaiseCanExecuteChanged();
                 PreviousIdCommand.RaiseCanExecuteChanged();
                 RemoveSpawnGroupCommand.RaiseCanExecuteChanged();
                 AdjustChanceTotalCommand.RaiseCanExecuteChanged();
+                ClearCacheCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -323,6 +335,17 @@ namespace SpawnGroupPlugin
             {
                 _adjustChanceTotalCommand = value;
                 NotifyPropertyChanged("AdjustChanceTotalCommand");
+            }
+        }
+
+        private DelegateCommand _clearCacheCommand;
+        public DelegateCommand ClearCacheCommand
+        {
+            get { return _clearCacheCommand; }
+            set
+            {
+                _clearCacheCommand = value;
+                NotifyPropertyChanged("ClearCacheCommand");
             }
         }
     }

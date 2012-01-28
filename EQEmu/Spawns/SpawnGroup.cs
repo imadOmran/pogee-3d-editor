@@ -217,8 +217,10 @@ namespace EQEmu.Spawns
 
                     if (_entries.Where(x => x.NpcID == entry.NpcID).FirstOrDefault() == null)
                     {
-                        AddEntry(entry);
+                        _entries.Add(entry);
+                        entry.ObjectDirtied += new Database.ObjectDirtiedHandler(entry_ObjectDirtied);
                         entry.Created();
+                        OnSpawnChanceTotalChanged();
                     }
                 }
                 rdr.Close();

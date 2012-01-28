@@ -602,7 +602,7 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid) VAL
       <sql>
         <![CDATA[
 UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}
-WHERE id = {11} AND zone = '{1}';
+ WHERE id = {11} AND zone = '{1}';
         ]]>
       </sql>
       <param>SpawnGroupId</param>
