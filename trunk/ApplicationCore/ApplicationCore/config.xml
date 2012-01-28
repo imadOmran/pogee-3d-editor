@@ -491,7 +491,7 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
     <select>
       <sql>
         <![CDATA[
-SELECT * FROM npc_types WHERE name LIKE '{0}' LIMIT 250;        
+SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;        
         ]]>
       </sql>
       <param>FilterName</param>

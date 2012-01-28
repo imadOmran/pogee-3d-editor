@@ -121,6 +121,42 @@ namespace SpawnGroupPlugin
                 {
                     return SelectedSpawnGroup != null;
                 });
+
+            AdjustChanceTotalCommand = new DelegateCommand(
+                x =>
+                {
+                    var entries = x as IEnumerable<object>;
+                    
+                    if (entries != null && entries.Count() > 0)
+                    {
+                        var total = SelectedSpawnGroup.ChanceTotal;
+                        var unitsLeft = 100 - total;
+                        if (unitsLeft <= 100)
+                        {
+                            if (unitsLeft <= entries.Count()) return;
+                            var chancePerEntry = unitsLeft / entries.Count();
+                            foreach(SpawnEntry entry in entries)
+                            {
+                                if (entry.Chance < (short)chancePerEntry)
+                                {
+                                    entry.Chance = (short)chancePerEntry;
+                                }
+                                unitsLeft -= chancePerEntry;
+
+                                if (entries.Last() == entry && unitsLeft > 0)
+                                {
+                                    entry.Chance += (short)unitsLeft;
+                                }
+                            }
+                        }
+                       
+                    }
+                    else return;
+                },
+                x =>
+                {
+                    return SelectedSpawnGroup != null && SelectedSpawnGroup.Entries.Count > 0;
+                });
         }
 
         public ICollection<NPC> NPCFilter
@@ -146,12 +182,29 @@ namespace SpawnGroupPlugin
             get { return _selectedSpawnGroup; }
             set
             {
+                if (_selectedSpawnGroup != null)
+                {
+                    _selectedSpawnGroup.SpawnChanceTotalChanged -= _selectedSpawnGroup_SpawnChanceTotalChanged;
+                }
+
                 _selectedSpawnGroup = value;
+                if (_selectedSpawnGroup != null)
+                {
+                    _selectedSpawnGroup.SpawnChanceTotalChanged += new SpawnChanceTotalChangedHandler(_selectedSpawnGroup_SpawnChanceTotalChanged);
+                }
+
                 NotifyPropertyChanged("SelectedSpawnGroup");
+                NotifyPropertyChanged("ChanceTotal");
                 NextIdCommand.RaiseCanExecuteChanged();
                 PreviousIdCommand.RaiseCanExecuteChanged();
                 RemoveSpawnGroupCommand.RaiseCanExecuteChanged();
+                AdjustChanceTotalCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        void _selectedSpawnGroup_SpawnChanceTotalChanged(SpawnGroup sender, EventArgs e)
+        {
+            NotifyPropertyChanged("ChanceTotal");
         }
 
         public int FilterID
@@ -164,6 +217,24 @@ namespace SpawnGroupPlugin
                     .Where(x => { return x.Id == value; }).FirstOrDefault();
                 NotifyPropertyChanged("FilterID");
             }
+        }
+
+        public int ChanceTotal
+        {
+            get
+            {
+                if (SelectedSpawnGroup != null)
+                {
+                    return SelectedSpawnGroup.ChanceTotal;
+                }
+                else return 0;
+            }
+        }
+
+        public void RefreshSelection()
+        {
+            NotifyPropertyChanged("SelectedSpawnGroup");
+            NotifyPropertyChanged("ChanceTotal");
         }
         
         private SpawnEntry _selectedEntry = null;
@@ -241,6 +312,17 @@ namespace SpawnGroupPlugin
             {
                 _prevIdCommand = value;
                 NotifyPropertyChanged("NextIdCommand");
+            }
+        }
+
+        private DelegateCommand _adjustChanceTotalCommand;
+        public DelegateCommand AdjustChanceTotalCommand
+        {
+            get { return _adjustChanceTotalCommand; }
+            set
+            {
+                _adjustChanceTotalCommand = value;
+                NotifyPropertyChanged("AdjustChanceTotalCommand");
             }
         }
     }

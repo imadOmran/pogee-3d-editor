@@ -12,9 +12,7 @@
                     <Label>Filter</Label>
                     <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
                     <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
-                </StackPanel>
-                <StackPanel>
-                </StackPanel>
+                </StackPanel>             
                 <DataGrid Name="NPCsDataGrid" Margin="0,31,0,0" ItemsSource="{Binding Path=NPCFilter}" />
             </Grid>
             <Grid>
@@ -65,7 +63,14 @@
                     </Grid>
                     <Grid>
                         <DockPanel>
-                            <Button DockPanel.Dock="Top" Margin="10,0,0,0" HorizontalAlignment="Left"  Content="Remove Selection" Command="{Binding RemoveSelectedEntryCommand}" CommandParameter="{Binding SelectedEntry}"  />
+                            <StackPanel DockPanel.Dock="Top">
+                                <Button Margin="10,0,0,0" HorizontalAlignment="Left"  Content="Remove Selection" Command="{Binding RemoveSelectedEntryCommand}" CommandParameter="{Binding SelectedEntry}"  />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label>Chance Total</Label>
+                                    <TextBlock Text="{Binding ChanceTotal}" Width="56" />
+                                    <Button Content="Adjust Totals" Margin="10,0,0,0" Click="Button_Click" />
+                                </StackPanel>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
                             <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="View Query" Command="{Binding ViewQueryCommand}" />
                                 <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="Save Query" />

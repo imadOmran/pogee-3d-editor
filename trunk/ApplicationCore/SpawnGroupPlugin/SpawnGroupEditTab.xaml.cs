@@ -96,7 +96,17 @@ namespace SpawnGroupPlugin
                     entry.NpcLevel = (short)npc.Level;
                     entry.Created();
                     ViewModel.SelectedSpawnGroup.AddEntry(entry);
+                    ViewModel.RefreshSelection();
                 }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.AdjustChanceTotalCommand.CanExecute(EntriesDataGrid.SelectedItems))
+            {
+                ViewModel.AdjustChanceTotalCommand.Execute(EntriesDataGrid.SelectedItems);
+                EntriesDataGrid.Items.Refresh();
             }
         }
     }
