@@ -465,6 +465,16 @@ DELETE FROM spawnentry WHERE npcID = {0} AND spawngroupID = {1};
       <param>NpcID</param>
       <param>SpawnGroupID</param>
     </delete>
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO spawnentry (npcId,spawngroupID,chance) VALUES ({0},{1},{2});        
+        ]]>
+      </sql>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>
+      <param>Chance</param>
+    </insert>
     <update>
       <sql>
         <![CDATA[
@@ -481,7 +491,7 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
     <select>
       <sql>
         <![CDATA[
-SELECT * FROM npc_types WHERE name LIKE '{0}' LIMIT 25;        
+SELECT * FROM npc_types WHERE name LIKE '{0}' LIMIT 250;        
         ]]>
       </sql>
       <param>FilterName</param>
