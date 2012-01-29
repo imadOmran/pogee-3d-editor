@@ -100,7 +100,15 @@ namespace GridsPlugin
 
         private void EditWaypointButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PropertyEditorWindow(GridsViewModel.SelectedWaypoint);
+            PropertyEditorWindow window = null;
+            if (GridsViewModel.SelectedWaypoints != null)
+            {
+                window = new PropertyEditorWindow(GridsViewModel.SelectedWaypoints);
+            }
+            else
+            {
+                window = new PropertyEditorWindow(GridsViewModel.SelectedWaypoint);
+            }
             window.ShowDialog();
 
             //TODO hack to update display... probably need to add an event for when dirtied
@@ -108,6 +116,7 @@ namespace GridsPlugin
             var grid = GridsViewModel.SelectedGrid;
             this.GridsViewModel.SelectedGrid = grid;
             this.GridsViewModel.SelectedWaypoint = waypoint;
+            GridsViewModel.SelectedWaypoints = GridsViewModel.SelectedWaypoints;
         }
 
         private void MoveToButton_Click(object sender, RoutedEventArgs e)
