@@ -8,6 +8,15 @@ namespace EQEmu.Spawns
 {
     public class Spawn2 : Database.DatabaseObject
     {
+        public enum Animation
+        {
+            Standing = 0,
+            Sitting = 1,
+            Crouching = 2,
+            Dead = 3,
+            Looting = 4
+        };
+
         private Point3D _position = new Point3D();
         private int _roamAreaId = 0;
         private string _zone = "";
@@ -21,6 +30,17 @@ namespace EQEmu.Spawns
         private int _enabled = 1;
         private int _spawnGroupId = 0;
         private int _id = 0;
+        private Animation _animation = Animation.Standing;
+
+        public Animation IdleAnimation
+        {
+            get { return _animation; }
+            set
+            {
+                _animation = value;
+                Dirtied();
+            }
+        }
 
         public int Version
         {

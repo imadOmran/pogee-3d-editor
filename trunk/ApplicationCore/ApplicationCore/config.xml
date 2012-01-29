@@ -88,7 +88,7 @@ INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_varian
     <update>
       <sql>
         <![CDATA[
-UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance {4} WHERE zone = '{5}' AND id = {6};
+UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance = {4} WHERE zone = '{5}' AND id = {6};
         ]]>        
       </sql>
       <param>MaxZ</param>
@@ -411,6 +411,7 @@ SELECT name FROM items WHERE id = {0};
       <store field="respawntime" type="int">RespawnTime</store>
       <store field="spawngroupID" type="int">SpawnGroupId</store>
       <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
     </select>
     
     <!-- EQEMU compatibility
@@ -430,6 +431,7 @@ SELECT name FROM items WHERE id = {0};
       <store field="respawntime" type="int">RespawnTime</store>
       <store field="spawngroupID" type="int">SpawnGroupId</store>
       <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
     </select>            
     -->
     
@@ -562,8 +564,8 @@ DELETE FROM spawngroup WHERE id = {0};
     <insert>
       <sql>
         <![CDATA[
-INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area) VALUES
-({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
+INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation) VALUES
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10});
         ]]>
       </sql>
       <param>Id</param>
@@ -576,14 +578,15 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam
       <param>RespawnTime</param>
       <param>GridId</param>
       <param>RoamAreaId</param>
+      <param>IdleAnimation</param>
     </insert>
     
     <!-- EQEMU compatibility
      <insert>
       <sql>
         <![CDATA[
-INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid) VALUES
-({0},'{1}',{2},{3},{4},{5},{6},{7},{8});
+INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,animation) VALUES
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
         ]]>
       </sql>
       <param>Id</param>
@@ -595,13 +598,14 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid) VAL
       <param>Heading</param>
       <param>RespawnTime</param>
       <param>GridId</param>
+      <param>IdleAnimation</param>
     </insert>   
     -->
     
     <update>
       <sql>
         <![CDATA[
-UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}
+UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}
  WHERE id = {11} AND zone = '{1}';
         ]]>
       </sql>
@@ -617,13 +621,14 @@ UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y
       <param>GridId</param>
       <param>RoamAreaId</param>
       <param>Id</param>
+      <param>IdleAnimation</param>
     </update>
     
     <!-- EQEMU compatibility
      <update>
       <sql>
         <![CDATA[
-UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}
+UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, animation = {11}
 WHERE id = {10} AND zone = '{1}';
         ]]>
       </sql>
@@ -638,6 +643,7 @@ WHERE id = {10} AND zone = '{1}';
       <param>Variance</param>
       <param>GridId</param>
       <param>Id</param>
+      <param>IdleAnimation</param>
     </update>   
     -->
     
