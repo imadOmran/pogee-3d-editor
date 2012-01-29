@@ -9,6 +9,8 @@ using Microsoft.Practices.Unity;
 
 using ApplicationCore.ViewModels.Editors;
 
+using EQEmu.Grids;
+
 namespace GridsPlugin
 {
     public class GridsRibbonTabViewModel : GridsViewModelBase
@@ -77,11 +79,32 @@ namespace GridsPlugin
                     SelectedWaypoint = waypoint;
                 }
 
-
-                waypoint = SelectedGrid.GetNearestWaypoint(p);
-                if (waypoint != null)
+                List<Waypoint> selectedWaypoints = new List<Waypoint>();
+                foreach (var wp in SelectedGrid.Waypoints.Where(
+                    x =>
+                    {
+                        var checkPt = new Point3D(x.X, x.Y, x.Z);
+                        Transform3D.TryTransform(checkPt, out checkPt);
+                        double dist = 5.0;
+                        return e.CheckSelection(checkPt, dist);
+                    }))
                 {
-                    SelectedWaypoint = waypoint;
+                    selectedWaypoints.Add(wp);
+                }
+
+                if (selectedWaypoints.Count > 0)
+                {
+                    SelectedWaypoint = selectedWaypoints.ElementAt(0);
+                    SelectedWaypoints = selectedWaypoints;
+                }
+                else
+                {
+                    waypoint = SelectedGrid.GetNearestWaypoint(p);
+                    if (waypoint != null)
+                    {
+                        SelectedWaypoint = waypoint;
+                        SelectedWaypoints = null;
+                    }
                 }
             }
             

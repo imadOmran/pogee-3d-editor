@@ -86,6 +86,7 @@ namespace GridsPlugin
                 }
             }
         }
+
         public EQEmu.Grids.Waypoint SelectedWaypoint 
         {
             get
@@ -101,7 +102,19 @@ namespace GridsPlugin
                 if (_service != null)
                 {
                     _service.SelectedWaypoint = value;
+                    NotifyPropertyChanged("SelectedWaypoint");
                 }
+            }
+        }
+
+        private IEnumerable<EQEmu.Grids.Waypoint> _selectedWaypoints = null;
+        public IEnumerable<EQEmu.Grids.Waypoint> SelectedWaypoints
+        {
+            get { return _selectedWaypoints; }
+            set
+            {
+                _selectedWaypoints = value;
+                NotifyPropertyChanged("SelectedWaypoints");
             }
         }
         

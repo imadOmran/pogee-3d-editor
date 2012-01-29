@@ -12,6 +12,8 @@ namespace GridsPlugin
         GridsDataService GridsService { get; }
         EQEmu.Grids.Grid SelectedGrid { get; set; }
         EQEmu.Grids.Waypoint SelectedWaypoint { get; set; }
+        IEnumerable<EQEmu.Grids.Waypoint> SelectedWaypoints { get; set; }
+
         string Zone { get; set; }
     }
 }
