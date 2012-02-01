@@ -22,7 +22,7 @@ namespace EQEmu.Spawns
         private string _zone = "";
         private int _version = 0;
         private double _heading = 0.0;
-        private int _respawnTime = 0;
+        private int _respawnTime = 640;
         private int _variance = 0;
         private int _gridId = 0;
         private int _condition = 0;
@@ -55,11 +55,19 @@ namespace EQEmu.Spawns
         public int Condition
         {
             get { return _condition; }
+            set
+            {
+                _condition = value;
+            }
         }
 
         public int ConditionValue
         {
             get { return _conditionValue; }
+            set
+            {
+                _conditionValue = value;
+            }
         }
 
         public int Enabled
