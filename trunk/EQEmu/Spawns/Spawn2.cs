@@ -45,6 +45,11 @@ namespace EQEmu.Spawns
         public int Version
         {
             get { return _version; }
+            set
+            {
+                _version = value;
+                Dirtied();
+            }
         }
 
         public int Variance
@@ -58,6 +63,7 @@ namespace EQEmu.Spawns
             set
             {
                 _condition = value;
+                Dirtied();
             }
         }
 
@@ -67,6 +73,7 @@ namespace EQEmu.Spawns
             set
             {
                 _conditionValue = value;
+                Dirtied();
             }
         }
 

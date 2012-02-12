@@ -82,6 +82,30 @@ namespace SpawnsPlugin
             }
         }
 
+        public int Version
+        {
+            get
+            {
+                if (_service != null)
+                {
+                    return _service.Version;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+            set
+            {
+                if (_service != null )
+                {
+                    _service.Version = value;
+                    NotifyPropertyChanged("Version");
+                }
+            }
+        }
+
 
         abstract public EQEmu.Spawns.Spawn2 SelectedSpawn { get; set; }
 

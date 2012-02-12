@@ -397,10 +397,11 @@ SELECT name FROM items WHERE id = {0};
     <select>
       <sql>
         <![CDATA[
-        SELECT * FROM spawn2 WHERE zone='{0}';
+        SELECT * FROM spawn2 WHERE zone='{0}' and version={1};
         ]]>
       </sql>
       <param>Zone</param>
+      <param>Version</param>
       <store field="zone" type="string">Zone</store>
       <store field="pathgrid" type="int">GridId</store>
       <store field="heading" type="float">Heading</store>
@@ -412,6 +413,8 @@ SELECT name FROM items WHERE id = {0};
       <store field="spawngroupID" type="int">SpawnGroupId</store>
       <store field="id" type="int">Id</store>
       <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>
     </select>
     
     <!-- EQEMU compatibility
@@ -564,8 +567,8 @@ DELETE FROM spawngroup WHERE id = {0};
     <insert>
       <sql>
         <![CDATA[
-INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation) VALUES
-({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10});
+INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition) VALUES
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12});
         ]]>
       </sql>
       <param>Id</param>
@@ -579,6 +582,8 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam
       <param>GridId</param>
       <param>RoamAreaId</param>
       <param>IdleAnimation</param>
+      <param>ConditionValue</param>
+      <param>Condition</param>
     </insert>
     
     <!-- EQEMU compatibility
@@ -605,7 +610,7 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,anim
     <update>
       <sql>
         <![CDATA[
-UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}
+UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}
  WHERE id = {11} AND zone = '{1}';
         ]]>
       </sql>
@@ -622,6 +627,8 @@ UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y
       <param>RoamAreaId</param>
       <param>Id</param>
       <param>IdleAnimation</param>
+      <param>Condition</param>
+      <param>ConditionValue</param>
     </update>
     
     <!-- EQEMU compatibility

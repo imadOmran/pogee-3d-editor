@@ -17,10 +17,20 @@ namespace EQEmu.Spawns
     {
         private readonly MySqlConnection _connection;
         private string _zone;
+        private int _version = 0;
 
         public string Zone
         {
             get { return _zone; }
+        }
+
+        public int Version
+        {
+            get { return _version; }
+            set
+            {
+                _version = value;
+            }
         }
 
         private ObservableCollection<Spawn2> _spawns = new ObservableCollection<Spawn2>();
@@ -33,17 +43,12 @@ namespace EQEmu.Spawns
             }
         }
 
-        public ZoneSpawns(QueryConfig config)
-            : base(config)
-        {
-
-        }
-
-        public ZoneSpawns(MySqlConnection conn, string zone, QueryConfig config)
+        public ZoneSpawns(MySqlConnection conn, string zone, QueryConfig config, int version=0)
             : base(config)
         {
             _connection = conn;
             _zone = zone;
+            _version = version;
 
             if (_connection == null)
             {
@@ -181,6 +186,7 @@ namespace EQEmu.Spawns
                 }
             }
             spawn.Id = max;
+            spawn.Version = _version;
             spawn.Created();
             return spawn;
         }
