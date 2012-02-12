@@ -54,7 +54,7 @@ namespace ApplicationCore
         {
             PropertyEditorWindowViewModel vm = DataContext as PropertyEditorWindowViewModel;
 
-            if (_items != null && vm.Item != null)
+            if (_items != null && vm.Item != null && _items.Count() > 1)
             {
 
                 //get the properties that have changed on the source object - these changes need propagated down
