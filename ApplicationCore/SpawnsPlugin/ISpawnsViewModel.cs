@@ -14,6 +14,7 @@ namespace SpawnsPlugin
     {
         SpawnDataService SpawnsService { get; }
         string Zone { get; set; }
+        int Version { get; set; }
         EQEmu.Spawns.Spawn2 SelectedSpawn { get; set; }
         IEnumerable<Spawn2> SelectedSpawns { get; set; }
 

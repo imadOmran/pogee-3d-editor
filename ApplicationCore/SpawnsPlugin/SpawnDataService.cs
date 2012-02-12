@@ -27,6 +27,16 @@ namespace SpawnsPlugin
             _connection = connection;
         }
 
+        private int _version = 0;
+        public int Version
+        {
+            get { return _version; }
+            set
+            {
+                _version = value;
+            }
+        }
+
         private string _zone;
         public string Zone
         {
@@ -35,7 +45,7 @@ namespace SpawnsPlugin
             {
                 if (_connection != null)
                 {
-                    ZoneSpawns = new EQEmu.Spawns.ZoneSpawns(_connection, value,TypeQueryConfig);
+                    ZoneSpawns = new EQEmu.Spawns.ZoneSpawns(_connection, value, TypeQueryConfig, _version);
                     _zone = value;
                 }
                 else
