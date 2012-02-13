@@ -19,7 +19,8 @@ namespace EQEmuDisplay3D
             None,
             Green,
             DarkGray,
-            Rainbow
+            Rainbow,
+            Blue
         }
 
         private Dictionary<EQEmu.Spawns.Spawn2, Model3DCollection> _mapping = new Dictionary<EQEmu.Spawns.Spawn2, Model3DCollection>();
@@ -173,6 +174,10 @@ namespace EQEmuDisplay3D
             else if (flags == DisplayFlags.Rainbow)
             {
                 mat = Materials.Rainbow;
+            }
+            else if (flags == DisplayFlags.Blue)
+            {
+                mat = Materials.Blue;
             }
             
             box = new GeometryModel3D(builder.ToMesh(), mat);

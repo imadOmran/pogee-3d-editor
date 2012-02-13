@@ -142,7 +142,7 @@ namespace SpawnsPlugin
                 {
                     foreach (var s in _selectedSpawns.Where(x => { return x != _selectedSpawn; }))
                     {
-                        _spawn3d.ShowSpawn(s, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.Rainbow);
+                        _spawn3d.ShowSpawn(s, EQEmuDisplay3D.Spawn2Display3D.DisplayFlags.Blue);
                     }
                 }
 
