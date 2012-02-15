@@ -21,12 +21,13 @@
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />
-                                <Button Margin="35,5,5,5" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" />
+                                <Button Margin="35,5,5,5" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" />                                
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label>By Zone:</Label>
                                 <TextBox Text="{Binding ZoneFilter}" Width="124" />
                             </StackPanel>
+                                                                 
                             <StackPanel Orientation="Horizontal">
                                 <Label VerticalAlignment="Center">Search ID</Label>
                                 <TextBox Text="{Binding FilterID}" VerticalAlignment="Center" Width="117" />
@@ -64,6 +65,32 @@
                                         <Label>Max Y</Label>
                                         <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingY}" Width="61" />
                                     </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Utility">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="367" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.ColumnSpan="2" >Pack Cached SpawngroupIDs</Label>
+
+                                        <Label Grid.Row="1" Grid.Column="0">Start ID</Label>
+                                        <TextBox Text="{Binding PackStart}" Grid.Row="1" Grid.Column="1" />
+
+                                        <Label Grid.Row="2" Grid.Column="0">End ID</Label>
+                                        <TextBox Text="{Binding PackEnd}" Grid.Row="2" Grid.Column="1" />
+
+                                        <Button Grid.Row="3" Content="Pack" Command="{Binding PackCommand}" />
+
+                                    </Grid>
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>

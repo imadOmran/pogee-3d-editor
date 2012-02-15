@@ -86,6 +86,23 @@ namespace EQEmu.Spawns
             {
                 if (CreatedObj) throw new Exception("Cannot modify ID field");
                 _id = value;
+
+                //the entries will need updated as well if the Id changes
+                //if the ID is changing - which is the key field:
+                //a new one might as well be created and remove the old one
+
+                foreach (var entry in Entries.ToArray())
+                {
+                    var newEntry = CreateEntry();
+                    newEntry.SpawnGroupID = value;
+                    newEntry.NpcID = entry.NpcID;
+                    newEntry.NpcLevel = entry.NpcLevel;
+                    newEntry.NpcName = entry.NpcName;
+
+                    AddEntry(newEntry);
+                    RemoveEntry(entry);
+                }
+                Dirtied();
             }
         }
 
@@ -95,6 +112,7 @@ namespace EQEmu.Spawns
             set
             {
                 _name = value;
+                Dirtied();
             }
         }
 
