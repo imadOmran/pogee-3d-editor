@@ -293,6 +293,15 @@ namespace EQEmu.Database
             else return;
         }
 
+        /// <summary>
+        /// Undoes a Created method call, if this method is called be sure to call the Created method again
+        /// so the object can lock its state and determine when it is dirtied.
+        /// </summary>
+        public void UnlockObject()
+        {
+            _created = false;
+        }
+
         protected void Dirtied()
         {
             if (_created == true)

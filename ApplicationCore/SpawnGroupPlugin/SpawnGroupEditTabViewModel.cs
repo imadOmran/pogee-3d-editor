@@ -167,6 +167,16 @@ namespace SpawnGroupPlugin
                 {
                     return _manager.SpawnGroups.Count() > 0;
                 });
+
+            PackCommand = new DelegateCommand(
+                x =>
+                {
+                    PackIds();
+                },
+                x =>
+                {
+                    return PackEnd > PackStart && PackEnd - PackStart > _manager.SpawnGroups.Count();
+                });
         }
 
         public ICollection<NPC> NPCFilter
@@ -244,6 +254,30 @@ namespace SpawnGroupPlugin
             }
         }
 
+        private int _packStart = 0;
+        public int PackStart 
+        {
+            get { return _packStart; } 
+            set 
+            {
+                _packStart = value;
+                NotifyPropertyChanged("PackStart");
+                PackCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private int _packEnd = 0;
+        public int PackEnd
+        {
+            get { return _packEnd; }
+            set
+            {
+                _packEnd = value;
+                NotifyPropertyChanged("PackEnd");
+                PackCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         public int ChanceTotal
         {
             get
@@ -260,6 +294,11 @@ namespace SpawnGroupPlugin
         {
             NotifyPropertyChanged("SelectedSpawnGroup");
             NotifyPropertyChanged("ChanceTotal");
+        }
+
+        public void PackIds()
+        {
+            _manager.PackCachedId(PackStart, PackEnd);
         }
         
         private SpawnEntry _selectedEntry = null;
@@ -359,6 +398,17 @@ namespace SpawnGroupPlugin
             {
                 _clearCacheCommand = value;
                 NotifyPropertyChanged("ClearCacheCommand");
+            }
+        }
+
+        private DelegateCommand _packCommand;
+        public DelegateCommand PackCommand
+        {
+            get { return _packCommand; }
+            set
+            {
+                _packCommand = value;
+                NotifyPropertyChanged("PackCommand");
             }
         }
     }

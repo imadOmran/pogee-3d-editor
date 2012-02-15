@@ -133,6 +133,41 @@ namespace EQEmu.Spawns
             else return null;
         }
 
+        public void PackCachedId(int start, int end)
+        {
+            if (start == end || start > end)
+            {
+                throw new ArgumentOutOfRangeException("Invalid range");
+            }
+
+            int range = end - start;
+            if( SpawnGroups.Count() > range)
+            {
+                throw new ArgumentOutOfRangeException("Range specified not large enough");
+            }
+
+            //spawngroups are associated with 0-n spawn2 entries so these will need updated            
+
+            IEnumerable<SpawnGroup> sorted = SpawnGroups.OrderBy(x => x.Id);
+            int i = start;
+            NeedsInserted.Clear();
+            foreach (var spawn in sorted)
+            {
+                //if we are going to potentially re-insert them all somewhere we might as well delete them
+                //the update query generates the delete queries first so this works
+                //create a spawn that keeps track of the identifier so we can delete it
+                var copy = new SpawnGroup(spawn.Id, _connection, _queryConfig);                
+                NeedsDeleted.Add(copy);
+
+                spawn.UnlockObject();
+                spawn.Id = i;
+                spawn.Created();
+
+                i += 1;
+                NeedsInserted.Add(spawn);
+            }
+        }
+
         public string GetSQL()
         {
             return GetQuery(SpawnGroups);
