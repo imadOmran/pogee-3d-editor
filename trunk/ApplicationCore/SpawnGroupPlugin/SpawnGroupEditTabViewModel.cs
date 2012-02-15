@@ -231,6 +231,19 @@ namespace SpawnGroupPlugin
             }
         }
 
+        private string _zoneFilter;
+        public string ZoneFilter
+        {
+            get { return _zoneFilter; }
+            set
+            {
+                _zoneFilter = value;
+                _manager.LookupByZone(value);
+                SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
+                NotifyPropertyChanged("ZoneFilter");
+            }
+        }
+
         public int ChanceTotal
         {
             get

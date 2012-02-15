@@ -381,6 +381,16 @@ SELECT MAX(id) AS id FROM spawngroup;
     </select>
   </query-extension>
 
+  <query-extension type="EQEmu.Spawns.SpawnGroupAggregator" name="GetByZone">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT spawngroupid FROM spawn2 where zone = '{0}'
+        ]]>
+      </sql>
+    </select>
+  </query-extension>
+
   <query-extension type="EQEmu.GroundSpawns.GroundSpawn" name="GetItemName">
     <select>
       <sql>

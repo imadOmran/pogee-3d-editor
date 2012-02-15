@@ -246,19 +246,36 @@ namespace EQEmu.Spawns
             get { throw new NotImplementedException(); }
         }
 
-        //public override string InsertString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
+        public void PackTable(int start, int end)
+        {
+            if (start == end || start > end)
+            {
+                throw new ArgumentOutOfRangeException("Invalid range");
+            }
 
-        //public override string UpdateString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
+            int range = end - start;
+            if (_spawns.Count > range)
+            {
+                throw new ArgumentOutOfRangeException("Range specified not large enough");
+            }
 
-        //public override string DeleteString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
+            IEnumerable<Spawn2> sorted = _spawns.OrderBy(x => x.Id);
+            int i = start;
+            NeedsInserted.Clear();
+            foreach (var spawn in sorted)
+            {
+                if (!NeedsInserted.Contains(spawn))
+                {
+                    //this spawn will be marked for an UPDATE... we need to remove it
+                    var copy = GetNewSpawn();
+                    copy.Id = spawn.Id;
+                    NeedsDeleted.Add(copy);
+                }
+
+                spawn.Id = i;
+                i += 1;
+                NeedsInserted.Add(spawn);
+            }
+        }
     }
 }

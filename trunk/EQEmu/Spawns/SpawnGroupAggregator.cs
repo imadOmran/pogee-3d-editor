@@ -99,6 +99,7 @@ namespace EQEmu.Spawns
             SpawnGroup sg = _spawnGroups.Where(x => { return x.Id == id; }).FirstOrDefault();
             if (sg != null) return sg;
 
+            //this is dependant on the FilterId property - per config.xml...I don't like this
             string sql = String.Format(SelectString, SelectArgValues);
             var results = Database.QueryHelper.RunQuery(_connection, sql);
             var row = results.FirstOrDefault();
@@ -114,75 +115,29 @@ namespace EQEmu.Spawns
             return sg;
         }
 
+        public IEnumerable<SpawnGroup> LookupByZone(string zone)
+        {
+            ClearCache();
+
+            var query = Queries.ExtensionQueries.FirstOrDefault( x => x.Name == "GetByZone" );
+            if (query != null)
+            {
+                string sql = String.Format(query.SelectQuery, new string[]{ zone } );
+                var results = Database.QueryHelper.RunQuery(_connection, sql);
+                foreach (var row in results)
+                {
+                    FilterById = (int)row["spawngroupid"];
+                }
+                return _spawnGroups;
+            }
+            else return null;
+        }
+
         public string GetSQL()
         {
             return GetQuery(SpawnGroups);
         }
-
-        //public SpawnGroup Lookup(string name)
-        //{
-        //    SpawnGroup sg = null;
-
-        //    if (_connection.State != System.Data.ConnectionState.Open)
-        //    {
-        //        _connection.Open();
-        //    }
-
-        //    if (_connection.State == System.Data.ConnectionState.Open)
-        //    {
-        //        MySqlDataReader rdr = null;
-        //        try
-        //        {
-        //            string sql = String.Format(SelectString, SelectArgValues);
-        //            MySqlCommand cmd = new MySqlCommand(sql, _connection);
-        //            rdr = cmd.ExecuteReader();
-
-        //            List<string> fields = new List<string>();
-        //            for (int i = 0; i < rdr.FieldCount; i++)
-        //            {
-        //                fields.Add(rdr.GetName(i));
-        //            }
-
-        //            while (rdr.Read())
-        //            {
-        //                sg = new SpawnGroup(_queryConfig);
-
-        //                foreach (var item in _queries.SelectQueryFields)
-        //                {
-        //                    if (fields.Contains(item.Column))
-        //                    {
-        //                        SetProperty(sg, item, rdr);
-        //                    }
-        //                }
-
-        //                _spawnGroups.Add(sg);
-        //                sg.Created();
-        //            }
-        //            rdr.Close();
-
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            //TODO log this
-        //            Console.WriteLine(e.Message);
-        //        }
-        //        finally
-        //        {
-        //            if (rdr != null)
-        //            {
-        //                rdr.Close();
-        //            }
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("Database connection not open");
-        //    }
-
-        //    return sg;
-        //}
-
+        
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { throw new NotImplementedException(); }
