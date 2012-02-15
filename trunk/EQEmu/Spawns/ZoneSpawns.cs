@@ -246,6 +246,13 @@ namespace EQEmu.Spawns
             get { throw new NotImplementedException(); }
         }
 
+        /// <summary>
+        /// Packs all currently loaded spawn entries by id field into the specified range; modifying their identifier field.
+        /// i.e three spawns with id's (10,35,99) existing and PackTable called with parameters (5,10)
+        /// will result in the three spawns having their id's updated to (5,6,7)
+        /// </summary>
+        /// <param name="start">the first id that will be used</param>
+        /// <param name="end">the last id that will be used</param>
         public void PackTable(int start, int end)
         {
             if (start == end || start > end)
@@ -264,13 +271,12 @@ namespace EQEmu.Spawns
             NeedsInserted.Clear();
             foreach (var spawn in sorted)
             {
-                if (!NeedsInserted.Contains(spawn))
-                {
-                    //this spawn will be marked for an UPDATE... we need to remove it
-                    var copy = GetNewSpawn();
-                    copy.Id = spawn.Id;
-                    NeedsDeleted.Add(copy);
-                }
+                //if we are going to potentially re-insert them all somewhere we might as well delete them
+                //the update query generates the delete queries first so this works
+                //create a spawn that keeps track of the identifier so we can delete it
+                var copy = GetNewSpawn();
+                copy.Id = spawn.Id;
+                NeedsDeleted.Add(copy);
 
                 spawn.Id = i;
                 i += 1;
