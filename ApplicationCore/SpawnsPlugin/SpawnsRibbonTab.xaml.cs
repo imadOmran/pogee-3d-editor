@@ -168,5 +168,14 @@ namespace SpawnsPlugin
                 window.ShowDialog();
             }
         }
+
+        private void PackSpawnsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SpawnsViewModel.SpawnsService != null && SpawnsViewModel.SpawnsService.ZoneSpawns != null)
+            {
+                var window = new PackDialog(new PackDialogViewModel(SpawnsViewModel.SpawnsService.ZoneSpawns));
+                window.ShowDialog();
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@
         <DockPanel>
             <Grid DockPanel.Dock="Right" Width="246" Margin="15,15,15,15" Background="White">
                 <StackPanel Orientation="Horizontal">
-                    <Label>Filter</Label>
+                    <Label>NPC ID</Label>
                     <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
                     <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
                 </StackPanel>             
@@ -22,6 +22,10 @@
                             <StackPanel Orientation="Horizontal">
                                 <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />
                                 <Button Margin="35,5,5,5" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>By Zone:</Label>
+                                <TextBox Text="{Binding ZoneFilter}" Width="124" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label VerticalAlignment="Center">Search ID</Label>

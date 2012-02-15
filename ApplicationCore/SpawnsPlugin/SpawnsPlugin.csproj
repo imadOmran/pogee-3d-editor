@@ -67,6 +67,10 @@
   <ItemGroup>
     <Compile Include="ISpawnsControl.cs" />
     <Compile Include="ISpawnsViewModel.cs" />
+    <Compile Include="PackDialog.xaml.cs">
+      <DependentUpon>PackDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PackDialogViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnDataService.cs" />
     <Compile Include="SpawnsRibbonTab.xaml.cs">
@@ -76,6 +80,10 @@
     <Compile Include="SpawnsViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PackDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SpawnsRibbonTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
