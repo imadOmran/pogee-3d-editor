@@ -391,6 +391,29 @@ SELECT spawngroupid FROM spawn2 where zone = '{0}'
     </select>
   </query-extension>
 
+  <query-extension type="EQEmu.Spawns.SpawnGroup" name="GetSpawn2">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM spawn2 where spawngroupid = {0};
+        ]]>
+      </sql>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="roam_area" type="int">RoamAreaId</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>      
+    </select>
+  </query-extension>
+
   <query-extension type="EQEmu.GroundSpawns.GroundSpawn" name="GetItemName">
     <select>
       <sql>

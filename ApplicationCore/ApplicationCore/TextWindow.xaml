@@ -3,11 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="TextWindow" Height="300" Width="929">
     <Grid>
-        <RichTextBox>
-            <FlowDocument>
-                <Paragraph Name="Text">                    
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <Grid Margin="25,25,25,25">
+            <FlowDocumentScrollViewer>
+            <!--<RichTextBox>-->
+               
+                <FlowDocument Background="LightGray">
+                    <Paragraph Name="Text">
+                    </Paragraph>
+                </FlowDocument>
+
+            <!--</RichTextBox>-->
+            </FlowDocumentScrollViewer>
+        </Grid>
     </Grid>
 </Window>

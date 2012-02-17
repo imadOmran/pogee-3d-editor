@@ -109,7 +109,7 @@
                             <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="View Query" Command="{Binding ViewQueryCommand}" />
                                 <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="Save Query" />
                             </StackPanel>
-                        <DataGrid Name="EntriesDataGrid" Margin="10,10,10,10"  ItemsSource="{Binding Path=SelectedSpawnGroup.Entries}" SelectedItem="{Binding SelectedEntry}" />
+                            <DataGrid Name="EntriesDataGrid" Margin="10,10,10,10"  ItemsSource="{Binding SpawnEntries}" SelectedItem="{Binding SelectedEntry}" />
                         <!--<ListView Margin="10,10,10,10" ItemsSource="{Binding Path=SelectedSpawnGroup.Entries}">
                             <ListView.View>
                                 <GridView>

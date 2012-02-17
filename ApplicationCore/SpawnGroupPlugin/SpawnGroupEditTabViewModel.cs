@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
+using System.Threading;
 
 using ApplicationCore;
 
@@ -213,14 +215,25 @@ namespace SpawnGroupPlugin
                     _selectedSpawnGroup.SpawnChanceTotalChanged += new SpawnChanceTotalChangedHandler(_selectedSpawnGroup_SpawnChanceTotalChanged);
                 }
 
-                NotifyPropertyChanged("SelectedSpawnGroup");
-                NotifyPropertyChanged("ChanceTotal");
+                RefreshSelection();
 
                 NextIdCommand.RaiseCanExecuteChanged();
                 PreviousIdCommand.RaiseCanExecuteChanged();
                 RemoveSpawnGroupCommand.RaiseCanExecuteChanged();
                 AdjustChanceTotalCommand.RaiseCanExecuteChanged();
                 ClearCacheCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public ICollection<SpawnEntry> SpawnEntries
+        {
+            get 
+            {
+                if (_selectedSpawnGroup != null)
+                {
+                    return _selectedSpawnGroup.Entries;
+                }
+                else return null;
             }
         }
 
@@ -293,12 +306,25 @@ namespace SpawnGroupPlugin
         public void RefreshSelection()
         {
             NotifyPropertyChanged("SelectedSpawnGroup");
+            NotifyPropertyChanged("SpawnEntries");
             NotifyPropertyChanged("ChanceTotal");
         }
 
         public void PackIds()
         {
-            _manager.PackCachedId(PackStart, PackEnd);
+            var window = new System.Windows.Window();
+            window.ResizeMode = System.Windows.ResizeMode.NoResize;            
+            window.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+
+            SelectedSpawnGroup = null;
+            SelectedEntry = null;
+
+            window.Content = new ProgressControl((worker) =>
+            {
+                _manager.PackCachedId(PackStart, PackEnd,worker);
+            });
+
+            window.ShowDialog();
         }
         
         private SpawnEntry _selectedEntry = null;
