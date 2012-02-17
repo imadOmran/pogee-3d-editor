@@ -206,6 +206,25 @@ namespace EQEmu.Spawns
             return entry;
         }
 
+        public IEnumerable<Spawn2> GetLinkedSpawn2()
+        {
+            List<Spawn2> spawns = new List<Spawn2>();
+
+            var query = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetSpawn2");
+            if (query != null)
+            {
+                string sql = String.Format(query.SelectQuery, new string[] { Id.ToString() });
+                var results = Database.QueryHelper.RunQuery(_connection, sql);
+                foreach (var row in results)
+                {
+                    var spawn = new Spawn2(_queryConfig);
+                    spawn.SetProperties(query, row);
+                    spawns.Add(spawn);
+                }                
+            }
+            return spawns;
+        }
+
         public void GetEntries()
         {
             MySqlDataReader rdr = null;
@@ -258,6 +277,11 @@ namespace EQEmu.Spawns
             }            
         }
 
+        public SpawnGroup() : base (null)
+        {
+
+        }
+
         public SpawnGroup(int id, MySqlConnection connection, Database.QueryConfig queryConfig)
             : base(queryConfig)
         {
@@ -281,7 +305,16 @@ namespace EQEmu.Spawns
             if( count == 0 )
             {
                 NeedsInserted.Add(entry);
-                _entries.Add(entry);
+                try
+                {
+                    _entries.Add(entry);
+                }
+                catch (NotSupportedException)
+                {
+                    //GUI updates will fail if on a different thread...
+                    //the item will still be added this exception is preventing the GUI from updating /
+                    //in the case of a wpf control being bound to this collection
+                };
                 entry.ObjectDirtied += new Database.ObjectDirtiedHandler(entry_ObjectDirtied);
             }
             OnSpawnChanceTotalChanged();
@@ -307,7 +340,15 @@ namespace EQEmu.Spawns
                 NeedsDeleted.Add(entry);
             }
 
-            Entries.Remove(entry);
+            try
+            {
+                Entries.Remove(entry);
+            }
+            catch (NotSupportedException) { 
+                //GUI updates will fail if on a different thread...
+                //a dependency here on the windows dispatcher is not wanted yet...
+            };
+
             entry.ObjectDirtied -= entry_ObjectDirtied;
             OnSpawnChanceTotalChanged();
         }
