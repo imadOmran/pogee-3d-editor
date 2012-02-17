@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 using MySql.Data.MySqlClient;
 
@@ -19,7 +20,7 @@ namespace EQEmu.Database
     /// The 'Dirtied' method should be invoked whenever the object is modified
     ///     i.e in the property setter
     /// 
-    /// </summary>
+    /// </summary>    
     abstract public class DatabaseObject : IDatabaseObject
     {
         //abstract public string InsertString { get; }
@@ -27,6 +28,7 @@ namespace EQEmu.Database
         //abstract public string DeleteString { get; }        
 
         protected readonly TypeQueries _queries;
+        [Browsable(false)]
         public TypeQueries Queries
         {
             get { return _queries; }
@@ -38,7 +40,8 @@ namespace EQEmu.Database
         private string _insertString;
         private string _updateString;
         private string _deleteString;
-
+                
+        [Browsable(false)]
         public virtual string SelectString 
         {
             //get { return _selectString; }
@@ -49,6 +52,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public virtual string InsertString
         {
             //get { return _insertString; }
@@ -58,6 +62,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public virtual string UpdateString
         {
             //get { return _updateString; }
@@ -68,6 +73,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public virtual string DeleteString
         {
             //get { return _deleteString; }
@@ -77,7 +83,8 @@ namespace EQEmu.Database
                 return String.Format(_deleteString, DeleteArgValues); 
             }
         }
-        
+
+        [Browsable(false)]
         public object[] SelectArgValues
         {
             get
@@ -90,6 +97,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public object[] InsertArgValues
         {
             get
@@ -102,6 +110,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public object[] UpdateArgValues
         {
             get
@@ -114,6 +123,7 @@ namespace EQEmu.Database
             }
         }
 
+        [Browsable(false)]
         public object[] DeleteArgValues
         {
             get
@@ -125,7 +135,7 @@ namespace EQEmu.Database
                 else return null;
             }
         }
-
+        
         public object[] ResolveArgs(string[] propertyNames)
         {
             if (propertyNames == null) return null;
