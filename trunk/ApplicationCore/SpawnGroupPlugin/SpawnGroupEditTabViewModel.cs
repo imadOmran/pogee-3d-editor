@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 using ApplicationCore;
 
@@ -15,6 +17,8 @@ namespace SpawnGroupPlugin
     {
         private readonly SpawnGroupAggregator _manager;
         private readonly NPCAggregator _npcFinder;
+        private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
+        private BackgroundWorker _packWork;
 
         public SpawnGroupEditTabViewModel(SpawnGroupAggregator manager, NPCAggregator finder)
         {
@@ -177,7 +181,8 @@ namespace SpawnGroupPlugin
                 },
                 x =>
                 {
-                    return PackEnd > PackStart && PackEnd - PackStart > _manager.SpawnGroups.Count();
+                    if (_packWork != null && _packWork.IsBusy) return false;
+                    return (PackEnd > PackStart && PackEnd - PackStart > _manager.SpawnGroups.Count());
                 });
         }
 
@@ -312,19 +317,38 @@ namespace SpawnGroupPlugin
 
         public void PackIds()
         {
-            var window = new System.Windows.Window();
-            window.ResizeMode = System.Windows.ResizeMode.NoResize;            
-            window.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            _packWork = new BackgroundWorker();
+            _packWork.WorkerReportsProgress = true;
+            
+            _packWork.DoWork += (s, e) =>
+                {
+                    _manager.PackCachedId(PackStart, PackEnd, _packWork);
+                };
+            _packWork.ProgressChanged += new ProgressChangedEventHandler(_packWork_ProgressChanged);
+            _packWork.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_packWork_RunWorkerCompleted);
+            _packWork.RunWorkerAsync();   
+        }
 
-            SelectedSpawnGroup = null;
-            SelectedEntry = null;
+        void _packWork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            PackProgress = 0;
+        }
 
-            window.Content = new ProgressWindow((worker) =>
+        void _packWork_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            PackProgress = e.ProgressPercentage;
+            PackCommand.RaiseCanExecuteChanged();
+        }
+
+        private int _packProgress = 0;
+        public int PackProgress
+        {
+            get { return _packProgress; }
+            set
             {
-                _manager.PackCachedId(PackStart, PackEnd,worker);
-            });
-
-            window.ShowDialog();
+                _packProgress = value;
+                NotifyPropertyChanged("PackProgress");
+            }
         }
         
         private SpawnEntry _selectedEntry = null;
