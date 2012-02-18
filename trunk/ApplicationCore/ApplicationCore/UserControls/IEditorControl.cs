@@ -8,6 +8,5 @@ namespace ApplicationCore.UserControls
     public interface IEditorControl
     {        
         ViewModels.Editors.IEditorViewModel ViewModel { get; set; }
-        object World3DClickParams { get; set; }
     }
 }

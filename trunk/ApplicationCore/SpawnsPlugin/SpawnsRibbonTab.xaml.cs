@@ -73,20 +73,7 @@ namespace SpawnsPlugin
             get;
             set;
         }
-
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         private void NewSpawnButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO use commanding

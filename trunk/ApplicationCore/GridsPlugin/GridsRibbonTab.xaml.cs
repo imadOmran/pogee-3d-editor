@@ -60,18 +60,6 @@ namespace GridsPlugin
             }
         }
 
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         [OptionalDependency]
         public ProjectionCamera Camera3D
         {

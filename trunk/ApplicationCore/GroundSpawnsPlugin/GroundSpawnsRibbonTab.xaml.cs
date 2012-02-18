@@ -96,32 +96,8 @@ namespace GroundSpawnsPlugin
                         GroundSpawnsViewModel.GroundSpawnsService.ZoneGroundSpawns.GetSQL());
                 window.Show();
             }
-            //if (GridsViewModel.GridsService != null && GridsViewModel.GridsService.ZoneGrids != null)
-            //{
-            //    //SaveFileDialog sd = new SaveFileDialog();
-            //    //if ((bool)sd.ShowDialog())
-            //    //{
-            //    //    GridsViewModel.GridsService.ZoneGrids.SaveQueryToFile(sd.FileName);
-            //    //}
-            //    var window = new ApplicationCore.TextWindow(GridsViewModel.GridsService.ZoneGrids.GetSQL());
-            //    window.Title = "Update Query";
-            //    window.Show();               
-            //    return;
-            //}
         }
 
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         private void EditGroundSpawnButton_Click(object sender, RoutedEventArgs e)
         {

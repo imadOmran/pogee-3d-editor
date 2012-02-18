@@ -56,19 +56,7 @@ namespace RoamAreasPlugin
                 _viewModel = value as IRoamAreasViewModel;
             }
         }
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         private void RibbonButton_Click(object sender, RoutedEventArgs e)
         {
             if (RoamAreaViewModel.RoamAreasDataService != null && RoamAreaViewModel.RoamAreasDataService.ZoneAreas != null)
