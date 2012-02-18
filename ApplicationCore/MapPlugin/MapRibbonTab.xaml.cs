@@ -66,22 +66,5 @@ namespace MapPlugin
         }
 
         #endregion
-
-        #region IEditorControl Members
-
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        #endregion
     }
 }

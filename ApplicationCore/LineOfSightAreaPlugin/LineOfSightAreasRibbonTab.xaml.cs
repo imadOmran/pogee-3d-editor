@@ -57,19 +57,7 @@ namespace LineOfSightAreaPlugin
                 _viewModel = value as ILineOfSightAreasViewModel;
             }
         }
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         private void NewAreaButton_Click(object sender, RoutedEventArgs e)
         {
             LineOfSightAreasViewModel.NewArea();

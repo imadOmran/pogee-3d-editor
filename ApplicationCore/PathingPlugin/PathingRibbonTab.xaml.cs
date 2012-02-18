@@ -72,19 +72,7 @@ namespace PathingPlugin
                 _viewModel = value as IPathingViewModel;
             }
         }
-
-        public object World3DClickParams
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
+        
         private void UnreachableNodesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (UnreachableNodesListView.SelectedItem as EQEmu.Path.Node != null)
