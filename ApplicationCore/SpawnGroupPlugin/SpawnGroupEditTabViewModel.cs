@@ -319,7 +319,7 @@ namespace SpawnGroupPlugin
             SelectedSpawnGroup = null;
             SelectedEntry = null;
 
-            window.Content = new ProgressControl((worker) =>
+            window.Content = new ProgressWindow((worker) =>
             {
                 _manager.PackCachedId(PackStart, PackEnd,worker);
             });
