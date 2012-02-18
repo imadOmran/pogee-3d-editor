@@ -9,7 +9,7 @@
         <DockPanel>
             <Grid DockPanel.Dock="Right" Width="246" Margin="15,15,15,15" Background="White">
                 <StackPanel Orientation="Horizontal">
-                    <Label>NPC ID</Label>
+                    <Label>NPC Name</Label>
                     <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
                     <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
                 </StackPanel>             
@@ -89,6 +89,7 @@
                                         <TextBox Text="{Binding PackEnd}" Grid.Row="2" Grid.Column="1" />
 
                                         <Button Grid.Row="3" Content="Pack" Command="{Binding PackCommand}" />
+                                        <ProgressBar Value="{Binding PackProgress}" Grid.Row="3" Grid.Column="1" />
 
                                     </Grid>
                                 </StackPanel>
