@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace EQEmu.Database
 {
     abstract public class ManageDatabase : DatabaseObject, IManageDatabase
     {
         private List<IDatabaseObject> _needsInserted = new List<IDatabaseObject>();
+
+        [Browsable(false)]
         public List<IDatabaseObject> NeedsInserted
         {
             get { return _needsInserted; }
         }
 
         private List<IDatabaseObject> _needsDeleted = new List<IDatabaseObject>();
+
+        [Browsable(false)]
         public List<IDatabaseObject> NeedsDeleted
         {
             get { return _needsDeleted; }
@@ -103,6 +108,7 @@ namespace EQEmu.Database
             return sql;
         }
 
+        [Browsable(false)]
         abstract public List<IDatabaseObject> DirtyComponents { get; }
     }
 }

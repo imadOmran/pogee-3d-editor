@@ -33,6 +33,20 @@ namespace SpawnsPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+        }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedSpawn":
+                    OnObjectSelectionChanged(SpawnsViewModel.SelectedSpawn);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public IEditorViewModel ViewModel
@@ -162,6 +176,17 @@ namespace SpawnsPlugin
             {
                 var window = new PackDialog(new PackDialogViewModel(SpawnsViewModel.SpawnsService.ZoneSpawns));
                 window.ShowDialog();
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }

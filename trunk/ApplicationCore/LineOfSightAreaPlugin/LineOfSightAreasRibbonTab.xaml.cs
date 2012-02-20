@@ -32,7 +32,21 @@ namespace LineOfSightAreaPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
         }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedArea":
+                    OnObjectSelectionChanged(LineOfSightAreasViewModel.SelectedArea);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private ILineOfSightAreasViewModel _viewModel = null;
         public ILineOfSightAreasViewModel LineOfSightAreasViewModel
         {
@@ -70,6 +84,17 @@ namespace LineOfSightAreaPlugin
             {
                 LineOfSightAreasViewModel.LineOfSightAreasService.ZoneAreas.RemoveArea(LineOfSightAreasViewModel.SelectedArea);
                 LineOfSightAreasViewModel.SelectedArea = null;
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }
