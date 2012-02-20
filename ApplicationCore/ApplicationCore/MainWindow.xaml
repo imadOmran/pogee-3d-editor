@@ -82,7 +82,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <pg:PropertyGrid Name="PropertyGrid" Instance="{Binding SelectedObject}" DataContext="{Binding}" />
+                        <pg:PropertyGrid Name="PropertyGrid" Instance="{Binding SelectedObject}" DataContext="{Binding}" Margin="0,0,10,0" />
                     </Grid>     
                     <GridSplitter Grid.Column="0" Width="10" HorizontalAlignment="Right" />
                     <Grid Grid.Column="1">
