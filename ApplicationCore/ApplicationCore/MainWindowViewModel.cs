@@ -60,6 +60,7 @@ namespace ApplicationCore
             Registration();
             CreateRibbonTabs();
             SubscribeTo3DChanges();
+            SubscribeToSelectionChanges();
         }
 
         private void CreateRibbonTabs()
@@ -197,6 +198,30 @@ namespace ApplicationCore
                     modelProvider.ModelChanged += new DataServices.Model3DChangedHandler(model_ModelChanged);
                 }
             }
+        }
+
+        private object _selectedObject = null;
+        public object SelectedObject
+        {
+            get { return _selectedObject; }
+            set
+            {
+                _selectedObject = value;
+                NotifyPropertyChanged("SelectedObject");
+            }
+        }
+
+        private void SubscribeToSelectionChanges()
+        {
+            foreach (var ctrl in _container.ResolveAll<UserControls.IEditorControl>())
+            {
+                ctrl.ObjectSelected += new UserControls.ObjectSelected(ctrl_ObjectSelected);
+            }
+        }
+
+        void ctrl_ObjectSelected(object sender, UserControls.ObjectSelectedEventArgs args)
+        {
+            SelectedObject = args.Object;
         }
 
         private ObservableCollection<object> _models =

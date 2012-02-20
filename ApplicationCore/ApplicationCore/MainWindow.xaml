@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
         xmlns:my="clr-namespace:ApplicationCore"
-        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"                        
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"   
+        xmlns:pg="clr-namespace:WPG;assembly=WPG"
         Title="3D Object Editor" Height="350" Width="825">    
     <m:RibbonWindow.DataContext>
         <my:MainWindowViewModel />
@@ -75,10 +76,39 @@
                 </m:Ribbon.ApplicationMenu>
             </m:Ribbon>
             <Grid>
-                <DockPanel>                    
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <pg:PropertyGrid Name="PropertyGrid" Instance="{Binding SelectedObject}" DataContext="{Binding}" />
+                    </Grid>     
+                    <GridSplitter Grid.Column="0" Width="10" HorizontalAlignment="Right" />
+                    <Grid Grid.Column="1">
+                        <Grid>
+                            <TabControl Name="MainTabControl">
+                                <TabItem>
+                                    <TabItem.Header>
+                                        <Label>3D World</Label>
+                                    </TabItem.Header>
+                                    <Grid>
+                                        <h:HelixViewport3D Name="View3D" CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" 
+                                   MouseDoubleClick="View3D_MouseDoubleClick" MouseLeftButtonUp="View3D_MouseLeftButtonUp" MouseLeftButtonDown="View3D_MouseLeftButtonDown" MouseMove="View3D_MouseMove">
+                                        </h:HelixViewport3D>
+                                        <Rectangle Name="SelectionRectangle" Stroke="Aqua" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="View3D_MouseLeftButtonUp" />
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <!-- <DockPanel>     
+                    <Grid DockPanel.Dock="Left" Width="181">
+                        <pg:PropertyGrid Name="PropertyGrid" Instance="{Binding SelectedObject}" DataContext="{Binding}" />
+                    </Grid>
                     <Grid> 
                         <TabControl Name="MainTabControl">
-                    <!--<my:PropertyEditorWindow DockPanel.Dock="Right" />-->
                             <TabItem>
                                 <TabItem.Header>
                                     <Label>3D World</Label>
@@ -92,7 +122,7 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                </DockPanel>                    
+                </DockPanel> -->                    
             </Grid>
         </DockPanel>
     </Grid>

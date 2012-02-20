@@ -33,6 +33,22 @@ namespace GridsPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+        }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedGrid":
+                    OnObjectSelectionChanged(GridsViewModel.SelectedGrid);
+                    break;
+                case "SelectedWaypoint":
+                    OnObjectSelectionChanged(GridsViewModel.SelectedWaypoint);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private IGridsViewModel _viewModel = null;
@@ -184,6 +200,17 @@ namespace GridsPlugin
                 window.Title = "Update Query";
                 window.Show();               
                 return;
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }

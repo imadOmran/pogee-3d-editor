@@ -32,6 +32,19 @@ namespace PathingPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+        }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedNode":
+                    OnObjectSelectionChanged(PathingViewModel.SelectedNode);
+                    break;
+                default:
+                    break;
+            }
         }
 
         [OptionalDependency]
@@ -106,6 +119,17 @@ namespace PathingPlugin
             if (Camera3D != null)
             {
                 Camera3D.Position = pt;
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }

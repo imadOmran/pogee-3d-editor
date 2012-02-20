@@ -32,6 +32,19 @@ namespace RoamAreasPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            vm.PropertyChanged +=new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+        }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedArea":
+                    OnObjectSelectionChanged(RoamAreaViewModel.SelectedArea);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private IRoamAreasViewModel _viewModel = null;
@@ -85,6 +98,17 @@ namespace RoamAreasPlugin
                 var window = new PropertyEditorWindow(RoamAreaViewModel.SelectedArea);
                 window.ShowDialog();
                 RoamAreaViewModel.SelectedArea = RoamAreaViewModel.SelectedArea;
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }

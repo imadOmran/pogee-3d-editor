@@ -33,6 +33,19 @@ namespace GroundSpawnsPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+        }
+
+        void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedGroundSpawn":
+                    OnObjectSelectionChanged(GroundSpawnsViewModel.SelectedGroundSpawn);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private IGroundSpawnsViewModel _viewModel = null;
@@ -122,6 +135,17 @@ namespace GroundSpawnsPlugin
                     var window = new ApplicationCore.PropertyEditorWindow(GroundSpawnsViewModel.GroundSpawnsService.SelectedGroundSpawn);
                     window.ShowDialog();
                 }
+            }
+        }
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
     }

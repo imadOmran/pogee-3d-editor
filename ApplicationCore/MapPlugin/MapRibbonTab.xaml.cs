@@ -66,5 +66,16 @@ namespace MapPlugin
         }
 
         #endregion
+
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelectionChanged(object obj)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
+            }
+        }
     }
 }
