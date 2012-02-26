@@ -126,6 +126,78 @@ DELETE FROM roam_areas WHERE zone = '{0}' AND id = {1};
     </select>
   </query>
 
+  <query type="EQEmu.Zone.ZonePoints">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM zone_points where zone = "{0}";        
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="id" type="int">Id</store>
+      <store field="zone" type="string">Zone</store>
+      <store field="version" type="int">Version</store>
+      <store field="number" type="int">Number</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="target_zone_id" type="int">TargetZoneId</store>      
+      <store field="target_x" type="float">TargetX</store>
+      <store field="target_y" type="float">TargetY</store>
+      <store field="target_z" type="float">TargetZ</store>
+      <store field="target_heading" type="float">TargetHeading</store>
+    </select>    
+  </query>
+
+  <query type="EQEmu.Zone.ZonePoint">
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE zone_points SET x = {2}, y = {3}, z = {4}, target_zone_id = {5}, target_x = {6}, target_y = {7}, target_z = {8}, target_heading = {9}
+ WHERE id = {0} AND zone = '{1}';        
+        ]]>        
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>TargetZoneId</param>
+      <param>TargetX</param>
+      <param>TargetY</param>
+      <param>TargetZ</param>
+      <param>TargetHeading</param>
+    </update>
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO zone_points (number,zone,x,y,z,target_zone_id,target_x,target_y,target_z,target_heading)
+VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
+        ]]>
+      </sql>
+      <param>Number</param>
+      <param>Zone</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>TargetZoneId</param>
+      <param>TargetX</param>
+      <param>TargetY</param>
+      <param>TargetZ</param>
+      <param>TargetHeading</param>
+    </insert>
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM zone_points WHERE id = {0} AND zone = '{1}';        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+
   <query type="EQEmu.GroundSpawns.ZoneGroundSpawns">
     <select>
       <sql>

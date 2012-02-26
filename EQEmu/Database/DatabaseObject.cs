@@ -187,31 +187,39 @@ namespace EQEmu.Database
         {
             foreach (var i in queryInfo.SelectQueryFields)
             {
-                var pinfo = GetType().GetProperty(i.Property);
-                if (pinfo != null)
+                try
                 {
-                    switch (i.Type)
+
+                    var pinfo = GetType().GetProperty(i.Property);
+                    if (pinfo != null)
                     {
-                        case SelectQueryFieldStore.DataTypes.Int:
-                            pinfo.SetValue(this, Convert.ToInt32(dict[i.Column]), null);
-                            break;
-                        case SelectQueryFieldStore.DataTypes.Bool:
-                            pinfo.SetValue(this, Convert.ToBoolean(dict[i.Column]), null);
-                            break;
-                        case SelectQueryFieldStore.DataTypes.Float:
-                            pinfo.SetValue(this, (float)Convert.ToDouble(dict[i.Column]), null);
-                            break;
-                        case SelectQueryFieldStore.DataTypes.Long:
-                            pinfo.SetValue(this, Convert.ToInt64(dict[i.Column]), null);
-                            break;
-                        case SelectQueryFieldStore.DataTypes.Short:
-                            pinfo.SetValue(this, Convert.ToInt16(dict[i.Column]), null);
-                            break;
-                        case SelectQueryFieldStore.DataTypes.String:
-                        default:
-                            pinfo.SetValue(this, Convert.ToString(dict[i.Column]), null);
-                            break;
+                        switch (i.Type)
+                        {
+                            case SelectQueryFieldStore.DataTypes.Int:
+                                pinfo.SetValue(this, Convert.ToInt32(dict[i.Column]), null);
+                                break;
+                            case SelectQueryFieldStore.DataTypes.Bool:
+                                pinfo.SetValue(this, Convert.ToBoolean(dict[i.Column]), null);
+                                break;
+                            case SelectQueryFieldStore.DataTypes.Float:
+                                pinfo.SetValue(this, (float)Convert.ToDouble(dict[i.Column]), null);
+                                break;
+                            case SelectQueryFieldStore.DataTypes.Long:
+                                pinfo.SetValue(this, Convert.ToInt64(dict[i.Column]), null);
+                                break;
+                            case SelectQueryFieldStore.DataTypes.Short:
+                                pinfo.SetValue(this, Convert.ToInt16(dict[i.Column]), null);
+                                break;
+                            case SelectQueryFieldStore.DataTypes.String:
+                            default:
+                                pinfo.SetValue(this, Convert.ToString(dict[i.Column]), null);
+                                break;
+                        }
                     }
+                }
+                catch (Exception) 
+                { 
+                    //couldn't set that property.....  
                 }
             }
         }

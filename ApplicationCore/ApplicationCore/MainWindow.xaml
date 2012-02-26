@@ -13,9 +13,9 @@
         <DockPanel>
             <Grid Height="30" DockPanel.Dock="Bottom">
                 <StackPanel VerticalAlignment="Center" Orientation="Horizontal">  
-                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.X,StringFormat={}{0:F3}}" Width="75" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Y,StringFormat={}{0:F3}}" Width="75" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Z,StringFormat={}{0:F3}}" Width="75" />                    
+                    <TextBox VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.X,StringFormat={}{0:F3}}" Width="75" />
+                    <TextBox VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Y,StringFormat={}{0:F3}}" Width="75" />
+                    <TextBox VerticalAlignment="Center" Text="{Binding ElementName=View3D,Path=Camera.Position.Z,StringFormat={}{0:F3}}" Width="75" />                    
                     <Label Margin="20,0,0,0">Zoom Sensitivity</Label>
                     <Slider VerticalAlignment="Center" Minimum="0.01" Maximum="1" 
                             Value="{Binding ElementName=View3D,Path=ZoomSensitivity}" 

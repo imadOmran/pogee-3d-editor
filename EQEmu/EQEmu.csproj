@@ -83,6 +83,7 @@
     <Compile Include="Spawns\SpawnGroupAggregator.cs" />
     <Compile Include="Spawns\ZoneSpawns.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Zone\ZonePoints.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
