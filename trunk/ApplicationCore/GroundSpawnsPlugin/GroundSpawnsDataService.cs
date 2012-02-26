@@ -145,8 +145,7 @@ namespace GroundSpawnsPlugin
                     }
 
                     //force update on cursor graphic
-                    _groundSpawns3d.ShowSpawn(_selectedSpawn, EQEmuDisplay3D.GroundSpawnDisplay3D.DisplayFlags.GreenAura);
-                    //RepositionCursorOn(_selectedSpawn);
+                    _groundSpawns3d.ShowSpawn(_selectedSpawn, EQEmuDisplay3D.GroundSpawnDisplay3D.DisplayFlags.GreenAura);                    
 
                     NotifyPropertyChanged("SelectedGroundSpawn");
                 }
@@ -211,89 +210,6 @@ namespace GroundSpawnsPlugin
                 }
             }
 
-            //private void RepositionSelectionCursors()
-            //{
-            //    foreach (var item in _cursors)
-            //    {
-            //        _modelVisual.Children.Remove(item);
-            //    }
-            //    if (_selectedSpawn != null)
-            //    {
-            //        _cursors.Add(new BoxVisual3D()
-            //        {
-            //            Width = 6 + _selectedSpawn.MaxX - _selectedSpawn.MinX,
-            //            Length = 6 + _selectedSpawn.MaxY - _selectedSpawn.MinY,
-            //            Height = 1,
-            //            Material = Materials.Green
-            //        });
-
-            //        if (_selectedGroundSpawns != null)
-            //        {
-            //            foreach (var spawn in _selectedGroundSpawns.Where(x => { return x != _selectedSpawn; }))
-            //            {
-            //                _cursors.Add(new BoxVisual3D()
-            //                {
-            //                    Width = 6 + spawn.MaxX - spawn.MinX,
-            //                    Length = 6 + spawn.MaxY - spawn.MinY,
-            //                    Height = 1,
-            //                    Material = Materials.Blue
-            //                });
-            //            }
-            //        }
-            //    }
-
-            //    foreach (var cursor in _cursors)
-            //    {
-            //        _modelVisual.Children.Add(cursor);
-            //    }
-            //}
-
-            //private void PositionMultipleSelectionIndicators()
-            //{
-            //    foreach (var cursor in _cursors)
-            //    {
-            //        _modelVisual.Children.Remove(cursor);
-            //    }
-            //    _cursors.Clear();
-
-            //    if (_selectedGroundSpawns != null)
-            //    {
-            //        foreach (var sp in _selectedGroundSpawns.Where(x => { return x != SelectedGroundSpawn; }))
-            //        {
-            //            _cursors.Add(new BoxVisual3D()
-            //            {
-            //                Width = 6 + sp.MaxX - sp.MinX,
-            //                Length = 6 + sp.MaxY - sp.MinY,
-            //                Height = 1,
-            //                Material = Materials.DarkGray,
-            //                Center = sp.MidPoint
-
-            //            });
-            //        }
-            //    }
-
-            //    //foreach (var cursor in _cursors)
-            //    //{
-            //    //    _modelVisual.Children.Add(cursor);
-            //    //}
-            //}
-
-            //private void RepositionCursorOn(EQEmu.GroundSpawns.GroundSpawn spawn)
-            //{
-            //    _modelVisual.Children.Remove(_cursor);
-
-            //    if (spawn != null)
-            //    {
-            //        _cursor.Width = 6 + spawn.MaxX - spawn.MinX;
-            //        _cursor.Length = 6 + spawn.MaxY - spawn.MinY;
-            //        _cursor.Height = 1;
-            //        _cursor.Material = Materials.Green;
-            //        _cursor.Center = spawn.MidPoint;
-
-            //        _modelVisual.Children.Add(_cursor);
-            //    }
-            //}
-
             protected void OnModelChanged()
             {
                 if (ModelChanged != null)
@@ -302,8 +218,5 @@ namespace GroundSpawnsPlugin
                 }
             }
             public event Model3DChangedHandler ModelChanged;
-
-            //private BoxVisual3D _cursor = new BoxVisual3D();
-            //private List<BoxVisual3D> _cursors = new List<BoxVisual3D>();
         }
 }

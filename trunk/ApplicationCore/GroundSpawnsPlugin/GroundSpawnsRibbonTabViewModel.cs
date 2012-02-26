@@ -23,21 +23,9 @@ namespace GroundSpawnsPlugin
         public Transform3D Transform3D
         {
             get;
-            set;
-        
+            set;        
         }
-
-        //private double _zAdjustment = 2.0;
-        //public double ZAdjustment
-        //{
-        //    get { return _zAdjustment; }
-        //    set
-        //    {
-        //        _zAdjustment = value;
-        //        NotifyPropertyChanged("ZAdjustment");
-        //    }
-        //}
-
+        
         public override void User3DClickAt(object sender, World3DClickEventArgs e)
         {
             if (e.ActiveRibbonControl as IGroundSpawnsControl == null) return;

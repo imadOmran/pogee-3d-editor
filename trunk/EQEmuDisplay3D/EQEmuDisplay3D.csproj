@@ -56,6 +56,7 @@
     <Compile Include="RenderedObject.cs" />
     <Compile Include="RoamAreasDisplay3D.cs" />
     <Compile Include="Spawn2Display3D.cs" />
+    <Compile Include="ZonePointsDisplay3D.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EQEmu\EQEmu.csproj">
