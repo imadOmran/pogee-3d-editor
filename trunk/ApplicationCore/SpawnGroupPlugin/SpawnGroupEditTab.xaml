@@ -17,57 +17,63 @@
             </Grid>
             <Grid>
                 <DockPanel>
-                    <Grid DockPanel.Dock="Top" Margin="15,15,15,15" Background="White">                        
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />
-                                <Button Margin="35,5,5,5" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" />                                
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>By Zone:</Label>
-                                <TextBox Text="{Binding ZoneFilter}" Width="124" />
-                            </StackPanel>
-                                                                 
-                            <StackPanel Orientation="Horizontal">
-                                <Label VerticalAlignment="Center">Search ID</Label>
-                                <TextBox Text="{Binding FilterID}" VerticalAlignment="Center" Width="117" />
-                                <StackPanel Margin="15,0,0,0">
-                                    <Button FontFamily="Marlett" FontSize="12" Content="5" Command="{Binding NextIdCommand}" />
-                                    <Button FontFamily="Marlett" FontSize="12" Content="6" Command="{Binding PreviousIdCommand}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Spawn Group ID</Label>
-                                <TextBlock Text="{Binding Path=SelectedSpawnGroup.Id}" Width="117" VerticalAlignment="Center" />
-                                <Button Content="Delete" Command="{Binding RemoveSpawnGroupCommand}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                                <Label>Name</Label>
-                                <TextBox Text="{Binding Path=SelectedSpawnGroup.Name}" Width="148" />
-                                <Label>Spawn Limit</Label>
-                                <TextBox Text="{Binding Path=SelectedSpawnGroup.SpawnLimit}" Width="50" />                                
-                            </StackPanel>
-                            <GroupBox Header="Roam Box">
+                    <Grid DockPanel.Dock="Top" Margin="15,15,15,15" Background="White">    
+                        <TabControl>
+                            <TabItem Header="Edit">
                                 <StackPanel>
-                                <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                                    <Label>Distance</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDistance}" Width="82" />
-                                    <Label>Delay</Label>
-                                    <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDelay}" Width="57" />
-                                </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Label>Min X</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingX}" Width="61" />
-                                        <Label>Max X</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingX}" Width="61" />
-                                        <Label>Min Y</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingY}" Width="61" />
-                                        <Label>Max Y</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingY}" Width="61" />
+                                        <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />                                        
                                     </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label>By Zone:</Label>
+                                        <TextBox Text="{Binding ZoneFilter}" Width="124" />
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label VerticalAlignment="Center">Search ID</Label>
+                                        <TextBox Text="{Binding FilterID}" VerticalAlignment="Center" Width="117" />
+                                        <StackPanel Margin="15,0,0,0">
+                                            <Button FontFamily="Marlett" FontSize="12" Content="5" Command="{Binding NextIdCommand}" />
+                                            <Button FontFamily="Marlett" FontSize="12" Content="6" Command="{Binding PreviousIdCommand}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label>Spawn Group ID</Label>
+                                        <TextBlock Text="{Binding Path=SelectedSpawnGroup.Id}" Width="117" VerticalAlignment="Center" />
+                                        <Button Content="Delete" Command="{Binding RemoveSpawnGroupCommand}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
+                                        <Label>Name</Label>
+                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.Name}" Width="148" />
+                                        <Label>Spawn Limit</Label>
+                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.SpawnLimit}" Width="50" />
+                                    </StackPanel>
+                                    <GroupBox Header="Roam Box">
+                                        <StackPanel>
+                                            <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
+                                                <Label>Distance</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDistance}" Width="82" />
+                                                <Label>Delay</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDelay}" Width="57" />
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label>Min X</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingX}" Width="61" />
+                                                <Label>Max X</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingX}" Width="61" />
+                                                <Label>Min Y</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingY}" Width="61" />
+                                                <Label>Max Y</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingY}" Width="61" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <GroupBox Header="Utility">
+
+                                    </GroupBox>
                                 </StackPanel>
-                            </GroupBox>
-                            <GroupBox Header="Utility">
+                            </TabItem>
+                            <TabItem Header="Utility">
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -92,9 +98,15 @@
                                         <ProgressBar Value="{Binding PackProgress}" Grid.Row="3" Grid.Column="1" />
 
                                     </Grid>
+                                </StackPanel>                                
+                            </TabItem>
+                            <TabItem Name="CacheTab" Header="Cache">
+                                <StackPanel>
+                                    <Button HorizontalAlignment="Left" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" Width="77" />                                                                
+                                    <ListView ItemsSource="{Binding SpawnGroups}" SelectedItem="{Binding SelectedSpawnGroup}" Height="114" />
                                 </StackPanel>
-                            </GroupBox>
-                        </StackPanel>
+                            </TabItem>
+                        </TabControl>                        
                     </Grid>
                     <Grid>
                         <DockPanel>

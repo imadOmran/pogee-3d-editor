@@ -32,7 +32,7 @@ namespace SpawnGroupPlugin
             InitializeComponent();
             DataContext = viewModel;
             EntriesDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(EntriesDataGrid_AutoGeneratingColumn);
-            NPCsDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCsDataGrid_AutoGeneratingColumn);            
+            NPCsDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCsDataGrid_AutoGeneratingColumn);                        
         }
 
         void NPCsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)

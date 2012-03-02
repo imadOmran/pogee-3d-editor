@@ -26,9 +26,12 @@
     <m:RibbonGroup Header="Waypoint">
         <m:RibbonButton Label="Edit Waypoint" Name="EditWaypointButton" Click="EditWaypointButton_Click" />
         <m:RibbonButton Label="Move To Waypoint" Click="MoveToButton_Click" />
-        <m:RibbonButton Label="Remove Waypoint" Name="RemoveWaypointButton" Click="RemoveWaypointButton_Click" />
-    </m:RibbonGroup>
+        <m:RibbonButton Label="Remove Waypoint" Name="RemoveWaypointButton" Click="RemoveWaypointButton_Click" />        
+    </m:RibbonGroup>    
     <m:RibbonGroup Header="Options">
         <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Functions">
+        <m:RibbonButton Label="RemoveWPs" ToolTip="Remove Waypoints with 0 pause" Command="{Binding RemoveZeroPauseWaypointsCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>

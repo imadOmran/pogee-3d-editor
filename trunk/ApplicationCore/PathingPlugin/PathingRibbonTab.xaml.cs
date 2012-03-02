@@ -86,22 +86,6 @@ namespace PathingPlugin
             }
         }
         
-        private void UnreachableNodesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (UnreachableNodesListView.SelectedItem as EQEmu.Path.Node != null)
-            {
-                PathingViewModel.SelectedNode = UnreachableNodesListView.SelectedItem as EQEmu.Path.Node;
-            }
-        }
-
-        private void DisconnectedNodesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (DisconnectedNodesListView.SelectedItem as EQEmu.Path.Node != null)
-            {
-                PathingViewModel.SelectedNode = DisconnectedNodesListView.SelectedItem as EQEmu.Path.Node;
-            }
-        }
-
         private void MoveToButton_Click(object sender, RoutedEventArgs e)
         {
             EQEmu.Path.Node node = PathingViewModel.SelectedNode;
@@ -130,6 +114,15 @@ namespace PathingPlugin
             if (e != null)
             {
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
+            }
+        }
+
+        private void RibbonGallery_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var node = e.NewValue as EQEmu.Path.Node;
+            if (node != null)
+            {
+                PathingViewModel.SelectedNode = node;
             }
         }
     }

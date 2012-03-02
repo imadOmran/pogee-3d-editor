@@ -12,6 +12,8 @@ namespace PathingPlugin
 {
     public abstract class PathingViewModelBase : EditorViewModelBase, IPathingViewModel
     {
+        private bool _pathExists;
+
         public PathingViewModelBase(PathingDataService service)
         {
             _service = service;
@@ -21,6 +23,11 @@ namespace PathingPlugin
             UseTwoWayConnect = true;
             UseWarpConnect = false;
             ZAdjustment = 2.0;
+        }
+
+        public bool PathingExists
+        {
+            get { return _service.Pathing != null; }
         }
 
         void service_PropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
@@ -33,6 +40,7 @@ namespace PathingPlugin
                     NotifyPropertyChanged( "Nodes" );
                     NotifyPropertyChanged( "DisconnectedNodesCount" );
                     NotifyPropertyChanged("DisconnectedNodes");
+                    NotifyPropertyChanged("PathingExists");
                     break;                    
                 case "SelectedNode":
                     RemoveNodeCommand.RaiseCanExecuteChanged();

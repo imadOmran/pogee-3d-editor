@@ -132,24 +132,30 @@ namespace EQEmuDisplay3D
         private void UpdateNode(EQEmu.Path.Node node)
         {
             Model3DGroup group = Model as Model3DGroup;
-
+            
             if (Clipping != null && !Clipping.DrawPoint(node.Location))
             {
-                foreach (Model3D model in _mapping[node])
+                if (_mapping[node] != null)
                 {
-                    group.Children.Remove(model);
+                    foreach (Model3D model in _mapping[node])
+                    {
+                        group.Children.Remove(model);
+                    }
                 }
             }
             else
             {
-                foreach (Model3D model in _mapping[node])
+                if (_mapping[node] != null)
                 {
-                    if (group.Children.Contains(model))
+                    foreach (Model3D model in _mapping[node])
                     {
-                        continue;
+                        if (group.Children.Contains(model))
+                        {
+                            continue;
+                        }
+                        group.Children.Add(model);
                     }
-                    group.Children.Add(model);
-                }                            
+                }        
             }
         }
         

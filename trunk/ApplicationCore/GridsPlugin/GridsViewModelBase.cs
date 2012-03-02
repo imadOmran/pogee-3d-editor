@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 
+using ApplicationCore;
 using ApplicationCore.ViewModels.Editors;
 using ApplicationCore.DataServices;
 
@@ -11,12 +12,25 @@ namespace GridsPlugin
 {
     public abstract class GridsViewModelBase : EditorViewModelBase, IGridsViewModel
     {
+        private DelegateCommand _removeZeroPauseWaypointsCommand;
+
+
         public GridsViewModelBase(GridsDataService service)
         {
             _service = service;
             _service.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(_service_PropertyChanged);
 
             ZAdjustment = 2.0;
+
+            RemoveZeroPauseWaypointsCommand = new DelegateCommand(
+             x =>
+             {
+                 SelectedGrid.RemoveNonPauseNodes();
+             },
+             x =>
+             {
+                 return SelectedGrid != null && SelectedGrid.Waypoints.Count(wp => wp.PauseTime == 0) > 0;
+             });
         }
 
         void _service_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -83,6 +97,7 @@ namespace GridsPlugin
                 if (_service != null)
                 {
                     _service.SelectedGrid = value;
+                    RemoveZeroPauseWaypointsCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -135,6 +150,16 @@ namespace GridsPlugin
                     _service.Zone = value;
                 }
                 NotifyPropertyChanged("Zone");
+            }
+        }
+
+        public DelegateCommand RemoveZeroPauseWaypointsCommand
+        {
+            get { return _removeZeroPauseWaypointsCommand; }
+            set
+            {
+                _removeZeroPauseWaypointsCommand = value;
+                NotifyPropertyChanged("RemoveZeroPauseWaypointsCommand");
             }
         }
     }
