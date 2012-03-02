@@ -60,6 +60,7 @@ namespace SpawnGroupPlugin
                     {
                         SelectedSpawnGroup = sg;
                     }
+                    NotifyPropertyChanged("SpawnGroups");
                 },
                 x =>
                 {
@@ -122,6 +123,7 @@ namespace SpawnGroupPlugin
                         SelectedSpawnGroup = _manager.SpawnGroups.ElementAt(0);
                     }
                     else SelectedSpawnGroup = null;
+                    NotifyPropertyChanged("SpawnGroups");
                 },
                 x =>
                 {
@@ -168,6 +170,9 @@ namespace SpawnGroupPlugin
                 x =>
                 {
                     _manager.ClearCache();
+                    SelectedSpawnGroup = null;
+                    ClearCacheCommand.RaiseCanExecuteChanged();
+                    NotifyPropertyChanged("SpawnGroups");
                 },
                 x =>
                 {
@@ -200,6 +205,18 @@ namespace SpawnGroupPlugin
                 _npcFilterString = value;
                 _npcFinder.Lookup(value);
                 NotifyPropertyChanged("NPCFilterString");
+            }
+        }
+
+        public IEnumerable<SpawnGroup> SpawnGroups
+        {
+            get
+            {
+                if (_manager != null)
+                {
+                    return _manager.SpawnGroups;
+                }
+                else return null;
             }
         }
         
@@ -269,6 +286,7 @@ namespace SpawnGroupPlugin
                 _manager.LookupByZone(value);
                 SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
                 NotifyPropertyChanged("ZoneFilter");
+                NotifyPropertyChanged("SpawnGroups");
             }
         }
 

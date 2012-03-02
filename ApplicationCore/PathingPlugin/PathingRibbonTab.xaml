@@ -8,38 +8,37 @@
              Header="Pathing"
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="File">
-        <m:RibbonButton Label="New" Command="{Binding NewCommand}" />
-        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
-        <m:RibbonButton Label="Save" Command="{Binding SaveCommand}" />
-        <m:RibbonButton Label="Save As" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="New" LargeImageSource="Images/NewDocumentHS.png" Command="{Binding NewCommand}" />
+        <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Save" LargeImageSource="Images/saveHS.png" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="Save As" LargeImageSource="Images/saveHS.png" Command="{Binding SaveCommand}" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Properties">
-        <TextBlock Text="{Binding NodeCount,StringFormat=Total Nodes:{0}}" />
-        <TextBlock Text="{Binding DisconnectedNodesCount,StringFormat=Disconnected Nodes:{0}}" />
-        <ListView Name="DisconnectedNodesListView" ItemsSource="{Binding Path=DisconnectedNodes}" MouseDoubleClick="DisconnectedNodesListView_MouseDoubleClick" />
+    <m:RibbonGroup Header="Edit">
+        <m:RibbonButton Label="New Node" Command="{Binding NewNodeCommand}" SmallImageSource="Images/077_AddFile_16x16_72.png" />
+        <m:RibbonButton Label="Remove Node" Command="{Binding RemoveNodeCommand}" SmallImageSource="Images/delete_12x12.png" />
+        <m:RibbonButton Label="Go to Node" Click="MoveToButton_Click" Command="{Binding NodeSelectedCommand}" SmallImageSource="Images/command_link_16x16.png" />        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Nodes">
-        <Label>Nodes</Label>
-        <ListView ItemsSource="{Binding Nodes}" SelectedItem="{Binding SelectedNode}" />
-        <m:RibbonButton Label="New Node" Command="{Binding NewNodeCommand}" />
-    </m:RibbonGroup>
-    <m:RibbonGroup Header="Selection">
-        <TextBlock Margin="15,0,0,0" Text="{Binding Path=SelectedNode.Id}" />
-        <m:RibbonTextBox Label="X" Text="{Binding Path=SelectedNode.X,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
-        <m:RibbonTextBox Label="Y" Text="{Binding Path=SelectedNode.Y,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
-        <m:RibbonTextBox Label="Z" Text="{Binding Path=SelectedNode.Z,StringFormat={}{0:F3}}" Command="{Binding NodeSelectedCommand}" />
-
-        <m:RibbonButton Label="Move To Node" Command="{Binding NodeSelectedCommand}" Click="MoveToButton_Click" />
-        <m:RibbonButton Label="Remove Node" Command="{Binding RemoveNodeCommand}" />
-    </m:RibbonGroup>
-    <m:RibbonGroup Header="Unreachable Nodes">
-        <TextBlock Text="{Binding Path=UnreachableNodes.Count,StringFormat={}{0}}" />
-        <ListView Name="UnreachableNodesListView" ItemsSource="{Binding Path=UnreachableNodes}" MouseDoubleClick="UnreachableNodesListView_MouseDoubleClick" />
+    <m:RibbonGroup Header="Pathing Nodes">
+        <m:RibbonComboBox Label="All Nodes" ToolTip="All of the nodes contained in this pathing data structure" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectedItem="{Binding SelectedNode}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding Nodes}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
+        <m:RibbonComboBox Label="Disconnected Nodes" ToolTip="All the nodes with 0 connections" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
+                <m:RibbonGalleryCategory ItemsSource="{Binding DisconnectedNodes}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
+        <m:RibbonComboBox Label="Unreachable Nodes" ToolTip="All the nodes which are unreachable by the currently selected node" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
+                <m:RibbonGalleryCategory ItemsSource="{Binding UnreachableNodes}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Options">
-        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
-        <m:RibbonCheckBox Label="Two Way Connect" IsChecked="{Binding UseTwoWayConnect}" />
-        <m:RibbonCheckBox Label="Warp Connect" IsChecked="{Binding UseWarpConnect}" />
-        <m:RibbonCheckBox Label="Auto Connect" ToolTip="Automatically connect new nodes to selected node" IsChecked="{Binding AutoConnect}" />
+        <m:RibbonTextBox Label="Z Adjustment" ToolTip="The amount the Z value will be adjusted when an object is created or moved about the 3D world" Text="{Binding ZAdjustment}" />
+        <m:RibbonCheckBox Label="Two Way Connect" ToolTip="Connections between two nodes will be two way if checked" IsChecked="{Binding UseTwoWayConnect}" />
+        <m:RibbonCheckBox Label="Warp Connect" ToolTip="Connections between nodes will act as an instanteous warp" IsChecked="{Binding UseWarpConnect}" />
+        <m:RibbonCheckBox Label="Auto Connect" ToolTip="Newly created pathing nodes will automatically connect to currently selected node" IsChecked="{Binding AutoConnect}" />
     </m:RibbonGroup>
 </m:RibbonTab>

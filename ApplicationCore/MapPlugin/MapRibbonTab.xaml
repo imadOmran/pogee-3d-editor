@@ -8,7 +8,7 @@
              Header="Map"
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="File">
-        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenCommand}" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Properties">
         <TextBlock Text="{Binding Triangles,StringFormat=Triangles {0}}" />        

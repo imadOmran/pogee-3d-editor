@@ -78,6 +78,7 @@ namespace EQEmu.Path
         /// <summary>
         /// DO NOT modify the xyz using this use the X,Y,Z properties
         /// </summary>
+        [Browsable(false)]
         public Point3D Location
         {
             get
@@ -100,7 +101,7 @@ namespace EQEmu.Path
             }
         }
         */
-
+        [Browsable(false)]
         public List<Neighbor> Neighbors
         {
             get
@@ -112,7 +113,7 @@ namespace EQEmu.Path
                 _neighbors = value;
             }
         }
-
+        [Browsable(false)]
         public List<Node> ConnectedNodes
         {
             get

@@ -164,6 +164,7 @@ namespace EQEmuDisplay3D
                 else if (flags.HasFlag(DisplayFlags.GreenAura))
                 {
                     builder.AddBox(p, 25, 25, 1);
+                    builder.AddBox(destP, 25, 25, 1);
                     box = new GeometryModel3D(builder.ToMesh(), Materials.Green);
                     collection.Add(box);
                 }
