@@ -195,7 +195,12 @@ namespace EQEmu.Zone
                 _clientVersionMask = value;
                 Dirtied();
             }
-        }        
+        }
+
+        public override string ToString()
+        {
+            return this.Zone.ToString() + " to " + this.TargetZoneId.ToString();
+        }
     }
 
     public class ZonePoints : Database.ManageDatabase

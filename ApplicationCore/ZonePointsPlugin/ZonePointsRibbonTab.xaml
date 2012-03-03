@@ -10,15 +10,25 @@
     <m:RibbonGroup Header="Query">
         <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
         <!--<m:RibbonButton Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />-->
-        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Edit">
+        <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="Create Zone Point" Command="{Binding AddZonePointCommand}" />
+        <m:RibbonButton SmallImageSource="Images/delete_12x12.png"  Label="Remove Zone Point" Command="{Binding RemoveZonePointCommand}" />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Zone Points">
-        <ListView ItemsSource="{Binding ZonePoints}" SelectedItem="{Binding SelectedZonePoint}" />
-        <m:RibbonButton Label="Create Zone Point" Command="{Binding AddZonePointCommand}" />
-        <m:RibbonButton Label="Remove Zone Point" Command="{Binding RemoveZonePointCommand}" />
+        <StackPanel>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="All Zone Points" SelectionBoxWidth="150">
+                <m:RibbonGallery SelectedItem="{Binding SelectedZonePoint}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding ZonePoints}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+        </StackPanel>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Defaults">
-        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
-        <m:RibbonTextBox Label="Target Zone Id" Text="{Binding TargetZoneId}" />
+        <StackPanel>
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Target Zone Id" Text="{Binding TargetZoneId}" />
+        </StackPanel>
     </m:RibbonGroup>
 </m:RibbonTab>
