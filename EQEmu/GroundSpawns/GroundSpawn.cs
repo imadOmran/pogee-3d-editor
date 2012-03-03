@@ -248,5 +248,10 @@ namespace EQEmu.GroundSpawns
         {
             Dirty = false;
         }
+
+        public override string ToString()
+        {
+            return Item.ToString() + ":" + ItemName;
+        }
     }
 }
