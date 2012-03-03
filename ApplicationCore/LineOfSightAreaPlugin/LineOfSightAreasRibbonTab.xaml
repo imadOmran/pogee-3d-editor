@@ -24,15 +24,8 @@
             </m:RibbonGallery>
         </m:RibbonComboBox>        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Selection">
-        <m:RibbonTextBox Label="Min Z" Text="{Binding Path=SelectedArea.MinZ}" />
-        <m:RibbonTextBox Label="Max Z" Text="{Binding Path=SelectedArea.MaxZ}" />
-        
-        <ListView ItemsSource="{Binding Path=Areas.Vertices}" SelectedItem="{Binding SelectedVertex}" />
-    </m:RibbonGroup>
-    <m:RibbonGroup Header="New Area">
+    <m:RibbonGroup Header="Default Values">
         <m:RibbonTextBox Label="Min Z" Text="{Binding DefaultMinZ}" />
         <m:RibbonTextBox Label="Max Z" Text="{Binding DefaultMaxZ}" />
-        <m:RibbonButton Label="Create New Area" Name="NewAreaButton" Click="NewAreaButton_Click" />
     </m:RibbonGroup>
 </m:RibbonTab>

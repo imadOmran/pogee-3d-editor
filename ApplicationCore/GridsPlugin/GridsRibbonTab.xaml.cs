@@ -33,7 +33,7 @@ namespace GridsPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
-            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);
+            vm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(vm_PropertyChanged);            
         }
 
         void vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -212,6 +212,11 @@ namespace GridsPlugin
             {
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
+        }
+
+        private void TextBlock_GotFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

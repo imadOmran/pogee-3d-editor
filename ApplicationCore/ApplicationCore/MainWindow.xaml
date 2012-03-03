@@ -67,9 +67,7 @@
             </Grid>
             <m:Ribbon DockPanel.Dock="Top" ItemsSource="{Binding RibbonItems}" Name="ribbon" SelectedIndex="1">
                 <m:Ribbon.ApplicationMenu>
-                    <m:RibbonApplicationMenu SmallImageSource="/Images/EverQuest.ico" >  
-                        <m:RibbonApplicationSplitMenuItem Name="DatabaseConnectRibbonButton" Header="Connect to Database" Click="DatabaseConnectRibbonButton_Click">
-                        </m:RibbonApplicationSplitMenuItem>
+                    <m:RibbonApplicationMenu SmallImageSource="/Images/EverQuest.ico" > 
                         <m:RibbonSeparator />
                         <m:RibbonApplicationMenuItem Header="Exit" Name="ExitMenuItem" Click="ExitMenuItem_Click" />
                     </m:RibbonApplicationMenu>
@@ -102,27 +100,7 @@
                             </TabControl>
                         </Grid>
                     </Grid>
-                </Grid>
-                <!-- <DockPanel>     
-                    <Grid DockPanel.Dock="Left" Width="181">
-                        <pg:PropertyGrid Name="PropertyGrid" Instance="{Binding SelectedObject}" DataContext="{Binding}" />
-                    </Grid>
-                    <Grid> 
-                        <TabControl Name="MainTabControl">
-                            <TabItem>
-                                <TabItem.Header>
-                                    <Label>3D World</Label>
-                                </TabItem.Header>
-                                <Grid>
-                                    <h:HelixViewport3D Name="View3D" CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" 
-                                   MouseDoubleClick="View3D_MouseDoubleClick" MouseLeftButtonUp="View3D_MouseLeftButtonUp" MouseLeftButtonDown="View3D_MouseLeftButtonDown" MouseMove="View3D_MouseMove">
-                                    </h:HelixViewport3D>
-                                    <Rectangle Name="SelectionRectangle" Stroke="Aqua" Width="0" Height="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseLeftButtonUp="View3D_MouseLeftButtonUp" />
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
-                    </Grid>
-                </DockPanel> -->                    
+                </Grid>               
             </Grid>
         </DockPanel>
     </Grid>
