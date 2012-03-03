@@ -74,6 +74,7 @@ namespace GroundSpawnsPlugin
                     _service.Zone = value;
                 }
                 NotifyPropertyChanged("Zone");
+                NotifyPropertyChanged("GroundSpawns");
             }
         }
 
@@ -116,6 +117,19 @@ namespace GroundSpawnsPlugin
                     GroundSpawnsService.SelectedGroundSpawns = value;
                     NotifyPropertyChanged("SelectedGroundSpawns");
                 }               
+            }
+        }
+
+
+        public IEnumerable<EQEmu.GroundSpawns.GroundSpawn> GroundSpawns
+        {
+            get
+            {
+                if (_service != null && _service.ZoneGroundSpawns != null)
+                {
+                    return _service.ZoneGroundSpawns.GroundSpawns;
+                }
+                else return null;
             }
         }
     }

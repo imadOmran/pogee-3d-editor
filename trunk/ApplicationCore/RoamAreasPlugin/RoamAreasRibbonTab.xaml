@@ -9,12 +9,19 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="Query">
         <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
-        <m:RibbonButton Label="Save Query" Click="RibbonButton_Click"></m:RibbonButton>
+        <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Query" Click="RibbonButton_Click"></m:RibbonButton>
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Edit">
+        <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="New Area" Click="RibbonButton_Click_1" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Zone Areas">
-        <TextBlock Text="{Binding Path=Areas.Count}" />
-        <ListView ItemsSource="{Binding Areas}" SelectedItem="{Binding SelectedArea}" />
-        <m:RibbonButton Label="New Area" Click="RibbonButton_Click_1" />
+        <StackPanel>
+            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="All Roam Areas" SelectionBoxWidth="200">
+                <m:RibbonGallery SelectedItem="{Binding SelectedArea}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Areas}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+        </StackPanel>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
         <m:RibbonButton Label="Edit Roam Area" Name="EditSpawnButton" Click="EditSpawnButton_Click" />

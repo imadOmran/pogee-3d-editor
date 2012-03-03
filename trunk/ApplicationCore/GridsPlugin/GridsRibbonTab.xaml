@@ -9,29 +9,42 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="Query">
         <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
-        <m:RibbonButton Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />
-        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+        <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />
+        <m:RibbonButton LargeImageSource="Images/Zoom_32x32.png" Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Edit Grid">
+        <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="New Grid" Name="NewGridButton" Click="NewGridButton_Click" />
+        <m:RibbonButton SmallImageSource="Images/delete_12x12.png" Label="Remove Grid" Click="RemoveGridButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Zone Grids">
-        <TextBlock Text="{Binding Path=Grids.Count}" />
-        <ListView ItemsSource="{Binding Grids}" SelectedItem="{Binding SelectedGrid}" />
-        <m:RibbonButton Label="New Grid" Name="NewGridButton" Click="NewGridButton_Click" />
+        <StackPanel>
+            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="All Grids" SelectionBoxWidth="200">
+                <m:RibbonGallery SelectedItem="{Binding SelectedGrid}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Grids}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>            
+            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="Waypoints" SelectionBoxWidth="200">
+                <m:RibbonGallery SelectedItem="{Binding SelectedWaypoint}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Path=SelectedGrid.Waypoints}">
+                    </m:RibbonGalleryCategory>
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="Selected Waypoints" SelectionBoxWidth="200">
+                <m:RibbonGallery SelectedItem="{Binding SelectedWaypoint}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Path=SelectedWaypoints}">
+                    </m:RibbonGalleryCategory>
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+        </StackPanel>        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Grid">
-        <TextBlock Text="{Binding Path=SelectedGrid.Waypoints.Count}" />
-        <ListView ItemsSource="{Binding Path=SelectedGrid.Waypoints}" SelectedItem="{Binding SelectedWaypoint}" />
-        <m:RibbonButton Label="Edit Grid" Name="EditGridButton" Click="EditGridButton_Click" />
-        <m:RibbonButton Label="Remove Grid" Name="RemoveGridButton" Click="RemoveGridButton_Click" />
+    <m:RibbonGroup Header="Edit Waypoints">        
+        <m:RibbonButton SmallImageSource="Images/delete_12x12.png" Label="Remove Waypoint" Name="RemoveWaypointButton" Click="RemoveWaypointButton_Click" />
+        <m:RibbonButton SmallImageSource="Images/command_link_16x16.png" Label="Move To Waypoint" Click="MoveToButton_Click" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Waypoint">
-        <m:RibbonButton Label="Edit Waypoint" Name="EditWaypointButton" Click="EditWaypointButton_Click" />
-        <m:RibbonButton Label="Move To Waypoint" Click="MoveToButton_Click" />
-        <m:RibbonButton Label="Remove Waypoint" Name="RemoveWaypointButton" Click="RemoveWaypointButton_Click" />        
-    </m:RibbonGroup>    
-    <m:RibbonGroup Header="Options">
+    <m:RibbonGroup Header="Default Values">
         <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Functions">
-        <m:RibbonButton Label="RemoveWPs" ToolTip="Remove Waypoints with 0 pause" Command="{Binding RemoveZeroPauseWaypointsCommand}" />
+    <m:RibbonGroup Header="Utilites">
+        <m:RibbonButton LargeImageSource="Images/Gear.png"  Label="Remove Zero Pause" ToolTip="Remove Waypoints with pause value of zero" Command="{Binding RemoveZeroPauseWaypointsCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>

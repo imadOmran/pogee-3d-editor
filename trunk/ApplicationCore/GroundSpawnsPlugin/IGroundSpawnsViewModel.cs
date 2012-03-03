@@ -12,6 +12,7 @@ namespace GroundSpawnsPlugin
         GroundSpawnsDataService GroundSpawnsService { get; }
         EQEmu.GroundSpawns.GroundSpawn SelectedGroundSpawn { get; set; }
         IEnumerable<EQEmu.GroundSpawns.GroundSpawn> SelectedGroundSpawns { get; set; }
+        IEnumerable<EQEmu.GroundSpawns.GroundSpawn> GroundSpawns { get; }
         string Zone { get; set; }
     }
 }
