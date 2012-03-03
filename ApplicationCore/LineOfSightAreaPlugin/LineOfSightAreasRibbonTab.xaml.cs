@@ -42,6 +42,9 @@ namespace LineOfSightAreaPlugin
                 case "SelectedArea":
                     OnObjectSelectionChanged(LineOfSightAreasViewModel.SelectedArea);
                     break;
+                case "SelectedVertex":
+                    OnObjectSelectionChanged(LineOfSightAreasViewModel.SelectedVertex);
+                    break;
                 default:
                     break;
             }

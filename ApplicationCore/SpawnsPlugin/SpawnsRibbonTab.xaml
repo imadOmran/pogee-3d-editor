@@ -7,27 +7,47 @@
              mc:Ignorable="d" 
              Header="Spawns"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Query">
-        <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
-        <m:RibbonTextBox Label="Version" Text="{Binding Version}" />
-        <m:RibbonButton Label="Save Update Query" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />
-        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
-        <m:RibbonButton Label="Pack Spawns" Name="PackSpawnsButton" Click="PackSpawnsButton_Click" />
+    <m:RibbonGroup Header="Query">       
+        <StackPanel>
+          <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" Text="{Binding Zone}" />
+          <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" Text="{Binding Version}" />
+        </StackPanel>            
+        <m:RibbonButton Label="Save Update Query" LargeImageSource="Images/saveHS.png" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />        
+        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Spawns">        
-        <TextBlock Text="{Binding Path=Spawns.Count}" />
-        <ListView ItemsSource="{Binding Spawns}" SelectedItem="{Binding SelectedSpawn}" />
-        <m:RibbonButton Label="New Spawn" Name="NewSpawnButton" Click="NewSpawnButton_Click" />
+    <m:RibbonGroup Header="Edit">
+        <m:RibbonButton Name="NewSpawnButton" Click="NewSpawnButton_Click" Label="Create Spawn" SmallImageSource="Images/077_AddFile_16x16_72.png" />
+        <m:RibbonButton Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" Label="Delete Spawn" SmallImageSource="Images/delete_12x12.png"  />        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Selection">
-        <m:RibbonButton Label="Remove Spawn" Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" />
-        <m:RibbonButton Label="Edit Spawn" Name="EditSpawnButton" Click="EditSpawnButton_Click" />
-        <m:RibbonButton Label="PEQ PHP Editor" Name="PHPEditorButton" Click="PHPEditorButton_Click" />
+    <m:RibbonGroup Header="Spawns">
+        <StackPanel>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="All Spawns" ToolTip="All Spawn2 entries in this zone" SelectionBoxWidth="150">
+                <m:RibbonGallery SelectedItem="{Binding SelectedSpawn}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Spawns}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="Selected Spawns" SelectionBoxWidth="150">
+                <m:RibbonGallery SelectedItem="{Binding SelectedSpawn}">
+                    <!-- TODO make a data template, attach handler to each displayed item for the MouseMove event
+                    which selecteds the spawn without actually clicked ie. preview selection             
+                -->
+                    <m:RibbonGalleryCategory ItemsSource="{Binding SelectedSpawns}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+        </StackPanel>
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Options">
-        <m:RibbonTextBox Label="Z Adjustment" Text="{Binding ZAdjustment}" />
-        <m:RibbonTextBox Label="Default Grid" Text="{Binding DefaultGrid}" />
-        <m:RibbonTextBox Label="Default Roam Area" Text="{Binding DefaultRoamArea}" />
-        <m:RibbonTextBox Label="Default Spawn Group" Text="{Binding DefaultSpawnGroup}" />
+    <m:RibbonGroup Header="Default Values">
+        <StackPanel>
+        <m:RibbonTextBox HorizontalAlignment="Right" Label="Z Adjustment" Text="{Binding ZAdjustment}" />
+        <m:RibbonTextBox HorizontalAlignment="Right" Label="Grid" Text="{Binding DefaultGrid}" />
+        </StackPanel>
+        <StackPanel>
+        <m:RibbonTextBox HorizontalAlignment="Right" Label="Roam Area" Text="{Binding DefaultRoamArea}" />
+        <m:RibbonTextBox HorizontalAlignment="Right" Label="Spawn Group" Text="{Binding DefaultSpawnGroup}" />
+        </StackPanel>
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Utilities">
+        <m:RibbonButton LargeImageSource="Images/0205_WebInsertHyperlink_32.png" Label="PEQ Database Editor" Name="PHPEditorButton" Click="PHPEditorButton_Click" />
+        <m:RibbonButton LargeImageSource="Images/Gear.png" Label="Pack Spawns" Name="PackSpawnsButton" Click="PackSpawnsButton_Click" />
     </m:RibbonGroup>
 </m:RibbonTab>

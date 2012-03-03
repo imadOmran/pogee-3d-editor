@@ -24,6 +24,7 @@ namespace LineOfSightAreaPlugin
                 case "ZoneAreas":
                     SaveCommand.RaiseCanExecuteChanged();
                     NotifyPropertyChanged("Areas");
+                    NewAreaCommand.RaiseCanExecuteChanged();
                     break;
                 case "SelectedArea":
                     NotifyPropertyChanged("SelectedArea");
@@ -115,16 +116,85 @@ namespace LineOfSightAreaPlugin
 
         #endregion
 
+        #region New Area Command
+
+        private DelegateCommand _newAreaCommand;
+        public DelegateCommand NewAreaCommand
+        {
+            get
+            {
+                if (_newAreaCommand == null)
+                {
+                    _newAreaCommand = new DelegateCommand(
+                        x => ExecuteNewAreaCommand(x),
+                        y => CanExecuteNewAreaCommand(y));
+                    NotifyPropertyChanged("NewAreaCommand");
+                }
+                return _newAreaCommand;
+            }
+        }
+        abstract public bool CanExecuteNewAreaCommand(object arg);
+        abstract public void ExecuteNewAreaCommand(object arg);
+
+        #endregion
+
+        #region Remove Area Command
+
+        private DelegateCommand _removeAreaCommand;
+        public DelegateCommand RemoveAreaCommand
+        {
+            get
+            {
+                if (_removeAreaCommand == null)
+                {
+                    _removeAreaCommand = new DelegateCommand(
+                        x => ExecuteRemoveAreaCommand(x),
+                        y => CanExecuteRemoveAreaCommand(y));
+                    NotifyPropertyChanged("RemoveAreaCommand");
+                }
+                return _removeAreaCommand;
+            }
+        }
+        abstract public bool CanExecuteRemoveAreaCommand(object arg);
+        abstract public void ExecuteRemoveAreaCommand(object arg);
+
+        #endregion
+
 
         public EQEmu.LineOfSightAreas.LineOfSightArea SelectedArea
         {
             get
             {
-                return LineOfSightAreasService.SelectedArea;
+                if (LineOfSightAreasService != null)
+                {
+                    return LineOfSightAreasService.SelectedArea;
+                }
+                else return null;
             }
             set
             {
                 LineOfSightAreasService.SelectedArea = value;
+                RemoveAreaCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public System.Windows.Media.Media3D.Point3D? SelectedVertex
+        {
+            get
+            {
+                if (LineOfSightAreasService != null)
+                {
+                    return LineOfSightAreasService.SelectedVertex;
+                }
+                else return null;
+            }
+            set
+            {
+                if (LineOfSightAreasService != null && value.HasValue)
+                {
+                    LineOfSightAreasService.SelectedVertex = value.Value;
+                    NotifyPropertyChanged("SelectedVertex");
+                }
             }
         }
 

@@ -8,15 +8,21 @@
              Header="Line of Sight Areas"
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="File">
-        <m:RibbonButton Label="New" Command="{Binding NewCommand}" />
-        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
-        <m:RibbonButton Label="Save" Command="{Binding SaveCommand}" />
-        <m:RibbonButton Label="Save As" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="New" LargeImageSource="Images/NewDocumentHS.png" Command="{Binding NewCommand}" />
+        <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Save" LargeImageSource="Images/saveHS.png" Command="{Binding SaveCommand}" />
+        <m:RibbonButton Label="Save As" LargeImageSource="Images/saveHS.png" Command="{Binding SaveCommand}" />       
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Edit">
+        <m:RibbonButton Label="New Area" Command="{Binding NewAreaCommand}" SmallImageSource="Images/077_AddFile_16x16_72.png" />
+        <m:RibbonButton Label="Remove Area" Command="{Binding RemoveAreaCommand}" SmallImageSource="Images/delete_12x12.png" />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Zone Areas">
-        <TextBlock Text="{Binding Path=Areas.Count}" />
-        <ListView ItemsSource="{Binding Areas}" SelectedItem="{Binding SelectedArea}" />
-        <m:RibbonButton Label="Remove Area" Name="RemoveAreaButton" Click="RemoveAreaButton_Click" />        
+        <m:RibbonComboBox Label="Areas" ToolTip="All of the areas where line of sight is ignored" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectedItem="{Binding SelectedArea}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding Areas}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
         <m:RibbonTextBox Label="Min Z" Text="{Binding Path=SelectedArea.MinZ}" />

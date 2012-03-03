@@ -12,6 +12,7 @@ namespace LineOfSightAreaPlugin
     {
         LineOfSightAreaDataService LineOfSightAreasService { get; }
         EQEmu.LineOfSightAreas.LineOfSightArea SelectedArea { get; set; }
+        System.Windows.Media.Media3D.Point3D? SelectedVertex { get; set; }
         ObservableCollection<EQEmu.LineOfSightAreas.LineOfSightArea> Areas { get; }
 
         void NewArea();

@@ -116,7 +116,7 @@ namespace LineOfSightAreaPlugin
             }
 
             if ( SelectedArea != null ) {
-                LineOfSightAreasService.SelectedVertex = new Point3D( p.X, p.Y, p.Z );
+                SelectedVertex = new Point3D( p.X, p.Y, p.Z );
             }
         }
 
@@ -130,6 +130,26 @@ namespace LineOfSightAreaPlugin
             {
                 LineOfSightAreasService.ZoneAreas.AddArea(area);
             }
+        }
+
+        public override bool CanExecuteNewAreaCommand(object arg)
+        {
+            return LineOfSightAreasService != null && LineOfSightAreasService.ZoneAreas != null;
+        }
+
+        public override void ExecuteNewAreaCommand(object arg)
+        {
+            NewArea();
+        }
+
+        public override bool CanExecuteRemoveAreaCommand(object arg)
+        {
+            return SelectedArea != null && LineOfSightAreasService != null && LineOfSightAreasService.ZoneAreas != null;
+        }
+
+        public override void ExecuteRemoveAreaCommand(object arg)
+        {
+            LineOfSightAreasService.ZoneAreas.RemoveArea(SelectedArea);
         }
     }
 }

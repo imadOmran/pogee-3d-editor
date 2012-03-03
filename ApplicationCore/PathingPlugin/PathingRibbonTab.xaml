@@ -18,22 +18,24 @@
         <m:RibbonButton Label="Remove Node" Command="{Binding RemoveNodeCommand}" SmallImageSource="Images/delete_12x12.png" />
         <m:RibbonButton Label="Go to Node" Click="MoveToButton_Click" Command="{Binding NodeSelectedCommand}" SmallImageSource="Images/command_link_16x16.png" />        
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Pathing Nodes">
-        <m:RibbonComboBox Label="All Nodes" ToolTip="All of the nodes contained in this pathing data structure" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
-            <m:RibbonGallery SelectedItem="{Binding SelectedNode}">
-                <m:RibbonGalleryCategory ItemsSource="{Binding Nodes}" />
-            </m:RibbonGallery>
-        </m:RibbonComboBox>
-        <m:RibbonComboBox Label="Disconnected Nodes" ToolTip="All the nodes with 0 connections" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
-            <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
-                <m:RibbonGalleryCategory ItemsSource="{Binding DisconnectedNodes}" />
-            </m:RibbonGallery>
-        </m:RibbonComboBox>
-        <m:RibbonComboBox Label="Unreachable Nodes" ToolTip="All the nodes which are unreachable by the currently selected node" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
-            <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
-                <m:RibbonGalleryCategory ItemsSource="{Binding UnreachableNodes}" />
-            </m:RibbonGallery>
-        </m:RibbonComboBox>
+    <m:RibbonGroup Header="Pathing Nodes">        
+        <StackPanel>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="All Nodes" ToolTip="All of the nodes contained in this pathing data structure" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+                <m:RibbonGallery SelectedItem="{Binding SelectedNode}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Nodes}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="Disconnected Nodes" ToolTip="All the nodes with 0 connections" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+                <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding DisconnectedNodes}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="Unreachable Nodes" ToolTip="All the nodes which are unreachable by the currently selected node" IsEnabled="{Binding PathingExists}" SelectionBoxWidth="250">
+                <m:RibbonGallery SelectionChanged="RibbonGallery_SelectionChanged">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding UnreachableNodes}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+        </StackPanel>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Options">
         <m:RibbonTextBox Label="Z Adjustment" ToolTip="The amount the Z value will be adjusted when an object is created or moved about the 3D world" Text="{Binding ZAdjustment}" />
