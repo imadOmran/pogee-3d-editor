@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
 
 namespace EQEmu.LineOfSightAreas
 {
@@ -165,7 +166,8 @@ namespace EQEmu.LineOfSightAreas
         }
         private short _version = 0;
 
-        private ObservableCollection<Point3D> _vertices = new ObservableCollection<Point3D>();
+        private ObservableCollection<Point3D> _vertices = new ObservableCollection<Point3D>();  
+        [Browsable(false)]
         public ObservableCollection<Point3D> Vertices
         {
             get { return _vertices; }
