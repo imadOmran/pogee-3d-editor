@@ -13,6 +13,8 @@ namespace GridsPlugin
     public abstract class GridsViewModelBase : EditorViewModelBase, IGridsViewModel
     {
         private DelegateCommand _removeZeroPauseWaypointsCommand;
+        private DelegateCommand _selectGridCommand;
+        private DelegateCommand _selectWaypointCommand;
 
 
         public GridsViewModelBase(GridsDataService service)
@@ -22,6 +24,11 @@ namespace GridsPlugin
 
             ZAdjustment = 2.0;
 
+            DefineCommands();
+        }
+
+        private void DefineCommands()
+        {
             RemoveZeroPauseWaypointsCommand = new DelegateCommand(
              x =>
              {
@@ -31,6 +38,26 @@ namespace GridsPlugin
              {
                  return SelectedGrid != null && SelectedGrid.Waypoints.Count(wp => wp.PauseTime == 0) > 0;
              });
+
+            SelectGridCommand = new DelegateCommand(
+                x =>
+                {
+                    NotifyPropertyChanged("SelectedGrid");
+                },
+                x =>
+                {
+                    return SelectedGrid != null;
+                });
+
+            SelectWaypointCommand = new DelegateCommand(
+                x =>
+                {
+                    NotifyPropertyChanged("SelectedWaypoint");
+                },
+                x =>
+                {
+                    return SelectedWaypoint != null;
+                });
         }
 
         void _service_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -98,6 +125,7 @@ namespace GridsPlugin
                 {
                     _service.SelectedGrid = value;
                     RemoveZeroPauseWaypointsCommand.RaiseCanExecuteChanged();
+                    SelectGridCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -118,6 +146,7 @@ namespace GridsPlugin
                 {
                     _service.SelectedWaypoint = value;
                     NotifyPropertyChanged("SelectedWaypoint");
+                    SelectWaypointCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -160,6 +189,26 @@ namespace GridsPlugin
             {
                 _removeZeroPauseWaypointsCommand = value;
                 NotifyPropertyChanged("RemoveZeroPauseWaypointsCommand");
+            }
+        }
+
+        public DelegateCommand SelectGridCommand
+        {
+            get { return _selectGridCommand; }
+            set
+            {
+                _selectGridCommand = value;
+                NotifyPropertyChanged("SelectGridCommand");
+            }
+        }
+
+        public DelegateCommand SelectWaypointCommand
+        {
+            get { return _selectWaypointCommand; }
+            set
+            {
+                _selectWaypointCommand = value;
+                NotifyPropertyChanged("SelectWaypointCommand");
             }
         }
     }
