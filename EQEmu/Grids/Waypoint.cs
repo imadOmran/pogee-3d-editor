@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
+using System.ComponentModel;
 
 using EQEmu.Database;
 
@@ -11,6 +12,7 @@ namespace EQEmu.Grids
     public class Waypoint : DatabaseObject
     {
         private int _gridId;
+        [Browsable(false)]
         public int GridId
         {
             get { return _gridId; }
@@ -22,6 +24,7 @@ namespace EQEmu.Grids
         }
 
         private Grid _grid;        
+        [Browsable(false)]
         public Grid GridReference
         {
             get { return _grid; }
