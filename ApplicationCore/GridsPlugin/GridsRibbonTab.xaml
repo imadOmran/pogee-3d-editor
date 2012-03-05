@@ -18,17 +18,23 @@
     </m:RibbonGroup>
     <m:RibbonGroup Header="Zone Grids">
         <StackPanel>
-            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="All Grids" SelectionBoxWidth="200">
-                <m:RibbonGallery SelectedItem="{Binding SelectedGrid}">
-                    <m:RibbonGalleryCategory ItemsSource="{Binding Grids}" />
-                </m:RibbonGallery>
-            </m:RibbonComboBox>            
-            <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="Waypoints" SelectionBoxWidth="200">
-                <m:RibbonGallery SelectedItem="{Binding SelectedWaypoint}">
-                    <m:RibbonGalleryCategory ItemsSource="{Binding Path=SelectedGrid.Waypoints}">
-                    </m:RibbonGalleryCategory>
-                </m:RibbonGallery>
-            </m:RibbonComboBox>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <m:RibbonButton Command="{Binding SelectGridCommand}" ToolTip="Select Grid" SmallImageSource="Images/112_ArrowCurve_Blue_Left_32x32_72.png" />
+                <m:RibbonComboBox IsEditable="True"  Label="All Grids" SelectionBoxWidth="200">
+                    <m:RibbonGallery SelectedItem="{Binding SelectedGrid}">
+                        <m:RibbonGalleryCategory ItemsSource="{Binding Grids}" />
+                    </m:RibbonGallery>
+                </m:RibbonComboBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <m:RibbonButton Command="{Binding SelectWaypointCommand}" ToolTip="Select Waypoint" SmallImageSource="Images/112_ArrowCurve_Blue_Left_32x32_72.png" />
+                <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="Waypoints" SelectionBoxWidth="200">
+                    <m:RibbonGallery SelectedItem="{Binding SelectedWaypoint}">
+                        <m:RibbonGalleryCategory ItemsSource="{Binding Path=SelectedGrid.Waypoints}">
+                        </m:RibbonGalleryCategory>
+                    </m:RibbonGallery>
+                </m:RibbonComboBox>
+            </StackPanel>                
             <m:RibbonComboBox IsEditable="True" HorizontalAlignment="Right" Label="Selected Waypoints" SelectionBoxWidth="200">
                 <m:RibbonGallery SelectedItem="{Binding SelectedWaypoint}">
                     <m:RibbonGalleryCategory ItemsSource="{Binding Path=SelectedWaypoints}">

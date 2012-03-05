@@ -59,7 +59,10 @@ namespace EQEmuDisplay3D
         {
             switch ( e.Action ) {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    ShowGrid( _activeGrid );
+                    if (!_activeGrid.LongOperationInProgress)
+                    {
+                        ShowGrid(_activeGrid);
+                    }
                     break;
                 default:
                     break;

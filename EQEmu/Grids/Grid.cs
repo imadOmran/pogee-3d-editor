@@ -26,6 +26,12 @@ namespace EQEmu.Grids
             Random
         }
 
+        private bool _longOperationInProgress = false;
+        public bool LongOperationInProgress
+        {
+            get { return _longOperationInProgress; }
+        }
+
         public string ZoneName
         {
             get;
@@ -43,7 +49,6 @@ namespace EQEmu.Grids
             }
         }
 
-        //private List<Waypoint> _waypoints = new List<Waypoint>();
         private ObservableCollection<Waypoint> _waypoints = new ObservableCollection<Waypoint>();
         public ObservableCollection<Waypoint> Waypoints
         {
@@ -165,8 +170,13 @@ namespace EQEmu.Grids
         public void RemoveNonPauseNodes()
         {
             List<Waypoint> nopause = Waypoints.Where(x => x.PauseTime == 0).ToList();
+            _longOperationInProgress = true;
             foreach (Waypoint wp in nopause)
             {
+                if (wp == nopause.Last())
+                {
+                    _longOperationInProgress = false;
+                }
                 RemoveWaypoint(wp);
             }
         }
@@ -203,12 +213,6 @@ namespace EQEmu.Grids
                 case QueryType.UPDATE:
                 case QueryType.INSERT:
                     sql += String.Format(q.UpdateQuery, ResolveArgs(q.UpdateArgs) );
-
-                    //sql += String.Format("UPDATE spawn2,npc_types,spawnentry SET spawn2.pathgrid = @GridID",Id) + Environment.NewLine;
-                    //sql += String.Format("WHERE npc_types.name = \"{0}\" AND",NPCName) + Environment.NewLine;
-                    //sql += String.Format("spawn2.zone = \"{0}\" AND", ZoneName) + Environment.NewLine;
-                    //sql += "npc_types.id = spawnentry.npcID AND" + Environment.NewLine;
-                    //sql += "spawn2.spawngroupID = spawnentry.spawngroupID;" + Environment.NewLine;
                     break;
                 case QueryType.DELETE:
                     break;
@@ -260,53 +264,7 @@ namespace EQEmu.Grids
                 return sql;
             }
         }
-
-        //public override string InsertString
-        //{
-        //    get
-        //    {
-        //        //string sql = GetWaypointsQuery();
-        //        string sql = String.Format("SET @GridID = {0};", Id) + Environment.NewLine;                
-
-        //        sql += "INSERT INTO grid (id,zoneid,type,type2) VALUES " +
-        //                String.Format("(@GridID,{1},{2},{3});", Id, ZoneId, (int)WanderType, (int)PauseType) + Environment.NewLine;
-        //        sql += GetQuery(Waypoints);
-        //        sql += GenerateQueryForNPC(QueryType.INSERT);
-
-        //        return sql;
-        //    }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get
-        //    {
-        //        //string sql = GetWaypointsQuery();
-        //        string sql = String.Format("SET @GridID = {0};", Id) + Environment.NewLine;
-
-        //        if (Dirty)
-        //        {
-        //            sql += String.Format("UPDATE grid SET type = {0}, type2 = {1} WHERE id = @GridID AND zoneid = {3};",
-        //                    (int)WanderType, (int)PauseType, Id, ZoneId) + Environment.NewLine;
-        //        }
-        //        sql += GetQuery(Waypoints);
-        //        sql += GenerateQueryForNPC(QueryType.INSERT);
-        //        return sql;
-        //    }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get
-        //    {
-        //        //string sql = GetWaypointsQuery();
-        //        string sql = String.Format("SET @GridID = {0};", Id) + Environment.NewLine;
-        //        sql += String.Format("DELETE FROM grid WHERE id = @GridID AND zoneid = {1};", Id, ZoneId) + Environment.NewLine;
-        //        sql += GetQuery(Waypoints);
-        //        return sql;
-        //    }
-        //}
-
+        
         public Waypoint GetNewWaypoint()
         {
             int number = GetNextNewWaypointNumber();
