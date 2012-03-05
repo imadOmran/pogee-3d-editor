@@ -15,6 +15,8 @@ namespace GridsPlugin
         private DelegateCommand _removeZeroPauseWaypointsCommand;
         private DelegateCommand _selectGridCommand;
         private DelegateCommand _selectWaypointCommand;
+        private DelegateCommand _removeAllButOneCommand;
+        private DelegateCommand _removeWaypointsCommand;
 
 
         public GridsViewModelBase(GridsDataService service)
@@ -57,6 +59,37 @@ namespace GridsPlugin
                 x =>
                 {
                     return SelectedWaypoint != null;
+                });
+
+            RemoveAllButOneCommand = new DelegateCommand(
+                x =>
+                {                    
+                    foreach (var wp in SelectedWaypoints)
+                    {
+                        if (wp == SelectedWaypoints.First()) continue;
+                        SelectedGrid.RemoveWaypoint(wp);
+                    }
+                },
+                x =>
+                {
+                    return SelectedGrid != null && SelectedWaypoints != null && SelectedWaypoints.Count() > 1;
+                });
+
+            RemoveWaypointsCommand = new DelegateCommand(
+                x =>
+                {
+                    if (SelectedWaypoints != null && SelectedWaypoints.Count() > 1)
+                    {
+                        SelectedGrid.RemoveWaypoints(SelectedWaypoints);
+                    }
+                    else
+                    {
+                        SelectedGrid.RemoveWaypoint(SelectedWaypoint);
+                    }
+                },
+                x =>
+                {
+                    return SelectedGrid != null && SelectedWaypoint != null;
                 });
         }
 
@@ -130,7 +163,7 @@ namespace GridsPlugin
             }
         }
 
-        public EQEmu.Grids.Waypoint SelectedWaypoint 
+        public virtual EQEmu.Grids.Waypoint SelectedWaypoint 
         {
             get
             {
@@ -144,21 +177,24 @@ namespace GridsPlugin
             {
                 if (_service != null)
                 {
-                    _service.SelectedWaypoint = value;
+                    _service.SelectedWaypoint = value;                    
                     NotifyPropertyChanged("SelectedWaypoint");
                     SelectWaypointCommand.RaiseCanExecuteChanged();
+                    RemoveWaypointsCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
         private IEnumerable<EQEmu.Grids.Waypoint> _selectedWaypoints = null;
-        public IEnumerable<EQEmu.Grids.Waypoint> SelectedWaypoints
+        public virtual IEnumerable<EQEmu.Grids.Waypoint> SelectedWaypoints
         {
             get { return _selectedWaypoints; }
             set
             {
                 _selectedWaypoints = value;
                 NotifyPropertyChanged("SelectedWaypoints");
+                RemoveAllButOneCommand.RaiseCanExecuteChanged();
+                RemoveWaypointsCommand.RaiseCanExecuteChanged();
             }
         }
         
@@ -209,6 +245,26 @@ namespace GridsPlugin
             {
                 _selectWaypointCommand = value;
                 NotifyPropertyChanged("SelectWaypointCommand");
+            }
+        }
+
+        public DelegateCommand RemoveAllButOneCommand
+        {
+            get { return _removeAllButOneCommand; }
+            set
+            {
+                _removeAllButOneCommand = value;
+                NotifyPropertyChanged("RemoveAllButOneCommand");
+            }
+        }
+
+        public DelegateCommand RemoveWaypointsCommand
+        {
+            get { return _removeWaypointsCommand; }
+            set
+            {
+                _removeWaypointsCommand = value;
+                NotifyPropertyChanged("RemoveWaypointsCommand");
             }
         }
     }

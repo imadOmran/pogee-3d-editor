@@ -146,6 +146,19 @@ namespace EQEmu.Grids
             Waypoints.Remove(wp);
         }
 
+        public void RemoveWaypoints(IEnumerable<Waypoint> wps)
+        {
+            _longOperationInProgress = true;
+            foreach (var wp in wps)
+            {
+                if (wp == wps.Last())
+                {
+                    _longOperationInProgress = false;
+                }
+                RemoveWaypoint(wp);
+            }
+        }
+
         public void RemoveAllWaypoints()
         {
             if (CreatedObj)

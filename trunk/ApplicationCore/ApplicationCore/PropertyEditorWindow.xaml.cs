@@ -71,15 +71,11 @@ namespace ApplicationCore
 
                 if (changedProperties.Count == 0) return;
 
-                var value = System.Windows.MessageBox.Show("Write to all items selected?", "Write to all items?", MessageBoxButton.YesNo);
-                if (value == MessageBoxResult.Yes)
+                foreach (var item in _items.Where(x => { return x != vm.Item; }))
                 {
-                    foreach (var item in _items.Where( x => { return x != vm.Item; } ) )
+                    foreach (var p in changedProperties)
                     {
-                        foreach (var p in changedProperties)
-                        {
-                            p.SetValue(item, p.GetValue(vm.Item, null), null);
-                        }
+                        p.SetValue(item, p.GetValue(vm.Item, null), null);
                     }
                 }
             }

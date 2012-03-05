@@ -7,6 +7,7 @@ using System.Windows.Input;
 
 using Microsoft.Practices.Unity;
 
+using ApplicationCore;
 using ApplicationCore.ViewModels.Editors;
 
 using EQEmu.Grids;
@@ -15,10 +16,57 @@ namespace GridsPlugin
 {
     public class GridsRibbonTabViewModel : GridsViewModelBase
     {
+        private DelegateCommand _editMultipleCommand;
+
         public GridsRibbonTabViewModel([Dependency("GridsDataService")] GridsDataService service)
             : base(service)
         {
+            EditMultipleCommand = new DelegateCommand(
+                x =>
+                {
+                    var window = new PropertyEditorWindow(SelectedWaypoints);
+                    window.ShowDialog();
+                }, 
+                x =>
+                {
+                    return SelectedWaypoints != null && SelectedWaypoints.Count() > 1;
+                });
+        }
 
+        public override IEnumerable<Waypoint> SelectedWaypoints
+        {
+            get
+            {
+                return base.SelectedWaypoints;
+            }
+            set
+            {
+                base.SelectedWaypoints = value;
+                EditMultipleCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public override Waypoint SelectedWaypoint
+        {
+            get
+            {
+                return base.SelectedWaypoint;
+            }
+            set
+            {
+                base.SelectedWaypoint = value;
+                EditMultipleCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public DelegateCommand EditMultipleCommand
+        {
+            get { return _editMultipleCommand; }
+            set
+            {
+                _editMultipleCommand = value;
+                NotifyPropertyChanged("EditMultipleCommand");
+            }
         }
 
         [OptionalDependency("WorldTransform")]
