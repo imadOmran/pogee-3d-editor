@@ -7,6 +7,7 @@ using System.Windows.Input;
 
 using Microsoft.Practices.Unity;
 
+using ApplicationCore;
 using ApplicationCore.ViewModels.Editors;
 using GridsPlugin;
 
@@ -14,6 +15,8 @@ namespace SpawnsPlugin
 {
     public class SpawnsRibbonTabViewModel : SpawnsViewModelBase
     {
+        private DelegateCommand _editSpawnsCommand;
+
         public SpawnsRibbonTabViewModel([Dependency("SpawnDataService")] SpawnDataService service)
             : base(service)
         {
@@ -21,6 +24,27 @@ namespace SpawnsPlugin
             DefaultSpawnGroup = 0;
             DefaultGrid = 0;
             DefaultRoamArea = 0;
+
+            EditSpawnsCommand = new DelegateCommand(
+                x =>
+                {
+                    var window = new PropertyEditorWindow(SelectedSpawns);
+                    window.ShowDialog();
+                },
+                x =>
+                {
+                    return SelectedSpawns != null && SelectedSpawns.Count() > 1;
+                });
+        }
+
+        public DelegateCommand EditSpawnsCommand
+        {
+            get { return _editSpawnsCommand; }
+            set
+            {
+                _editSpawnsCommand = value;
+                NotifyPropertyChanged("EditSpawnsCommand");
+            }
         }
 
         [Dependency("WorldTransform")]
@@ -181,6 +205,7 @@ namespace SpawnsPlugin
                 {
                     SpawnsService.SelectedSpawns = value;
                     NotifyPropertyChanged("SelectedSpawns");
+                    EditSpawnsCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -202,6 +227,7 @@ namespace SpawnsPlugin
                 {
                     SpawnsService.SelectedSpawn = value;
                     NotifyPropertyChanged("SelectedSpawn");
+                    EditSpawnsCommand.RaiseCanExecuteChanged();
                 }                
             }
         }

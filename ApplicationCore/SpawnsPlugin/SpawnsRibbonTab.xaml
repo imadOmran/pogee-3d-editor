@@ -17,7 +17,8 @@
     </m:RibbonGroup>
     <m:RibbonGroup Header="Edit">
         <m:RibbonButton Name="NewSpawnButton" Click="NewSpawnButton_Click" Label="Create Spawn" SmallImageSource="Images/077_AddFile_16x16_72.png" />
-        <m:RibbonButton Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" Label="Delete Spawn" SmallImageSource="Images/delete_12x12.png"  />        
+        <m:RibbonButton Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" Label="Delete Spawn" SmallImageSource="Images/delete_12x12.png"  />
+        <m:RibbonButton SmallImageSource="Images/TableProperties_32x32.png" Label="Edit Multiple Spawns" Command="{Binding EditSpawnsCommand}" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Spawns">
         <StackPanel>
@@ -28,9 +29,6 @@
             </m:RibbonComboBox>
             <m:RibbonComboBox HorizontalAlignment="Right" Label="Selected Spawns" SelectionBoxWidth="150">
                 <m:RibbonGallery SelectedItem="{Binding SelectedSpawn}">
-                    <!-- TODO make a data template, attach handler to each displayed item for the MouseMove event
-                    which selecteds the spawn without actually clicked ie. preview selection             
-                -->
                     <m:RibbonGalleryCategory ItemsSource="{Binding SelectedSpawns}" />
                 </m:RibbonGallery>
             </m:RibbonComboBox>

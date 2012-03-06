@@ -125,6 +125,9 @@
   <ItemGroup>
     <Resource Include="Images\0205_WebInsertHyperlink_32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TableProperties_32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
