@@ -92,129 +92,37 @@ namespace EQEmu.RoamAreas
                 throw new NullReferenceException();
             }
 
-            if (_connection.State != System.Data.ConnectionState.Open)
+            var sql = String.Format(SelectString, SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+            foreach (var row in results)
             {
-                _connection.Open();
+                var ra = new RoamArea(_queryConfig);
+                ra.SetProperties(Queries, row);
+                RoamAreas.Add(ra);
             }
 
-            if (_connection.State == System.Data.ConnectionState.Open)
+            foreach (var area in RoamAreas)
             {
-                MySqlDataReader rdr = null;
-                try
+                sql = String.Format(area.SelectString, area.SelectArgValues);
+                results = Database.QueryHelper.RunQuery(_connection, sql);
+                foreach (var row in results)
                 {
-                    //string sql = String.Format("SELECT id,min_z,max_z,spawn_random,pause_time,pause_variance FROM roam_areas WHERE zone = '{0}';", zone);
-                    string sql = String.Format(SelectString, SelectArgValues);
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    rdr = cmd.ExecuteReader();
-
-                    List<string> fields = new List<string>();
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        fields.Add(rdr.GetName(i));
-                    }
-
-                    RoamArea ra;
-
-                    while (rdr.Read())
-                    {
-                        ra = new RoamArea(_queryConfig);
-                        //ra = new RoamArea(rdr.GetInt32("id"),_queryConfig)
-                        //{
-                        //    MaxZ = rdr.GetDouble("max_z"),
-                        //    MinZ = rdr.GetDouble("min_z"),
-                        //    PauseTime = rdr.GetInt32("pause_time"),
-                        //    PauseVariance = rdr.GetInt32("pause_variance"),
-                        //    SpawnRandom = rdr.GetBoolean("spawn_random")
-                        //};
-
-                        foreach (var item in _queries.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(ra, item, rdr);
-                            }
-                        }
-
-                        ra.Created();
-                        RoamAreas.Add(ra);
-                    }
-                    rdr.Close();
-
-                    foreach (var area in RoamAreas)
-                    {
-                        //sql = String.Format("SELECT x,y,num,roam_area_id FROM roam_area_vertices WHERE roam_area_id = '{0}' AND zone = '{1}' ORDER BY num;", area.Id, _zone);
-                        sql = String.Format(area.SelectString, area.SelectArgValues);
-                        cmd = new MySqlCommand(sql, _connection);
-                        rdr = cmd.ExecuteReader();
-
-                        fields.Clear();
-                        for (int i = 0; i < rdr.FieldCount; i++)
-                        {
-                            fields.Add(rdr.GetName(i));
-                        }
-
-                        while (rdr.Read())
-                        {
-                            //RoamAreaEntry entry = new RoamAreaEntry(rdr.GetInt32("num"),rdr.GetInt32("roam_area_id"),_zone,_queryConfig)
-                            //{
-                            //    X = rdr.GetDouble("x"),
-                            //    Y = rdr.GetDouble("y")
-                            //};
-                            var entry = new RoamAreaEntry(_queryConfig);
-
-                            foreach (var item in area.Queries.SelectQueryFields)
-                            {
-                                if (fields.Contains(item.Column))
-                                {
-                                    SetProperty(entry, item, rdr);
-                                }
-                            }
-
-                            entry.Created();
-                            area.Vertices.Add(entry);
-                        }
-                        area.Created();
-
-                        rdr.Close();
-                    }
-                    this.Created();
+                    var entry = new RoamAreaEntry(_queryConfig);
+                    entry.SetProperties(area.Queries, row);
+                    area.Vertices.Add(entry);
+                    entry.Created();
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                finally
-                {
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
-                }
+
+                area.Created();
             }
-            else
-            {
-                throw new Exception("Unknown Connection State");
-            }
+
+            this.Created();
         }
 
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { throw new NotImplementedException(); }
         }
-
-        //public override string InsertString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
     }
 }
