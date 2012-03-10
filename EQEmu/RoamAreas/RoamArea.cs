@@ -249,46 +249,6 @@ namespace EQEmu.RoamAreas
             }
         }
 
-        //public override string InsertString
-        //{
-        //    get 
-        //    {
-        //        string sql = String.Format("SET @RoamAreaID = {0};", Id) + Environment.NewLine;
-        //        sql += "INSERT INTO roam_areas (id,min_z,max_z,spawn_random,pause_time,pause_variance,zone) VALUES " +
-        //                String.Format("(@RoamAreaID,{0},{1},{2},{3},{4},{5});",MinZ,MaxZ,Convert.ToInt32(SpawnRandom),PauseTime,PauseVariance,Zone) + Environment.NewLine;
-        //        sql += GetQuery(Vertices);
-        //        return sql;
-        //    }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get
-        //    {
-        //        //string sql = GetWaypointsQuery();
-        //        string sql = String.Format("SET @RoamAreaID = {0};", Id) + Environment.NewLine;
-
-        //        if (Dirty)
-        //        {
-        //            sql += String.Format("UPDATE roam_areas SET min_z = {0}, max_z = {1}, spawn_random = {3}, pause_time = {4}, pause_variance = {5} WHERE id = @RoamAreaID AND zone = {6};",
-        //                    MinZ,MaxZ,Convert.ToInt32(SpawnRandom),PauseTime,PauseVariance,Zone) + Environment.NewLine;
-        //        }
-        //        sql += GetQuery(Vertices);
-        //        return sql;
-        //    }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get
-        //    {
-        //        string sql = String.Format("SET @RoamAreaID = {0};", Id) + Environment.NewLine;
-        //        sql += String.Format("DELETE FROM roam_areas WHERE id = @RoamAreaID AND zone = {0};",Zone) + Environment.NewLine;
-        //        sql += GetQuery(Vertices);
-        //        return sql;
-        //    }
-        //}
-
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get

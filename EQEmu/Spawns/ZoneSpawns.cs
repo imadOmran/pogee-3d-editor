@@ -55,57 +55,15 @@ namespace EQEmu.Spawns
                 throw new NullReferenceException();
             }
 
-            if (_connection.State != System.Data.ConnectionState.Open)
+            var sql = String.Format(SelectString, SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+            foreach (var row in results)
             {
-                _connection.Open();
-            }
-
-            if (_connection.State == System.Data.ConnectionState.Open)
-            {
-                //string sql = String.Format("SELECT * FROM spawn2 WHERE zone='{0}'", zone);                
-                //string sql = String.Format(_queries.SelectQuery, ResolveArgs(_queries.SelectArgs));
-                string sql = String.Format(SelectString, SelectArgValues);
-                MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                MySqlDataReader rdr = cmd.ExecuteReader();
-
-                List<string> fields = new List<string>();
-                for ( int i = 0; i < rdr.FieldCount; i++ ) {
-                    fields.Add( rdr.GetName( i ) );
-                }
-
-                try
-                {
-                    Spawn2 s;
-
-                    while (rdr.Read())
-                    {
-                        s = new Spawn2(_queryConfig);
-
-                        foreach (var item in _queries.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(s, item, rdr);
-                            }
-                        }
-
-                        _spawns.Add(s);
-                        s.Created();
-                    }
-                    rdr.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
-                }
-            }
-            else
-            {
-                throw new Exception("Unknown Connection State");
+                Spawn2 s = new Spawn2(_queryConfig);
+                s.SetProperties(Queries, row);
+                s.Created();
+                _spawns.Add(s);                
             }
         }
 
@@ -136,51 +94,27 @@ namespace EQEmu.Spawns
                 max = Spawns.Max(x => x.Id) + 1;
 
                 //test if this exists... if it does get the true max value from DB
-                var query = String.Format("SELECT id FROM spawn2 WHERE id = {0}", max);
                 bool exists = false;
 
-                if (_connection.State == System.Data.ConnectionState.Open)
+                var sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxZoneID").SelectQuery, max);
+                var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+                foreach (var row in results)
                 {
-                    MySqlCommand cmd = new MySqlCommand(query, _connection);
-                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    exists = true;
+                    break;
+                }
 
-                    try
-                    {
-                        while (rdr.Read())
-                        {
-                            exists = true;
-                        }
-                        rdr.Close();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        if (rdr != null)
-                        {
-                            rdr.Close();
-                        }
-                    }
+                if (exists)
+                {
+                    sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID").SelectQuery);
+                    results = Database.QueryHelper.RunQuery(_connection, sql);
 
-                    if (exists)
+                    if (results.Count > 0)
                     {
-                        cmd = new MySqlCommand(
-                            String.Format("SELECT MAX(id) AS id FROM spawn2"), _connection);
-                        rdr = cmd.ExecuteReader();
-                        try
+                        if (results.ElementAt(0).ContainsKey("id"))
                         {
-                            if (rdr.Read())
-                            {
-                                max = rdr.GetInt32("id") + 1;
-                            }
-                            rdr.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            if (rdr != null)
-                            {
-                                rdr.Close();
-                            }
+                            max = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
                         }
                     }
                 }
@@ -193,16 +127,6 @@ namespace EQEmu.Spawns
 
         public void AddSpawn(EQEmu.Spawns.Spawn2 spawn)
         {
-        //    if (Spawns.Count > 0)
-        //    {
-        //        int max = Spawns.Max(x => x.Id);
-        //        spawn.Id = max + 1;
-        //    }
-        //    else
-        //    {
-        //        spawn.Id = 1;
-        //    }
-
             NeedsInserted.Add(spawn);
             Spawns.Add(spawn);
         }

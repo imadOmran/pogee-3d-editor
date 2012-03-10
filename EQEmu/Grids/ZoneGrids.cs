@@ -66,119 +66,42 @@ namespace EQEmu.Grids
                 throw new NullReferenceException();
             }
 
-            if (_connection.State != System.Data.ConnectionState.Open)
+            var sql = String.Format(SelectString, SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+            var v = _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId");
+            string zoneIdField = null;
+            if (v != null)
             {
-                _connection.Open();
+                zoneIdField = v.Column;
             }
 
-            if (_connection.State == System.Data.ConnectionState.Open)
+            foreach (var row in results)
             {
-                MySqlDataReader rdr = null;
-                try
+                Grid g = new Grid(_queryConfig);
+                if (row.ContainsKey(zoneIdField) && results.First() == row)
                 {
-                    //string sql = String.Format("SELECT grid.* FROM grid INNER JOIN zone ON grid.zoneid = zone.zoneidnumber WHERE zone.short_name='{0}'", zone);
-                    string sql = String.Format(SelectString, SelectArgValues);
-
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    rdr = cmd.ExecuteReader();
-
-                    List<string> fields = new List<string>();
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        fields.Add(rdr.GetName(i));
-                    }
-
-                    Grid g;
-
-                    while (rdr.Read())
-                    {
-                        //ugly
-                        //ZoneId = rdr.GetInt32("zoneid");
-                        ZoneId = rdr.GetInt32(
-                            _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId").Column );
-
-                        g = new Grid(_queryConfig);
-
-                        foreach (var item in _queries.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(g, item, rdr);
-                            }
-                        }
-
-                        //g = new Grid(_queryConfig)
-                        //{
-                        //    ZoneId = rdr.GetInt32("zoneid"),
-                        //    ZoneName = zone,
-                        //    WanderType = (Grid.WanderTypes)rdr.GetInt16("type"),
-                        //    PauseType = (Grid.PauseTypes)rdr.GetInt16("type2"),
-                        //    Id = rdr.GetInt32("id")
-                        //};
-                        Grids.Add(g);
-                        g.Created();
-                    }
-                    rdr.Close();
-
-                    foreach (Grid grid in Grids)
-                    {
-                        //sql = String.Format("SELECT * FROM grid_entries WHERE gridid = {0} AND zoneid = {1}", grid.Id, grid.ZoneId);
-                        sql = String.Format(grid.SelectString, grid.SelectArgValues);
-                        cmd = new MySqlCommand(sql, _connection);
-                        rdr = cmd.ExecuteReader();
-
-                        fields.Clear();
-                        for (int i = 0; i < rdr.FieldCount; i++)
-                        {
-                            fields.Add(rdr.GetName(i));
-                        }
-
-                        Waypoint wp;
-
-                        while (rdr.Read())
-                        {
-                            wp = new Waypoint(_queryConfig);
-                            foreach (var item in grid.Queries.SelectQueryFields)
-                            {
-                                if (fields.Contains(item.Column))
-                                {
-                                    SetProperty(wp, item, rdr);
-                                }
-                            }
-
-                            //wp = new Waypoint(rdr.GetInt32("gridid"), rdr.GetInt32("zoneid"), rdr.GetInt32("number"),_queryConfig)
-                            //{
-                            //    X = rdr.GetFloat("x"),
-                            //    Y = rdr.GetFloat("y"),
-                            //    Z = rdr.GetFloat("z"),
-                            //    Heading = rdr.GetFloat("heading"),
-                            //    PauseTime = rdr.GetInt32("pause"),
-                            //    GridReference = grid,                                
-                            //    Name = rdr.GetString("name"),
-                            //    Running = rdr.GetInt32("running") > 0 ? true : false
-                            //};
-
-                            wp.GridReference = grid;
-
-                            grid.Waypoints.Add(wp);
-                            wp.Created();
-                        }
-                        rdr.Close();
-                    }
-
+                    ZoneId = Int32.Parse( row[zoneIdField].ToString() );
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
-                }
+
+                g.SetProperties(Queries, row);
+                Grids.Add(g);
+                g.Created();
             }
-            else
+
+            foreach(var grid in Grids)
             {
-                throw new Exception("Unknown Connection State");
+                sql = String.Format(grid.SelectString,grid.SelectArgValues);
+                results = Database.QueryHelper.RunQuery(_connection,sql);
+                foreach(var row in results)
+                {
+                    var wp = new Waypoint(_queryConfig);
+
+                    wp.SetProperties(grid.Queries,row);
+
+                    wp.GridReference = grid;
+                    grid.Waypoints.Add(wp);
+                    wp.Created();
+                }
             }
         }
 

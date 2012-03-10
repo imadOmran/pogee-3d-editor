@@ -206,35 +206,7 @@ namespace EQEmu.Spawns
                 Dirtied();
             }
         }
-
-        //public override string InsertString
-        //{
-        //    get
-        //    {
-        //        return "INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area) VALUES " +
-        //               String.Format("({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});",Id,Zone,SpawnGroupId,X,Y,Z,Heading,RespawnTime,GridId,RoamAreaId);
-        //    }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get
-        //    {
-        //        return String.Format("DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';",Id,Zone);
-        //    }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get
-        //    {
-        //        return
-        //            String.Format("UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10} ",
-        //            SpawnGroupId, Zone, _version, X, Y, Z,Heading,RespawnTime,_variance,GridId,RoamAreaId) +
-        //            String.Format("WHERE id = {0} AND zone = '{1}';", _id,Zone);
-        //    }
-        //}
-
+        
         public void LookAt(Point3D p)
         {
             double a = p.X - this.X;

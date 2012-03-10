@@ -498,6 +498,28 @@ SELECT name FROM items WHERE id = {0};
     </select>
   </query-extension>
 
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxZoneID">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT id FROM spawn2 WHERE id = {0};        
+        ]]>
+      </sql>
+      <!-- param provided by the method -->
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxID">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT MAX(id) AS id FROM spawn2       
+        ]]>
+      </sql>
+      <!-- param provided by the method -->
+    </select>
+  </query-extension>
+
   <query type="EQEmu.Spawns.ZoneSpawns">
     <select>
       <sql>

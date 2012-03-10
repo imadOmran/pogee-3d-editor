@@ -65,44 +65,19 @@ namespace EQEmu.GroundSpawns
         {
             var spawn = sender as GroundSpawn;
             if (spawn == null) return;
-            
-            if (_connection.State == System.Data.ConnectionState.Open)
+
+            var q = spawn.Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetItemName");
+            if (q == null) return;
+
+            var sql = String.Format(q.SelectQuery, spawn.ResolveArgs(q.SelectArgs));
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+            if (results.Count > 0)
             {
-                MySqlDataReader rdr = null;
-                try
-                {                    
-                    //string sql = String.Format(SelectString, SelectArgValues);
-                    var q = spawn.Queries.ExtensionQueries.FirstOrDefault( x => x.Name == "GetItemName" );
-                    string sql = String.Format(q.SelectQuery, spawn.ResolveArgs(q.SelectArgs) );
-
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    rdr = cmd.ExecuteReader();
-
-                    List<string> fields = new List<string>();
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        fields.Add(rdr.GetName(i));
-                    }
-
-                    while (rdr.Read())
-                    {
-                        foreach (var item in q.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(spawn, item, rdr);
-                            }
-                        }
-                    }
-                    rdr.Close();
-                }
-                catch (Exception e)
+                var row = results.ElementAt(0);
+                foreach (var item in q.SelectQueryFields)
                 {
-                    Console.WriteLine(e.Message);
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
+                    spawn.SetProperties(q, row);
                 }
             }
         }
@@ -120,59 +95,26 @@ namespace EQEmu.GroundSpawns
                 throw new NullReferenceException();
             }
 
-            if (_connection.State != System.Data.ConnectionState.Open)
+            var sql = String.Format(SelectString, SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+            var v = _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId");
+            string zoneIdField = null;
+            if (v != null)
             {
-                _connection.Open();
+                zoneIdField = v.Column;
             }
 
-            if (_connection.State == System.Data.ConnectionState.Open)
+            foreach (var row in results)
             {
-                MySqlDataReader rdr = null;
-                try
-                {                    
-                    string sql = String.Format(SelectString, SelectArgValues);
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    rdr = cmd.ExecuteReader();
-
-                    List<string> fields = new List<string>();
-                    for (int i = 0; i < rdr.FieldCount; i++)
-                    {
-                        fields.Add(rdr.GetName(i));
-                    }
-
-                    GroundSpawn gspawn;
-                    while (rdr.Read())
-                    {
-                        _zoneId = rdr.GetInt32(
-                            _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId").Column);
-
-                        gspawn = new GroundSpawn(_queryConfig);
-
-                        foreach (var item in _queries.SelectQueryFields)
-                        {
-                            if (fields.Contains(item.Column))
-                            {
-                                SetProperty(gspawn, item, rdr);
-                            }
-                        }
-
-                        _groundSpawns.Add(gspawn);
-                        gspawn.Created();
-                    }
-                    rdr.Close();
-                }
-                catch (Exception e)
+                var gspawn = new GroundSpawn(_queryConfig);
+                if (zoneIdField != null && row.ContainsKey(zoneIdField))
                 {
-                    Console.WriteLine(e.Message);
-                    if (rdr != null)
-                    {
-                        rdr.Close();
-                    }
+                    _zoneId = Int32.Parse(row[zoneIdField].ToString());
                 }
-            }
-            else
-            {
-                throw new Exception("Unknown Connection State");
+                gspawn.SetProperties(Queries, row);
+                gspawn.Created();
+                this.GroundSpawns.Add(gspawn);
             }
         }
 

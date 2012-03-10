@@ -78,37 +78,5 @@ namespace EQEmu.RoamAreas
                 Dirtied();
             }
         }
-
-        //public override string InsertString
-        //{
-        //    get
-        //    {
-        //        return "INSERT INTO roam_area_vertices (roam_area_id,zone,num,x,y) " +
-        //        String.Format("VALUES (@RoamAreaID,{0},{1},{2},{3});",
-        //            Zone,Number,X,Y);
-        //    }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get
-        //    {
-        //        return
-        //            String.Format("UPDATE roam_area_vertices SET x = {0}, y = {1} ",
-        //                X, Y) +
-        //            String.Format("WHERE roam_area_id = @RoamAreaID AND zone = {0} AND num = {1};",
-        //                Zone, Number);
-        //    }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get
-        //    {
-        //        return
-        //            String.Format("DELETE FROM roam_area_verties WHERE roam_area_id = @RoamAreaID AND zone = {0} AND num = {1};",
-        //                Zone, Number);
-        //    }
-        //}
     }
 }

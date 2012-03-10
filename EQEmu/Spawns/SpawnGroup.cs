@@ -227,54 +227,22 @@ namespace EQEmu.Spawns
 
         public void GetEntries()
         {
-            MySqlDataReader rdr = null;
-            try
+            var sql = String.Format(SelectString,SelectArgValues);
+            var results = Database.QueryHelper.RunQuery(_connection, sql);
+
+            foreach (var row in results)
             {
-                string sql = String.Format(SelectString, SelectArgValues);
-                MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                rdr = cmd.ExecuteReader();
+                var entry = new SpawnEntry(_queryConfig);
+                entry.SetProperties(Queries, row);
 
-                List<string> fields = new List<string>();
-                for (int i = 0; i < rdr.FieldCount; i++)
+                if (_entries.Where(x => x.NpcID == entry.NpcID).FirstOrDefault() == null)
                 {
-                    fields.Add(rdr.GetName(i));
+                    _entries.Add(entry);
+                    entry.ObjectDirtied += new Database.ObjectDirtiedHandler(entry_ObjectDirtied);
+                    entry.Created();
+                    OnSpawnChanceTotalChanged();
                 }
-
-                while (rdr.Read())
-                {
-                    var entry = new SpawnEntry(_queryConfig);                    
-
-                    foreach (var item in _queries.SelectQueryFields)
-                    {
-                        if (fields.Contains(item.Column))
-                        {
-                            SetProperty(entry, item, rdr);
-                        }
-                    }
-
-                    if (_entries.Where(x => x.NpcID == entry.NpcID).FirstOrDefault() == null)
-                    {
-                        _entries.Add(entry);
-                        entry.ObjectDirtied += new Database.ObjectDirtiedHandler(entry_ObjectDirtied);
-                        entry.Created();
-                        OnSpawnChanceTotalChanged();
-                    }
-                }
-                rdr.Close();
-
-            }
-            catch (Exception e)
-            {
-                //TODO log this
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
-            }            
+            }     
         }
 
         public SpawnGroup() : base (null)
