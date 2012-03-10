@@ -139,25 +139,16 @@ namespace SpawnGroupPlugin
                     {
                         var total = SelectedSpawnGroup.ChanceTotal;
                         var unitsLeft = 100 - total;
-                        if (unitsLeft <= 100)
-                        {
-                            if (unitsLeft <= entries.Count()) return;
-                            var chancePerEntry = unitsLeft / entries.Count();
-                            foreach(SpawnEntry entry in entries)
-                            {
-                                if (entry.Chance < (short)chancePerEntry)
-                                {
-                                    entry.Chance = (short)chancePerEntry;
-                                }
-                                unitsLeft -= chancePerEntry;
 
-                                if (entries.Last() == entry && unitsLeft > 0)
-                                {
-                                    entry.Chance += (short)unitsLeft;
-                                }
+                        while (unitsLeft > 1)
+                        {
+                            foreach (SpawnEntry entry in entries)
+                            {
+                                entry.Chance += 1;
+                                unitsLeft--;
+                                if (unitsLeft == 0) break;
                             }
-                        }
-                       
+                        }                       
                     }
                     else return;
                 },
