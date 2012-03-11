@@ -79,7 +79,13 @@ namespace SpawnsPlugin
                     _service.Zone = value;
                 }
                 NotifyPropertyChanged("Zone");
+                NotifyPropertyChanged("ServiceOnline");
             }
+        }
+
+        public bool ServiceOnline
+        {
+            get { return _service != null && _service.ZoneSpawns != null; }
         }
 
         public int Version

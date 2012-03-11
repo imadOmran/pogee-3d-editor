@@ -82,14 +82,23 @@ namespace SpawnsPlugin
         {
             if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
             {
-                var newspawn = SpawnsService.ZoneSpawns.GetNewSpawn();
+                EQEmu.Spawns.Spawn2 newspawn;
+                try
+                {
+                    newspawn = SpawnsService.ZoneSpawns.GetNewSpawn();
+                }
+                catch (EQEmu.Database.DatabaseAccessException)
+                {
+                    newspawn = SpawnsService.ZoneSpawns.GetNewSpawnOffline();
+                }
                 newspawn.X = p.X; newspawn.Y = p.Y; newspawn.Z = p.Z + ZAdjustment;
 
                 newspawn.RoamAreaId = DefaultRoamArea;
                 newspawn.GridId = DefaultGrid;
                 newspawn.SpawnGroupId = DefaultSpawnGroup;
+                newspawn.Created();
 
-                SpawnsService.ZoneSpawns.AddSpawn(newspawn);
+                SpawnsService.ZoneSpawns.AddSpawn(newspawn);                
                 SelectedSpawn = newspawn;
             }
         }

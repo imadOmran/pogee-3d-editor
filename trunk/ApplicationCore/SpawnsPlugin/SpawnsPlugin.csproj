@@ -128,9 +128,21 @@
   <ItemGroup>
     <Resource Include="Images\TableProperties_32x32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\spawns-plugin.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\help.png" />
+    <None Include="Help\spawns-plugin.hhp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\summary.htm" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y
+xcopy "$(TargetFileName)" ".\\Plugins" /Y
+xcopy ".\Help\*.chm" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Help" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

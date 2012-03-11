@@ -90,6 +90,7 @@ namespace ApplicationCore
             else
             {
                 _container.RegisterInstance<MySqlConnection>(new MySqlConnection());
+                System.Windows.MessageBox.Show("Could not create database connection, configure connection.xml and restart");
             }
 
             _container.RegisterInstance<EQEmu.Database.Configuration>(conf);

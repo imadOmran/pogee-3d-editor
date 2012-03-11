@@ -11,6 +11,22 @@
         <StackPanel>
           <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" Text="{Binding Zone}" />
           <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" Text="{Binding Version}" />
+          <!--  Need something better but below is an example of when the 'service' is online ie. ready to edit
+          <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="10">
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ServiceOnline}" Value="True">
+                                <Setter Property="Fill" Value="Green" />                                
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ServiceOnline}" Value="False">
+                                <Setter Property="Fill" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+            -->
         </StackPanel>            
         <m:RibbonButton Label="Save Update Query" LargeImageSource="Images/saveHS.png" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />        
         <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
@@ -47,5 +63,6 @@
     <m:RibbonGroup Header="Utilities">
         <m:RibbonButton LargeImageSource="Images/0205_WebInsertHyperlink_32.png" Label="PEQ Database Editor" Name="PHPEditorButton" Click="PHPEditorButton_Click" />
         <m:RibbonButton LargeImageSource="Images/Gear.png" Label="Pack Spawns" Name="PackSpawnsButton" Click="PackSpawnsButton_Click" />
+        <m:RibbonButton LargeImageSource="Images/help.png" Label="Help" Name="HelpButton" Click="HelpButton_Click" />
     </m:RibbonGroup>
 </m:RibbonTab>

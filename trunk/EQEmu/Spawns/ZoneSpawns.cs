@@ -56,14 +56,17 @@ namespace EQEmu.Spawns
             }
 
             var sql = String.Format(SelectString, SelectArgValues);
-            var results = Database.QueryHelper.RunQuery(_connection, sql);
-
-            foreach (var row in results)
+            //var results = Database.QueryHelper.RunQuery(_connection, sql);
+            var results = Database.QueryHelper.TryRunQuery(_connection, sql);
+            if (results != null)
             {
-                Spawn2 s = new Spawn2(_queryConfig);
-                s.SetProperties(Queries, row);
-                s.Created();
-                _spawns.Add(s);                
+                foreach (var row in results)
+                {
+                    Spawn2 s = new Spawn2(_queryConfig);
+                    s.SetProperties(Queries, row);
+                    s.Created();
+                    _spawns.Add(s);
+                }
             }
         }
 
@@ -97,31 +100,56 @@ namespace EQEmu.Spawns
                 bool exists = false;
 
                 var sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxZoneID").SelectQuery, max);
-                var results = Database.QueryHelper.RunQuery(_connection, sql);
-
-                foreach (var row in results)
+                //var results = Database.QueryHelper.RunQuery(_connection, sql);
+                var results = Database.QueryHelper.TryRunQuery(_connection, sql);
+                if (results != null)
                 {
-                    exists = true;
-                    break;
-                }
-
-                if (exists)
-                {
-                    sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID").SelectQuery);
-                    results = Database.QueryHelper.RunQuery(_connection, sql);
-
-                    if (results.Count > 0)
+                    foreach (var row in results)
                     {
-                        if (results.ElementAt(0).ContainsKey("id"))
+                        exists = true;
+                        break;
+                    }
+
+                    if (exists)
+                    {
+                        sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID").SelectQuery);
+                        //results = Database.QueryHelper.RunQuery(_connection, sql);
+                        results = Database.QueryHelper.TryRunQuery(_connection, sql);
+                        if (results != null)
                         {
-                            max = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
+                            if (results.Count > 0)
+                            {
+                                if (results.ElementAt(0).ContainsKey("id"))
+                                {
+                                    max = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
+                                }
+                            }
                         }
                     }
+                }
+
+                if (results == null)
+                {
+                    throw new DatabaseAccessException(); 
                 }
             }
             spawn.Id = max;
             spawn.Version = _version;
+            return spawn;
+        }
+
+        public Spawn2 GetNewSpawnOffline()
+        {
+            var spawn = new Spawn2(_queryConfig);
+            spawn.Id = 1;
+            if (Spawns.Count > 0)
+            {
+                spawn.Id = Spawns.Max(x => x.Id) + 1;
+            }
+            spawn.Version = _version;
+            spawn.Zone = _zone;
             spawn.Created();
+
             return spawn;
         }
 
@@ -198,7 +226,9 @@ namespace EQEmu.Spawns
                 //if we are going to potentially re-insert them all somewhere we might as well delete them
                 //the update query generates the delete queries first so this works
                 //create a spawn that keeps track of the identifier so we can delete it
-                var copy = GetNewSpawn();
+
+                //we aren't really requested a new spawn ... just a dummy reference for the id                
+                Spawn2 copy = new Spawn2(_queryConfig);
                 copy.Id = spawn.Id;
                 NeedsDeleted.Add(copy);
 

@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>Spawns Plugin</Title>
+</HEAD>
+<BODY>
+  <div>
+    <h1>Spawns Plugin</h1>
+    <p>The spawns plugin currently provides a means for editing of the spawn2 database table within a three dimensional environment. 
+            This plugin is properly installed if a ribbon tab labeled "Spawns"  is present in the application.
+    </p>
+  </div>
+
+  <div>
+    <h1>Usage</h1>
+    <p>
+    If the connection to a database is correctly configured then spawn2 data will be populated automatically when the "Zone" field is filled out within the ribbon tab.  
+    If the database connection cannot be established then the working state will be considered offline.  
+    In the offline state, any data that is normally pulled from the database (next table id fields, etc) will be improvised and will possibly clash with a populated database if the query is later performed.
+   </p>
+
+    <p> Currently only read access is required for database operations, there is currently not an option to commit generated queries directly to the database, primarily for safety and testing reasons.</p>
+
+    <h1>Controls within the 3D environment</h1>
+    <div>
+       <p>LMB - select closest spawn</p>             
+       <p>LSHIFT+LMB - a new spawn will be created at the location clicked</p>
+       <p>LCTRL+LMB - with a spawn selected this will cause the spawn selected to face the clicked direction </p>
+       <p>LALT+LMB - with a spawn selected this will move the spawn to the location clicked</p>
+    </div>
+
+  </div>
+</BODY>
+</HTML>
