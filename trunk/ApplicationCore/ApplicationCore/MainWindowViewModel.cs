@@ -103,7 +103,11 @@ namespace ApplicationCore
 
             if (!DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
             {
+#if EQEMU
+                doc = XDocument.Load("eqemu-config.xml");
+#else
                 doc = XDocument.Load("config.xml");
+#endif
                 config = EQEmu.Database.QueryConfig.Create(doc.Root);
                 _container.RegisterInstance<EQEmu.Database.QueryConfig>(config);
             }            
