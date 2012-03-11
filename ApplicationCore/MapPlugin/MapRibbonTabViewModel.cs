@@ -56,21 +56,7 @@ namespace MapPlugin
         {            
             //throw new NotImplementedException();
         }
-
-        private DelegateCommand _openCommand = null;
-        public DelegateCommand OpenCommand
-        {
-            get
-            {
-                if (_openCommand == null)
-                {
-                    _openCommand = new DelegateCommand(ExecuteOpenCommand, CanExecuteOpenCommand);
-                }
-                return _openCommand;
-            }
-        }
         
-
         public override bool CanExecuteOpenCommand(object arg)
         {
             return true;
