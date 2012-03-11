@@ -7,6 +7,11 @@ using MySql.Data.MySqlClient;
 
 namespace EQEmu.Database
 {
+    public class DatabaseAccessException : Exception
+    {
+
+    }
+
     public static class QueryHelper
     {
         public static List< Dictionary<string,object> >RunQuery(MySqlConnection connection, string query)
@@ -36,6 +41,25 @@ namespace EQEmu.Database
             reader.Close();
 
             return results;
+        }
+
+        /// <summary>
+        /// Returns null if the query failed, this smothers the exception, if you want to know why it failed use RunQuery and catch the exception
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static List<Dictionary<string, object>> TryRunQuery(MySqlConnection connection, string query)
+        {
+            try
+            {
+                var results = RunQuery(connection, query);
+                return results;
+            }
+            catch (MySqlException)
+            {
+                return null;
+            }
         }
     }
 }

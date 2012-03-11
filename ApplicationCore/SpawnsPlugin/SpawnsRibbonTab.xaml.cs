@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Media3D;
+using System.IO;
 
 using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Practices.Unity;
@@ -187,6 +188,15 @@ namespace SpawnsPlugin
             if (e != null)
             {
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
+            }
+        }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var path = System.Environment.CurrentDirectory + "\\Help\\spawns-plugin.chm";
+            if (File.Exists(path))
+            {
+                System.Diagnostics.Process.Start(path);
             }
         }
     }
