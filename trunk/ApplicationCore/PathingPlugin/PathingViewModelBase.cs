@@ -12,8 +12,6 @@ namespace PathingPlugin
 {
     public abstract class PathingViewModelBase : EditorViewModelBase, IPathingViewModel
     {
-        private bool _pathExists;
-
         public PathingViewModelBase(PathingDataService service)
         {
             _service = service;
