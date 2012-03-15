@@ -630,6 +630,7 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
       <store field="name" type="string">Name</store>
       <store field="level" type="int">Level</store>
       <store field="id" type="int">Id</store>
+      <store field="loottable_id" type="int">LootTableId</store>
     </select>
   </query>
 
@@ -791,4 +792,164 @@ DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';
       <param>Zone</param>
     </delete>
   </query>
+
+
+  <query type="EQEmu.Loot.LootTable">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM loottable,loottable_entries WHERE loottable.id = {0} AND loottable.id = loottable_entries.loottable_id;        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="lootdrop_id" type="int">Id</store>
+      <store field="multiplier" type="int">Multiplier</store>
+      <store field="probability" type="int">Probability</store>
+      <store field="name" type="string">Name</store>
+      <store field="id" type="int">LootTableId</store>
+    </select>
+
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO loottable(id,name,mincash,maxcash) VALUES ({0},'{1}',{2},{3});
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+      <param>MinCash</param>
+      <param>MaxCash</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE loottable SET name = '{0}' AND mincash = {1} AND maxcash = {2} WHERE id = {3};        
+        ]]>
+      </sql>
+      <param>Name</param>
+      <param>MinCash</param>
+      <param>MaxCash</param>
+      <param>Id</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM loottable WHERE id = {0};        
+        ]]>
+      </sql>
+      <param>Id</param>
+    </delete>
+    
+  </query>
+
+  <query type="EQEmu.Loot.LootDropEntry">
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO lootdrop_entries(lootdrop_id,item_id,item_charges,equip_item,chance)
+VALUES ({0},{1},{2},{3},{4});
+        ]]>
+      </sql>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+      <param>ItemCharges</param>
+      <param>EquipItem</param>
+      <param>Chance</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE lootdrop_entries SET item_id = {0}, item_charges = {1}, equip_item = {2}, chance = {3} 
+WHERE lootdrop_id = {4} AND item_id = {5};     
+        ]]>
+      </sql>
+      <param>ItemId</param>
+      <param>ItemCharges</param>
+      <param>EquipItem</param>
+      <param>Chance</param>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM lootdrop_entries WHERE lootdrop_id = {0} AND item_id = {1};        
+        ]]>
+      </sql>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+    </delete>
+  </query>
+
+  <query type="EQEmu.Loot.LootDrop">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT lootdrop.*,lootdrop_entries.*,items.name as itemname FROM lootdrop,lootdrop_entries,items where lootdrop.id = {0} AND lootdrop.id = lootdrop_entries.lootdrop_id AND items.id = lootdrop_entries.item_id;        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="item_id" type="int">ItemId</store>
+      <store field="item_charges" type="int">ItemCharges</store>
+      <store field="equip_item" type="bool">EquipItem</store>
+      <store field="chance" type="int">Chance</store>
+      <store field="itemname" type="string">ItemName</store>
+      <store field="lootdrop_id" type="int">LootDropId</store>
+    </select>
+
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},{3},{4},{5});
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+      <param>LootTableId</param>
+      <param>Id</param>
+      <param>Multiplier</param>
+      <param>Probability</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE lootdrop.name = '{0}' WHERE id = {1};  
+UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = {1} AND loottable_id = {4};
+        ]]>
+      </sql>      
+      <param>Name</param>
+      <param>Id</param>
+      <param>Multiplier</param>
+      <param>Probability</param>
+      <param>LootTableId</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = {1};        
+        ]]>
+      </sql>
+      <param>LootTableId</param>
+      <param>Id</param>
+    </delete>
+  </query>
+
+  <query-extension type="EQEmu.Loot.LootDrop" name="NewInsert">
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO lootdrop(id,name) VALUES ({0},'{1}');
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+    </insert>
+  </query-extension>
+
 </property-mapping>

@@ -79,5 +79,11 @@ namespace EQEmu.Spawns
             get;
             set;
         }
+
+        public int LootTableId
+        {
+            get;
+            set;
+        }
     }
 }

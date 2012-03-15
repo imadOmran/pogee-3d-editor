@@ -68,9 +68,6 @@
                                             </StackPanel>
                                         </StackPanel>
                                     </GroupBox>
-                                    <GroupBox Header="Utility">
-
-                                    </GroupBox>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Utility">

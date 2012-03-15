@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="LootPlugin.LootEditTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" HorizontalAlignment="Left" Background="#FFCECECE">
+    <Grid>
+        <DockPanel>
+            <Grid DockPanel.Dock="Right">
+                <TabControl>
+                    <TabItem Header="Drop Lookup">
+                        <StackPanel>
+                            <Grid>
+                                <Grid Height="66" VerticalAlignment="Top">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Label HorizontalAlignment="Right">Name</Label>
+                                        <TextBox HorizontalAlignment="Left" Width="100"></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid>
+                                <DataGrid ItemsSource="{Binding TableLookupItems}" />
+                            </Grid>
+                        </StackPanel>                                              
+                    </TabItem>
+                    <TabItem Header="Item Lookup">
+                        <Grid>
+                            <StackPanel>
+                                <Grid Height="66" VerticalAlignment="Top">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Label HorizontalAlignment="Right">Name</Label>
+                                        <TextBox HorizontalAlignment="Left" Width="100" Text="{Binding ItemNameLookup}"></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                                <Button Content="Add To Loot Drop" Click="Button_Click_3" />
+                            </StackPanel>
+                            <Grid Margin="0,86,0,0">
+                                <DataGrid Name="ItemLookupDataGrid" ItemsSource="{Binding ItemsLookedUp}" />
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Tables Lookup">
+                        <Grid>
+                            <StackPanel>
+                                <Grid Height="66" VerticalAlignment="Top">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Label>Name</Label>
+                                        <TextBox Width="100" Text="{Binding TableLookup}"></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                                <Button Content="Load Selected" Click="Button_Click" />
+                            </StackPanel>
+                            <Grid Margin="0,86,0,0">
+                                <DataGrid IsReadOnly="True" Name="TableLookupDataGrid" ItemsSource="{Binding TablesLookedUp}"
+                                    AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Id"
+                                                            Binding="{Binding Id}"/>
+                                        <DataGridTextColumn Header="Name"
+                                                            Binding="{Binding Name}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid> 
+                        </Grid>                            
+                    </TabItem>
+                    <TabItem Header="NPC Lookup">
+                        <Grid>
+                            <StackPanel>
+                                <Grid Height="66" VerticalAlignment="Top">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Label>Name</Label>
+                                    <TextBox Width="116" Text="{Binding NPCLookup}"></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                                <Button Content="Load Selected Tables" Click="Button_Click_1" />
+                            </StackPanel>
+                            <Grid Margin="0,86,0,0">
+                                <DataGrid IsReadOnly="True" Name="NPCLookupDataGrid" ItemsSource="{Binding NPCItems}" />                                
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            <Grid MinWidth="500" Background="White">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Loot Table</Label>
+                        <TextBox Text="{Binding FilterId}" Width="73" />
+                        <Button Margin="20,0,0,0" Content="Create New Loot Table" Command="{Binding CreateLootTableCommand}" />
+                        <Button Margin="100,0,0,0" Content="Clear Cache" Command="{Binding ClearCacheCommand}" HorizontalAlignment="Right" />
+                    </StackPanel>
+                    
+                    <DataGrid CanUserDeleteRows="False" Name="LootTableDataGrid" ItemsSource="{Binding Cache}" SelectedItem="{Binding SelectedLootTable}" Height="109" />
+                    <!--<ListView ItemsSource="{Binding Cache}" SelectedItem="{Binding SelectedLootTable}" Height="73" />-->
+                    <Label Margin="0,10,0,0">Loot Drops</Label>
+                    <DataGrid CanUserDeleteRows="False" Name="LootDropDataGrid" ItemsSource="{Binding Path=SelectedLootTable.LootDrops}" SelectedItem="{Binding SelectedLootDrop}" Height="129" />
+                    <!--<ListView Margin="0,0,0,0" ItemsSource="{Binding Path=SelectedLootTable.LootDrops}" SelectedItem="{Binding SelectedLootDrop}" Height="129" />-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="AddLootDropValue" Width="62" />
+                        <Button Content="Add Existing Loot Drop" Command="{Binding AddExistingLootDropCommand}" CommandParameter="{Binding ElementName=AddLootDropValue,Path=Text}" />
+                        <Button Margin="20,0,0,0" Content="Create New" Command="{Binding CreateLootDropCommand}"/>
+                        <Button Margin="20,0,0,0" Content="Remove" Click="Button_Click_4" />
+                    </StackPanel>
+                    <Label Margin="0,10,0,0">Loot Drop Entries</Label>
+                    <DataGrid CanUserDeleteRows="False" Name="DropEntryDataGrid" ItemsSource="{Binding Path=SelectedLootDrop.Entries}" SelectedItem="{Binding SelectedtDropEntry}" Height="129" />
+                    <!--<ListView Margin="0,0,0,0" ItemsSource="{Binding Path=SelectedLootDrop.Entries}" SelectedItem="{Binding SelectedDropEntry}" Height="129" />-->
+                    <Button HorizontalAlignment="Left" Content="View Query" Width="78" Click="Button_Click_2" />
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

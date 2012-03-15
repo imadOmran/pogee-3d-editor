@@ -109,5 +109,19 @@ namespace SpawnGroupPlugin
                 EntriesDataGrid.Items.Refresh();
             }
         }
+
+        ApplicationCore.ViewModels.Editors.IEditorViewModel ApplicationCore.UserControls.IEditorControl.ViewModel
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
     }
 }

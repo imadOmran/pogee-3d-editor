@@ -95,6 +95,10 @@
     <Compile Include="GroundSpawns\GroundSpawn.cs" />
     <Compile Include="GroundSpawns\ZoneGroundSpawns.cs" />
     <Compile Include="LineOfSightAreas\LineOfSightArea.cs" />
+    <Compile Include="Loot\Item.cs" />
+    <Compile Include="Loot\LootDrop.cs" />
+    <Compile Include="Loot\LootTable.cs" />
+    <Compile Include="Loot\LootTableAggregator.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapStructs.cs" />
     <Compile Include="Path\Path.cs" />

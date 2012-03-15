@@ -25,8 +25,6 @@ namespace ApplicationCore
     /// </summary>
     public partial class MainWindow : RibbonWindow
     {
-        private Point3D _rightClickPoint;
-
         public MainWindow()
         {
             this.WindowState = System.Windows.WindowState.Maximized;
