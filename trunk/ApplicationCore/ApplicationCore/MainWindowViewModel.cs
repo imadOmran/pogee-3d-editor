@@ -167,6 +167,7 @@ namespace ApplicationCore
         {
             foreach (var control in Container.ResolveAll<UserControls.IEditorControl>())
             {
+                if (control == null || control.ViewModel == null) continue;
                 try
                 {
                     control.ViewModel.User3DClickAt(
