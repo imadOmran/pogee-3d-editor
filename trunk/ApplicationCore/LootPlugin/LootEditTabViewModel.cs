@@ -18,6 +18,7 @@ namespace LootPlugin
         private DelegateCommand _clearCacheCommand;
         private DelegateCommand _createLootTableCommand;
         private DelegateCommand _createLootDropCommand;
+        private DelegateCommand _balanceDropEntriesCommand;
 
         public LootEditTabViewModel(LootTableAggregator manager,NPCAggregator npcmanager)
         {
@@ -46,6 +47,7 @@ namespace LootPlugin
                 x =>
                 {
                     _manager.ClearCache();
+                    _npcmanager.ClearCache();
                 },
                 x =>
                 {
@@ -80,12 +82,13 @@ namespace LootPlugin
                 {
                     return SelectedLootTable != null;
                 });
-
         }
 
         public string GetSQL()
         {
-            return _manager.GetSQL();
+            var sql = _manager.GetSQL();
+            sql += _npcmanager.GetSQL();
+            return sql;
         }
 
         private int _filterId;
@@ -95,9 +98,14 @@ namespace LootPlugin
             set
             {
                 _filterId = value;
-                _manager.Lookup(value);
+                LookupLootTable(value);
                 NotifyPropertyChanged("FilterId");
             }
+        }
+
+        public void LookupLootTable(int id)
+        {
+            _manager.Lookup(id);
         }
 
         private string _npcLookup;
@@ -108,6 +116,19 @@ namespace LootPlugin
             {
                 _npcLookup = value;
                 _npcmanager.Lookup(value);
+                NPCItems = _npcmanager.NPCs;
+                NotifyPropertyChanged("NPCLookup");
+            }
+        }
+
+        private string _npcZoneLookup;
+        public string NPCZoneLookup
+        {
+            get { return _npcZoneLookup; }
+            set
+            {
+                _npcZoneLookup = value;
+                _npcmanager.LookupByZone(value);
                 NPCItems = _npcmanager.NPCs;
                 NotifyPropertyChanged("NPCLookup");
             }

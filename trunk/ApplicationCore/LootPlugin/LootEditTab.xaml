@@ -8,22 +8,7 @@
     <Grid>
         <DockPanel>
             <Grid DockPanel.Dock="Right">
-                <TabControl>
-                    <TabItem Header="Drop Lookup">
-                        <StackPanel>
-                            <Grid>
-                                <Grid Height="66" VerticalAlignment="Top">
-                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                        <Label HorizontalAlignment="Right">Name</Label>
-                                        <TextBox HorizontalAlignment="Left" Width="100"></TextBox>
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-                            <Grid>
-                                <DataGrid ItemsSource="{Binding TableLookupItems}" />
-                            </Grid>
-                        </StackPanel>                                              
-                    </TabItem>
+                <TabControl>                    
                     <TabItem Header="Item Lookup">
                         <Grid>
                             <StackPanel>
@@ -67,18 +52,42 @@
                     <TabItem Header="NPC Lookup">
                         <Grid>
                             <StackPanel>
-                                <Grid Height="66" VerticalAlignment="Top">
+                                <StackPanel Margin="0,10,0,0" VerticalAlignment="Top">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <Label>Name</Label>
                                     <TextBox Width="116" Text="{Binding NPCLookup}"></TextBox>
                                     </StackPanel>
-                                </Grid>
-                                <Button Content="Load Selected Tables" Click="Button_Click_1" />
+
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Label>Zone</Label>
+                                        <TextBox Margin="10,0,0,0" Width="116" Text="{Binding NPCZoneLookup}"></TextBox>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Load Selected Tables" Click="Button_Click_1" Width="128" />
+                                    <Button Margin="10,0,0,0" Content="Set Loot Table" Click="SetNPCLootTable" />
+                                    <Button Margin="10,0,0,0" Content="Add Loot Drop" Click="AddLootDropToNPC" />
+                                </StackPanel>
                             </StackPanel>
                             <Grid Margin="0,86,0,0">
                                 <DataGrid IsReadOnly="True" Name="NPCLookupDataGrid" ItemsSource="{Binding NPCItems}" />                                
                             </Grid>
                         </Grid>
+                    </TabItem>
+                    <TabItem Header="Drop Lookup" IsEnabled="False">
+                        <StackPanel>
+                            <Grid>
+                                <Grid Height="66" VerticalAlignment="Top">
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Label HorizontalAlignment="Right">Name</Label>
+                                        <TextBox HorizontalAlignment="Left" Width="100"></TextBox>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid>
+                                <DataGrid ItemsSource="{Binding TableLookupItems}" />
+                            </Grid>
+                        </StackPanel>
                     </TabItem>
                 </TabControl>
             </Grid>
@@ -101,11 +110,16 @@
                         <Button Content="Add Existing Loot Drop" Command="{Binding AddExistingLootDropCommand}" CommandParameter="{Binding ElementName=AddLootDropValue,Path=Text}" />
                         <Button Margin="20,0,0,0" Content="Create New" Command="{Binding CreateLootDropCommand}"/>
                         <Button Margin="20,0,0,0" Content="Remove" Click="Button_Click_4" />
+                        <Button Margin="20,0,0,0" Content="Drop Insert Query" Click="Button_Click_5" />
                     </StackPanel>
-                    <Label Margin="0,10,0,0">Loot Drop Entries</Label>
-                    <DataGrid CanUserDeleteRows="False" Name="DropEntryDataGrid" ItemsSource="{Binding Path=SelectedLootDrop.Entries}" SelectedItem="{Binding SelectedtDropEntry}" Height="129" />
+                    <StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Margin="0,0,0,0">Loot Drop Entries</Label>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Path=SelectedLootDrop.Entries.Count}" />
+                        <Button VerticalAlignment="Center" Margin="20,0,0,0" Content="Balance Selected" Name="BalanceDropEntriesButton" Click="BalanceDropEntriesButton_Click" />
+                    </StackPanel>
+                    <DataGrid CanUserDeleteRows="False" Name="DropEntryDataGrid" ItemsSource="{Binding Path=SelectedLootDrop.Entries}" SelectedItem="{Binding SelectedtDropEntry}" Height="237" />
                     <!--<ListView Margin="0,0,0,0" ItemsSource="{Binding Path=SelectedLootDrop.Entries}" SelectedItem="{Binding SelectedDropEntry}" Height="129" />-->
-                    <Button HorizontalAlignment="Left" Content="View Query" Width="78" Click="Button_Click_2" />
+                    <Button HorizontalAlignment="Left" Content="View Complete Query" Width="143" Click="Button_Click_2" />
                 </StackPanel>
             </Grid>
         </DockPanel>
