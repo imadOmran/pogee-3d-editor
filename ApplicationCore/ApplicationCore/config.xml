@@ -619,6 +619,20 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
     </update>
   </query>
 
+  <query ty="EQEmu.Spawns.NPC">
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE npc_types SET loottable_id = {0}, name = '{1}', level = {2} WHERE id = {3};
+        ]]>
+      </sql>
+      <param>LootTableId</param>
+      <param>Name</param>
+      <param>Level</param>
+      <param>Id</param>
+    </update>
+  </query>
+
   <query type="EQEmu.Spawns.NPCAggregator">
     <select>
       <sql>
@@ -633,6 +647,25 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
       <store field="loottable_id" type="int">LootTableId</store>
     </select>
   </query>
+
+  <query-extension type="EQEmu.Spawns.NPCAggregator" name="LookupByZone">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT npc_types.*
+FROM npc_types,spawngroup,spawnentry,spawn2
+WHERE spawngroup.id = spawnentry.spawngroupid
+AND spawn2.spawngroupid = spawngroup.id
+AND npc_types.id = spawnentry.npcid
+AND spawn2.zone = '{0}' GROUP BY npc_types.id;       
+        ]]>
+      </sql>
+      <store field="name" type="string">Name</store>
+      <store field="level" type="int">Level</store>
+      <store field="id" type="int">Id</store>
+      <store field="loottable_id" type="int">LootTableId</store>
+    </select>
+  </query-extension>
 
   <query type="EQEmu.Spawns.SpawnGroup">
     <select>
@@ -849,7 +882,7 @@ DELETE FROM loottable WHERE id = {0};
       <sql>
         <![CDATA[
 INSERT INTO lootdrop_entries(lootdrop_id,item_id,item_charges,equip_item,chance)
-VALUES ({0},{1},{2},{3},{4});
+VALUES (@LootDropID,{1},{2},{3},{4});
         ]]>
       </sql>
       <param>LootDropId</param>
@@ -863,7 +896,7 @@ VALUES ({0},{1},{2},{3},{4});
       <sql>
         <![CDATA[
 UPDATE lootdrop_entries SET item_id = {0}, item_charges = {1}, equip_item = {2}, chance = {3} 
-WHERE lootdrop_id = {4} AND item_id = {5};     
+WHERE lootdrop_id = @LootDropID AND item_id = {5};     
         ]]>
       </sql>
       <param>ItemId</param>
@@ -877,7 +910,7 @@ WHERE lootdrop_id = {4} AND item_id = {5};
     <delete>
       <sql>
         <![CDATA[
-DELETE FROM lootdrop_entries WHERE lootdrop_id = {0} AND item_id = {1};        
+DELETE FROM lootdrop_entries WHERE lootdrop_id = @LootDropID AND item_id = {1};        
         ]]>
       </sql>
       <param>LootDropId</param>
@@ -904,7 +937,7 @@ SELECT lootdrop.*,lootdrop_entries.*,items.name as itemname FROM lootdrop,lootdr
     <insert>
       <sql>
         <![CDATA[
-INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},{3},{4},{5});
+INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},@LootDropID,{4},{5});
         ]]>
       </sql>
       <param>Id</param>
@@ -918,8 +951,8 @@ INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) V
     <update>
       <sql>
         <![CDATA[
-UPDATE lootdrop.name = '{0}' WHERE id = {1};  
-UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = {1} AND loottable_id = {4};
+UPDATE lootdrop.name = '{0}' WHERE id = @LootDropID;  
+UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = @LootDropID AND loottable_id = {4};
         ]]>
       </sql>      
       <param>Name</param>
@@ -932,7 +965,7 @@ UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_
     <delete>
       <sql>
         <![CDATA[
-DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = {1};        
+DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = @LootDropID;        
         ]]>
       </sql>
       <param>LootTableId</param>
@@ -944,7 +977,7 @@ DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = {1};
     <insert>
       <sql>
         <![CDATA[
-INSERT INTO lootdrop(id,name) VALUES ({0},'{1}');
+INSERT INTO lootdrop(id,name) VALUES (@LootDropID,'{1}');
         ]]>
       </sql>
       <param>Id</param>

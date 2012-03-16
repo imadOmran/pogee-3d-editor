@@ -29,7 +29,7 @@ namespace EQEmu.Loot
                 var table = new LootTable(_connection, _queryConfig);
                 table.Id = -1;
                 table.Lookup(id);
-                AddLootTable(table);
+                _lootTables.Add(table);
             }
         }
 

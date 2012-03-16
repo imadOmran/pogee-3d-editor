@@ -196,7 +196,7 @@ namespace LootPlugin
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var sql = _viewModel.GetSQL();
+            var sql = _viewModel.GetSQL();            
             var window = new TextWindow(sql);
             window.ShowDialog();
         }
@@ -220,6 +220,51 @@ namespace LootPlugin
             {
                 ViewModel.SelectedLootTable.RemoveLootDrop(item);
             }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedLootDrop == null) return;
+            var sql = ViewModel.SelectedLootDrop.GetSQL();
+            var window = new TextWindow(sql);
+            window.ShowDialog();
+        }
+
+        private void BalanceDropEntriesButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedLootDrop == null) return;
+            ViewModel.SelectedLootDrop.BalanceEntries(DropEntryDataGrid.SelectedItems.Cast<EQEmu.Loot.LootDropEntry>());
+            DropEntryDataGrid.Items.Refresh();
+        }
+
+        private void AddLootDropToNPC(object sender, RoutedEventArgs e)
+        {
+            if( ViewModel.SelectedLootDrop == null ) return;
+            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            {
+                //first load the loottable into the aggregator
+                ViewModel.LookupLootTable(npc.LootTableId);
+                var table = 
+                    ViewModel.Cache.Cast<EQEmu.Loot.LootTable>().FirstOrDefault(x => x.Id == npc.LootTableId);
+                //if it found a loottable associated with the selected npc add the selected loot drop
+                if (table != null)
+                {
+                    var dropcopy = ViewModel.SelectedLootDrop.Clone();
+                    dropcopy.LootTableId = table.Id;
+                    table.AddLootDrop(dropcopy);
+                }
+            }
+        }
+
+        private void SetNPCLootTable(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedLootTable == null) return;
+            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            {
+                npc.LootTableId = ViewModel.SelectedLootTable.Id;
+            }
+
+            NPCLookupDataGrid.Items.Refresh();
         }
     }
 }

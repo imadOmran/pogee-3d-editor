@@ -154,12 +154,49 @@ namespace EQEmu.Loot
             entry.Created();
             return entry;
         }
+
+        public void BalanceEntries(IEnumerable<LootDropEntry> entries)
+        {
+            if (entries == null) return;
+
+            int count = Entries.Sum(x => x.Chance);
+            int units = 100 - count;
+            if (units <= 0) return;
+
+            while (units > 0)
+            {
+                foreach (var entry in entries)
+                {
+                    entry.Chance += 1;
+                    units--;
+                    if (units <= 0) return;
+                }
+            }
+        }
+
+        public string GetSQL()
+        {
+            string sql = SQLSetVariable();
+
+            if (_newCreation)
+            {
+                sql += String.Format(_newQuery.InsertQuery, ResolveArgs(_newQuery.InsertArgs));
+            }
+            sql += GetQuery(Entries);            
+
+            return sql;     
+        }
+
+        public LootDrop Clone()
+        {
+            return (LootDrop)MemberwiseClone();
+        }
         
         public override string UpdateString
         {
             get
             {
-                string sql = "";
+                string sql = SQLSetVariable();
                 if(Dirty)
                 {
                     sql += base.UpdateString;
@@ -169,11 +206,27 @@ namespace EQEmu.Loot
             }
         }
 
+        public override string DeleteString
+        {
+            get
+            {
+                string sql = SQLSetVariable();
+                sql += base.DeleteString;
+                sql += GetQuery(Entries);
+                return sql;
+            }
+        }
+
+        private string SQLSetVariable()
+        {
+            return String.Format("SET @LootDropID = {0};", Id);
+        }
+
         public override string InsertString
         {
             get
             {
-                string sql = "";
+                string sql = SQLSetVariable();
                 if (_newCreation) sql += String.Format(_newQuery.InsertQuery, ResolveArgs(_newQuery.InsertArgs));
                 sql += base.InsertString;
                 sql += GetQuery(Entries);
@@ -199,7 +252,7 @@ namespace EQEmu.Loot
     {
         private int _lootdropId;
         private int _itemId;
-        private int _itemCharges;
+        private int _itemCharges = 1;
 
         private bool _equipItem;
         private int _chance;
