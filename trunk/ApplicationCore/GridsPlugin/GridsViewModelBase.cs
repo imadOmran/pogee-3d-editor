@@ -142,6 +142,26 @@ namespace GridsPlugin
             set;
         }
 
+        public int ZoneIdNumber
+        {
+            get 
+            {
+                if (_service != null && _service.ZoneGrids != null)
+                {
+                    return _service.ZoneGrids.ZoneId;
+                }
+                else return 0;
+            }
+            set
+            {
+                if (_service != null && _service.ZoneGrids != null)
+                {
+                    _service.ZoneGrids.ZoneId = value;
+                    NotifyPropertyChanged("ZoneIdNumber");
+                }
+            }
+        }
+
         public EQEmu.Grids.Grid SelectedGrid 
         {
             get
@@ -215,6 +235,7 @@ namespace GridsPlugin
                     _service.Zone = value;
                 }
                 NotifyPropertyChanged("Zone");
+                NotifyPropertyChanged("ZoneIdNumber");
             }
         }
 

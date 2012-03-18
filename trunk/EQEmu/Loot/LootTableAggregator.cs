@@ -155,8 +155,6 @@ namespace EQEmu.Loot
                     id = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
                 }
             }
-            drop.Created();
-            drop.CreateForInsert();
             drop.Id = id;            
 
             return drop;

@@ -19,6 +19,7 @@ namespace LootPlugin
         private DelegateCommand _createLootTableCommand;
         private DelegateCommand _createLootDropCommand;
         private DelegateCommand _balanceDropEntriesCommand;
+        private DelegateCommand _removeSelectedEntryCommand;
 
         public LootEditTabViewModel(LootTableAggregator manager,NPCAggregator npcmanager)
         {
@@ -30,8 +31,10 @@ namespace LootPlugin
                 x =>
                 {
                     var lootdrop = _manager.CreateLootDrop();
+                    lootdrop.SetNoInsert();
                     lootdrop.Id = -1;
                     lootdrop.Lookup(Int32.Parse(x.ToString()));
+                    lootdrop.Created();
                     if (lootdrop.Id >= 0)
                     {
                         lootdrop.LootTableId = SelectedLootTable.Id;
@@ -72,6 +75,8 @@ namespace LootPlugin
                 x =>
                 {
                     var drop = _manager.CreateLootDrop(true);
+                    drop.CreateForInsert();
+                    drop.Created();
                     if (drop != null)
                     {
                         SelectedLootTable.AddLootDrop(drop);
@@ -81,6 +86,16 @@ namespace LootPlugin
                 x =>
                 {
                     return SelectedLootTable != null;
+                });
+
+            RemoveSelectedEntryCommand = new DelegateCommand(
+                x =>
+                {
+                    SelectedLootDrop.RemoveLootDropEntry(SelectedDropEntry);
+                },
+                x =>
+                {
+                    return SelectedDropEntry != null && SelectedLootDrop != null;
                 });
         }
 
@@ -223,6 +238,7 @@ namespace LootPlugin
             {
                 _selectedLootDrop = value;
                 NotifyPropertyChanged("SelectedLootDrop");
+                RemoveSelectedEntryCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -234,6 +250,7 @@ namespace LootPlugin
             {
                 _selectedDropEntry = value;
                 NotifyPropertyChanged("SelectedDropEntry");
+                RemoveSelectedEntryCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -275,6 +292,16 @@ namespace LootPlugin
             {
                 _createLootDropCommand = value;
                 NotifyPropertyChanged("CreateLootDropCommand");
+            }
+        }
+
+        public DelegateCommand RemoveSelectedEntryCommand
+        {
+            get { return _removeSelectedEntryCommand; }
+            set
+            {
+                _removeSelectedEntryCommand = value;
+                NotifyPropertyChanged("RemoveSelectedEntryCommand");
             }
         }
                

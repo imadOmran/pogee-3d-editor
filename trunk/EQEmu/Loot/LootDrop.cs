@@ -17,7 +17,7 @@ namespace EQEmu.Loot
         private string _name;
 
         //bridge table
-        private int _multiplier;
+        private int _multiplier = 1;
         private int _probability;
 
         private bool _newCreation = false;
@@ -51,6 +51,11 @@ namespace EQEmu.Loot
         public void CreateForInsert()
         {
             _newCreation = true;
+        }
+
+        public void SetNoInsert()
+        {
+            _newCreation = false;
         }
 
         public int Multiplier
@@ -122,9 +127,13 @@ namespace EQEmu.Loot
         {
             if (CreatedObj)
             {
-                if( !NeedsInserted.Contains(entry) )
+                if (!NeedsInserted.Contains(entry))
                 {
                     NeedsDeleted.Add(entry);
+                }
+                else
+                {
+                    NeedsInserted.Remove(entry);
                 }
             }
             _entries.Remove(entry);
@@ -144,6 +153,12 @@ namespace EQEmu.Loot
 
                 AddLootDropEntry(entry);
             }
+
+            if (results.Count > 0 && results.ElementAt(0).ContainsKey("name"))
+            {
+                Name = results.ElementAt(0)["name"].ToString();
+            }
+
             Created();
         }
 
@@ -238,7 +253,11 @@ namespace EQEmu.Loot
         {
             get
             {
-                return Entries.Where(x => x.Dirty).ToList<IDatabaseObject>();
+                List<IDatabaseObject> dirties = new List<IDatabaseObject>();
+                dirties.AddRange(Entries.Where(x => x.Dirty));
+                dirties.AddRange(NeedsInserted);
+                dirties.AddRange(NeedsDeleted);
+                return dirties;
             }
         }
 

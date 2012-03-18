@@ -175,10 +175,7 @@ namespace EQEmu.Loot
         {
             get
             {
-                List<IDatabaseObject> dirties = new List<IDatabaseObject>();
-                dirties.AddRange(LootDrops.Where(x => x.Dirty || x.DirtyComponents.Count > 0));
-
-                return dirties;
+                return LootDrops.Where(x => x.Dirty || x.DirtyComponents.Count > 0).ToList<IDatabaseObject>();
             }
         }
 

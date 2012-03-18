@@ -619,7 +619,7 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
     </update>
   </query>
 
-  <query ty="EQEmu.Spawns.NPC">
+  <query type="EQEmu.Spawns.NPC">
     <update>
       <sql>
         <![CDATA[
@@ -951,7 +951,7 @@ INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) V
     <update>
       <sql>
         <![CDATA[
-UPDATE lootdrop.name = '{0}' WHERE id = @LootDropID;  
+UPDATE lootdrop SET lootdrop.name = '{0}' WHERE id = @LootDropID;  
 UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = @LootDropID AND loottable_id = {4};
         ]]>
       </sql>      
