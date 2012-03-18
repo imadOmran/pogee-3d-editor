@@ -233,6 +233,9 @@ namespace LootPlugin
         private void BalanceDropEntriesButton_Click(object sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedLootDrop == null) return;
+
+            if (DropEntryDataGrid.SelectedItems.Count <= 0) return;
+
             ViewModel.SelectedLootDrop.BalanceEntries(DropEntryDataGrid.SelectedItems.Cast<EQEmu.Loot.LootDropEntry>());
             DropEntryDataGrid.Items.Refresh();
         }
@@ -249,8 +252,12 @@ namespace LootPlugin
                 //if it found a loottable associated with the selected npc add the selected loot drop
                 if (table != null)
                 {
+                    int chance = 0;
+                    Int32.TryParse(AddDropNpcChance.Text,out chance);
+
                     var dropcopy = ViewModel.SelectedLootDrop.Clone();
                     dropcopy.LootTableId = table.Id;
+                    dropcopy.Probability = chance;
                     table.AddLootDrop(dropcopy);
                 }
             }
