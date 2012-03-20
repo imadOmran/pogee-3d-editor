@@ -46,6 +46,7 @@ namespace EQEmu.Loot
         public void AddLootDrop(LootDrop lootdrop)
         {
             if (LootDrops.Count(x => x.Id == lootdrop.Id) > 0) return;
+            lootdrop.LootTableId = Id;
 
             if (CreatedObj)
             {
@@ -81,8 +82,7 @@ namespace EQEmu.Loot
             {
                 var lootdrop = new LootDrop(_connection, _queryConfig);
                 lootdrop.SetProperties(Queries, row);
-                lootdrop.Lookup(lootdrop.Id);
-                lootdrop.Created();
+                lootdrop.Lookup(lootdrop.Id);                
 
                 //hack job
                 if (row.ContainsKey("mincash"))
@@ -99,8 +99,9 @@ namespace EQEmu.Loot
                 {
                     _name = row["name"].ToString();
                 }
-
+                lootdrop.UnlockObject();
                 AddLootDrop(lootdrop);
+                lootdrop.Created();
             }            
 
             Created();

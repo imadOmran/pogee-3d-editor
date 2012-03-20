@@ -19,6 +19,8 @@ namespace EQEmu.Spawns
         private string _zone;
         private int _version = 0;
 
+        private TypeQueriesExtension _allVersions = null;
+
         public string Zone
         {
             get { return _zone; }
@@ -49,13 +51,43 @@ namespace EQEmu.Spawns
             _connection = conn;
             _zone = zone;
             _version = version;
+            _allVersions = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetAllVersions");
 
+            if (version == -1)
+            {
+                LookupAllVersions();
+            }
+            else
+            {
+                if (_connection == null)
+                {
+                    throw new NullReferenceException();
+                }
+
+                var sql = String.Format(SelectString, SelectArgValues);
+                //var results = Database.QueryHelper.RunQuery(_connection, sql);
+                var results = Database.QueryHelper.TryRunQuery(_connection, sql);
+                if (results != null)
+                {
+                    foreach (var row in results)
+                    {
+                        Spawn2 s = new Spawn2(_queryConfig);
+                        s.SetProperties(Queries, row);
+                        s.Created();
+                        _spawns.Add(s);
+                    }
+                }
+            }
+        }
+
+        private void LookupAllVersions()
+        {
             if (_connection == null)
             {
                 throw new NullReferenceException();
             }
 
-            var sql = String.Format(SelectString, SelectArgValues);
+            var sql = String.Format(_allVersions.SelectQuery, ResolveArgs(_allVersions.SelectArgs) );
             //var results = Database.QueryHelper.RunQuery(_connection, sql);
             var results = Database.QueryHelper.TryRunQuery(_connection, sql);
             if (results != null)
@@ -67,7 +99,7 @@ namespace EQEmu.Spawns
                     s.Created();
                     _spawns.Add(s);
                 }
-            }
+            }        
         }
 
         public void SaveQueryToFile(string file)

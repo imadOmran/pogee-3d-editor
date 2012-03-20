@@ -9,9 +9,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="Query">       
         <StackPanel>
-          <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" Text="{Binding Zone}" />
-          <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" Text="{Binding Version}" />
-          <!--  Need something better but below is an example of when the 'service' is online ie. ready to edit
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" Text="{Binding Zone}" />            
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" Text="{Binding Version}" />
+            <m:RibbonCheckBox Label="All Versions" IsChecked="{Binding AllZoneVersions}" />
+
+            <!--  Need something better but below is an example of when the 'service' is online ie. ready to edit
           <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="10">
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">

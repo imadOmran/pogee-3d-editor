@@ -542,6 +542,7 @@ SELECT MAX(id) AS id FROM spawn2
       <store field="animation" type="int">IdleAnimation</store>
       <store field="cond_value" type="int">ConditionValue</store>
       <store field="_condition" type="int">Condition</store>
+      <store field="version" type="int">Version</store>
     </select>
     
     <!-- EQEMU compatibility
@@ -983,6 +984,31 @@ INSERT INTO lootdrop(id,name) VALUES (@LootDropID,'{1}');
       <param>Id</param>
       <param>Name</param>
     </insert>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetAllVersions">
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT * FROM spawn2 WHERE zone='{0}';
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="roam_area" type="int">RoamAreaId</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>
+      <store field="version" type="int">Version</store>
+    </select>
   </query-extension>
 
 </property-mapping>
