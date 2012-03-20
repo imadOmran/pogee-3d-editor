@@ -83,6 +83,24 @@ namespace SpawnsPlugin
             }
         }
 
+        private bool _allZoneVersions = false;
+        public bool AllZoneVersions
+        {
+            get { return _allZoneVersions; }
+            set
+            {
+                _allZoneVersions = value;
+                if (value)
+                {
+                    Version = -1;
+                }
+                else
+                {
+                    Version = 0;
+                }
+            }
+        }
+
         public bool ServiceOnline
         {
             get { return _service != null && _service.ZoneSpawns != null; }

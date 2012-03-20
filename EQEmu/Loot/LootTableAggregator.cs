@@ -40,6 +40,9 @@ namespace EQEmu.Loot
             {
                 var sql = String.Format("SELECT * FROM items WHERE name LIKE '%{0}%';",name);
                 var results = Database.QueryHelper.TryRunQuery(_connection,sql);
+
+                if (results == null) return items;
+
                 foreach (var row in results)
                 {
                     var item = new Item( Int32.Parse( row["id"].ToString() ), row["Name"].ToString());

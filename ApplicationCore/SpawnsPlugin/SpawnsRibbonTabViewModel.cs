@@ -118,9 +118,25 @@ namespace SpawnsPlugin
 
                 if (Keyboard.IsKeyDown(Key.LeftAlt) && SelectedSpawn != null)
                 {
+                    double transX = p.X - SelectedSpawn.X;
+                    double transY = p.Y - SelectedSpawn.Y;
+                    double transZ = p.Z - SelectedSpawn.Z + ZAdjustment;
+                    
                     SelectedSpawn.X = p.X; SelectedSpawn.Y = p.Y; SelectedSpawn.Z = p.Z + ZAdjustment;
                     //TODO hack visual update
                     SelectedSpawn = SelectedSpawn;
+                    if (SelectedSpawns != null && SelectedSpawns.Count() > 0)
+                    {
+                        //translate all selections
+                        foreach(var spawn in SelectedSpawns.Where( x => x != SelectedSpawn ))
+                        {
+                            spawn.X += transX;
+                            spawn.Y += transY;
+                            spawn.Z += transZ;
+                        }
+                        SelectedSpawns = SelectedSpawns;
+                    }
+
                     return;
                 }
 
