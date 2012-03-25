@@ -7,6 +7,8 @@ using System.IO;
 
 using MySql.Data.MySqlClient;
 
+using ApplicationCore;
+
 using EQEmu.Spawns;
 
 namespace SpawnExtractorPlugin
@@ -15,6 +17,8 @@ namespace SpawnExtractorPlugin
     {
         private readonly MySql.Data.MySqlClient.MySqlConnection _connection;
         private readonly EQEmu.Database.QueryConfig _config;
+
+        private DelegateCommand _removeCommand;
 
         private NPCAggregator _npcs;
         private SpawnGroupAggregator _spawngroups;
@@ -31,6 +35,53 @@ namespace SpawnExtractorPlugin
             _spawngroups.Created();
             Zone = "";
             ZoneVersion = 0;
+
+            RemoveCommand = new DelegateCommand(
+                x =>
+                {
+                    //remove all entries where this npc exists
+                    foreach(var sg in _spawngroups.SpawnGroups.ToArray())
+                    {
+                        var entries = sg.Entries.Where(y => y.NpcID == SelectedNPC.Id).ToArray();
+                        foreach (var entry in entries)
+                        {
+                            sg.RemoveEntry(entry);
+                        }
+
+                        //if no more entries remove the spawn2 that contains this spawngroup
+                        if (sg.Entries.Count == 0)
+                        {
+                            _spawngroups.RemoveSpawnGroup(sg);
+
+                            var spawns = _spawns.Spawns.Where(y => y.SpawnGroupId == sg.Id).ToArray();
+                            foreach (var sp in spawns)
+                            {
+                                _spawns.RemoveSpawn(sp);
+                            }
+
+                        }
+                    }
+                    _npcs.RemoveNPC(SelectedNPC);
+                },
+                x =>
+                {
+                    return SelectedNPC != null;
+                });
+        }
+
+        private NPC _selectedNPC;
+        public NPC SelectedNPC 
+        {
+            get
+            {
+                return _selectedNPC;
+            }
+            set
+            {
+                _selectedNPC = value;
+                NotifyPropertyChanged("SelectedNPC");
+                RemoveCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public void User3DClickAt(object sender, ApplicationCore.ViewModels.Editors.World3DClickEventArgs e)
@@ -60,7 +111,11 @@ namespace SpawnExtractorPlugin
 
             _npcs.ClearCache();
             _spawngroups.ClearCache();
-            _spawns = new ZoneSpawns(_connection,Zone, _config,ZoneVersion);
+
+            if (LoadSpawnEntries)
+            {
+                _spawns = new ZoneSpawns(_connection, Zone, _config, ZoneVersion);
+            }
 
             var zoneNpcs = spawns.Where(x => x.IsNPC > 0 && x.PetOwnerID == 0 && x.IsMercenary == 0 && x.Race != 127);
 
@@ -76,34 +131,67 @@ namespace SpawnExtractorPlugin
             }
 
             Dictionary<string, SpawnGroup> spawngroupMap = new Dictionary<string, SpawnGroup>();
-
-            foreach (var npc in _npcs.NPCs.GroupBy(x => x.Name))
-            {                
-                var sg = _spawngroups.CreateSpawnGroup();
-                foreach (var name in npc)
-                {
-                    sg.AddEntry(name).NPC = name;
-                }                
-                sg.Created();
-                sg.BalanceChance();
-                sg.Name = String.Format("{0}_{1}_v{2}", Zone, npc.ElementAt(0).Name, ZoneVersion);                
-                spawngroupMap[npc.ElementAt(0).Name] = sg;
-            }
-
-            foreach (var npc in zoneNpcs)
+            if (LoadSpawnGroups)
             {
-                var spawn = _spawns.GetNewSpawn();
-                spawn.Created();                      
-                if( spawngroupMap.ContainsKey(npc.SpawnName) )
+                foreach (var npc in _npcs.NPCs.GroupBy(x => x.Name))
                 {
-                    spawn.SpawnGroupRef = spawngroupMap[npc.SpawnName];
+                    var sg = _spawngroups.CreateSpawnGroup();
+                    foreach (var name in npc)
+                    {
+                        sg.AddEntry(name).NPC = name;
+                    }
+                    sg.Created();
+                    sg.BalanceChance();
+                    sg.Name = String.Format("{0}_{1}_v{2}", Zone, npc.ElementAt(0).Name, ZoneVersion);
+                    spawngroupMap[npc.ElementAt(0).Name] = sg;
                 }
-                spawn.X = npc.XPos;
-                spawn.Y = npc.YPos;
-                spawn.Z = npc.ZPos;
-                spawn.Heading = npc.Heading;                
-                _spawns.AddSpawn(spawn);
             }
+
+
+            if (LoadSpawnEntries)
+            {
+                foreach (var npc in zoneNpcs)
+                {
+                    var spawn = _spawns.GetNewSpawn();
+                    spawn.Created();
+
+                    if (LoadSpawnGroups)
+                    {
+                        if (spawngroupMap.ContainsKey(npc.SpawnName))
+                        {
+                            spawn.SpawnGroupRef = spawngroupMap[npc.SpawnName];
+                        }
+                    }
+
+                    spawn.X = npc.XPos;
+                    spawn.Y = npc.YPos;
+                    spawn.Z = npc.ZPos;
+                    spawn.Heading = npc.Heading;
+                    _spawns.AddSpawn(spawn);
+                }
+            }
+        }
+
+        public DelegateCommand RemoveCommand
+        {
+            get { return _removeCommand; }
+            set
+            {
+                _removeCommand = value;
+                NotifyPropertyChanged("RemoveCommand");
+            }
+        }
+
+        public bool LoadSpawnGroups
+        {
+            get;
+            set;
+        }
+
+        public bool LoadSpawnEntries
+        {
+            get;
+            set;
         }
 
         private string _zone;
@@ -130,7 +218,10 @@ namespace SpawnExtractorPlugin
 
         public string NPCQuery()
         {
-            return _npcs.GetSQL() + _spawngroups.GetSQL() + _spawns.GetSQL();
+            string str = _npcs.GetSQL();
+            if (LoadSpawnGroups) str += _spawngroups.GetSQL();
+            if (LoadSpawnEntries) str += _spawns.GetSQL();
+            return str;
         }
 
         public IEnumerable<NPC> NPCs

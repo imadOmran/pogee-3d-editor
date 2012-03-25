@@ -12,12 +12,13 @@
                 <TextBlock VerticalAlignment="Center" Text="{Binding Zone}" Width="70" />
                 <Label>Version:</Label>
                 <TextBlock VerticalAlignment="Center" Text="{Binding ZoneVersion}" Width="73" />
-            </StackPanel>
+            </StackPanel>            
             <Button HorizontalAlignment="Left" Content="Load XML" Name="LoadButton" Click="LoadButton_Click" Width="66" />
-            <DataGrid Name="NPCDataGrid" ItemsSource="{Binding NPCs}" Height="454" />
+            <Button Margin="0,10,0,0" HorizontalAlignment="Left" Content="Remove Selected" Command="{Binding RemoveCommand}" />
+            <DataGrid SelectedItem="{Binding SelectedNPC}" Name="NPCDataGrid" ItemsSource="{Binding NPCs}" Height="454" />            
             <Button HorizontalAlignment="Left" Content="Generate Query" Name="NPCQueryButton" Click="NPCQueryButton_Click" />
         </StackPanel>
-        <Grid Background="Black" HorizontalAlignment="Left" Width="300" x:Name="InputBox" Visibility="Collapsed" Margin="0,48,0,516">
+        <Grid Background="Black" HorizontalAlignment="Left" Width="300" x:Name="InputBox" Visibility="Collapsed" Margin="2,88,0,476">
             <Grid Margin="2" Background="White">
                 <StackPanel>
                     <Label>File Loaded Successfully - use the following</Label>
@@ -28,6 +29,12 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Label>Zone Version</Label>
                         <TextBox MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="ZoneVersionTextBox" Width="150" Text="{Binding ZoneVersion}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">                        
+                        <Label>Create SpawnGroups</Label>
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding LoadSpawnGroups}" />
+                        <Label>Create Spawn2 Entries</Label>
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding LoadSpawnEntries}" />
                     </StackPanel>
                     <Button x:Name="FinishButton" Margin="5" Content="Finish" Click="FinishButton_Click" />
                 </StackPanel>

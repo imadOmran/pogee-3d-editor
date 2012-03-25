@@ -116,6 +116,15 @@ namespace EQEmu.Database
             }
         }
 
+        protected virtual void RemoveObject(IDatabaseObject obj)
+        {
+            if (NeedsInserted.Contains(obj)) NeedsInserted.Remove(obj);
+            else
+            {
+                NeedsDeleted.Add(obj);
+            }
+        }
+
         [Browsable(false)]
         abstract public List<IDatabaseObject> DirtyComponents { get; }
     }
