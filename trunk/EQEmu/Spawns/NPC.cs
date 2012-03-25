@@ -56,6 +56,13 @@ namespace EQEmu.Spawns
             _cache.Add(npc);
         }
 
+        public void RemoveNPC(NPC npc)
+        {
+            RemoveObject(npc);
+            _npcs.Remove(npc);
+            _cache.Remove(npc);
+        }
+
         public NPC CreateNPC()
         {
             return new NPC(_queryConfig);
@@ -123,7 +130,7 @@ namespace EQEmu.Spawns
             npc.Race = (TypeRace)data.Race;
             npc.BodyType = (TypeBodyType)data.BodyType;
 
-            npc.WalkSpeed = data.WalkSpeed;
+            //npc.WalkSpeed = data.WalkSpeed;
             npc.RunSpeed = data.RunSpeed;
 
             npc.Face = data.Face;
@@ -133,6 +140,7 @@ namespace EQEmu.Spawns
             npc.DMeleeTexture2 = data.MeleeTexture2;
 
             npc.LuclinBeard = data.Beard;
+            npc.LuclinBeardColor = data.BeardColor;
             npc.LuclinEyeColor = data.EyeColor1;
             npc.LuclinEyeColor2 = data.EyeColor2;
             npc.LuclinHairColor = data.HairColor;
@@ -953,6 +961,7 @@ namespace EQEmu.Spawns
         private int _id;
         private int _lootTableId;
         private int _hp;
+        private int _mana;
         private int _minDamage;
         private int _maxDamage;
         private int _texture;
@@ -963,7 +972,8 @@ namespace EQEmu.Spawns
         private int _luclinHairColor;
         private int _luclinEyeColor;
         private int _luclinEyeColor2;
-        private int _luclinBeard;        
+        private int _luclinBeard;
+        private int _luclinBeardColor;
         private uint _dMeleeTexture1;
         private uint _dMeleeTexture2;
         private int _armorTintRed;
@@ -978,7 +988,7 @@ namespace EQEmu.Spawns
         
         private float _size;
         private float _runSpeed;
-        private float _walkSpeed;
+        //private float _walkSpeed;
 
         private bool _findable;
 
@@ -1093,6 +1103,16 @@ namespace EQEmu.Spawns
             }
         }
 
+        public int Mana
+        {
+            get { return _mana; }
+            set
+            {
+                _mana = value;
+                Dirtied();
+            }
+        }
+
         public int MaxDamage
         {
             get { return _maxDamage; }
@@ -1163,6 +1183,7 @@ namespace EQEmu.Spawns
             }
         }
 
+        /*
         public float WalkSpeed
         {
             get { return _walkSpeed; }
@@ -1172,6 +1193,7 @@ namespace EQEmu.Spawns
                 Dirtied();
             }
         }
+        */
 
         public int Texture
         {
@@ -1258,6 +1280,16 @@ namespace EQEmu.Spawns
             set
             {
                 _luclinBeard = value;
+                Dirtied();
+            }
+        }
+
+        public int LuclinBeardColor
+        {
+            get { return _luclinBeardColor; }
+            set
+            {
+                _luclinBeardColor = value;
                 Dirtied();
             }
         }

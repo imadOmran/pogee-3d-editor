@@ -186,11 +186,11 @@ namespace EQEmu.Spawns
             {
                 if (_spawnGroupRef != null)
                 {
-                    return _spawnGroupId;
+                    return _spawnGroupRef.Id;
                 }
                 else
                 {
-                    return _spawnGroupRef.Id;
+                    return _spawnGroupId;
                 }
             }
             set
