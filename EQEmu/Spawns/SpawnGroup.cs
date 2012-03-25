@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 using MySql.Data.MySqlClient;
 
@@ -13,6 +14,7 @@ namespace EQEmu.Spawns
         private int _spawnGroupId;
         private int _npcId;
         private short _chance;
+        private NPC _npc;
 
         public int SpawnGroupID
         {
@@ -24,9 +26,30 @@ namespace EQEmu.Spawns
             }
         }
 
+        [Browsable(false)]
+        public NPC NPC
+        {
+            get { return _npc; }
+            set
+            {
+                _npc = value;
+                NpcID = value.Id;
+            }
+        }
+
         public int NpcID
         {
-            get { return _npcId; }
+            get 
+            {
+                if (_npc == null)
+                {
+                    return _npcId;
+                }
+                else
+                {
+                    return _npc.Id;
+                }
+            }
             set
             {
                 _npcId = value;
@@ -202,7 +225,8 @@ namespace EQEmu.Spawns
 
         public SpawnEntry CreateEntry()
         {
-            var entry =  new SpawnEntry(_queryConfig);            
+            var entry =  new SpawnEntry(_queryConfig);
+            entry.SpawnGroupID = Id;
             return entry;
         }
 
@@ -263,6 +287,15 @@ namespace EQEmu.Spawns
             _connection = connection;
         }
 
+        public SpawnEntry AddEntry(NPC npc)
+        {
+            var entry = CreateEntry();
+            entry.NpcID = npc.Id;
+            entry.Created();
+            AddEntry(entry);
+            return entry;
+        }
+
         public void AddEntry(SpawnEntry entry)
         {
             var count = _entries.Count(
@@ -294,6 +327,20 @@ namespace EQEmu.Spawns
             if (entry != null)
             {
                 OnSpawnChanceTotalChanged();
+            }
+        }
+
+        public void BalanceChance()
+        {
+            var chance = 100;
+            while (chance > 0)
+            {
+                foreach (var entry in Entries)
+                {
+                    entry.Chance += 1;
+                    chance -= 1;
+                    if (chance == 0) break;
+                }
             }
         }
 

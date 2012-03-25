@@ -108,6 +108,14 @@ namespace EQEmu.Database
             return sql;
         }
 
+        protected virtual void AddObject(IDatabaseObject obj)
+        {
+            if (CreatedObj)
+            {
+                NeedsInserted.Add(obj);
+            }
+        }
+
         [Browsable(false)]
         abstract public List<IDatabaseObject> DirtyComponents { get; }
     }
