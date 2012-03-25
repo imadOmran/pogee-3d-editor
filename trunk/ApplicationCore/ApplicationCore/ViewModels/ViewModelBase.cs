@@ -11,9 +11,10 @@ namespace ApplicationCore.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string info)
         {
-            if (PropertyChanged != null)
+            var e = PropertyChanged;
+            if (e != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
+                e(this, new PropertyChangedEventArgs(info));
             }
         }
     }

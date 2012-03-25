@@ -124,46 +124,43 @@ namespace EQEmu.Spawns
             spawn.Zone = _zone;  
 
             int max = 1;
-            if (Spawns.Count > 0)
+            if (Spawns.Count > 0) max = Spawns.Max(x => x.Id) + 1;
+
+            //test if this exists... if it does get the true max value from DB
+            bool exists = false;
+
+            var sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxZoneID").SelectQuery, max);
+            //var results = Database.QueryHelper.RunQuery(_connection, sql);
+            var results = Database.QueryHelper.TryRunQuery(_connection, sql);
+            if (results != null)
             {
-                max = Spawns.Max(x => x.Id) + 1;
-
-                //test if this exists... if it does get the true max value from DB
-                bool exists = false;
-
-                var sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxZoneID").SelectQuery, max);
-                //var results = Database.QueryHelper.RunQuery(_connection, sql);
-                var results = Database.QueryHelper.TryRunQuery(_connection, sql);
-                if (results != null)
+                foreach (var row in results)
                 {
-                    foreach (var row in results)
-                    {
-                        exists = true;
-                        break;
-                    }
+                    exists = true;
+                    break;
+                }
 
-                    if (exists)
+                if (exists)
+                {
+                    sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID").SelectQuery);
+                    //results = Database.QueryHelper.RunQuery(_connection, sql);
+                    results = Database.QueryHelper.TryRunQuery(_connection, sql);
+                    if (results != null)
                     {
-                        sql = String.Format(Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID").SelectQuery);
-                        //results = Database.QueryHelper.RunQuery(_connection, sql);
-                        results = Database.QueryHelper.TryRunQuery(_connection, sql);
-                        if (results != null)
+                        if (results.Count > 0)
                         {
-                            if (results.Count > 0)
+                            if (results.ElementAt(0).ContainsKey("id"))
                             {
-                                if (results.ElementAt(0).ContainsKey("id"))
-                                {
-                                    max = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
-                                }
+                                max = Int32.Parse(results.ElementAt(0)["id"].ToString()) + 1;
                             }
                         }
                     }
                 }
+            }
 
-                if (results == null)
-                {
-                    throw new DatabaseAccessException(); 
-                }
+            if (results == null)
+            {
+                throw new DatabaseAccessException();
             }
             spawn.Id = max;
             spawn.Version = _version;

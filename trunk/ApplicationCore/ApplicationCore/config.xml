@@ -489,9 +489,7 @@ SELECT * FROM spawn2 where spawngroupid = {0};
   <query-extension type="EQEmu.GroundSpawns.GroundSpawn" name="GetItemName">
     <select>
       <sql>
-        <![CDATA[
-SELECT name FROM items WHERE id = {0};
-        ]]>
+        <![CDATA[SELECT name FROM items WHERE id = {0};]]>
       </sql>
       <param>Item</param>
       <store field="name" type="string">ItemName</store>
@@ -501,9 +499,7 @@ SELECT name FROM items WHERE id = {0};
   <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxZoneID">
     <select>
       <sql>
-        <![CDATA[
-SELECT id FROM spawn2 WHERE id = {0};        
-        ]]>
+        <![CDATA[SELECT id FROM spawn2 WHERE id = {0};]]>
       </sql>
       <!-- param provided by the method -->
     </select>
@@ -512,9 +508,7 @@ SELECT id FROM spawn2 WHERE id = {0};
   <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxID">
     <select>
       <sql>
-        <![CDATA[
-SELECT MAX(id) AS id FROM spawn2       
-        ]]>
+<![CDATA[SELECT MAX(id) AS id FROM spawn2]]>
       </sql>
       <!-- param provided by the method -->
     </select>
@@ -523,9 +517,7 @@ SELECT MAX(id) AS id FROM spawn2
   <query type="EQEmu.Spawns.ZoneSpawns">
     <select>
       <sql>
-        <![CDATA[
-        SELECT * FROM spawn2 WHERE zone='{0}' and version={1};
-        ]]>
+<![CDATA[SELECT * FROM spawn2 WHERE zone='{0}' and version={1};]]>
       </sql>
       <param>Zone</param>
       <param>Version</param>
@@ -571,9 +563,7 @@ SELECT MAX(id) AS id FROM spawn2
   <query type="EQEmu.Spawns.SpawnGroupAggregator">
     <select>
       <sql>
-        <![CDATA[
-SELECT * FROM spawngroup WHERE id = {0};        
-        ]]>        
+<![CDATA[SELECT * FROM spawngroup WHERE id = {0};]]>        
       </sql>
       <param>FilterById</param>
       <store field="id" type="int">Id</store>
@@ -591,18 +581,14 @@ SELECT * FROM spawngroup WHERE id = {0};
   <query type="EQEmu.Spawns.SpawnEntry">
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM spawnentry WHERE npcID = {0} AND spawngroupID = {1};        
-        ]]>
+<![CDATA[DELETE FROM spawnentry WHERE npcID = {0} AND spawngroupID = {1};]]>
       </sql>
       <param>NpcID</param>
       <param>SpawnGroupID</param>
     </delete>
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO spawnentry (npcId,spawngroupID,chance) VALUES ({0},{1},{2});        
-        ]]>
+<![CDATA[INSERT INTO spawnentry (npcId,spawngroupID,chance) VALUES ({0},{1},{2});]]>
       </sql>
       <param>NpcID</param>
       <param>SpawnGroupID</param>
@@ -610,9 +596,7 @@ INSERT INTO spawnentry (npcId,spawngroupID,chance) VALUES ({0},{1},{2});
     </insert>
     <update>
       <sql>
-        <![CDATA[
-UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
-        ]]>        
+<![CDATA[UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};]]>        
       </sql>
       <param>Chance</param>
       <param>NpcID</param>
@@ -623,15 +607,22 @@ UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};
   <query type="EQEmu.Spawns.NPC">
     <update>
       <sql>
-        <![CDATA[
-UPDATE npc_types SET loottable_id = {0}, name = '{1}', level = {2} WHERE id = {3};
-        ]]>
+<![CDATA[UPDATE npc_types SET loottable_id = {0}, name = '{1}', level = {2} WHERE id = {3};]]>
       </sql>
       <param>LootTableId</param>
       <param>Name</param>
       <param>Level</param>
       <param>Id</param>
     </update>
+    <insert>
+      <sql>
+<![CDATA[INSERT INTO npc_types (id,loottable_id,level,name) VALUES ({3},{0},{2},'{1}');]]>
+      </sql>
+      <param>LootTableId</param>
+      <param>Name</param>
+      <param>Level</param>
+      <param>Id</param>
+    </insert>
   </query>
 
   <query type="EQEmu.Spawns.NPCAggregator">
@@ -684,9 +675,7 @@ SELECT spawnentry.*, npc_types.name AS npcname, npc_types.level AS level FROM sp
     </select>
     <update>
       <sql>
-        <![CDATA[
-UPDATE spawngroup SET delay = {0}, spawn_limit = {1}, dist = {2}, min_x = {3}, max_x = {4}, min_y = {5}, max_y = {6}, name = '{7}' WHERE id = {8};
-        ]]>
+        <![CDATA[UPDATE spawngroup SET delay = {0}, spawn_limit = {1}, dist = {2}, min_x = {3}, max_x = {4}, min_y = {5}, max_y = {6}, name = '{7}' WHERE id = {8};]]>
       </sql>
       <param>RoamingDelay</param>
       <param>SpawnLimit</param>
@@ -728,10 +717,8 @@ DELETE FROM spawngroup WHERE id = {0};
   <query type="EQEmu.Spawns.Spawn2">
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition) VALUES
-({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12});
-        ]]>
+        <![CDATA[INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition) VALUES
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12});]]>
       </sql>
       <param>Id</param>
       <param>Zone</param>
@@ -771,10 +758,8 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,anim
     
     <update>
       <sql>
-        <![CDATA[
-UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}
- WHERE id = {11} AND zone = '{1}';
-        ]]>
+<![CDATA[UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}
+WHERE id = {11} AND zone = '{1}';]]>
       </sql>
       <param>SpawnGroupId</param>
       <param>Zone</param>
@@ -818,9 +803,7 @@ WHERE id = {10} AND zone = '{1}';
     
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';
-        ]]>
+        <![CDATA[DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';]]>
       </sql>
       <param>Id</param>
       <param>Zone</param>
@@ -845,9 +828,7 @@ SELECT * FROM loottable,loottable_entries WHERE loottable.id = {0} AND loottable
 
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO loottable(id,name,mincash,maxcash) VALUES ({0},'{1}',{2},{3});
-        ]]>
+        <![CDATA[INSERT INTO loottable(id,name,mincash,maxcash) VALUES ({0},'{1}',{2},{3});]]>
       </sql>
       <param>Id</param>
       <param>Name</param>
@@ -857,9 +838,7 @@ INSERT INTO loottable(id,name,mincash,maxcash) VALUES ({0},'{1}',{2},{3});
 
     <update>
       <sql>
-        <![CDATA[
-UPDATE loottable SET name = '{0}' AND mincash = {1} AND maxcash = {2} WHERE id = {3};        
-        ]]>
+        <![CDATA[UPDATE loottable SET name = '{0}' AND mincash = {1} AND maxcash = {2} WHERE id = {3};]]>
       </sql>
       <param>Name</param>
       <param>MinCash</param>
@@ -881,10 +860,8 @@ DELETE FROM loottable WHERE id = {0};
   <query type="EQEmu.Loot.LootDropEntry">
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO lootdrop_entries(lootdrop_id,item_id,item_charges,equip_item,chance)
-VALUES (@LootDropID,{1},{2},{3},{4});
-        ]]>
+        <![CDATA[INSERT INTO lootdrop_entries(lootdrop_id,item_id,item_charges,equip_item,chance)
+VALUES (@LootDropID,{1},{2},{3},{4});]]>
       </sql>
       <param>LootDropId</param>
       <param>ItemId</param>
@@ -895,10 +872,8 @@ VALUES (@LootDropID,{1},{2},{3},{4});
 
     <update>
       <sql>
-        <![CDATA[
-UPDATE lootdrop_entries SET item_id = {0}, item_charges = {1}, equip_item = {2}, chance = {3} 
-WHERE lootdrop_id = @LootDropID AND item_id = {5};     
-        ]]>
+        <![CDATA[UPDATE lootdrop_entries SET item_id = {0}, item_charges = {1}, equip_item = {2}, chance = {3}
+WHERE lootdrop_id = @LootDropID AND item_id = {5};]]>
       </sql>
       <param>ItemId</param>
       <param>ItemCharges</param>
@@ -910,9 +885,7 @@ WHERE lootdrop_id = @LootDropID AND item_id = {5};
 
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM lootdrop_entries WHERE lootdrop_id = @LootDropID AND item_id = {1};        
-        ]]>
+        <![CDATA[DELETE FROM lootdrop_entries WHERE lootdrop_id = @LootDropID AND item_id = {1};]]>
       </sql>
       <param>LootDropId</param>
       <param>ItemId</param>
@@ -937,9 +910,7 @@ SELECT lootdrop.*,lootdrop_entries.*,items.name as itemname FROM lootdrop,lootdr
 
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},@LootDropID,{4},{5});
-        ]]>
+        <![CDATA[INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},@LootDropID,{4},{5});]]>
       </sql>
       <param>Id</param>
       <param>Name</param>
@@ -951,10 +922,8 @@ INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) V
 
     <update>
       <sql>
-        <![CDATA[
-UPDATE lootdrop SET lootdrop.name = '{0}' WHERE id = @LootDropID;  
-UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = @LootDropID AND loottable_id = {4};
-        ]]>
+        <![CDATA[UPDATE lootdrop SET lootdrop.name = '{0}' WHERE id = @LootDropID;  
+UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = @LootDropID AND loottable_id = {4};]]>
       </sql>      
       <param>Name</param>
       <param>Id</param>
@@ -965,9 +934,7 @@ UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_
 
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = @LootDropID;        
-        ]]>
+        <![CDATA[DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = @LootDropID;]]>
       </sql>
       <param>LootTableId</param>
       <param>Id</param>
@@ -977,9 +944,7 @@ DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = @LootDr
   <query-extension type="EQEmu.Loot.LootDrop" name="NewInsert">
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO lootdrop(id,name) VALUES (@LootDropID,'{1}');
-        ]]>
+        <![CDATA[INSERT INTO lootdrop(id,name) VALUES (@LootDropID,'{1}');]]>
       </sql>
       <param>Id</param>
       <param>Name</param>

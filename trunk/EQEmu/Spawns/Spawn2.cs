@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
+using System.ComponentModel;
 
 namespace EQEmu.Spawns
 {
@@ -31,6 +32,8 @@ namespace EQEmu.Spawns
         private int _spawnGroupId = 0;
         private int _id = 0;
         private Animation _animation = Animation.Standing;
+
+        private SpawnGroup _spawnGroupRef = null;
 
         public Animation IdleAnimation
         {
@@ -179,11 +182,32 @@ namespace EQEmu.Spawns
 
         public int SpawnGroupId
         {
-            get { return _spawnGroupId; }
+            get 
+            {
+                if (_spawnGroupRef != null)
+                {
+                    return _spawnGroupId;
+                }
+                else
+                {
+                    return _spawnGroupRef.Id;
+                }
+            }
             set
             {
                 _spawnGroupId = value;
                 Dirtied();
+            }
+        }
+
+        [Browsable(false)]
+        public SpawnGroup SpawnGroupRef
+        {
+            get { return _spawnGroupRef; }
+            set
+            {
+                _spawnGroupRef = value;
+                _spawnGroupId = value.Id;
             }
         }
 
