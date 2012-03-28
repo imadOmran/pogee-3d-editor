@@ -55,6 +55,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LDONNpcTemplate.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="SpawnExtractorTab.xaml.cs">
       <DependentUpon>SpawnExtractorTab.xaml</DependentUpon>
     </Compile>
@@ -79,7 +82,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y
+
+xcopy *.cs "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

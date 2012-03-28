@@ -616,8 +616,8 @@ SELECT * FROM spawn2 where spawngroupid = {0};
     </update>
     <insert>
       <sql>
-<![CDATA[INSERT INTO npc_types(`id`,`loottable_id`,`level,name`,`lastname`,`hp`,`mana,gender`,`race`,`class`,`bodytype`,`mindmg`,`maxdmg`,`size`,`runspeed`,`texture`,`helmtexture`,`face`,`luclin_hairstyle`,`luclin_haircolor`, `luclin_eyecolor`, `luclin_eyecolor2`,`luclin_beard`, `luclin_beardcolor`, `findable`, `version`, `d_meele_texture1`, `d_meele_texture2`, `armortint_red`, `armortint_green`, `armortint_blue`, `drakkin_heritage`,`drakkin_tattoo`,`drakkin_details`) 
-VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33});]]>
+<![CDATA[INSERT INTO npc_types(`id`,`loottable_id`,`level`,`name`,`lastname`,`hp`,`mana`,`gender`,`race`,`class`,`bodytype`,`mindmg`,`maxdmg`,`size`,`runspeed`,`texture`,`helmtexture`,`face`,`luclin_hairstyle`,`luclin_haircolor`, `luclin_eyecolor`, `luclin_eyecolor2`,`luclin_beard`, `luclin_beardcolor`, `findable`, `version`, `d_meele_texture1`, `d_meele_texture2`, `armortint_red`, `armortint_green`, `armortint_blue`, `drakkin_heritage`,`drakkin_tattoo`,`drakkin_details`,`npc_faction_id`,`npc_spells_id`) 
+VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35});]]>
       </sql>
       <!-- 0 --><param>LootTableId</param>
       <!-- 1 --><param>Name</param>
@@ -653,6 +653,8 @@ VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15
       <!-- 31 --><param>DrakkinHeritage</param>
       <!-- 32 --><param>DrakkinTattoo</param>
       <!-- 33 --><param>DrakkinDetails</param>
+      <!-- 34 --><param>FactionId</param>
+      <!-- 35 --><param>SpellsId</param>
     </insert>
   </query>
 
@@ -670,6 +672,16 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
       <store field="loottable_id" type="int">LootTableId</store>
     </select>
   </query>
+
+  <query-extension type="EQEmu.Spawns.NPCAggregator" name="MaxIdForZone">
+    <select>
+      <sql>
+        <![CDATA[SELECT MAX(npc_types.id) as id, zone.short_name as zoneid 
+        FROM npc_types,zone WHERE zone.short_name = '{0}' AND npc_types.id >= zone.zoneidnumber*1000 AND npc_types.id < (zone.zoneidnumber+1)*1000; ]]>
+      </sql>
+      <!-- param provided by method -->
+    </select>
+  </query-extension>
 
   <query-extension type="EQEmu.Spawns.NPCAggregator" name="LookupByZone">
     <select>

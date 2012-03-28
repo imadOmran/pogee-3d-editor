@@ -17,6 +17,8 @@ using System.Linq;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 
+using System.CodeDom.Compiler;
+
 using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Practices.Unity;
 using Unity.AutoRegistration;
@@ -140,6 +142,9 @@ namespace ApplicationCore
                 dirCatalog = new DirectoryCatalog(".\\Plugins");
             }
 
+            //this will create a new and load a new assembly, the unity container will be able to resolve types from here
+            CompilePluginsDirectory();
+
             _container.ConfigureAutoRegistration()
                 .ExcludeSystemAssemblies()
 
@@ -158,9 +163,58 @@ namespace ApplicationCore
                     x => x.DecoratedWith<AutoRegisterAttribute>() && x.Implements<UserControls.ITabEditorControl>(),
                     Then.Register().WithTypeName().UsingSingletonMode()
                     )
+
+                .Include(
+                    x => x.Implements<EQEmu.Spawns.INPCPropertyTemplate>(),
+                    Then.Register().WithTypeName().UsingSingletonMode()
+                    )
                     
 
                 .ApplyAutoRegistration();
+
+            //we need to eventually make this more generic so we don't end up with a ton of these
+            var npcmanager = new EQEmu.Spawns.NPCPropertyTemplateManager();
+            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INPCPropertyTemplate>();
+            _container.RegisterInstance(npcmanager);
+        }
+
+        private void CompilePluginsDirectory()
+        {
+            var compiler = new Microsoft.CSharp.CSharpCodeProvider();
+            var parms = new CompilerParameters()
+            {
+                GenerateExecutable = false,
+                GenerateInMemory = true
+            };
+            parms.ReferencedAssemblies.Add("System.Core.dll");
+            parms.ReferencedAssemblies.Add("EQEmu.dll");
+
+            var files = Directory.GetFiles(".\\Plugins");
+            if (files.Count() > 0)
+            {
+                files = files.Where(x => x.Contains(".cs")).ToArray();
+                if (files.Count() > 0)
+                {
+                    var results = compiler.CompileAssemblyFromFile(parms, files);
+                    if (results.Errors.HasErrors)
+                    {
+                        string errorMessage = "There were compilation errors from source files in the plugin directory:" + System.Environment.NewLine; ;
+                        foreach (var err in results.Errors)
+                        {
+                            errorMessage += err.ToString() + System.Environment.NewLine;
+                        }
+
+                        var window = new TextWindow(errorMessage);
+                        window.ShowDialog();
+                    }
+                    else
+                    {
+                        //the get accessor loads the assembly into the appdomain
+                        var assembly = results.CompiledAssembly;
+                    }
+                }
+            }
+            
         }
 
         public void WorldMouseClickAt(Point3D p,object selectedControl, IsPointInsideSelectionBox selectionBoxCheck )
