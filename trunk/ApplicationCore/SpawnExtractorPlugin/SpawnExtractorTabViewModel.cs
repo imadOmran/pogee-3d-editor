@@ -17,17 +17,20 @@ namespace SpawnExtractorPlugin
     {
         private readonly MySql.Data.MySqlClient.MySqlConnection _connection;
         private readonly EQEmu.Database.QueryConfig _config;
+        private readonly NPCPropertyTemplateManager _templates;
 
         private DelegateCommand _removeCommand;
+        private DelegateCommand _applyTemplateCommand;
 
         private NPCAggregator _npcs;
         private SpawnGroupAggregator _spawngroups;
         private ZoneSpawns _spawns;
 
-        public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config)
+        public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config,NPCPropertyTemplateManager templates)
         {
             _connection = connection;
             _config = config;
+            _templates = templates;
 
             _npcs = new NPCAggregator(connection, config);
             _npcs.Created();
@@ -67,8 +70,38 @@ namespace SpawnExtractorPlugin
                 {
                     return SelectedNPC != null;
                 });
+
+            ApplyTemplateCommand = new DelegateCommand(
+                x =>
+                {
+                    var npcs = x as IEnumerable<NPC>;
+                    if (npcs == null) return;
+
+                    SelectedTemplate.SetProperties(npcs);
+                },
+                x =>
+                {
+                    return SelectedTemplate != null;
+                });
+
         }
 
+        public IEnumerable<INPCPropertyTemplate> Templates
+        {
+            get { return _templates.Templates; }
+        }
+
+        private INPCPropertyTemplate _selectedTemplate;
+        public INPCPropertyTemplate SelectedTemplate
+        {
+            get { return _selectedTemplate; }
+            set
+            {
+                _selectedTemplate = value;
+                NotifyPropertyChanged("SelectedTemplate");
+            }
+        }
+        
         private NPC _selectedNPC;
         public NPC SelectedNPC 
         {
@@ -78,7 +111,7 @@ namespace SpawnExtractorPlugin
             }
             set
             {
-                _selectedNPC = value;
+                _selectedNPC = value;                
                 NotifyPropertyChanged("SelectedNPC");
                 RemoveCommand.RaiseCanExecuteChanged();
             }
@@ -119,6 +152,9 @@ namespace SpawnExtractorPlugin
 
             var zoneNpcs = spawns.Where(x => x.IsNPC > 0 && x.PetOwnerID == 0 && x.IsMercenary == 0 && x.Race != 127);
 
+            int id = _npcs.GetNextIdForZone(Zone);
+            if (id == -1) id = 0;
+
             foreach (var sp in zoneNpcs)
             {
                 if ( _npcs.NPCs.Count(x => x.Level == sp.Level && x.Name == sp.SpawnName) == 0)
@@ -126,7 +162,9 @@ namespace SpawnExtractorPlugin
                     var npc = _npcs.CreateNPC();
                     NPC.SetNPCProperties(ref npc, sp);
                     npc.Version = ZoneVersion;
+                    npc.Id = id;
                     _npcs.AddNPC(npc);
+                    id += 1;
                 }
             }
 
@@ -179,6 +217,16 @@ namespace SpawnExtractorPlugin
             {
                 _removeCommand = value;
                 NotifyPropertyChanged("RemoveCommand");
+            }
+        }
+
+        public DelegateCommand ApplyTemplateCommand
+        {
+            get { return _applyTemplateCommand; }
+            set
+            {
+                _applyTemplateCommand = value;
+                NotifyPropertyChanged("ApplyTemplateCommand");
             }
         }
 

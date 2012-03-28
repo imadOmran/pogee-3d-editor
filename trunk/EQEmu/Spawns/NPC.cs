@@ -17,7 +17,8 @@ namespace EQEmu.Spawns
         private readonly MySqlConnection _connection;
 
         private TypeQueriesExtension _lookupByZone = null;
-
+        private TypeQueriesExtension _maxIdForZone = null;
+        
         public NPCAggregator(MySqlConnection connection, Database.QueryConfig config)
             : base(config)
         {
@@ -25,6 +26,14 @@ namespace EQEmu.Spawns
             _connection = connection;
 
             _lookupByZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "LookupByZone");
+            _maxIdForZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "MaxIdForZone");                        
+
+            /*
+            _templates.Add(new LDONNpcTemplate());
+            _templates.Add(new LDONRujTemplate());
+            _templates.Add(new CastersTemplate());
+            _templates.Add(new LDONNormalToHighRisk());
+            */
         }
 
         public ObservableCollection<NPC> NPCs
@@ -88,6 +97,24 @@ namespace EQEmu.Spawns
                 AddNPC(npc);
                 npc.Created();
             }
+        }
+
+        public int GetNextIdForZone(string zone)
+        {
+            if (_maxIdForZone != null)
+            {
+                var sql = String.Format(_maxIdForZone.SelectQuery, zone);
+                var results = QueryHelper.RunQuery(_connection, sql);
+                if (results.Count > 0)
+                {
+                    if (results.ElementAt(0)["id"].GetType() != typeof(System.DBNull))
+                    {
+                        return (int)results.ElementAt(0)["id"] + 1;
+                    }
+                }
+            }
+
+            return 1;
         }
 
         public void LookupByZone(string zone)

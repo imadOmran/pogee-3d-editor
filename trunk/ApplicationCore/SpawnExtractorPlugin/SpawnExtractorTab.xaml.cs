@@ -122,5 +122,28 @@ namespace SpawnExtractorPlugin
 
             NPCDataGrid.Items.Refresh();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if( NPCDataGrid.SelectedItems.Count > 1 )
+            {
+                var window = new PropertyEditorWindow(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>());
+                window.ShowDialog();
+                NPCDataGrid.Items.Refresh();
+            }
+            
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (NPCDataGrid.SelectedItems.Count > 0)
+            {
+                if (EditorViewModel.ApplyTemplateCommand.CanExecute(null))
+                {
+                    EditorViewModel.ApplyTemplateCommand.Execute(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>());
+                    NPCDataGrid.Items.Refresh();
+                }
+            }
+        }
     }
 }
