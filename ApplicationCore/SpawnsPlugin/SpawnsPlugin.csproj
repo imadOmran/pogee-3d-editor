@@ -161,6 +161,7 @@
     <Content Include="Help\spawns-plugin.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\command_link_16x16.png" />
     <Resource Include="Images\help.png" />
     <None Include="Help\spawns-plugin.hhp" />
   </ItemGroup>

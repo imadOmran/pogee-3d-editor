@@ -199,5 +199,28 @@ namespace SpawnsPlugin
                 System.Diagnostics.Process.Start(path);
             }
         }
+
+        private void MoveToButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Camera3D != null)
+            {
+                var sel = SpawnsViewModel.SelectedSpawn;
+                Point3D pt;
+                if (sel != null)
+                {
+                    pt = new Point3D(sel.X, sel.Y, sel.Z);
+                    if (Transform3D != null)
+                    {
+                        Transform3D.TryTransform(pt, out pt);
+                    }
+                }
+                else return;
+
+                if (Camera3D != null)
+                {
+                    Camera3D.Position = pt;
+                }
+            }
+        }
     }
 }

@@ -37,6 +37,7 @@
         <m:RibbonButton Name="NewSpawnButton" Click="NewSpawnButton_Click" Label="Create Spawn" SmallImageSource="Images/077_AddFile_16x16_72.png" />
         <m:RibbonButton Name="RemoveSpawnButton" Click="RemoveSpawnButton_Click" Label="Delete Spawn" SmallImageSource="Images/delete_12x12.png"  />
         <m:RibbonButton SmallImageSource="Images/TableProperties_32x32.png" Label="Edit Multiple Spawns" Command="{Binding EditSpawnsCommand}" />
+        <m:RibbonButton SmallImageSource="Images/command_link_16x16.png"  Name="MoveToButton" Label="Move To Spawn" Click="MoveToButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Spawns">
         <StackPanel>
