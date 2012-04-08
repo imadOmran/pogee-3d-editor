@@ -108,7 +108,7 @@ namespace SpawnsPlugin
 
                 if (SpawnsViewModel.SelectedSpawns != null)
                 {
-                    foreach (var s in SpawnsViewModel.SelectedSpawns)
+                    foreach (var s in SpawnsViewModel.SelectedSpawns.ToArray())
                     {
                         SpawnsViewModel.SpawnsService.ZoneSpawns.RemoveSpawn(s);
                         SpawnsViewModel.SelectedSpawns = null;

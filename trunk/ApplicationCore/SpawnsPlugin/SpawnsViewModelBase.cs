@@ -24,6 +24,9 @@ namespace SpawnsPlugin
                 case "SelectedSpawn":
                     NotifyPropertyChanged("SelectedSpawn");
                     break;
+                case "SelectedSpawns":
+                    NotifyPropertyChanged("SelectedSpawns");
+                    break;
                 case "ZoneSpawns":
                     NotifyPropertyChanged("Spawns");
                     break;
