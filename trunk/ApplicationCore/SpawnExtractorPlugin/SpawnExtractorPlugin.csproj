@@ -34,6 +34,10 @@
     <Reference Include="Accessibility">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\UnityAutoRegistration.1.0-bin\UnityAutoRegistration.1.0-bin\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.4.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MySql\Assemblies\v4.0\MySql.Data.dll</HintPath>
@@ -55,9 +59,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LDONNpcTemplate.cs">
+    <Compile Include="LDONNpcTemplate.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Compile>
     <Compile Include="SpawnExtractorTab.xaml.cs">
       <DependentUpon>SpawnExtractorTab.xaml</DependentUpon>
     </Compile>
@@ -78,6 +82,10 @@
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj">
       <Project>{DDC35EA0-1A5D-44C4-95DF-DA0D40998585}</Project>
       <Name>ApplicationCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpawnsPlugin\SpawnsPlugin.csproj">
+      <Project>{736FAFCE-BEDA-4B2F-A8BA-D5A87C4E1C58}</Project>
+      <Name>SpawnsPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

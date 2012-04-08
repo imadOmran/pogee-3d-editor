@@ -1012,6 +1012,10 @@ namespace EQEmu.Spawns
         private int _aggroRadius;
         private int _npcFactionId;
         private int _npcSpellsId;
+
+        private bool _seeInvis;
+        private bool _seeInvisUndead;
+        
         
         private float _size;
         private float _runSpeed;
@@ -1407,6 +1411,26 @@ namespace EQEmu.Spawns
             set
             {
                 _drakkinDetails = value;
+                Dirtied();
+            }
+        }
+
+        public bool SeeInvis
+        {
+            get { return _seeInvis; }
+            set
+            {
+                _seeInvis = value;
+                Dirtied();
+            }
+        }
+
+        public bool SeeInvisUndead
+        {
+            get { return _seeInvisUndead; }
+            set
+            {
+                _seeInvisUndead = value;
                 Dirtied();
             }
         }

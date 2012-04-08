@@ -44,22 +44,6 @@ namespace SpawnExtractorPlugin
                 var browseable = attr.ElementAt(0) as BrowsableAttribute;
                 if (browseable != null && browseable.Browsable == false) e.Cancel = true;
             }
-
-            
-
-            /*
-            switch (header)
-            {
-                case "Name":
-                case "Level":
-                case "Id":
-                case "LootTableId":
-                    break;
-                default:
-                    e.Cancel = true;
-                    break;
-            } 
-            */
         }
 
         public string TabTitle
@@ -143,6 +127,15 @@ namespace SpawnExtractorPlugin
                     EditorViewModel.ApplyTemplateCommand.Execute(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>());
                     NPCDataGrid.Items.Refresh();
                 }
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            int num = EditorViewModel.StartId;
+            foreach (var npc in NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            {
+                npc.Id = num++;
             }
         }
     }

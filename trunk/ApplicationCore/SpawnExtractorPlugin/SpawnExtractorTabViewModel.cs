@@ -7,9 +7,12 @@ using System.IO;
 
 using MySql.Data.MySqlClient;
 
+using Microsoft.Practices.Unity;
+
 using ApplicationCore;
 
 using EQEmu.Spawns;
+using SpawnsPlugin;
 
 namespace SpawnExtractorPlugin
 {
@@ -38,6 +41,7 @@ namespace SpawnExtractorPlugin
             _spawngroups.Created();
             Zone = "";
             ZoneVersion = 0;
+            _startId = 0;
 
             RemoveCommand = new DelegateCommand(
                 x =>
@@ -85,10 +89,24 @@ namespace SpawnExtractorPlugin
                 });
 
         }
-
+        
         public IEnumerable<INPCPropertyTemplate> Templates
         {
             get { return _templates.Templates; }
+        }
+
+        private int _startId;
+        public int StartId 
+        {
+            get
+            {
+                return _startId;
+            }
+            set
+            {
+                _startId = value;
+                NotifyPropertyChanged("StartId");
+            }
         }
 
         private INPCPropertyTemplate _selectedTemplate;
@@ -111,7 +129,21 @@ namespace SpawnExtractorPlugin
             }
             set
             {
-                _selectedNPC = value;                
+                _selectedNPC = value;
+
+                var serv = _service as SpawnsPlugin.SpawnDataService;
+                if (serv != null)
+                {
+                    var groups = _spawngroups.SpawnGroups.Where(x => x.Entries.Where(y => y.NPC == value).Count() > 0);
+                    var selSpawns = _spawns.Spawns.Where(x => groups.Where(y => y.Id == x.SpawnGroupId).Count() > 0);
+
+                    if (selSpawns != null && selSpawns.Count() > 0)
+                    {
+                        serv.SelectedSpawn = selSpawns.ElementAt(0);
+                        serv.SelectedSpawns = selSpawns;
+                    }
+                }
+
                 NotifyPropertyChanged("SelectedNPC");
                 RemoveCommand.RaiseCanExecuteChanged();
             }
@@ -150,7 +182,7 @@ namespace SpawnExtractorPlugin
                 _spawns = new ZoneSpawns(_connection, Zone, _config, ZoneVersion);
             }
 
-            var zoneNpcs = spawns.Where(x => x.IsNPC > 0 && x.PetOwnerID == 0 && x.IsMercenary == 0 && x.Race != 127);
+            var zoneNpcs = spawns.Where(x => x.IsNPC > 0 && x.PetOwnerID == 0 && x.IsMercenary == 0 );
 
             int id = _npcs.GetNextIdForZone(Zone);
             if (id == -1) id = 0;
@@ -207,6 +239,12 @@ namespace SpawnExtractorPlugin
                     spawn.Heading = npc.Heading;
                     _spawns.AddSpawn(spawn);
                 }
+            }
+
+            var serv = _service as SpawnsPlugin.SpawnDataService;
+            if(serv != null)
+            {
+                serv.ZoneSpawns = _spawns;
             }
         }
 
@@ -277,9 +315,16 @@ namespace SpawnExtractorPlugin
             get { return _npcs.NPCs; }
         }
 
+        private ApplicationCore.DataServices.IDataService _service;
+        [Dependency("SpawnDataService")]
         public ApplicationCore.DataServices.IDataService Service
         {
-            get { throw new NotImplementedException(); }
+            get { return _service; }
+            set
+            {
+                _service = value;
+                NotifyPropertyChanged("Service");
+            }
         }
     }
 }
