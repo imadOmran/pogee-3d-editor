@@ -6,7 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="500" Background="#FFCECECE">
     <Grid>
-        <StackPanel>
+        <!--<StackPanel>-->
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal">
                 <Label>Zone:</Label>
                 <TextBlock VerticalAlignment="Center" Text="{Binding Zone}" Width="70" />
@@ -20,14 +22,20 @@
                 <Label VerticalAlignment="Center" Margin="50,10,0,0">Set Start ID</Label>
                 <TextBox VerticalAlignment="Center" Margin="10,10,0,0" Text="{Binding StartId}" Width="50" />
                 <Button VerticalAlignment="Center" Margin="0,10,0,0" Content="Set" Click="Button_Click_2" />
-            </StackPanel>                
-            <DataGrid SelectedItem="{Binding SelectedNPC}" Name="NPCDataGrid" ItemsSource="{Binding NPCs}" Height="454" />             
-            <Button HorizontalAlignment="Left" Content="Generate Query" Name="NPCQueryButton" Click="NPCQueryButton_Click" />
-            <StackPanel Margin="0,20,0,0">
-                <Button HorizontalAlignment="Left" Content="Apply Template" Click="Button_Click_1" />
-                <ListView ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" Height="104" />
             </StackPanel>
-        </StackPanel>
+                <StackPanel>
+                    <DataGrid SelectedItem="{Binding SelectedNPC}" Name="NPCDataGrid" ItemsSource="{Binding NPCs}" Height="454" />
+                    <Button HorizontalAlignment="Left" Content="Generate Query" Name="NPCQueryButton" Click="NPCQueryButton_Click" />
+                </StackPanel>
+            </StackPanel>
+        <!--</StackPanel>-->
+            <Grid>
+                <StackPanel>
+                    <Button HorizontalAlignment="Left" Content="Apply Template" Click="Button_Click_1" />
+                    <ListView ItemsSource="{Binding Templates}" SelectedItem="{Binding SelectedTemplate}" />
+                </StackPanel>
+            </Grid>
+        </DockPanel>
         <Grid Background="Black" HorizontalAlignment="Left" Width="300" x:Name="InputBox" Visibility="Collapsed" Margin="2,88,0,476">
             <Grid Margin="2" Background="White">
                 <StackPanel>
