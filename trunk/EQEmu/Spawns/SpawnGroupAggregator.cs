@@ -63,6 +63,7 @@ namespace EQEmu.Spawns
             NeedsDeleted.Clear();
             NeedsInserted.Clear();
             _spawnGroups.Clear();
+            _updateSpawn2 = null;
         }
 
         public SpawnGroup CreateSpawnGroup()

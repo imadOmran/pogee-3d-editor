@@ -1013,13 +1013,43 @@ namespace EQEmu.Spawns
         private int _npcFactionId;
         private int _npcSpellsId;
 
+        private int _hpRegenRate;
+        private int _manaRegenRate;
+        private int _merchantId;
+        private int _altCurrencyId;
+        private int _adventureTemplateId;
+        private int _trapTemplate;
+        private int _attackCount;
+        private int _magicResist;
+        private int _coldResist;
+        private int _fireResist;
+        private int _diseaseResist;
+        private int _poisonResist;
+        private int _corruptResist;
+        private int _qGlobal;
+        private int _armorClass;
+        private int _spawnLimit;
+        private int _strength;
+        private int _stamina;
+        private int _wisdom;
+        private int _intelligence;
+        private int _charisma;
+        private int _dexterity;
+        private int _agility;
+        private int _attack;
+        private bool _underwater;
+        private bool _trackable;
+        private bool _uniqueByName;        
+        private bool _npcAggro;
+        private string _npcSpecialAttacks = "";
+
         private bool _seeInvis;
         private bool _seeInvisUndead;
         
         
         private float _size;
         private float _runSpeed;
-        //private float _walkSpeed;
+        private float _slowMitigation;
 
         private bool _findable;
 
@@ -1433,6 +1463,558 @@ namespace EQEmu.Spawns
                 _seeInvisUndead = value;
                 Dirtied();
             }
+        }
+
+        public int HPRegenRate
+        {
+            get { return _hpRegenRate; }
+            set
+            {
+                _hpRegenRate = value;
+                Dirtied();
+            }
+        }
+
+        public int ManaRegenRate
+        {
+            get { return _manaRegenRate; }
+            set
+            {
+                _manaRegenRate = value;
+                Dirtied();
+            }
+        }
+
+        public int MerchantId
+        {
+            get { return _merchantId; }
+            set
+            {
+                _merchantId = value;
+                Dirtied();
+            }
+        }
+
+        public int AltCurrencyId
+        {
+            get { return _altCurrencyId; }
+            set
+            {
+                _altCurrencyId = value;
+                Dirtied();
+            }
+        }
+
+        public int AdventureTemplate
+        {
+            get { return _adventureTemplateId; }
+            set
+            {
+                _adventureTemplateId = value;
+                Dirtied();
+            }
+        }
+
+        public int TrapTemplate
+        {
+            get { return _trapTemplate; }
+            set
+            {
+                _trapTemplate = value;
+                Dirtied();
+            }
+        }
+
+        public int AttackCount
+        {
+            get { return _attackCount; }
+            set
+            {
+                _attackCount = value;
+                Dirtied();
+            }
+        }
+
+        public int MagicResist
+        {
+            get { return _magicResist; }
+            set
+            {
+                _magicResist = value;
+                Dirtied();
+            }
+        }
+
+        public int ColdResist
+        {
+            get { return _coldResist; }
+            set
+            {
+                _coldResist = value;
+                Dirtied();
+            }
+        }
+
+        public int FireResist
+        {
+            get { return _fireResist; }
+            set
+            {
+                _fireResist = value;
+                Dirtied();
+            }
+        }
+
+        public int DiseaseResist
+        {
+            get { return _diseaseResist; }
+            set
+            {
+                _diseaseResist = value;
+                Dirtied();
+            }
+        }
+
+        public int PoisonResist
+        {
+            get { return _poisonResist; }
+            set
+            {
+                _poisonResist = value;
+                Dirtied();
+            }
+        }
+
+        public int CorruptResist
+        {
+            get { return _corruptResist; }
+            set
+            {
+                _corruptResist = value;
+                Dirtied();
+            }
+        }
+
+        public int QGlobal
+        {
+            get { return _qGlobal; }
+            set
+            {
+                _qGlobal = value;
+                Dirtied();
+            }
+        }
+
+        public int ArmorClass
+        {
+            get { return _armorClass; }
+            set
+            {
+                _armorClass = value;
+                Dirtied();
+            }
+        }
+
+        public int SpawnLimit
+        {
+            get { return _spawnLimit; }
+            set
+            {
+                _spawnLimit = value;
+                Dirtied();
+            }
+        }
+
+        public int Strength
+        {
+            get { return _strength; }
+            set
+            {
+                _strength = value;
+                Dirtied();
+            }
+        }
+
+        public int Stamina
+        {
+            get { return _stamina; }
+            set
+            {
+                _stamina = value;
+                Dirtied();
+            }
+        }
+
+        public int Wisdom
+        {
+            get { return _wisdom; }
+            set
+            {
+                _wisdom = value;
+                Dirtied();
+            }
+        }
+
+        public int Intelligence
+        {
+            get { return _intelligence; }
+            set
+            {
+                _intelligence = value;
+                Dirtied();
+            }
+        }
+
+        public int Charisma
+        {
+            get { return _charisma; }
+            set
+            {
+                _charisma = value;
+                Dirtied();
+            }
+        }
+
+        public int Dexterity
+        {
+            get { return _dexterity; }
+            set
+            {
+                _dexterity = value;
+                Dirtied();
+            }
+        }
+
+        public int Agility
+        {
+            get { return _agility; }
+            set
+            {
+                _agility = value;
+                Dirtied();
+            }
+        }
+
+        public int Attack
+        {
+            get { return _attack; }
+            set
+            {
+                _attack = value;
+                Dirtied();
+            }
+        }
+
+        public bool UnderWater
+        {
+            get { return _underwater; }
+            set
+            {
+                _underwater = value;
+                Dirtied();
+            }
+        }
+
+        public bool Trackable
+        {
+            get { return _trackable; }
+            set
+            {
+                _trackable = value;
+                Dirtied();
+            }
+        }
+
+        public bool UniqueByName
+        {
+            get { return _uniqueByName; }
+            set
+            {
+                _uniqueByName = value;
+                Dirtied();
+            }
+        }
+
+        public float SlowMitigation
+        {
+            get { return _slowMitigation; }
+            set
+            {
+                _slowMitigation = value;
+                Dirtied();
+            }
+        }
+
+        public string NPCSpecialAttacks
+        {
+            get { return _npcSpecialAttacks; }
+            set
+            {
+                _npcSpecialAttacks = value;
+                Dirtied();
+            }
+        }
+
+        public bool NPCAggro
+        {
+            get { return _npcAggro; }
+            set
+            {
+                _npcAggro = value;
+                Dirtied();
+            }
+        }
+
+        public bool Enrage
+        {
+            get { return IsAttackSet(SpecialAttacks.Enrage); }
+            set
+            {
+                SetSpecialAttack(SpecialAttacks.Enrage, value);
+            }
+        }
+
+        public enum SpecialAttacks
+        {
+            Enrage, //E
+            Flurry, //F
+            Rampage, //R
+            AreaRampage, //r
+            Summon, //S
+            Triple, //T
+            Quad,  //Q
+            Bane,  //b
+            Magical,  //m
+            SlowImmune, //u
+            MezImmune,  //M
+            CharmImmune, //C
+            StunImmune, //N
+            SnareImmune, //I
+            FearImmune, //D
+            MeleeImmune, //A
+            MagicImmune, //s
+            FleeImmune, //f
+            BaneMeleeOnly, //O
+            MeleeNonMagicImmune, //W
+            AggroImmune, //H
+            AggroOnImmune, //G
+            CastingFromRangeImmune, //g
+            FeignDeathImmune, //d
+            RangedAttack, //Y
+            InnateDualWield, //L
+            TunnelVision, //t
+            NoBuffHealFriends, //n
+            PacifyImmune, //p
+            Leash, //J
+            Tether, //j
+            Destructible, //o
+            NoHarmFromClient //Z
+        }
+
+        public bool IsAttackSet(SpecialAttacks atk)
+        {
+            Func<string, bool> action = IsAttackSet;
+
+            switch (atk)
+            {
+                case SpecialAttacks.Enrage:
+                    return action("E");
+                case SpecialAttacks.Flurry:
+                    return action("F");
+                case SpecialAttacks.Rampage:
+                    return action("R");
+                case SpecialAttacks.AreaRampage:
+                    return action("r");
+                case SpecialAttacks.Summon:
+                    return action("S");
+                case SpecialAttacks.Triple:
+                    return action("T");
+                case SpecialAttacks.Quad:
+                    return action("Q");
+                case SpecialAttacks.Bane:
+                    return action("b");
+                case SpecialAttacks.Magical:
+                    return action("m");
+                case SpecialAttacks.SlowImmune:
+                    return action("u");
+                case SpecialAttacks.MezImmune:
+                    return action("M");
+                case SpecialAttacks.CharmImmune:
+                    return action("C");
+                case SpecialAttacks.StunImmune:
+                    return action("N");
+                case SpecialAttacks.SnareImmune:
+                    return action("I");
+                case SpecialAttacks.FearImmune:
+                    return action("D");
+                case SpecialAttacks.MeleeImmune:
+                    return action("A");
+                case SpecialAttacks.FleeImmune:
+                    return action("f");
+                case SpecialAttacks.BaneMeleeOnly:
+                    return action("O");
+                case SpecialAttacks.MeleeNonMagicImmune:
+                    return action("W");
+                case SpecialAttacks.AggroImmune:
+                    return action("H");
+                case SpecialAttacks.AggroOnImmune:
+                    return action("G");
+                case SpecialAttacks.FeignDeathImmune:
+                    return action("d");
+                case SpecialAttacks.RangedAttack:
+                    return action("Y");
+                case SpecialAttacks.InnateDualWield:
+                    return action("L");
+                case SpecialAttacks.TunnelVision:
+                    return action("t");
+                case SpecialAttacks.NoBuffHealFriends:
+                    return action("n");
+                case SpecialAttacks.PacifyImmune:
+                    return action("p");
+                case SpecialAttacks.Leash:
+                    return action("J");
+                case SpecialAttacks.Tether:
+                    return action("j");
+                case SpecialAttacks.Destructible:
+                    return action("o");
+                case SpecialAttacks.NoHarmFromClient:
+                    return action("Z");
+                default:
+                    return false;
+            }            
+        }
+
+        public void SetSpecialAttack(SpecialAttacks atk,bool set)
+        {
+            Action<string> action;
+            if (set)
+            {
+                action = SetAttack;
+            }
+            else
+            {
+                action = RemoveAttack;
+            }
+
+            switch (atk)
+            {
+                case SpecialAttacks.Enrage:
+                    action("E");
+                    break;
+                case SpecialAttacks.Flurry:
+                    action("F");
+                    break;
+                case SpecialAttacks.Rampage:
+                    action("R");
+                    break;
+                case SpecialAttacks.AreaRampage:
+                    action("r");
+                    break;
+                case SpecialAttacks.Summon:
+                    action("S");
+                    break;
+                case SpecialAttacks.Triple:
+                    action("T");
+                    break;
+                case SpecialAttacks.Quad:
+                    action("Q");
+                    break;
+                case SpecialAttacks.Bane:
+                    action("b");
+                    break;
+                case SpecialAttacks.Magical:
+                    action("m");
+                    break;
+                case SpecialAttacks.SlowImmune:
+                    action("u");
+                    break;
+                case SpecialAttacks.MezImmune:
+                    action("M");
+                    break;
+                case SpecialAttacks.CharmImmune:
+                    action("C");
+                    break;
+                case SpecialAttacks.StunImmune:
+                    action("N");
+                    break;
+                case SpecialAttacks.SnareImmune:
+                    action("I");
+                    break;
+                case SpecialAttacks.FearImmune:
+                    action("D");
+                    break;
+                case SpecialAttacks.MeleeImmune:
+                    action("A");
+                    break;
+                case SpecialAttacks.FleeImmune:
+                    action("f");
+                    break;
+                case SpecialAttacks.BaneMeleeOnly:
+                    action("O");
+                    break;
+                case SpecialAttacks.MeleeNonMagicImmune:
+                    action("W");
+                    break;
+                case SpecialAttacks.AggroImmune:
+                    action("H");
+                    break;
+                case SpecialAttacks.AggroOnImmune:
+                    action("G");
+                    break;
+                case SpecialAttacks.FeignDeathImmune:
+                    action("d");
+                    break;
+                case SpecialAttacks.RangedAttack:
+                    action("Y");
+                    break;
+                case SpecialAttacks.InnateDualWield:
+                    action("L");
+                    break;
+                case SpecialAttacks.TunnelVision:
+                    action("t");
+                    break;
+                case SpecialAttacks.NoBuffHealFriends:
+                    action("n");
+                    break;
+                case SpecialAttacks.PacifyImmune:
+                    action("p");
+                    break;
+                case SpecialAttacks.Leash:
+                    action("J");
+                    break;
+                case SpecialAttacks.Tether:
+                    action("j");
+                    break;
+                case SpecialAttacks.Destructible:
+                    action("o");
+                    break;
+                case SpecialAttacks.NoHarmFromClient:
+                    action("Z");
+                    break;
+            }
+        }
+
+        private bool IsAttackSet(string val)
+        {
+            if (_npcSpecialAttacks.Contains(val)) return true;
+            else return false;
+        }
+
+        private void SetAttack(string val)
+        {
+            if (_npcSpecialAttacks.Contains(val)) return;
+
+            _npcSpecialAttacks += val;
+            Dirtied();
+        }
+
+        private void RemoveAttack(string val)
+        {
+            if (_npcSpecialAttacks.Contains(val))
+            {
+                _npcSpecialAttacks = _npcSpecialAttacks.Replace(val, "");
+            }
+            Dirtied();
         }
     }
 
