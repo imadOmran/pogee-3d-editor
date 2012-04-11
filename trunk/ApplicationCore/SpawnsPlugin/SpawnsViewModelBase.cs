@@ -133,12 +133,30 @@ namespace SpawnsPlugin
             }
         }
 
+        public bool SaveToFile(string file)
+        {
+            if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
+            {
+                SpawnsService.ZoneSpawns.SaveXML(file);
+                return true;
+            }
+            return false;
+        }
+
+        public bool LoadFile(string file)
+        {
+            SpawnsService.Zone = Zone;
+            SpawnsService.Version = Version;
+            if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
+            {
+                SpawnsService.ZoneSpawns.LoadXML(file);
+                return true;
+            }
+            return false;
+        }
 
         abstract public EQEmu.Spawns.Spawn2 SelectedSpawn { get; set; }
-
-
         abstract public void CreateNewSpawn(System.Windows.Media.Media3D.Point3D p);
-
         abstract public IEnumerable<EQEmu.Spawns.Spawn2> SelectedSpawns { get; set; }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace EQEmu.Database
 {
@@ -11,6 +13,7 @@ namespace EQEmu.Database
         private List<IDatabaseObject> _needsInserted = new List<IDatabaseObject>();
 
         [Browsable(false)]
+        [XmlIgnore]
         public List<IDatabaseObject> NeedsInserted
         {
             get { return _needsInserted; }
@@ -19,6 +22,7 @@ namespace EQEmu.Database
         private List<IDatabaseObject> _needsDeleted = new List<IDatabaseObject>();
 
         [Browsable(false)]
+        [XmlIgnore]
         public List<IDatabaseObject> NeedsDeleted
         {
             get { return _needsDeleted; }
@@ -125,7 +129,14 @@ namespace EQEmu.Database
             }
         }
 
-        [Browsable(false)]
+        protected virtual void ClearObjects()
+        {
+            NeedsDeleted.Clear();
+            NeedsInserted.Clear();
+        }
+
+        [Browsable(false)]        
+        [XmlIgnore]
         abstract public List<IDatabaseObject> DirtyComponents { get; }
     }
 }

@@ -22,5 +22,8 @@ namespace EQEmu.Database
         string DeleteString { get; }
         bool Dirty { get; }
         event ObjectDirtiedHandler ObjectDirtied;
+        
+        void SaveXML(string file);
+        void LoadXML(string file);
     }
 }

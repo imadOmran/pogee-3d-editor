@@ -19,5 +19,7 @@ namespace SpawnsPlugin
         IEnumerable<Spawn2> SelectedSpawns { get; set; }
 
         void CreateNewSpawn(Point3D p);
+        bool SaveToFile(string file);
+        bool LoadFile(string file);
     }
 }
