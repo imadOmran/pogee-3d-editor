@@ -222,5 +222,24 @@ namespace SpawnsPlugin
                 }
             }
         }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var sd = new System.Windows.Forms.FolderBrowserDialog();
+            sd.Description = "Choose directory to save to";
+            if (sd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                SpawnsViewModel.SaveToFile(sd.SelectedPath);
+            }
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var fd = new OpenFileDialog();
+            if ((bool)fd.ShowDialog())
+            {
+                SpawnsViewModel.LoadFile(fd.FileName);
+            }
+        }
     }
 }

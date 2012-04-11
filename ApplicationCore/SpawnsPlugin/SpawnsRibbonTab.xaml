@@ -29,7 +29,9 @@
                 </Rectangle.Style>
             </Rectangle>
             -->
-        </StackPanel>            
+        </StackPanel>
+        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click"  />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click"  />        
         <m:RibbonButton Label="Save Update Query" LargeImageSource="Images/saveHS.png" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />        
         <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
     </m:RibbonGroup>

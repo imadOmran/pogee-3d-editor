@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
 using System.IO;
 using System.Reflection;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -24,6 +25,10 @@ namespace EQEmu.Spawns
         public string Zone
         {
             get { return _zone; }
+            set
+            {
+                _zone = value;               
+            }
         }
 
         public int Version
@@ -37,12 +42,18 @@ namespace EQEmu.Spawns
 
         private ObservableCollection<Spawn2> _spawns = new ObservableCollection<Spawn2>();
 
+        [XmlIgnore]
         public ObservableCollection<Spawn2> Spawns
         {
             get
             {
                 return _spawns;
             }
+        }
+
+        private ZoneSpawns() : base(null)
+        {
+
         }
 
         public ZoneSpawns(MySqlConnection conn, string zone, QueryConfig config, int version=0)
@@ -222,6 +233,7 @@ namespace EQEmu.Spawns
             return spawn;
         }
 
+        [XmlIgnore]
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { throw new NotImplementedException(); }
@@ -259,11 +271,66 @@ namespace EQEmu.Spawns
                 //we aren't really requested a new spawn ... just a dummy reference for the id                
                 Spawn2 copy = new Spawn2(_queryConfig);
                 copy.Id = spawn.Id;
+                copy.Zone = Zone;
+                copy.Version = Version;
                 NeedsDeleted.Add(copy);
 
                 spawn.Id = i;
                 i += 1;
                 NeedsInserted.Add(spawn);
+            }
+        }
+
+        protected override void ClearObjects()
+        {
+            base.ClearObjects();
+            Spawns.Clear();
+        }
+
+        /// <summary>
+        /// Provide a directory path to save to
+        /// </summary>
+        /// <param name="file"></param>
+        public override void SaveXML(string dir)
+        {
+            using (var fs = new FileStream(dir+"\\"+this.Zone+"."+this.Version+".xml", FileMode.Create))
+            {
+                var ary = _spawns.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs,ary);
+            }
+        }
+
+        public override void LoadXML(string file)
+        {
+            //base.LoadXML(file);
+            var filename = System.IO.Path.GetFileName(file);
+            int period1 = filename.IndexOf('.', 0);
+            int period2 = filename.IndexOf('.', period1 + 1);
+
+            Zone = filename.Substring(0, period1);
+            Version = int.Parse( filename.Substring(period1+1, period2-period1-1) );
+
+            Spawn2[] spawns;
+            using (var fs = new FileStream(file, FileMode.Open))
+            {                
+                var x = new XmlSerializer(_spawns.ToArray().GetType());
+                var obj = x.Deserialize(fs);
+                spawns = obj as Spawn2[];
+            }
+
+            
+            if (spawns != null)
+            {
+                ClearObjects();
+                UnlockObject();
+                foreach (var sp in spawns)
+                {
+                    AddSpawn(sp);
+                    sp.Created();
+                    sp.InitConfig(_queryConfig);
+                }
+                Created();
             }
         }
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Xml.Serialization;
+using System.IO;
 
 using MySql.Data.MySqlClient;
 
@@ -27,21 +29,21 @@ namespace EQEmu.Database
         //abstract public string UpdateString { get; }
         //abstract public string DeleteString { get; }        
 
-        protected readonly TypeQueries _queries;
+        protected TypeQueries _queries;
         [Browsable(false)]
         public TypeQueries Queries
         {
             get { return _queries; }
         }
 
-        protected readonly QueryConfig _queryConfig;
+        protected QueryConfig _queryConfig;
 
         private string _selectString;
         private string _insertString;
         private string _updateString;
         private string _deleteString;
                 
-        [Browsable(false)]
+        [Browsable(false)]      
         public virtual string SelectString 
         {
             //get { return _selectString; }
@@ -258,9 +260,14 @@ namespace EQEmu.Database
 
         public DatabaseObject(QueryConfig config)
         {
+            InitConfig(config);
+        }
+
+        public void InitConfig(QueryConfig config)
+        {
             _queryConfig = config;
-            if ( config != null && config.TypeQueryMappings.ContainsKey( GetType() ) )
-            {         
+            if (config != null && config.TypeQueryMappings.ContainsKey(GetType()))
+            {
                 _queries = config.TypeQueryMappings[GetType()];
 
                 _selectString = _queries.SelectQuery;
@@ -285,6 +292,7 @@ namespace EQEmu.Database
             }
         }
 
+        [XmlIgnore]
         public bool Dirty
         {
             get;
@@ -337,6 +345,24 @@ namespace EQEmu.Database
             if (e != null)
             {
                 ObjectDirtied(this, new EventArgs());
+            }
+        }
+
+        public virtual void SaveXML(string file)
+        {
+            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+            {
+                XmlSerializer x = new XmlSerializer(GetType());
+                x.Serialize(fs, this);
+            }
+        }
+
+        public virtual void LoadXML(string file)
+        {
+            using (FileStream fs = new FileStream(file, FileMode.Open))
+            {
+                XmlSerializer x = new XmlSerializer(GetType());
+                x.Serialize(fs, this);
             }
         }
     }

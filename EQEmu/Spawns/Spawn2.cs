@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
 using System.ComponentModel;
+using System.Xml.Serialization;
+
 
 namespace EQEmu.Spawns
 {
@@ -58,6 +60,11 @@ namespace EQEmu.Spawns
         public int Variance
         {
             get { return _variance; }
+            set
+            {
+                _variance = value;
+                Dirtied();
+            }
         }
 
         public int Condition
@@ -83,6 +90,11 @@ namespace EQEmu.Spawns
         public int Enabled
         {
             get { return _enabled; }
+            set
+            {
+                _enabled = value;
+                Dirtied();
+            }
         }
 
         public double X
@@ -137,6 +149,7 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public double HeadingDegrees
         {
             get { return _heading / 256 * 360; }
@@ -201,6 +214,7 @@ namespace EQEmu.Spawns
         }
 
         [Browsable(false)]
+        [XmlIgnore]
         public SpawnGroup SpawnGroupRef
         {
             get { return _spawnGroupRef; }
@@ -285,6 +299,12 @@ namespace EQEmu.Spawns
         public override string ToString()
         {
             return String.Format("Spawn:{0} - SG {1}", Id, SpawnGroupId);
+        }
+
+        private Spawn2()
+            : base(null)
+        {
+
         }
 
         public Spawn2(EQEmu.Database.QueryConfig config)

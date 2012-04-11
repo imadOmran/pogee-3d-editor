@@ -88,6 +88,10 @@ namespace EQEmuDisplay3D
                         ShowSpawn(spawn);
                     }
                     break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
+                    RemoveAllSpawns();
+                    ShowAllSpawns();
+                    break;
             }
         }
 
@@ -103,6 +107,14 @@ namespace EQEmuDisplay3D
                 //Model3DGroup group = Model as Model3DGroup;
                 //group.Children.Clear();
                 CreateSpawn(spawn,flags);
+            }
+        }
+
+        public void RemoveAllSpawns()
+        {            
+            foreach(var kvp in _mapping.ToArray())
+            {
+                RemoveSpawn(kvp.Key);
             }
         }
 
