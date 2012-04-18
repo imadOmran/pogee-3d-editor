@@ -37,9 +37,7 @@ namespace EQEmu.Files.WLD
         }
                 
         private S3D.S3D _files = null;
-        private Format _format;
-        private int _numVertices;
-        private int _numPolygons;        
+        private Format _format;        
         private List<object> _fragments = new List<object>();   
 
         public Format FileVersion

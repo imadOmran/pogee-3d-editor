@@ -18,7 +18,6 @@ namespace LootPlugin
         private DelegateCommand _clearCacheCommand;
         private DelegateCommand _createLootTableCommand;
         private DelegateCommand _createLootDropCommand;
-        private DelegateCommand _balanceDropEntriesCommand;
         private DelegateCommand _removeSelectedEntryCommand;
 
         public LootEditTabViewModel(LootTableAggregator manager,NPCAggregator npcmanager)
