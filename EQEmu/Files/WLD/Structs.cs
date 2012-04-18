@@ -43,10 +43,11 @@ namespace EQEmu.Files.WLD
     // Note: For each node in the BSP tree there is a 0x22 fragment that describes the region. It contains information on the region's 
     // bounds and an optional reference to a 0x36 fragment if there are polygons in that region. Also contains an RLE-encoded array of
     // data that tells the client which regions are "nearby".
+    /*
     struct Fragment22
     {
         public UInt32 flags, fragment1, size1, size2, params1, size3, size4, params2, size5, size6;
-    };
+    }; */
                 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [Serializable]

@@ -115,9 +115,6 @@
     <Reference Include="MySql.Data.Entity">
       <HintPath>..\..\MySql\Assemblies\v4.0\MySql.Data.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Web">
-      <HintPath>..\..\MySql\Assemblies\v4.0\MySql.Web.dll</HintPath>
-    </Reference>
     <Reference Include="RibbonControlsLibrary, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MicrosoftRibbon\V4.0\RibbonControlsLibrary.dll</HintPath>
