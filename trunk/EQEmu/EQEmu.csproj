@@ -93,6 +93,7 @@
     <Compile Include="Database\QueryHelper.cs" />
     <Compile Include="Doors\Door.cs" />
     <Compile Include="Doors\DoorManager.cs" />
+    <Compile Include="Files\DDS.cs" />
     <Compile Include="Files\S3D\Structs.cs" />
     <Compile Include="Files\WLD\Fragments\Fragment.cs" />
     <Compile Include="Files\WLD\Fragments\Mesh.cs" />

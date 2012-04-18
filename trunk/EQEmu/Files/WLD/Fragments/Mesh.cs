@@ -235,8 +235,12 @@ namespace EQEmu.Files.WLD.Fragments
                     ms.Read(barray, 0, size);
                     var tex = Functions.ByteArrayToStructure<TexCoordsOld>(barray);
 
-                    _vertices.ElementAt(i).U = tex.tx; // / 256.0f;
-                    _vertices.ElementAt(i).V = tex.tz;
+                    //switch(version)
+
+                    //256 is not based on the image size... 
+                    //ie. 64x64 dividing by 256 is still necessary to get correct uv coordinates
+                    _vertices.ElementAt(i).U = tex.tx / 256.0f;
+                    _vertices.ElementAt(i).V = tex.tz / 256.0f;
                 }
             }
         }

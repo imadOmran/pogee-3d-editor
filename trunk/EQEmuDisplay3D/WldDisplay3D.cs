@@ -116,9 +116,10 @@ namespace EQEmuDisplay3D
                         continue;
                     }
 
-                    var t1 = new System.Windows.Point(poly.V1.U / poly.Image.PixelWidth / 2, 1 - (poly.V1.V / poly.Image.PixelHeight / 2));
-                    var t2 = new System.Windows.Point(poly.V2.U / poly.Image.PixelWidth / 2, 1 - (poly.V2.V / poly.Image.PixelHeight / 2));
-                    var t3 = new System.Windows.Point(poly.V3.U / poly.Image.PixelWidth / 2, 1 - (poly.V3.V / poly.Image.PixelHeight / 2));
+                    //v coordinate - negate it to convert from opengl coordinates to directx
+                    var t1 = new System.Windows.Point(poly.V1.U, 1 - poly.V1.V);
+                    var t2 = new System.Windows.Point(poly.V2.U, 1 - poly.V2.V);
+                    var t3 = new System.Windows.Point(poly.V3.U, 1 - poly.V3.V);
 
                     //var t1 = new System.Windows.Point(0.0, 0.0);
                     //var t2 = new System.Windows.Point(2.0, 0.0);

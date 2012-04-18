@@ -149,6 +149,18 @@ namespace EQEmu.Files.WLD
                 _bitmaps[f.ToLower()] = bmp;
             }
 
+            foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
+            {
+                var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
+                if(img == null) continue;
+
+                var bytes = img.Bytes;                
+                using(var ms = new MemoryStream(bytes))
+                {
+                    DDS.Load(ms);
+                }
+            }
+
             foreach (var m in ZoneMeshes)
             {
                 foreach (var p in m.Polygons)
@@ -177,12 +189,7 @@ namespace EQEmu.Files.WLD
             {
                 var name = BitmapNames.FirstOrDefault(x => x.FragmentNumber == bmpInfo.FragmentReferences.ElementAt(0));
                 if (name == null) return null;
-
-                if (name.File.Contains("mitty"))
-                {
-                    Console.WriteLine("delete");
-                }
-
+                
                 if (_bitmaps.ContainsKey(name.File.ToLower()))
                 {
                     return _bitmaps[name.File.ToLower()];
