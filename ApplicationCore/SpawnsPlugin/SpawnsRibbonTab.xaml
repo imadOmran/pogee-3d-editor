@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Header="Spawns"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Query">       
+    <m:RibbonGroup Header="Database">       
         <StackPanel>
             <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" Text="{Binding Zone}" />            
             <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" Text="{Binding Version}" />
@@ -30,10 +30,12 @@
             </Rectangle>
             -->
         </StackPanel>
-        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click"  />
-        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click"  />        
         <m:RibbonButton Label="Save Update Query" LargeImageSource="Images/saveHS.png" Name="GetUpdateQueryButton" Click="GetUpdateQueryButton_Click" />        
         <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Offline">
+        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click"  />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click"  />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Edit">
         <m:RibbonButton Name="NewSpawnButton" Click="NewSpawnButton_Click" Label="Create Spawn" SmallImageSource="Images/077_AddFile_16x16_72.png" />

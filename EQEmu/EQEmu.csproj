@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'EQEmuCompatible|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -72,11 +74,16 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="zlib.net">
+      <HintPath>..\zlib.NET_104\bin\zlib.net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Configuration.cs" />
@@ -86,6 +93,18 @@
     <Compile Include="Database\QueryHelper.cs" />
     <Compile Include="Doors\Door.cs" />
     <Compile Include="Doors\DoorManager.cs" />
+    <Compile Include="Files\S3D\Structs.cs" />
+    <Compile Include="Files\WLD\Fragments\Fragment.cs" />
+    <Compile Include="Files\WLD\Fragments\Mesh.cs" />
+    <Compile Include="Files\S3D\S3D.cs" />
+    <Compile Include="Files\WLD\Structs.cs" />
+    <Compile Include="Files\WLD\Fragments\BitmapInfo.cs" />
+    <Compile Include="Files\WLD\Fragments\BitmapInfoReference.cs" />
+    <Compile Include="Files\WLD\Fragments\BitmapName.cs" />
+    <Compile Include="Files\WLD\Fragments\Texture.cs" />
+    <Compile Include="Files\WLD\Fragments\TextureList.cs" />
+    <Compile Include="Files\WLD\WLD.cs" />
+    <Compile Include="Files\WLD\ZoneMesh.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Grids\Grid.cs" />
     <Compile Include="Grids\Waypoint.cs" />
@@ -123,6 +142,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

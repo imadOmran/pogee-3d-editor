@@ -67,6 +67,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,6 +87,7 @@
     <Compile Include="RenderedObject.cs" />
     <Compile Include="RoamAreasDisplay3D.cs" />
     <Compile Include="Spawn2Display3D.cs" />
+    <Compile Include="WldDisplay3D.cs" />
     <Compile Include="ZonePointsDisplay3D.cs" />
   </ItemGroup>
   <ItemGroup>
