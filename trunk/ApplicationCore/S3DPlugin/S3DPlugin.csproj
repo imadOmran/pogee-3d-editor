@@ -51,7 +51,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="IS3DViewModel.cs" />
     <Compile Include="IS3DControl.cs" />
     <Compile Include="S3DRibbonTab.xaml.cs">
