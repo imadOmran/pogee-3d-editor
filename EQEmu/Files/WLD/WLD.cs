@@ -30,6 +30,8 @@ namespace EQEmu.Files.WLD
         }
 
         private Dictionary<string, BitmapImage> _bitmaps = new Dictionary<string, BitmapImage>();
+        private string[] _strings;
+        private string _sHash;
 
         public enum Format
         {
@@ -54,6 +56,16 @@ namespace EQEmu.Files.WLD
                 _files = value;
                 CreateBitmaps();
             }
+        }
+
+        public string StringHash
+        {
+            get { return _sHash; }
+        }
+
+        public string[] Strings
+        {
+            get { return _strings; }
         }
 
         public IEnumerable<Mesh> ZoneMeshes
@@ -110,6 +122,19 @@ namespace EQEmu.Files.WLD
             {
                 return _fragments.Where(x => x as ObjectLocation != null).Cast<ObjectLocation>();
             }
+        }
+
+        public string GetStringAtHashIndex(int num)
+        {
+            string val = "";
+            int index = num;
+            char c;
+            while ((c = _sHash.ElementAt(index++)) != '\0')
+            {
+                val += c;
+            }
+
+            return val;
         }
 
         private void CreateBitmaps()
@@ -322,8 +347,8 @@ namespace EQEmu.Files.WLD
             //var shash = stream.Position;
             barray = new byte[header.StringHashSize];
             stream.Read(barray, 0, (int)header.StringHashSize);
-            var str = WLD.DecodeFileName(barray);
-            var strs = str.Split('\0');
+            wld._sHash = WLD.DecodeFileName(barray);
+            wld._strings = wld._sHash.Split('\0');
 
             var fragCount = header.FragmentCount;
 
