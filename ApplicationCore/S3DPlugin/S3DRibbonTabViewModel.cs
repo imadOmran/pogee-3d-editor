@@ -9,14 +9,29 @@ using Microsoft.Win32;
 using ApplicationCore;
 using ApplicationCore.ViewModels.Editors;
 
+using EQEmu.Files.WLD;
+using EQEmu.Files.WLD.Fragments;
+
 namespace S3DPlugin
 {
     public class S3DRibbonTabViewModel : S3DViewModelBase
     {
+        private DelegateCommand _renderAllCommand;
+
         public S3DRibbonTabViewModel([Dependency("S3DDataService")] S3DDataService _service)
             : base(_service)
         {
             _service.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(service_PropertyChanged);
+
+            RenderAllCommand = new DelegateCommand(
+                x =>
+                {
+                    S3DService.RenderAll();
+                },
+                x =>
+                {
+                    return S3DService != null && S3DService.WLDObject != null;
+                });
         }
 
         void service_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -24,10 +39,23 @@ namespace S3DPlugin
             switch (e.PropertyName)
             {
                 case "WLDObject":
+                case "WLDCollection":
                     NotifyPropertyChanged("Triangles");
+                    NotifyPropertyChanged("ZoneMeshes");
+                    NotifyPropertyChanged("WLDFiles");
+                    RenderAllCommand.RaiseCanExecuteChanged();
                     break;
                 default:
                     break;
+            }
+        }
+
+        public DelegateCommand RenderAllCommand
+        {
+            get { return _renderAllCommand; }
+            set
+            {
+                _renderAllCommand = value;
             }
         }
                 
@@ -49,6 +77,30 @@ namespace S3DPlugin
             }
         }
 
+        private Mesh _selectedMesh = null;
+        public Mesh SelectedMesh
+        {
+            get { return _selectedMesh; }
+            set
+            {
+                _selectedMesh = value;
+                S3DService.RenderMesh(value);
+                NotifyPropertyChanged("SelectedMesh");
+            }
+        }
+
+        public IEnumerable<Mesh> ZoneMeshes
+        {
+            get
+            {
+                if (S3DService != null && S3DService.WLDObject != null)
+                {
+                    return S3DService.WLDObject.ZoneMeshes;
+                }
+                else return null;
+            }
+        }
+                
         public void OpenFile()
         {
             OpenFileDialog fd = new OpenFileDialog();

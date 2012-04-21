@@ -53,13 +53,18 @@ namespace EQEmuDisplay3D
 
         public void UpdateAll()
         {
-            if (_zoneMeshes == null) return;
+            RenderMesh(_zoneMeshes);
+        }
+
+        public void RenderMesh(IEnumerable<Mesh> meshes)
+        {
+            if (meshes == null) return;
             Model3DGroup group = Model as Model3DGroup;
 
             group.Children.Clear();
             Dictionary<BitmapImage, List<EQEmu.Files.WLD.Polygon>> polysbyTex = new Dictionary<BitmapImage, List<EQEmu.Files.WLD.Polygon>>();
-
-            foreach (var mesh in _zoneMeshes)
+            List<EQEmu.Files.WLD.Polygon> untexturedPolys = new List<EQEmu.Files.WLD.Polygon>();
+            foreach (var mesh in meshes)
             {
                 foreach (var p in mesh.Polygons)
                 {
@@ -74,6 +79,10 @@ namespace EQEmuDisplay3D
                             polysbyTex[p.Image] = new List<EQEmu.Files.WLD.Polygon>();
                             polysbyTex[p.Image].Add(p);
                         }
+                    }
+                    else
+                    {
+                        untexturedPolys.Add(p);
                     }
                 }
             }
@@ -97,7 +106,7 @@ namespace EQEmuDisplay3D
                     }
                     else
                     {
-                        mat = Materials.Gold;
+                        mat = Materials.LightGray;
                     }
                 }
                 foreach (var poly in polytex.Value)
@@ -126,10 +135,32 @@ namespace EQEmuDisplay3D
                     //var t3 = new System.Windows.Point(0.0, 2.0);
                     //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
                     builder.AddTriangle(p3, p2, p1, t3, t2, t1);
-                }                
+                }
                 group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));
                 mat = null;
             }
+
+            //create the untextured polygons... basically a copy and paste from above which sucks... TODO
+            var bbuilder = new MeshBuilder();
+            mat = Materials.LightGray;
+            foreach (var poly in untexturedPolys)
+            {
+                Point3D p1 = new Point3D(poly.V1.X, poly.V1.Y, poly.V1.Z);
+                Point3D p2 = new Point3D(poly.V2.X, poly.V2.Y, poly.V2.Z);
+                Point3D p3 = new Point3D(poly.V3.X, poly.V3.Y, poly.V3.Z);
+                var rotate = new RotateTransform3D();
+                rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
+                p1 = rotate.Transform(p1);
+                p2 = rotate.Transform(p2);
+                p3 = rotate.Transform(p3);
+
+                if (!Clipping.DrawPoint(p1) || !Clipping.DrawPoint(p2) || !Clipping.DrawPoint(p3))
+                {
+                    continue;
+                }
+                bbuilder.AddTriangle(p3, p2, p1);
+            }
+            group.Children.Add(new GeometryModel3D(bbuilder.ToMesh(), mat));
         }
 
         public void Dispose()

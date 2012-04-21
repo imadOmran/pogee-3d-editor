@@ -13,4 +13,12 @@
     <m:RibbonGroup Header="Properties">
         <TextBlock Text="{Binding Triangles,StringFormat=Triangles {0}}" />        
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Meshes">
+        <m:RibbonComboBox HorizontalAlignment="Right" Label="Meshes" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectedItem="{Binding SelectedMesh}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding ZoneMeshes}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
+        <m:RibbonButton Label="Render All" Command="{Binding RenderAllCommand}" />
+    </m:RibbonGroup>
 </m:RibbonTab>

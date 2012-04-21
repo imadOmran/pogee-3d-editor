@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
+using System.Drawing;
 
 using EQEmu.Files.WLD.Fragments;
 using EQEmu.Files.S3D;
@@ -13,7 +14,7 @@ namespace EQEmu.Files.WLD
 {
     public class WLD
     {
-        private static byte[] _encarr = {0x95, 0x3A, 0xC5, 0x2A, 0x95, 0x7A, 0x95, 0x6A};
+        private static byte[] _encarr = { 0x95, 0x3A, 0xC5, 0x2A, 0x95, 0x7A, 0x95, 0x6A };
 
         public static string DecodeFileName(byte[] name)
         {
@@ -25,7 +26,7 @@ namespace EQEmu.Files.WLD
 
             var encoding = new ASCIIEncoding();
             var str = encoding.GetString(name);
-            return str.Substring(0,str.Length-1);
+            return str.Substring(0, str.Length - 1);
         }
 
         private Dictionary<string, BitmapImage> _bitmaps = new Dictionary<string, BitmapImage>();
@@ -35,10 +36,10 @@ namespace EQEmu.Files.WLD
             Old,
             New
         }
-                
+
         private S3D.S3D _files = null;
-        private Format _format;        
-        private List<object> _fragments = new List<object>();   
+        private Format _format;
+        private List<object> _fragments = new List<object>();
 
         public Format FileVersion
         {
@@ -49,7 +50,7 @@ namespace EQEmu.Files.WLD
         {
             get { return _files; }
             set
-            {                
+            {
                 _files = value;
                 CreateBitmaps();
             }
@@ -103,11 +104,19 @@ namespace EQEmu.Files.WLD
             }
         }
 
+        public IEnumerable<ObjectLocation> ObjectLocations
+        {
+            get
+            {
+                return _fragments.Where(x => x as ObjectLocation != null).Cast<ObjectLocation>();
+            }
+        }
+
         private void CreateBitmaps()
         {
             List<string> fileNames = new List<string>();
             foreach (var m in ZoneMeshes)
-            {                
+            {
                 foreach (var pt in m.PolygonTextures)
                 {
                     //var textIndex = TextureLists.ElementAt(0).TextureReference.ElementAt(pt.texIndex);
@@ -120,21 +129,21 @@ namespace EQEmu.Files.WLD
 
                     var bmpInfo = BitmapInfos.FirstOrDefault(x => x.FragmentNumber == infoRef.FragmentReference);
                     if (bmpInfo == null) continue;
-                                        
+
                     List<string> names = new List<string>();
-                    foreach(var info in bmpInfo.FragmentReferences)
+                    foreach (var info in bmpInfo.FragmentReferences)
                     {
                         var name = BitmapNames.FirstOrDefault(x => x.FragmentNumber == info);
                         //var name = BitmapNames.ElementAt(info);
-                        if (name == null || fileNames.Exists( x => x == name.File)) continue;
+                        if (name == null || fileNames.Exists(x => x == name.File)) continue;
                         fileNames.Add(name.File);
                     }
 
                     //now create the bitmaps
                 }
             }
-                        
-            foreach (var f in fileNames.Where( x => x.ToLower().Contains(".bmp")) )
+
+            foreach (var f in fileNames.Where(x => x.ToLower().Contains(".bmp")))
             {
                 var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
                 if (img == null) continue;
@@ -151,14 +160,42 @@ namespace EQEmu.Files.WLD
 
             foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
             {
-                var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
-                if(img == null) continue;
+                var tmpdir = Environment.GetEnvironmentVariable("TEMP") + "\\tmpimages";
+                Directory.CreateDirectory(tmpdir);
 
-                var bytes = img.Bytes;                
-                using(var ms = new MemoryStream(bytes))
-                {
-                    DDS.Load(ms);
+                var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
+                if (img == null) continue;
+
+                var bytes = img.Bytes;
+
+                //we'll get back to this some day....
+                                
+                /*
+                using (var ms = new MemoryStream(bytes))
+                {                    
+                    var dds = DDS.Load(ms);
+                    var file = tmpdir + "\\" + f.ToLower() + ".bmp";
+                    dds.Bitmap.Save( file );
+                    
+                    //this is just crazy.. file conversions make this work
+                    //can't get palettes to work with using memory stream                    
+                    //dds.Bitmap.Save("tmp.dds");
+                    
+                    using(var bms = new FileStream("tmp.bmp", FileMode.Open) )
+                    {
+                        BitmapImage bi = new BitmapImage();
+                        bi.CacheOption = BitmapCacheOption.OnLoad;
+                        bi.BeginInit();
+                        bi.StreamSource = bms;
+                        bi.EndInit();
+                        _bitmaps[f.ToLower()] = bi;                        
+                    }                     
+                    var bi = new BitmapImage(new Uri(file));
+                    bi.CacheOption = BitmapCacheOption.OnLoad;
+                    _bitmaps[f.ToLower()] = bi;
+                    //File.Delete(f.ToLower() + ".tmp");
                 }
+                */
             }
 
             foreach (var m in ZoneMeshes)
@@ -166,8 +203,8 @@ namespace EQEmu.Files.WLD
                 foreach (var p in m.Polygons)
                 {
                     //p.Image = GetImage(TextureLists.ElementAt(0), p.TextureListIndex);
-                    var tlist = TextureLists.FirstOrDefault( x => x.FragmentNumber == m.FragmentReference );
-                    if(tlist == null) continue;
+                    var tlist = TextureLists.FirstOrDefault(x => x.FragmentNumber == m.FragmentReference);
+                    if (tlist == null) continue;
                     p.Image = GetImage(tlist, p.TextureListIndex);
                 }
             }
@@ -189,7 +226,7 @@ namespace EQEmu.Files.WLD
             {
                 var name = BitmapNames.FirstOrDefault(x => x.FragmentNumber == bmpInfo.FragmentReferences.ElementAt(0));
                 if (name == null) return null;
-                
+
                 if (_bitmaps.ContainsKey(name.File.ToLower()))
                 {
                     return _bitmaps[name.File.ToLower()];
@@ -198,7 +235,7 @@ namespace EQEmu.Files.WLD
             }
             else return null;
         }
-        
+
         /*
         private void Fragment22Handler(Stream stream)
         {
@@ -282,8 +319,11 @@ namespace EQEmu.Files.WLD
                 throw new Exception("Unknown file version");
             }
 
-            //what is this for???
-            var shash = stream.Position;
+            //var shash = stream.Position;
+            barray = new byte[header.StringHashSize];
+            stream.Read(barray, 0, (int)header.StringHashSize);
+            var str = WLD.DecodeFileName(barray);
+            var strs = str.Split('\0');
 
             var fragCount = header.FragmentCount;
 
@@ -298,7 +338,7 @@ namespace EQEmu.Files.WLD
                 var fragment = Functions.ByteArrayToStructure<BasicWLDFragment>(barray);
 
                 var position = stream.Position;
-                                
+
                 switch (fragment.Id)
                 {
                     case 0x03:
@@ -317,7 +357,9 @@ namespace EQEmu.Files.WLD
                         wld._fragments.Add(bitmapInfoRef);
                         break;
                     case 0x15:
-
+                        var objlocation = new ObjectLocation(i);
+                        objlocation.Handler(stream);
+                        wld._fragments.Add(objlocation);
                         break;
                     case 0x22:
                         //num_0x22++;
@@ -341,7 +383,7 @@ namespace EQEmu.Files.WLD
                 }
                 stream.Seek(position + fragment.Size - 4, SeekOrigin.Begin);
             }
-            
+
             return wld;
         }
     }
