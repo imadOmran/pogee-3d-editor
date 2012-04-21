@@ -21,4 +21,10 @@
         </m:RibbonComboBox>
         <m:RibbonButton Label="Render All" Command="{Binding RenderAllCommand}" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Status">
+        <StackPanel>
+        <TextBlock Text="{Binding Path=LoadStatus.OperationDescription}" />
+        <ProgressBar Width="250" Height="25" Value="{Binding Path=LoadStatus.PercentDone}" />
+        </StackPanel>
+    </m:RibbonGroup>
 </m:RibbonTab>

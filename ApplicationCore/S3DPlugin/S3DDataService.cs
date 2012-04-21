@@ -18,6 +18,21 @@ using EQEmu.Files.S3D;
 
 namespace S3DPlugin
 {
+    public class LoadStatus
+    {
+        public int PercentDone
+        {
+            get;
+            set;
+        }
+
+        public string OperationDescription
+        {
+            get;
+            set;
+        }
+    }
+
     [AutoRegister]
     public class S3DDataService : DataServiceBase, IModel3DProvider
     {
@@ -26,6 +41,8 @@ namespace S3DPlugin
         {
             // this is bad.... this should not be used like a viewmodel... rewrite is in order
             _dispatcher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+            Status.OperationDescription = "Idle";
+            Status.PercentDone = 0;
         }
 
         private System.Windows.Threading.Dispatcher _dispatcher = null;
@@ -36,6 +53,17 @@ namespace S3DPlugin
         public IEnumerable<WLD> WLDCollection
         {
             get { return _wlds; }
+        }
+
+        private LoadStatus _status = new LoadStatus();
+        public LoadStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                NotifyPropertyChanged("Status");
+            }
         }
         
         public WLD WLDObject
@@ -81,14 +109,40 @@ namespace S3DPlugin
                 _display3d.UpdateAll();
             }
         }
+
+        private void DoStatusUpdate(int percentDone, string description,bool async=true)
+        {
+            var action = new Action(() =>
+                {
+                    Status = new LoadStatus()
+                    {
+                        PercentDone = percentDone,
+                        OperationDescription = description
+                    };
+                });
+
+            if (async)
+            {
+                _dispatcher.BeginInvoke(action);
+            }
+            else
+            {
+                _dispatcher.Invoke(action);
+            }
+        }
         
         public void OpenFile(string file)
         {
             if (File.Exists(file))
             {
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew( () =>
                     {
                         S3D s3d = null;
+                        int status = 0;
+
+                        status += 5;
+                        DoStatusUpdate(status, "Loading " + file);
+
                         try
                         {
                             s3d = S3D.Load(file);
@@ -110,6 +164,9 @@ namespace S3DPlugin
 
                         foreach(var archive in s3d.Files.Where( x => x.Name.Contains(".wld") ) )
                         {
+                            status += 20;
+                            DoStatusUpdate(status, "Loading " + archive.Name);
+
                             using (var ms = new MemoryStream(archive.Bytes))
                             {
                                 WLD wld = null;
@@ -132,11 +189,20 @@ namespace S3DPlugin
 
                         if (wlds.Count > 0)
                         {
-                            _dispatcher.Invoke((Action)(() =>
+                            status = 90;
+                            DoStatusUpdate(status, "Generating Geometry",false);
+
+                            _dispatcher.BeginInvoke((Action)(() =>
                                 {
                                     zoneWld.Files = s3d;
-                                    WLDObject = zoneWld == null ? zoneWld : wlds.ElementAt(0);
+                                    WLDObject = zoneWld == null ? wlds.ElementAt(0) : zoneWld;
                                     _wlds = wlds;
+
+                                    Status = new LoadStatus()
+                                    {
+                                        PercentDone = 100,
+                                        OperationDescription = "Done"
+                                    };
                                 }));
                         }
                     });

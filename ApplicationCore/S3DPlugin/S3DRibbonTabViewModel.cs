@@ -45,9 +45,19 @@ namespace S3DPlugin
                     NotifyPropertyChanged("WLDFiles");
                     RenderAllCommand.RaiseCanExecuteChanged();
                     break;
+                case "Status":
+                    LoadStatus = S3DService.Status;
+                    NotifyPropertyChanged("LoadStatus");
+                    break;
                 default:
                     break;
             }
+        }
+
+        public LoadStatus LoadStatus
+        {
+            get;
+            set;
         }
 
         public DelegateCommand RenderAllCommand
