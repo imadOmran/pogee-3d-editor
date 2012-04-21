@@ -19,8 +19,8 @@ namespace EQEmu.Files.WLD.Fragments
     {
         private List<int> _textureReference = new List<int>();
 
-        public TextureList(int num)
-            : base(num)
+        public TextureList(int num,int name)
+            : base(num,name)
         {
 
         }

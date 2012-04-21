@@ -317,6 +317,22 @@ namespace EQEmu.Files.WLD
             }
         }*/
 
+        public void ResolveMeshNames()
+        {
+            foreach (var m in this.ZoneMeshes.Where( x => x.FragmentNameRef < 0 ))
+            {
+                m.FragmentName = GetStringAtHashIndex(Math.Abs(m.FragmentNameRef));
+            }
+        }
+
+        public void ResolveObjectLocationNames()
+        {
+            foreach (var m in ObjectLocations.Where(x => x.HasFragmentReference))
+            {
+                m.ReferencedName = GetStringAtHashIndex(Math.Abs(m.FragmentReference));
+            }
+        }
+
         public static WLD Load(Stream stream)
         {
             WLD wld = new WLD();
@@ -361,28 +377,29 @@ namespace EQEmu.Files.WLD
                 barray = new byte[fragSize];
                 stream.Read(barray, 0, fragSize);
                 var fragment = Functions.ByteArrayToStructure<BasicWLDFragment>(barray);
+                int nameRef = (int)fragment.NameRef;
 
                 var position = stream.Position;
 
                 switch (fragment.Id)
                 {
                     case 0x03:
-                        var bmpname = new BitmapName(i);
+                        var bmpname = new BitmapName(i, nameRef);
                         bmpname.Handler(stream);
                         wld._fragments.Add(bmpname);
                         break;
                     case 0x04:
-                        var binfo = new BitmapInfo(i);
+                        var binfo = new BitmapInfo(i, nameRef);
                         binfo.Handler(stream);
                         wld._fragments.Add(binfo);
                         break;
                     case 0x05:
-                        var bitmapInfoRef = new BitmapInfoReference(i);
+                        var bitmapInfoRef = new BitmapInfoReference(i, nameRef);
                         bitmapInfoRef.Handler(stream);
                         wld._fragments.Add(bitmapInfoRef);
                         break;
                     case 0x15:
-                        var objlocation = new ObjectLocation(i);
+                        var objlocation = new ObjectLocation(i, nameRef);
                         objlocation.Handler(stream);
                         wld._fragments.Add(objlocation);
                         break;
@@ -390,18 +407,18 @@ namespace EQEmu.Files.WLD
                         //num_0x22++;
                         break;
                     case 0x31:
-                        var tlist = new TextureList(i);
+                        var tlist = new TextureList(i, nameRef);
                         tlist.Handler(stream);
                         wld._fragments.Add(tlist);
                         break;
                     case 0x30:
-                        var texture = new Texture(i);
+                        var texture = new Texture(i, nameRef);
                         texture.Handler(stream);
                         wld._fragments.Add(texture);
                         break;
                     // Grab the number of vertices and polygons
                     case 0x36:
-                        var mesh = new Mesh(i);
+                        var mesh = new Mesh(i, nameRef);
                         mesh.Handler(stream);
                         wld._fragments.Add(mesh);
                         break;

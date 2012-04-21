@@ -10,11 +10,13 @@ namespace EQEmu.Files.WLD.Fragments
     public class Fragment<T> where T : struct
     {
         private readonly int _num;
+        private readonly int _nameRef;
         private T _fragment;
 
-        public Fragment(int num)
+        public Fragment(int num,int nameRef)
         {
             _num = num;
+            _nameRef = nameRef;
         }
 
         protected T FragmentStruct
@@ -25,6 +27,17 @@ namespace EQEmu.Files.WLD.Fragments
         public int FragmentNumber
         {
             get { return _num; }
+        }
+
+        public int FragmentNameRef
+        {
+            get { return _nameRef; }
+        }
+
+        public string FragmentName
+        {
+            get;
+            set;
         }
 
         public virtual void Handler(Stream stream)

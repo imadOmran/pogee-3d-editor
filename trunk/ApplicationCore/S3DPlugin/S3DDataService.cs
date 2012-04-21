@@ -169,6 +169,9 @@ namespace S3DPlugin
 
                         foreach(var archive in s3d.Files.Where( x => x.Name.Contains(".wld") ) )
                         {
+                            bool isObjects = archive.Name.Contains("objects.wld");
+                            if (getObjects && isObjects) continue;
+                            
                             status += 20;
                             DoStatusUpdate(status, "Loading " + archive.Name);
 
@@ -188,9 +191,13 @@ namespace S3DPlugin
                                 {
                                     _wld = wld;
                                 }
-                                else if (archive.Name.Contains("objects.wld"))
+                                else if (isObjects)
                                 {
                                     _objectLocations = wld;
+                                    if (_objectLocations != null)
+                                    {
+                                        _objectLocations.ResolveObjectLocationNames();
+                                    }
                                 }
                             }
                         }
@@ -221,6 +228,10 @@ namespace S3DPlugin
                                     wlds.Add(wld);
                                     _objects = wld;
                                 }                                
+                                if (_objects != null)
+                                {
+                                    _objects.ResolveMeshNames();
+                                }
                             }
                         }
                          
