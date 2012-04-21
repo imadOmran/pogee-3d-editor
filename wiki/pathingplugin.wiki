@@ -17,3 +17,5 @@ Controls:
 *LMB + LALT* : Move the selected node to cursor location
 
 http://pogee-3d-editor.googlecode.com/files/path-plugin.PNG
+
+http://pogee-3d-editor.googlecode.com/files/pathing-wld.jpg
