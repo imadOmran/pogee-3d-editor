@@ -170,7 +170,7 @@ namespace S3DPlugin
                         foreach(var archive in s3d.Files.Where( x => x.Name.Contains(".wld") ) )
                         {
                             bool isObjects = archive.Name.Contains("objects.wld");
-                            if (getObjects && isObjects) continue;
+                            if (isObjects && !getObjects) continue;
                             
                             status += 20;
                             DoStatusUpdate(status, "Loading " + archive.Name);
@@ -241,10 +241,12 @@ namespace S3DPlugin
                             status = 90;
                             DoStatusUpdate(status, "Generating Geometry",false);
 
+                            _wld = _wld == null ? wlds.ElementAt(0) : _wld;
+
                             _dispatcher.BeginInvoke((Action)(() =>
                                 {
                                     _wld.Files = s3d;
-                                    WLDObject = _wld == null ? wlds.ElementAt(0) : _wld;
+                                    WLDObject = _wld;
                                     _wlds = wlds;
 
                                     Status = new LoadStatus()

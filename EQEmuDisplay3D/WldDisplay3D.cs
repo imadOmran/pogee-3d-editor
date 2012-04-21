@@ -54,11 +54,90 @@ namespace EQEmuDisplay3D
             _objects = objectMesh;
 
             _zoneMeshes = wld.ZoneMeshes;
+            BuildPlaceableas();
+        }
+
+        private IEnumerable<PolygonRender> _renderObjects = null;
+        private void BuildPlaceableas()
+        {
+            List<PolygonRender> placeables = new List<PolygonRender>();
+            string rem = "ACTORDEF";
+            string rep = "DMSPRITEDEF";
+            
+            if (_placeables != null && _objects != null)
+            {
+                List<PolygonRender> polyr = new List<PolygonRender>();
+                foreach(var p in _placeables.ObjectLocations)
+                {
+                    if (!p.HasFragmentReference) continue;
+                    var mesh = _objects.ZoneMeshes.FirstOrDefault( x => x.FragmentName == p.ReferencedName.Replace(rem,rep) );
+                    if (mesh != null)
+                    {
+                        polyr.Add(new PolygonRender(mesh.Polygons, p));
+                    }
+                }
+                _renderObjects = polyr;
+            }
+        }
+
+        public void RenderObjects()
+        {
+            if (_renderObjects == null) return;
+            Model3DGroup group = Model as Model3DGroup;
+
+            Material mat = Materials.Gold;
+            var builder = new MeshBuilder();           
+            var rotate = new RotateTransform3D();
+            rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
+            foreach (var obj in _renderObjects)
+            {
+                var transforms = obj.Location.GetTransforms();
+                //scaling not functional
+                float scaleY = 1.0f;
+                float scaleX = 1.0f;
+
+                foreach (var poly in obj.Polygons)
+                {
+                    Point3D p1 = new Point3D(poly.V1.X * scaleX, poly.V1.Y * scaleY, poly.V1.Z);
+                    Point3D p2 = new Point3D(poly.V2.X * scaleX, poly.V2.Y * scaleY, poly.V2.Z);
+                    Point3D p3 = new Point3D(poly.V3.X * scaleX, poly.V3.Y * scaleY, poly.V3.Z);
+                    
+                    foreach (var t in transforms)
+                    {
+                        p1 = t.Transform(p1);
+                        p2 = t.Transform(p2);
+                        p3 = t.Transform(p3);
+                    }                    
+
+                    p1 = rotate.Transform(p1);
+                    p2 = rotate.Transform(p2);
+                    p3 = rotate.Transform(p3);
+
+                    if (!Clipping.DrawPoint(p1) || !Clipping.DrawPoint(p2) || !Clipping.DrawPoint(p3))
+                    {
+                        continue;
+                    }
+
+                    //v coordinate - negate it to convert from opengl coordinates to directx
+                    //var t1 = new System.Windows.Point(poly.V1.U, 1 - poly.V1.V);
+                    //var t2 = new System.Windows.Point(poly.V2.U, 1 - poly.V2.V);
+                    //var t3 = new System.Windows.Point(poly.V3.U, 1 - poly.V3.V);
+
+                    //var t1 = new System.Windows.Point(0.0, 0.0);
+                    //var t2 = new System.Windows.Point(2.0, 0.0);
+                    //var t3 = new System.Windows.Point(0.0, 2.0);
+                    //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                    //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                    builder.AddTriangle(p3, p2, p1);
+                }
+            }
+            group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));
         }
 
         public void UpdateAll()
         {
             RenderMesh(_zoneMeshes);
+            RenderObjects();
         }
 
         public void RenderMesh(IEnumerable<Mesh> meshes)
