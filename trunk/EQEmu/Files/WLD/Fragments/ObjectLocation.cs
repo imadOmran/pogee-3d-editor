@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Windows.Media.Media3D;
 
 namespace EQEmu.Files.WLD.Fragments
 {
@@ -42,7 +43,34 @@ namespace EQEmu.Files.WLD.Fragments
 
         public override void Handler(System.IO.Stream stream)
         {
-            base.Handler(stream);
+            base.Handler(stream);            
+
+        }
+        
+        public IEnumerable<Transform3D> GetTransforms()
+        {
+            List<Transform3D> transforms = new List<Transform3D>();
+
+            RotateTransform3D rotateZ = new RotateTransform3D();
+            rotateZ.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), FragmentStruct.rotateZ / 512 * 360);
+
+            RotateTransform3D rotateY = new RotateTransform3D();
+            rotateY.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), FragmentStruct.rotateY / 512 * 360);
+
+            RotateTransform3D rotateX = new RotateTransform3D();
+            rotateX.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), FragmentStruct.rotateX / 512 * 360);
+
+            TranslateTransform3D translate = new TranslateTransform3D();
+            translate.OffsetX = FragmentStruct.x;
+            translate.OffsetY = FragmentStruct.y;
+            translate.OffsetZ = FragmentStruct.z;
+
+            transforms.Add(rotateX);
+            transforms.Add(rotateY);
+            transforms.Add(rotateZ);
+            transforms.Add(translate);
+
+            return transforms;
         }
 
         public bool HasFragmentReference
@@ -60,7 +88,7 @@ namespace EQEmu.Files.WLD.Fragments
             get;
             set;
         }
-
+        
         public float X
         {
             get { return this.FragmentStruct.x; }
@@ -74,6 +102,16 @@ namespace EQEmu.Files.WLD.Fragments
         public float Z
         {
             get { return this.FragmentStruct.z; }
+        }
+
+        public float ScaleX
+        {
+            get { return this.FragmentStruct.scaleX; }
+        }
+
+        public float ScaleY
+        {
+            get { return this.FragmentStruct.scaleY; }
         }
     }
 }

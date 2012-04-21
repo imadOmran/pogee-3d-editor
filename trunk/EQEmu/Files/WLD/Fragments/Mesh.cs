@@ -41,6 +41,28 @@ namespace EQEmu.Files.WLD.Fragments
         public short Scale;                                // This allows vertex coordinates to be stored as integral values instead of floating-point values, without losing precision based on mesh size. Vertex values are multiplied by (1 shl Scale) and stored in the vertex entries.
     };
 
+    public class PolygonRender
+    {
+        private IEnumerable<Polygon> _polys = null;
+        private ObjectLocation _location = null;
+
+        public PolygonRender(IEnumerable<Polygon> polys, ObjectLocation location)
+        {
+            _polys = polys;
+            _location = location;
+        }
+
+        public IEnumerable<Polygon> Polygons
+        {
+            get { return _polys; }
+        }
+
+        public ObjectLocation Location
+        {
+            get { return _location; }
+        }
+    }
+
     public class Mesh : Fragment<Fragment36Struct>
     {
         private float _scale;
