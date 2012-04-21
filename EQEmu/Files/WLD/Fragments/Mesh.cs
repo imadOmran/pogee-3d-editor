@@ -54,8 +54,8 @@ namespace EQEmu.Files.WLD.Fragments
         private List<Polygon> _polygons = new List<Polygon>();
         private List<PolyTexture> _polygonTextures = new List<PolyTexture>();
 
-        public Mesh(int num)
-            : base(num)
+        public Mesh(int num,int name)
+            : base(num,name)
         {
 
         }

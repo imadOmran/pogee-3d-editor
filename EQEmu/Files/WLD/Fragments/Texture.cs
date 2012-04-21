@@ -33,8 +33,8 @@ namespace EQEmu.Files.WLD.Fragments
         bool _transparent = false;
         bool _empty = false;
 
-        public Texture(int num)
-            : base(num)
+        public Texture(int num,int name)
+            : base(num,name)
         {
 
         }

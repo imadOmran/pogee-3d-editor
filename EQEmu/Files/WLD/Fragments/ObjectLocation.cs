@@ -29,8 +29,8 @@ namespace EQEmu.Files.WLD.Fragments
 
     public class ObjectLocation : Fragment<Fragment15Struct>
     {
-        public ObjectLocation(int num)
-            : base(num)
+        public ObjectLocation(int num,int name)
+            : base(num,name)
         {
 
         }
@@ -43,6 +43,22 @@ namespace EQEmu.Files.WLD.Fragments
         public override void Handler(System.IO.Stream stream)
         {
             base.Handler(stream);
+        }
+
+        public bool HasFragmentReference
+        {
+            get { return this.FragmentStruct.fragmentReference < 0; }
+        }
+
+        public int FragmentReference
+        {
+            get { return this.FragmentStruct.fragmentReference; }
+        }
+
+        public string ReferencedName
+        {
+            get;
+            set;
         }
 
         public float X

@@ -25,8 +25,8 @@ namespace EQEmu.Files.WLD.Fragments
             get { return _bitmapFragmentReference; }
         }
 
-        public BitmapInfoReference(int num)
-            : base(num)
+        public BitmapInfoReference(int num,int name)
+            : base(num,name)
         {
 
         }

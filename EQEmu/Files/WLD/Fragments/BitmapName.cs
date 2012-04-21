@@ -18,8 +18,8 @@ namespace EQEmu.Files.WLD.Fragments
 
     public class BitmapName : Fragment<Fragment03Struct>
     {
-        public BitmapName(int num)
-            : base(num)
+        public BitmapName(int num,int name)
+            : base(num,name)
         {
 
         }
