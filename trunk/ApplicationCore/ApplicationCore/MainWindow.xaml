@@ -67,7 +67,7 @@
             </Grid>
             <m:Ribbon DockPanel.Dock="Top" ItemsSource="{Binding RibbonItems}" Name="ribbon" SelectedIndex="1">
                 <m:Ribbon.ApplicationMenu>
-                    <m:RibbonApplicationMenu SmallImageSource="/Images/EverQuest.ico" > 
+                    <m:RibbonApplicationMenu> 
                         <m:RibbonSeparator />
                         <m:RibbonApplicationMenuItem Header="Exit" Name="ExitMenuItem" Click="ExitMenuItem_Click" />
                     </m:RibbonApplicationMenu>

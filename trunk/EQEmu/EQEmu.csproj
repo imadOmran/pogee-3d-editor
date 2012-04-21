@@ -72,8 +72,10 @@
       <HintPath>..\MySql\Assemblies\v4.0\MySql.Web.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -98,6 +100,8 @@
     <Compile Include="Files\WLD\Fragments\Fragment.cs" />
     <Compile Include="Files\WLD\Fragments\Mesh.cs" />
     <Compile Include="Files\S3D\S3D.cs" />
+    <Compile Include="Files\WLD\Fragments\ModelReference.cs" />
+    <Compile Include="Files\WLD\Fragments\ObjectLocation.cs" />
     <Compile Include="Files\WLD\Structs.cs" />
     <Compile Include="Files\WLD\Fragments\BitmapInfo.cs" />
     <Compile Include="Files\WLD\Fragments\BitmapInfoReference.cs" />
