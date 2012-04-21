@@ -117,7 +117,9 @@ namespace S3DPlugin
             fd.Filter = "S3D Files (.s3d)|*.s3d|All Files (*.*)|*.*";
             if ((bool)fd.ShowDialog())
             {
-                S3DService.OpenFile(fd.FileName);                
+                var result = System.Windows.MessageBox.Show("Load objects?", "Load objects?", System.Windows.MessageBoxButton.YesNo);
+                bool useObjects = result == System.Windows.MessageBoxResult.Yes ? true : false;                
+                S3DService.OpenFile(fd.FileName,useObjects);                
             }
         }
 

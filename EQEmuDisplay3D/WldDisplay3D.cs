@@ -19,6 +19,8 @@ namespace EQEmuDisplay3D
         private readonly IEnumerable<Mesh> _zoneMeshes;
         private ViewClipping _clipping = new ViewClipping();
         private WLD _wld = null;
+        private WLD _placeables = null;
+        private WLD _objects = null;
 
         public System.Windows.Media.Media3D.Model3D Model
         {
@@ -45,9 +47,12 @@ namespace EQEmuDisplay3D
             UpdateAll();
         }
 
-        public WldDisplay3D(WLD wld)
+        public WldDisplay3D(WLD wld,WLD placeables=null,WLD objectMesh=null)
         {
             _wld = wld;
+            _placeables = placeables;
+            _objects = objectMesh;
+
             _zoneMeshes = wld.ZoneMeshes;
         }
 

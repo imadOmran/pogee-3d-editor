@@ -48,6 +48,9 @@ namespace S3DPlugin
         private System.Windows.Threading.Dispatcher _dispatcher = null;
         private EQEmuDisplay3D.WldDisplay3D _display3d = null;
         private WLD _wld = null;
+        private WLD _objectLocations = null;
+        private WLD _objects = null;
+
         private IEnumerable<WLD> _wlds = null;
 
         public IEnumerable<WLD> WLDCollection
@@ -78,7 +81,7 @@ namespace S3DPlugin
                     _display3d.Dispose();
                 }
 
-                _display3d = new EQEmuDisplay3D.WldDisplay3D(_wld);
+                _display3d = new EQEmuDisplay3D.WldDisplay3D(_wld, _objectLocations, _objects);
 
                 if(_viewClipping != null)
                 {
@@ -131,7 +134,7 @@ namespace S3DPlugin
             }
         }
         
-        public void OpenFile(string file)
+        public void OpenFile(string file,bool getObjects=false)
         {
             if (File.Exists(file))
             {
@@ -155,11 +158,13 @@ namespace S3DPlugin
                         var filename = System.IO.Path.GetFileName(file);
                         int period = filename.IndexOf('.', 0);
                         var zone = filename.Substring(0, period);
+                        string dir = Path.GetDirectoryName(file);
 
                         var archiveFile = s3d.Files.FirstOrDefault(x => x.Name.Contains(zone + ".wld"));
                         if (archiveFile == null) return;
 
-                        WLD zoneWld = null;
+                        _wld = null;
+                        _objectLocations = null;
                         List<WLD> wlds = new List<WLD>();
 
                         foreach(var archive in s3d.Files.Where( x => x.Name.Contains(".wld") ) )
@@ -181,8 +186,41 @@ namespace S3DPlugin
                                 wlds.Add(wld);
                                 if(archive.Name.Contains( zone + ".wld" ) )
                                 {
-                                    zoneWld = wld;
+                                    _wld = wld;
                                 }
+                                else if (archive.Name.Contains("objects.wld"))
+                                {
+                                    _objectLocations = wld;
+                                }
+                            }
+                        }
+                        _wlds = wlds;
+
+                        //load up the _obj.s3d WLD                        
+                        string objFile = dir+"\\"+zone+"_obj.s3d";                       
+                        
+                        if (getObjects && File.Exists(objFile))
+                        {
+                            status += 10;
+                            DoStatusUpdate(status, "Loading " + zone + "_obj.s3d");
+                            var objS3d = S3D.Load(objFile);
+                            var archive = objS3d.Files.FirstOrDefault(x => x.Name.Contains(".wld"));
+                            if (archive != null)
+                            {
+                                using (var ms = new MemoryStream(archive.Bytes))
+                                {
+                                    WLD wld = null;
+                                    try
+                                    {
+                                        wld = WLD.Load(ms);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        return;
+                                    }                                    
+                                    wlds.Add(wld);
+                                    _objects = wld;
+                                }                                
                             }
                         }
                          
@@ -194,8 +232,8 @@ namespace S3DPlugin
 
                             _dispatcher.BeginInvoke((Action)(() =>
                                 {
-                                    zoneWld.Files = s3d;
-                                    WLDObject = zoneWld == null ? wlds.ElementAt(0) : zoneWld;
+                                    _wld.Files = s3d;
+                                    WLDObject = _wld == null ? wlds.ElementAt(0) : _wld;
                                     _wlds = wlds;
 
                                     Status = new LoadStatus()
