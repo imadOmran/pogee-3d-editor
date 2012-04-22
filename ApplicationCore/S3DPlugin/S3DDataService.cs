@@ -182,8 +182,9 @@ namespace S3DPlugin
                                 {
                                     wld = WLD.Load(ms);
                                 }
-                                catch (Exception)
+                                catch (Exception e)
                                 {
+                                    DoStatusUpdate(0, "Failed loading: " + archive.Name + " " + e.Message, false);
                                     return;
                                 }
                                 wlds.Add(wld);
@@ -221,8 +222,9 @@ namespace S3DPlugin
                                     {
                                         wld = WLD.Load(ms);
                                     }
-                                    catch (Exception)
+                                    catch (Exception e)
                                     {
+                                        DoStatusUpdate(0, "Failed loading: " + archive.Name + " " + e.Message, false);
                                         return;
                                     }                                    
                                     wlds.Add(wld);

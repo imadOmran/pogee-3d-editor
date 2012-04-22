@@ -52,10 +52,10 @@ namespace EQEmu.Files.WLD.Fragments
             rotateZ.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), FragmentStruct.rotateZ / 512 * 360);
 
             RotateTransform3D rotateY = new RotateTransform3D();
-            rotateY.Rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), FragmentStruct.rotateY / 512 * 360);
+            rotateY.Rotation = new AxisAngleRotation3D(new Vector3D(0, -1, 0), FragmentStruct.rotateY / 512 * 360);
 
             RotateTransform3D rotateX = new RotateTransform3D();
-            rotateX.Rotation = new AxisAngleRotation3D(new Vector3D(1, 0, 0), FragmentStruct.rotateX / 512 * 360);
+            rotateX.Rotation = new AxisAngleRotation3D(new Vector3D(-1, 0, 0), FragmentStruct.rotateX / 512 * 360);
 
             TranslateTransform3D translate = new TranslateTransform3D();
             translate.OffsetX = FragmentStruct.x;
