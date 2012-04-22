@@ -129,7 +129,13 @@ namespace EQEmu.Files.WLD
             string val = "";
             int index = num;
             char c;
-            while ((c = _sHash.ElementAt(index++)) != '\0')
+
+            if ( index < _sHash.Count() && _sHash.ElementAt(index) == '\0')
+            {
+                index++;
+            }
+
+            while ( index < _sHash.Count() && (c = _sHash.ElementAt(index++)) != '\0')
             {
                 val += c;
             }
