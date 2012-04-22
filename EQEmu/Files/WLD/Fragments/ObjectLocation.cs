@@ -20,12 +20,9 @@ namespace EQEmu.Files.WLD.Fragments
         public float rotateZ;
         public float rotateY;
         public float rotateX;
-        public fixed float params1[3];
-        public float scaleY;
+        public float unknown0;
+        public float scaleYZ;
         public float scaleX;
-        public int fragment2;
-        public int params2;
-
     };
 
     public class ObjectLocation : Fragment<Fragment15Struct>
@@ -111,7 +108,12 @@ namespace EQEmu.Files.WLD.Fragments
 
         public float ScaleY
         {
-            get { return this.FragmentStruct.scaleY; }
+            get { return this.FragmentStruct.scaleYZ; }
+        }
+
+        public float ScaleZ
+        {
+            get { return this.FragmentStruct.scaleYZ; }
         }
     }
 }

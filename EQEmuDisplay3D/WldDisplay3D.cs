@@ -85,6 +85,78 @@ namespace EQEmuDisplay3D
             if (_renderObjects == null) return;
             Model3DGroup group = Model as Model3DGroup;
 
+            #region Texturing
+            /*
+            Dictionary<BitmapImage, List<PolygonRender> > polysByTexture = new Dictionary<BitmapImage, List<PolygonRender> >();            
+            
+            foreach (var obj in _renderObjects)
+            {
+                foreach (var p in obj.Polygons)
+                {
+                    if (p.Image == null) continue;
+
+                    if (!polysByTexture.ContainsKey(p.Image))
+                    {
+                        polysByTexture[p.Image] = new List<PolygonRender>();   
+                    }
+                    polysByTexture[p.Image].Add(obj);
+                }
+            }
+
+            var rotate = new RotateTransform3D();
+            rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
+            var builder = new MeshBuilder();
+            Material mat = Materials.Gold;
+            foreach (var obj in polysByTexture)
+            {
+                foreach (var pr in obj.Value)
+                {
+                    var transforms = pr.Location.GetTransforms();
+                    float scaleY = pr.Location.ScaleY;
+                    float scaleX = pr.Location.ScaleX;
+                    float scaleZ = pr.Location.ScaleZ;
+
+                    foreach(var poly in pr.Polygons.Where( x => x.Image == obj.Key ) )
+                    {
+                        Point3D p1 = new Point3D(poly.V1.X * scaleX, poly.V1.Y * scaleY, poly.V1.Z * scaleZ);
+                        Point3D p2 = new Point3D(poly.V2.X * scaleX, poly.V2.Y * scaleY, poly.V2.Z * scaleZ);
+                        Point3D p3 = new Point3D(poly.V3.X * scaleX, poly.V3.Y * scaleY, poly.V3.Z * scaleZ);
+
+                        foreach (var t in transforms)
+                        {
+                            p1 = t.Transform(p1);
+                            p2 = t.Transform(p2);
+                            p3 = t.Transform(p3);
+                        }
+
+                        p1 = rotate.Transform(p1);
+                        p2 = rotate.Transform(p2);
+                        p3 = rotate.Transform(p3);
+
+                        if (!Clipping.DrawPoint(p1) || !Clipping.DrawPoint(p2) || !Clipping.DrawPoint(p3))
+                        {
+                            continue;
+                        }
+
+                        //v coordinate - negate it to convert from opengl coordinates to directx
+                        //var t1 = new System.Windows.Point(poly.V1.U, 1 - poly.V1.V);
+                        //var t2 = new System.Windows.Point(poly.V2.U, 1 - poly.V2.V);
+                        //var t3 = new System.Windows.Point(poly.V3.U, 1 - poly.V3.V);
+
+                        //var t1 = new System.Windows.Point(0.0, 0.0);
+                        //var t2 = new System.Windows.Point(2.0, 0.0);
+                        //var t3 = new System.Windows.Point(0.0, 2.0);
+                        //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                        //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                        builder.AddTriangle(p3, p2, p1);
+                        
+                    }
+                }                        
+            }
+            group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));        
+            */
+            #endregion
+
             Material mat = Materials.Gold;
             var builder = new MeshBuilder();           
             var rotate = new RotateTransform3D();
@@ -92,15 +164,16 @@ namespace EQEmuDisplay3D
             foreach (var obj in _renderObjects)
             {
                 var transforms = obj.Location.GetTransforms();
-                //scaling not functional
-                float scaleY = 1.0f;
-                float scaleX = 1.0f;
+
+                float scaleY = obj.Location.ScaleY;
+                float scaleX = obj.Location.ScaleX;
+                float scaleZ = obj.Location.ScaleZ;
 
                 foreach (var poly in obj.Polygons)
                 {
-                    Point3D p1 = new Point3D(poly.V1.X * scaleX, poly.V1.Y * scaleY, poly.V1.Z);
-                    Point3D p2 = new Point3D(poly.V2.X * scaleX, poly.V2.Y * scaleY, poly.V2.Z);
-                    Point3D p3 = new Point3D(poly.V3.X * scaleX, poly.V3.Y * scaleY, poly.V3.Z);
+                    Point3D p1 = new Point3D(poly.V1.X * scaleX, poly.V1.Y * scaleY, poly.V1.Z * scaleZ);
+                    Point3D p2 = new Point3D(poly.V2.X * scaleX, poly.V2.Y * scaleY, poly.V2.Z * scaleZ);
+                    Point3D p3 = new Point3D(poly.V3.X * scaleX, poly.V3.Y * scaleY, poly.V3.Z * scaleZ);
                     
                     foreach (var t in transforms)
                     {
@@ -117,22 +190,11 @@ namespace EQEmuDisplay3D
                     {
                         continue;
                     }
-
-                    //v coordinate - negate it to convert from opengl coordinates to directx
-                    //var t1 = new System.Windows.Point(poly.V1.U, 1 - poly.V1.V);
-                    //var t2 = new System.Windows.Point(poly.V2.U, 1 - poly.V2.V);
-                    //var t3 = new System.Windows.Point(poly.V3.U, 1 - poly.V3.V);
-
-                    //var t1 = new System.Windows.Point(0.0, 0.0);
-                    //var t2 = new System.Windows.Point(2.0, 0.0);
-                    //var t3 = new System.Windows.Point(0.0, 2.0);
-                    //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
-                    //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
                     builder.AddTriangle(p3, p2, p1);
-                }
+                }            
             }
             group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));
-        }
+         }
 
         public void UpdateAll()
         {
