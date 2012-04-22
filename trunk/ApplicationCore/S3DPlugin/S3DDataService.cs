@@ -227,6 +227,7 @@ namespace S3DPlugin
                                     }                                    
                                     wlds.Add(wld);
                                     _objects = wld;
+                                    _objects.Files = objS3d;
                                 }                                
                                 if (_objects != null)
                                 {
