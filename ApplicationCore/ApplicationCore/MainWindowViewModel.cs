@@ -82,6 +82,11 @@ namespace ApplicationCore
 
         private void Registration()
         {
+            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            {
+                return;
+            }
+
             #region register database connection configuration
             EQEmu.Database.Configuration conf = new EQEmu.Database.Configuration();
             MySqlConnection connection = GetDatabaseConnection(ref conf);
