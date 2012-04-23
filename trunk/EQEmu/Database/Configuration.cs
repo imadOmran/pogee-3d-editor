@@ -13,5 +13,6 @@ namespace EQEmu.Database
         public string Database { get; set; }
         public string Port { get; set; }
         public string PEQEditorUrl { get; set; }
+        public string ConnectionTimeout { get; set; }
     }
 }
