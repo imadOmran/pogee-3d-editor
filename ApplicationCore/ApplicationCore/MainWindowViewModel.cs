@@ -355,8 +355,8 @@ namespace ApplicationCore
             using (XmlReader reader = XmlReader.Create("./connection.xml"))
             {
                 conf = (EQEmu.Database.Configuration)serializer.Deserialize(reader);
-                string connStr = string.Format("server={0};user={1};database={2};port={3};password={4};",
-                    conf.Host, conf.User, conf.Database, conf.Port, conf.Password);
+                string connStr = string.Format("server={0};user={1};database={2};port={3};password={4};ConnectionTimeout={5};",
+                    conf.Host, conf.User, conf.Database, conf.Port, conf.Password, conf.ConnectionTimeout);
                 conn = new MySql.Data.MySqlClient.MySqlConnection(connStr);
             }
 
