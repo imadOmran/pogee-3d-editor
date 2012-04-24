@@ -1,5 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <property-mapping>
+  <query type="EQEmu.Doors.DoorManager">
+    <select>
+      <sql>
+        <![CDATA[SELECT * FROM doors WHERE zone = '{0}';]]>
+      </sql>
+      <param>Zone</param>
+      <store field="id" type="int">Id</store>
+      <store field="doorid" type="int">DoorId</store>
+      <store field="zone" type="string">Zone</store>
+      <store field="version" type="int">Version</store>
+      <store field="name" type="string">Name</store>
+      <store field="pos_x" type="float">X</store>
+      <store field="pos_y" type="float">Y</store>
+      <store field="pos_z" type="float">Z</store>
+      <store field="heading" type="float">Heading</store>
+    </select>
+  </query>
 
   <query type="EQEmu.RoamAreas.ZoneRoamAreas">
     <select>

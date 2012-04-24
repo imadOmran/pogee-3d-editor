@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
+using System.Collections.ObjectModel;
 
 using MySql.Data.MySqlClient;
 
+using EQEmu.Database;
+
 namespace EQEmu.Doors
 {
-    public class DoorManager
+    public class DoorManager : ManageDatabase
     {
         private readonly MySqlConnection _connection;
+        private string _zone;
 
-        private List<Door> _doors = new List<Door>();
-        public List<Door> Doors
+        private ObservableCollection<Door> _doors = new ObservableCollection<Door>();
+        public ObservableCollection<Door> Doors
         {
             get
             {
@@ -21,76 +25,36 @@ namespace EQEmu.Doors
             }
         }
 
-        public DoorManager(MySqlConnection connection)
+        public DoorManager(string zone,MySqlConnection connection,QueryConfig config) : base(config)
         {
-            if (connection == null)
-            {
-                throw new NullReferenceException();
-            }
+            _zone = zone;
             _connection = connection;
+            RetrieveDoors(zone);
+        }
+
+        public string Zone
+        {
+            get { return _zone; }
         }
 
         public void RetrieveDoors(string zone)
         {
-            if (_connection == null)
+            string sql = String.Format(SelectString, SelectArgValues);
+            var results = QueryHelper.RunQuery(_connection, sql);
+
+            Door door;
+            foreach (Dictionary<string, object> row in results)
             {
-                throw new NullReferenceException();
+                door = new Door(_queryConfig);
+                door.SetProperties(Queries, row);
+                door.Created();
+                _doors.Add(door);
             }
-            if (_connection.State == System.Data.ConnectionState.Open)
-            {
-                try
-                {
-                    string sql = String.Format("SELECT * FROM doors WHERE zone='{0}'", zone);
-                    MySqlCommand cmd = new MySqlCommand(sql, _connection);
-                    MySqlDataReader rdr = cmd.ExecuteReader();
+        }
 
-                    Door door;
-
-                    while (rdr.Read())
-                    {
-                        door = new EQEmu.Doors.Door(null)
-                        {
-                            Location = new Point3D(rdr.GetDouble("pos_x"), rdr.GetDouble("pos_y"), rdr.GetDouble("pos_z")),
-                            DoorId = rdr.GetInt16("doorid"),
-                            Heading = rdr.GetFloat("heading"),
-                            Zone = rdr.GetString("zone"),
-                            Name = rdr.GetString("name"),
-                            OpenType = (Door.OpenTypes)rdr.GetInt16("opentype"),
-                            Guild = rdr.GetInt16("guild"),
-                            KeyItem = rdr.GetInt16("keyitem"),
-                            LockPick = rdr.GetInt16("lockpick"),
-                            NumKeyRing = rdr.GetUInt16("nokeyring"),
-                            TriggerDoor = rdr.GetInt16("triggerdoor"),
-                            TriggerType = rdr.GetInt16("triggertype"),
-                            DoorIsOpen = rdr.GetInt16("doorisopen"),
-                            DoorParam = rdr.GetInt16("door_param"),
-
-                            DestinationInstance = rdr.GetUInt16("dest_instance"),
-                            DestinationZone = rdr.GetString("dest_zone"),
-                            DestinationHeading = rdr.GetFloat("dest_heading"),
-                            InvertState = rdr.GetInt16("invert_state"),
-                            Incline = rdr.GetInt16("incline"),
-                            Size = rdr.GetInt16("size"),
-
-                            Buffer = rdr.GetFloat("buffer"),
-                            //ClientVersionMask = rdr.GetUInt16("client_version_mask"),
-                            IsLdonDoor = rdr.GetUInt16("is_ldon_door")
-                        };
-                        door.Created();
-
-                        Doors.Add(door);
-                    }
-                    rdr.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            else
-            {
-                throw new Exception("Unknown Connection State");
-            }
+        public override List<IDatabaseObject> DirtyComponents
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }
