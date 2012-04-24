@@ -84,7 +84,7 @@ namespace EQEmu.Files.WLD.Fragments
 
         public override string ToString()
         {
-            return base.ToString() + " Mesh";
+            return base.ToString() + " Mesh " + this.FragmentName;
         }
 
         /*
