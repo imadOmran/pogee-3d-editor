@@ -150,6 +150,17 @@ namespace EQEmu.Doors
                 }
             }
 
+            private int _id;
+            public int Id
+            {
+                get { return _id; }
+                set
+                {
+                    _id = value;
+                    Dirtied();
+                }
+            }
+
             private int _doorId;
             public int DoorId
             {
@@ -176,21 +187,7 @@ namespace EQEmu.Doors
                     Dirtied();
                 }
             }
-
-            private Point3D _location;
-            public Point3D Location
-            {
-                get
-                {
-                    return _location;
-                }
-                set
-                {
-                    _location = value;
-                    Dirtied();
-                }
-            }
-
+            
             private OpenTypes _openType;
             public OpenTypes OpenType
             {
@@ -414,6 +411,50 @@ namespace EQEmu.Doors
                 set 
                 { 
                     _isLdonDoor = value;
+                    Dirtied();
+                }
+            }
+
+            private float _x;
+            public float X
+            {
+                get { return _x; }
+                set
+                {
+                    _x = value;
+                    Dirtied();
+                }
+            }
+
+            private float _y;
+            public float Y
+            {
+                get { return _y; }
+                set
+                {
+                    _y = value;
+                    Dirtied();
+                }
+            }
+
+            private float _z;
+            public float Z
+            {
+                get { return _z; }
+                set
+                {
+                    _z = value;
+                    Dirtied();
+                }
+            }
+
+            private int _version;
+            public int Version
+            {
+                get { return _version; }
+                set
+                {
+                    _version = value;
                     Dirtied();
                 }
             }
