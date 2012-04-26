@@ -9,10 +9,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="Query">
         <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />        
-        <m:RibbonButton Label="View Query" Name="ViewQueryButton" />
+        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Object Models">
-        <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton LargeImageSource="Images/OpenFile.png" Label="Open" Command="{Binding OpenCommand}" />
         <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" ToolTip="Available Models" SelectionBoxWidth="250">
             <m:RibbonGallery>
                 <m:RibbonGalleryCategory ItemsSource="{Binding MeshModels}" />

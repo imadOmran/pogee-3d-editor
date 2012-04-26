@@ -352,6 +352,39 @@ namespace EQEmu.Doors
                 }
             }
 
+            private float _destinationX;
+            public float DestinationX
+            {
+                get { return _destinationX; }
+                set
+                {
+                    _destinationX = value;
+                    Dirtied();
+                }
+            }
+
+            private float _destinationY;
+            public float DestinationY
+            {
+                get { return _destinationY; }
+                set
+                {
+                    _destinationY = value;
+                    Dirtied();
+                }
+            }
+
+            private float _destinationZ;
+            public float DestinationZ
+            {
+                get { return _destinationZ; }
+                set
+                {
+                    _destinationZ = value;
+                    Dirtied();
+                }
+            }
+
             private float _destinationHeading;
             public float DestinationHeading
             {

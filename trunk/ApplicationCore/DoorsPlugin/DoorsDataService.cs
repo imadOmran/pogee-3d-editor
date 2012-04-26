@@ -92,7 +92,7 @@ namespace DoorsPlugin
         public void LoadZone(string zone)
         {
             _zone = zone;
-            _dmanager = new DoorManager(zone, _connection, this.TypeQueryConfig);
+            _dmanager = new DoorManager(zone, _connection, this.TypeQueryConfig);            
 
             if (_doors3d != null)
             {

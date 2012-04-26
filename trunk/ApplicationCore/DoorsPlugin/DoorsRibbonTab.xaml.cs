@@ -79,5 +79,17 @@ namespace DoorsPlugin
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
+
+        private void ViewQueryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DoorsViewModel != null)
+            {
+                if (DoorsViewModel.DoorService != null && DoorsViewModel.DoorService.DoorManager != null)
+                {
+                    var window = new TextWindow(DoorsViewModel.DoorService.DoorManager.GetSQL());
+                    window.ShowDialog();
+                }
+            }
+        }
     }
 }
