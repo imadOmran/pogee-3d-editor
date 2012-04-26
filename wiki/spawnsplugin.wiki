@@ -1,4 +1,4 @@
-#summary Spawns Plugin.
+#summary Spawns Plugin
 
 = Spawns Plugin =
 
@@ -21,6 +21,4 @@ Spawn objects colored yellow indicate they have a grid set on them.
 *LMB + LSHIFT* : Create a new spawn object
 
 http://pogee-3d-editor.googlecode.com/files/spawns-plugin.PNG
-
-
 
