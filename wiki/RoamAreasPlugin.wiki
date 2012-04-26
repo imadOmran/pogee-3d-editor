@@ -1,4 +1,4 @@
-#summary Roam Areas Plugin.
+#summary Roam Areas Plugin
 
 = Roam Areas Plugin =
 
