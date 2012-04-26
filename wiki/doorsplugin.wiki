@@ -14,6 +14,6 @@ View and edit the doors table within the three dimensional environment, includes
 
 *LMB + LALT* : Move the selected door to cursor location
 
-http://pogee-3d-editor.googlecode.com/files/doors-plugin.PNG
+http://pogee-3d-editor.googlecode.com/files/doors-plugin.JPG
 
-http://pogee-3d-editor.googlecode.com/files/eq-doors.jpg
+http://pogee-3d-editor.googlecode.com/files/eq-doors.JPG
