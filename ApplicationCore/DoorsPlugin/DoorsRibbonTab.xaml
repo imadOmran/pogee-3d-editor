@@ -13,5 +13,10 @@
     </m:RibbonGroup>
     <m:RibbonGroup Header="Object Models">
         <m:RibbonButton Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" ToolTip="Available Models" SelectionBoxWidth="250">
+            <m:RibbonGallery>
+                <m:RibbonGalleryCategory ItemsSource="{Binding MeshModels}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
     </m:RibbonGroup>    
 </m:RibbonTab>

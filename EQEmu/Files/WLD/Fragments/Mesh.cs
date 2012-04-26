@@ -95,6 +95,21 @@ namespace EQEmu.Files.WLD.Fragments
         }
         */
 
+        public float CenterX
+        {
+            get { return _centerX; }
+        }
+
+        public float CenterY
+        {
+            get { return _centerY; }
+        }
+
+        public float CenterZ
+        {
+            get { return _centerZ; }
+        }
+
         public override void Handler(Stream stream)
         {
             base.Handler(stream);

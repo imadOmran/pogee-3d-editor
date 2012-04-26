@@ -187,6 +187,19 @@ namespace EQEmu.Doors
                     Dirtied();
                 }
             }
+
+            public float HeadingDegrees
+            {
+                get
+                {
+                    return _heading / 512 * 360;
+                }
+                set
+                {
+                    _heading = value / 360 * 512;
+                    Dirtied();
+                }
+            }
             
             private OpenTypes _openType;
             public OpenTypes OpenType
@@ -457,6 +470,58 @@ namespace EQEmu.Doors
                     _version = value;
                     Dirtied();
                 }
+            }
+
+            public void LookAt(Point3D p)
+            {
+                double a = p.X - this.X;
+                double b = p.Y - this.Y;
+                double degrees = Math.Atan(b / a) * 180 / Math.PI;
+
+                if (a == 0)
+                {
+                    if (b > 0) degrees = 45.0;
+                    else if (b < 0) degrees = 270.0;
+                    else degrees = 0.0;
+                }
+                else if (b == 0)
+                {
+                    if (a > 0) degrees = 0.0;
+                    else if (a < 0) degrees = 180.0;
+                    else degrees = 0.0;
+                }
+                else
+                {
+                    if (a > 0)
+                    {
+                        if (b > 0)
+                        {
+                            //quadrant 1                   
+                            degrees = (90 - degrees) % 360;
+                        }
+                        else if (b < 0)
+                        {
+                            //quadrant 4
+                            degrees = (90 - degrees) % 360;
+                        }
+                    }
+                    else
+                    {
+                        if (b > 0)
+                        {
+                            //quadrant 2
+                            degrees = (270 - degrees) % 360;
+                        }
+                        else
+                        {
+                            //quadrant 3
+                            //degrees = (180 + degrees) % 360;
+                            degrees = (270 - degrees) % 360;
+                        }
+                    }
+                }
+                degrees += 90;
+                this.HeadingDegrees = (float)degrees;
             }
 
             //public override string InsertString

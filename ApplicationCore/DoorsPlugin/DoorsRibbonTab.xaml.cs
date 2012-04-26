@@ -32,6 +32,17 @@ namespace DoorsPlugin
         {
             InitializeComponent();
             DataContext = _viewModel = vm;
+            _viewModel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(_viewModel_PropertyChanged);
+        }
+
+        void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedDoor":
+                    OnObjectSelectionChanged(_viewModel.SelectedDoor);
+                    break;
+            }
         }
 
         private IDoorsViewModel _viewModel = null;
