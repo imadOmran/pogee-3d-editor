@@ -18,11 +18,18 @@ namespace EQEmuDisplay3D
     {
         private IEnumerable<EQEmu.Files.WLD.Polygon> _polys = null;
         private Door _door;
+        private Mesh _mesh;        
 
-        public PolygonDoorRender(IEnumerable<EQEmu.Files.WLD.Polygon> polys, Door door)
+        public PolygonDoorRender(Mesh mesh, Door door)
         {
-            _polys = polys;
-            _door = door;
+            _polys = mesh.Polygons;
+            _mesh = mesh;
+            _door = door;            
+        }
+
+        public Mesh Mesh
+        {
+            get { return _mesh; }
         }
 
         public IEnumerable<EQEmu.Files.WLD.Polygon> Polygons
@@ -35,7 +42,11 @@ namespace EQEmuDisplay3D
             var transforms = new List<Transform3D>();
 
             RotateTransform3D heading = new RotateTransform3D();
-            heading.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), Door.Heading / 512 * 360);
+            var rot = Door.Heading / 512 * 360;
+            heading.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), rot + 90);
+
+            ScaleTransform3D flip = new ScaleTransform3D();
+            flip.ScaleX = -1;
 
             TranslateTransform3D translate = new TranslateTransform3D();
             translate.OffsetX = Door.X;
@@ -43,6 +54,7 @@ namespace EQEmuDisplay3D
             translate.OffsetZ = Door.Z;
 
             transforms.Add(heading);
+            transforms.Add(flip);
             transforms.Add(translate);
 
             return transforms;
@@ -60,11 +72,57 @@ namespace EQEmuDisplay3D
         private ViewClipping _clipping = null;
         private DoorManager _manager;
         private WLD _objWld = null;
+        private IEnumerable<Door> _selected = null;
 
         public DoorsDisplay3D(DoorManager manager)
         {
             _manager = manager;
             UpdateAll();
+            _manager.Doors.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Doors_CollectionChanged);
+            SubscribeToDoors();
+        }
+
+        public IEnumerable<Door> Selected
+        {
+            get { return _selected; }
+            set
+            {
+                _selected = value;
+            }
+        }
+
+        private void SubscribeToDoors()
+        {
+            foreach (var d in _manager.Doors)
+            {
+                d.ObjectDirtied += new EQEmu.Database.ObjectDirtiedHandler(d_ObjectDirtied);
+            }
+        }
+
+        void d_ObjectDirtied(object sender, EventArgs args)
+        {
+            UpdateAll();
+        }
+
+        void Doors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    foreach (var d in e.NewItems.Cast<Door>())
+                    {
+                        d.ObjectDirtied += new EQEmu.Database.ObjectDirtiedHandler(d_ObjectDirtied);
+                    }
+                    UpdateAll();
+                    break;
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    foreach (var d in e.OldItems.Cast<Door>())
+                    {
+                        d.ObjectDirtied -= d_ObjectDirtied;
+                    }
+                    UpdateAll();
+                    break;
+            }
         }
 
         public WLD ObjectsWLD
@@ -95,7 +153,7 @@ namespace EQEmuDisplay3D
                     var mesh = _objWld.ZoneMeshes.FirstOrDefault(x => x.FragmentName.Replace(rem, "") == door.Name);                    
                     if (mesh != null)
                     {
-                        doorobjs.Add(new PolygonDoorRender(mesh.Polygons, door));
+                        doorobjs.Add(new PolygonDoorRender(mesh, door));
                     }
                 }
                 _doorObjects = doorobjs;
@@ -151,20 +209,42 @@ namespace EQEmuDisplay3D
                         var t1 = new System.Windows.Point(poly.V1.U, 1 - poly.V1.V);
                         var t2 = new System.Windows.Point(poly.V2.U, 1 - poly.V2.V);
                         var t3 = new System.Windows.Point(poly.V3.U, 1 - poly.V3.V);
-                        builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                        //builder.AddTriangle(p3, p2, p1, t3, t2, t1);
+                        builder.AddTriangle(p1, p2, p3, t1, t2, t3);
                     }
                     group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));
                 }
             }
-            else
+            
+            var rotate = new RotateTransform3D();
+            rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
+            foreach (var door in _manager.Doors)
             {
-                var builder = new MeshBuilder();
-                foreach (var door in _manager.Doors)
+                var bbuilder = new MeshBuilder();
+                Material mater = Materials.Red;
+
+                if (_selected != null && _selected.Contains(door))
                 {
-                    builder.AddBox(new Point3D(door.X, door.Y, door.Z), 5, 5, 5);
+                    mater = Materials.Blue;
                 }
-                group.Children.Add(new GeometryModel3D(builder.ToMesh(), mat));
-            }            
+
+                var pcenter = new Point3D(door.X, door.Y, door.Z);
+                rotate.CenterX = pcenter.X;
+                rotate.CenterY = pcenter.Y;
+
+                float radius = 3.0f;
+                double hx = pcenter.X + Math.Cos((door.HeadingDegrees - 90) / 180 * Math.PI) * radius;
+                double hy = pcenter.Y + Math.Sin((door.HeadingDegrees + 90) / 180 * Math.PI) * radius;
+
+                var p = rotate.Transform(new Point3D(hx, hy, door.Z));
+
+                //bbuilder.AddArrow(pcenter, new Point3D(hx, hy, door.Z), 0.5, 1);                
+                bbuilder.AddArrow(pcenter,p, 0.5, 1);                
+                bbuilder.AddBox(pcenter, 0.5, 0.5, 20);
+
+                group.Children.Add(new GeometryModel3D(bbuilder.ToMesh(), mater));   
+            }
+                     
         }
 
         public ViewClipping Clipping
@@ -192,6 +272,10 @@ namespace EQEmuDisplay3D
             if (_clipping != null)
             {
                 _clipping.OnClippingChanged -= clipping_OnClippingChanged;
+            }
+            if (_manager != null)
+            {
+                _manager.Doors.CollectionChanged -= Doors_CollectionChanged;
             }
         }
     }

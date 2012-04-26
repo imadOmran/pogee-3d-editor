@@ -15,6 +15,7 @@
       <store field="pos_y" type="float">Y</store>
       <store field="pos_z" type="float">Z</store>
       <store field="heading" type="float">Heading</store>
+      <store field="opentype" type="int">OpenType</store>
     </select>
   </query>
 

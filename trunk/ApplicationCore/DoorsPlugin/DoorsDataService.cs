@@ -26,6 +26,7 @@ namespace DoorsPlugin
         private DoorsDisplay3D _doors3d = null;
         private DoorManager _dmanager = null;
         private MySqlConnection _connection;
+        private WLD _wld;
 
         public DoorsDataService(MySqlConnection conn)
         {
@@ -38,6 +39,21 @@ namespace DoorsPlugin
         public string Zone
         {
             get { return _zone; }
+        }
+
+        public WLD WLDObject
+        {
+            get { return _wld; }
+            set
+            {
+                _wld = value;
+                NotifyPropertyChanged("WLDObject");
+            }
+        }
+
+        public DoorManager DoorManager
+        {
+            get { return _dmanager; }
         }
 
         public void OpenModels(string file)
@@ -56,20 +72,39 @@ namespace DoorsPlugin
 
             if (wld != null)
             {
-                _doors3d.ObjectsWLD = wld;
+                if (_doors3d != null)
+                {
+                    _doors3d.ObjectsWLD = wld;
+                }
+                WLDObject = wld;
             }
+        }
+
+        public Door GetClosestDoor(Point3D p)
+        {
+            if (_dmanager != null)
+            {
+                return _dmanager.GetClosestDoor(p);
+            }
+            else return null;
         }
 
         public void LoadZone(string zone)
         {
             _zone = zone;
             _dmanager = new DoorManager(zone, _connection, this.TypeQueryConfig);
+
+            if (_doors3d != null)
+            {
+                _doors3d.Dispose();
+            }
+
             _doors3d = new DoorsDisplay3D(_dmanager);
-            
             if (_viewClipping != null)
             {
-                _doors3d.Clipping = _viewClipping;                
+                _doors3d.Clipping = _viewClipping;
             }
+            _doors3d.ObjectsWLD = _wld;
 
             Model3D = new ModelVisual3D()
             {
@@ -78,6 +113,15 @@ namespace DoorsPlugin
             };
 
             NotifyPropertyChanged("Zone");
+        }
+
+        public void ShowDoorsSelected(IEnumerable<Door> doors)
+        {
+            if (_doors3d != null)
+            {
+                _doors3d.Selected = doors;
+                _doors3d.UpdateAll();
+            }
         }
 
         private ModelVisual3D _modelVisual = null;
