@@ -1,4 +1,4 @@
-#summary Pathing Plugin.
+#summary Pathing Plugin
 
 = Pathing Plugin =
 
