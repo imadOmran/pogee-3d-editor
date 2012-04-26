@@ -70,20 +70,25 @@ namespace EQEmu.Doors
                     _doors.Add(door);
                 }
             }
+            Created();
         }
 
         public Door DoorFactory()
         {
             Door door = null;
             int id = 0;
+            int doorid = 0;
 
             if (Doors.Count > 0)
             {
                 id = Doors.Max(x => x.Id) + 1;
+                doorid = Doors.Max(x => x.DoorId) + 1;
             }
 
             door = new Door(_queryConfig);
             door.Id = id;
+            door.DoorId = doorid;
+            door.Zone = Zone;
             door.Created();            
 
             return door;
@@ -111,6 +116,11 @@ namespace EQEmu.Doors
                 var x = new XmlSerializer(ary.GetType());
                 x.Serialize(fs, ary);
             }
+        }
+
+        public string GetSQL()
+        {
+            return GetQuery(Doors);
         }
 
         public override void LoadXML(string file)

@@ -84,6 +84,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\OpenFile.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>
