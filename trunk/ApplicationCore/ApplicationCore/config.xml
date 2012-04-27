@@ -46,8 +46,8 @@
                            `heading`,`opentype`,`guild`,`lockpick`,`keyitem`,`nokeyring`,
                            `triggerdoor`,`triggertype`,`doorisopen`,`door_param`,`dest_zone`,
                            `dest_instance`,`dest_x`,`dest_y`,`dest_z`,`dest_heading`,`invert_state`,
-                           `incline`,`size`,`buffer`,`client_version_mask`,`is_ldon_door`)
-                   VALUES ({1},'{2}',{3},'{4}',{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},'{18}',{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29});]]>        
+                           `incline`,`size`,`buffer`,`is_ldon_door`)
+                   VALUES ({1},'{2}',{3},'{4}',{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},'{18}',{19},{20},{21},{22},{23},{24},{25},{26},{27},{29});]]>        
       </sql>
       <param>Id</param>
       <param>DoorId</param>
@@ -83,8 +83,43 @@
 
     <update>
       <sql>
-        <![CDATA[UPDATE doors SET......]]>
+        <![CDATA[UPDATE doors SET `doorid` = {1}, `zone` = '{2}',`version` = {3},`name` = '{4}',`pos_x` = {5},`pos_y` = {6},`pos_z` = {7},
+                          `heading` = {8},`opentype` = {9},`guild` = {10},`lockpick` = {11},`keyitem` = {12},`nokeyring` = {13},
+                          `triggerdoor` = {14},`triggertype` = {15},`doorisopen` = {16},`door_param` = {17},`dest_zone` = '{18}',
+                          `dest_instance` = {19},`dest_x` = {20},`dest_y` = {21},`dest_z` = {22},`dest_heading` = {23},`invert_state` = {24},
+                          `incline` = {25},`size` = {26},`buffer` = {27},`client_version_mask` = {28},`is_ldon_door` = {29}
+                  WHERE `zone` = '{2}' AND `id` = {0};]]>
       </sql>
+      <param>Id</param>
+      <param>DoorId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>Name</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>OpenType</param>
+      <param>Guild</param>
+      <param>LockPick</param>
+      <param>KeyItem</param>
+      <param>NumKeyRing</param>
+      <param>TriggerDoor</param>
+      <param>TriggerType</param>
+      <param>DoorIsOpen</param>
+      <param>DoorParam</param>
+      <param>DestinationZone</param>
+      <param>DestinationInstance</param>
+      <param>DestinationX</param>
+      <param>DestinationY</param>
+      <param>DestinationZ</param>
+      <param>DestinationHeading</param>
+      <param>InvertState</param>
+      <param>Incline</param>
+      <param>Size</param>
+      <param>Buffer</param>
+      <param>ClientVersionMask</param>
+      <param>IsLdonDoor</param>
     </update>
     
     <delete>
