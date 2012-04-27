@@ -19,4 +19,12 @@
             </m:RibbonGallery>
         </m:RibbonComboBox>
     </m:RibbonGroup>    
+    <m:RibbonGroup Header="Doors">
+        <m:RibbonButton SmallImageSource="Images/delete_12x12.png" Label="Remove" Command="{Binding RemoveDoorCommand}" />
+        <m:RibbonComboBox HorizontalAlignment="Right" Label="Doors" ToolTip="" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectedItem="{Binding SelectedDoor}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding Doors}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>        
+    </m:RibbonGroup>
 </m:RibbonTab>

@@ -418,7 +418,7 @@ namespace EQEmu.Doors
                 }
             }
 
-            private int _size;
+            private int _size = 100;
             public int Size
             {
                 get { return _size; }
@@ -439,8 +439,8 @@ namespace EQEmu.Doors
                 }
             }
 
-            private int _clientVersionMask;
-            public int ClientVersionMask
+            private uint _clientVersionMask = 4294967295;
+            public uint ClientVersionMask
             {
                 get { return _clientVersionMask; }
                 set 
@@ -557,19 +557,9 @@ namespace EQEmu.Doors
                 this.HeadingDegrees = (float)degrees;
             }
 
-            //public override string InsertString
-            //{
-            //    get { throw new NotImplementedException(); }
-            //}
-
-            //public override string UpdateString
-            //{
-            //    get { throw new NotImplementedException(); }
-            //}
-
-            //public override string DeleteString
-            //{
-            //    get { throw new NotImplementedException(); }
-            //}
+            public override string ToString()
+            {
+                return "Door: " + DoorId.ToString() + " " + Name;
+            }
         }
 }

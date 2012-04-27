@@ -19,6 +19,7 @@ namespace DoorsPlugin
     public class DoorsRibbonTabViewModel : DoorsViewModelBase
     {
         private DelegateCommand _openCommand;
+        private DelegateCommand _removeDoorCommand;
 
         public DoorsRibbonTabViewModel([Dependency("DoorsDataService")] DoorsDataService _service)
             : base(_service)
@@ -38,6 +39,27 @@ namespace DoorsPlugin
                 {
                     return true;
                 });
+
+            RemoveDoorCommand = new DelegateCommand(
+                x =>
+                {
+                    DoorService.DoorManager.RemoveDoor(SelectedDoor);
+                    SelectedDoor = null;
+                },
+                x =>
+                {
+                    return SelectedDoor != null && DoorService != null && DoorService.DoorManager != null;
+                });
+        }
+
+        public DelegateCommand RemoveDoorCommand
+        {
+            get { return _removeDoorCommand; }
+            set
+            {
+                _removeDoorCommand = value;
+                NotifyPropertyChanged("RemoveDoorCommand");
+            }
         }
 
         public DelegateCommand OpenCommand
@@ -47,6 +69,18 @@ namespace DoorsPlugin
             {
                 _openCommand = value;
                 NotifyPropertyChanged("OpenCommand");
+            }
+        }
+
+        public IEnumerable<Door> Doors
+        {
+            get
+            {
+                if (DoorService != null && DoorService.DoorManager != null)
+                {
+                    return DoorService.DoorManager.Doors;
+                }
+                else return null;
             }
         }
 
@@ -63,6 +97,7 @@ namespace DoorsPlugin
                 {
                     DoorService.ShowDoorsSelected(new List<Door>() { value });
                 }
+                RemoveDoorCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -79,6 +114,9 @@ namespace DoorsPlugin
             {
                 case "WLDObject":
                     NotifyPropertyChanged("MeshModels");
+                    break;
+                case "Zone":
+                    NotifyPropertyChanged("Doors");
                     break;
                 default:
                     break;

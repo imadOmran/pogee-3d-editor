@@ -48,6 +48,11 @@ namespace EQEmuDisplay3D
             ScaleTransform3D flip = new ScaleTransform3D();
             flip.ScaleX = -1;
 
+            ScaleTransform3D scale = new ScaleTransform3D();
+            scale.ScaleX = _door.Size / 100.0;
+            scale.ScaleY = _door.Size / 100.0;
+            scale.ScaleZ = _door.Size / 100.0;
+
             TranslateTransform3D translate = new TranslateTransform3D();
             translate.OffsetX = Door.X;
             translate.OffsetY = Door.Y;
@@ -55,7 +60,8 @@ namespace EQEmuDisplay3D
 
             transforms.Add(heading);
             transforms.Add(flip);
-            transforms.Add(translate);
+            transforms.Add(scale);
+            transforms.Add(translate);            
 
             return transforms;
         }
@@ -276,6 +282,10 @@ namespace EQEmuDisplay3D
             if (_manager != null)
             {
                 _manager.Doors.CollectionChanged -= Doors_CollectionChanged;
+                foreach (var door in _manager.Doors)
+                {
+                    door.ObjectDirtied -= d_ObjectDirtied;
+                }
             }
         }
     }
