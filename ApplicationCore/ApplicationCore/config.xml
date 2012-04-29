@@ -890,7 +890,7 @@ DELETE FROM spawngroup WHERE id = {0};
   <query type="EQEmu.Spawns.Spawn2">
     <insert>
       <sql>
-        <![CDATA[INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition,version) VALUES
+        <![CDATA[INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition,version) VALUES 
 ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13});]]>
       </sql>
       <param>Id</param>
@@ -932,7 +932,7 @@ INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,anim
     
     <update>
       <sql>
-<![CDATA[UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}
+<![CDATA[UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}  
 WHERE id = {11} AND zone = '{1}';]]>
       </sql>
       <param>SpawnGroupId</param>
