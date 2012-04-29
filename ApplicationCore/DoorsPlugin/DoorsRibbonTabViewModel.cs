@@ -20,6 +20,7 @@ namespace DoorsPlugin
     {
         private DelegateCommand _openCommand;
         private DelegateCommand _removeDoorCommand;
+        private DelegateCommand _setMeshCommand;
 
         public DoorsRibbonTabViewModel([Dependency("DoorsDataService")] DoorsDataService _service)
             : base(_service)
@@ -50,6 +51,28 @@ namespace DoorsPlugin
                 {
                     return SelectedDoor != null && DoorService != null && DoorService.DoorManager != null;
                 });
+
+            SetMeshCommand = new DelegateCommand(
+                x =>
+                {
+                    string rem = "_DMSPRITEDEF";
+                    SelectedDoor.Name = SelectedMesh.FragmentName.Replace(rem, "");
+                    NotifyPropertyChanged("SelectedDoor");
+                },
+                x =>
+                {
+                    return SelectedDoor != null && SelectedMesh != null;
+                });
+        }
+
+        public DelegateCommand SetMeshCommand
+        {
+            get { return _setMeshCommand; }
+            set
+            {
+                _setMeshCommand = value;
+                NotifyPropertyChanged("SetMeshCommand");
+            }
         }
 
         public DelegateCommand RemoveDoorCommand
@@ -98,6 +121,7 @@ namespace DoorsPlugin
                     DoorService.ShowDoorsSelected(new List<Door>() { value });
                 }
                 RemoveDoorCommand.RaiseCanExecuteChanged();
+                SetMeshCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -132,6 +156,18 @@ namespace DoorsPlugin
                     return DoorService.WLDObject.ZoneMeshes;
                 }
                 else return null;
+            }
+        }
+
+        private Mesh _selectedMesh = null;
+        public Mesh SelectedMesh
+        {
+            get { return _selectedMesh; }
+            set
+            {
+                _selectedMesh = value;                
+                NotifyPropertyChanged("SelectedMesh");
+                SetMeshCommand.RaiseCanExecuteChanged();
             }
         }
 

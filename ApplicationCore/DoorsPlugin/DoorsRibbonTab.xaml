@@ -13,8 +13,9 @@
     </m:RibbonGroup>
     <m:RibbonGroup Header="Object Models">
         <m:RibbonButton LargeImageSource="Images/OpenFile.png" Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Set Door Model" Command="{Binding SetMeshCommand}" />
         <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" ToolTip="Available Models" SelectionBoxWidth="250">
-            <m:RibbonGallery>
+            <m:RibbonGallery SelectedItem="{Binding SelectedMesh}">
                 <m:RibbonGalleryCategory ItemsSource="{Binding MeshModels}" />
             </m:RibbonGallery>
         </m:RibbonComboBox>

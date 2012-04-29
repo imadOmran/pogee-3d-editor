@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 using System.Drawing;
 
+using FreeImageAPI;
+
 using EQEmu.Files.WLD.Fragments;
 using EQEmu.Files.S3D;
 
@@ -199,34 +201,22 @@ namespace EQEmu.Files.WLD
 
                 var bytes = img.Bytes;
 
-                //we'll get back to this some day....
-                                
-                /*
                 using (var ms = new MemoryStream(bytes))
-                {                    
-                    var dds = DDS.Load(ms);
-                    var file = tmpdir + "\\" + f.ToLower() + ".bmp";
-                    dds.Bitmap.Save( file );
-                    
-                    //this is just crazy.. file conversions make this work
-                    //can't get palettes to work with using memory stream                    
-                    //dds.Bitmap.Save("tmp.dds");
-                    
-                    using(var bms = new FileStream("tmp.bmp", FileMode.Open) )
-                    {
-                        BitmapImage bi = new BitmapImage();
-                        bi.CacheOption = BitmapCacheOption.OnLoad;
-                        bi.BeginInit();
-                        bi.StreamSource = bms;
-                        bi.EndInit();
-                        _bitmaps[f.ToLower()] = bi;                        
-                    }                     
-                    var bi = new BitmapImage(new Uri(file));
-                    bi.CacheOption = BitmapCacheOption.OnLoad;
-                    _bitmaps[f.ToLower()] = bi;
-                    //File.Delete(f.ToLower() + ".tmp");
+                {
+                    var converted = new MemoryStream();
+                    var dib = FreeImage.LoadFromStream(ms);
+                    FreeImage.FlipVertical(dib);
+                    FreeImage.SaveToStream(dib, converted, FREE_IMAGE_FORMAT.FIF_BMP);
+
+                    converted.Seek(0, SeekOrigin.Begin);
+                    var bmp = new BitmapImage();
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    bmp.BeginInit();
+                    bmp.StreamSource = converted;
+                    bmp.EndInit();
+                    bmp.Freeze();
+                    _bitmaps[f.ToLower()] = bmp;
                 }
-                */
             }
 
             foreach (var m in ZoneMeshes)
