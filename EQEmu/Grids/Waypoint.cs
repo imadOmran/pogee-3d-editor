@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 using EQEmu.Database;
 
@@ -25,6 +26,7 @@ namespace EQEmu.Grids
 
         private Grid _grid;        
         [Browsable(false)]
+        [XmlIgnore]
         public Grid GridReference
         {
             get { return _grid; }
@@ -133,6 +135,12 @@ namespace EQEmu.Grids
                 _running = value;
                 Dirtied();
             }
+        }
+
+        private Waypoint()
+            : base(null)
+        {
+
         }
 
         public Waypoint(QueryConfig config)

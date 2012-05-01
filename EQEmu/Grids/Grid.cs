@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 using EQEmu.Database;
 
@@ -53,6 +54,7 @@ namespace EQEmu.Grids
 
         private ObservableCollection<Waypoint> _waypoints = new ObservableCollection<Waypoint>();
         [Browsable(false)]
+        [XmlIgnore]
         public ObservableCollection<Waypoint> Waypoints
         {
             get { return _waypoints; }
@@ -99,6 +101,12 @@ namespace EQEmu.Grids
                 _pauseType = value;
                 Dirtied();
             }
+        }
+
+        private Grid()
+            : base(null)
+        {
+
         }
 
         public Grid(QueryConfig config)
@@ -303,6 +311,7 @@ namespace EQEmu.Grids
             return number;
         }
 
+        [XmlIgnore]
         public override List<IDatabaseObject> DirtyComponents
         {
             get
