@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -67,7 +68,7 @@ namespace EQEmu.Grids
             }
 
             var sql = String.Format(SelectString, SelectArgValues);
-            var results = Database.QueryHelper.RunQuery(_connection, sql);
+            var results = Database.QueryHelper.TryRunQuery(_connection, sql);
             var v = _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId");
             string zoneIdField = null;
             if (v != null)
@@ -75,32 +76,36 @@ namespace EQEmu.Grids
                 zoneIdField = v.Column;
             }
 
-            foreach (var row in results)
+            if (results != null)
             {
-                Grid g = new Grid(_queryConfig);
-                if (row.ContainsKey(zoneIdField) && results.First() == row)
+
+                foreach (var row in results)
                 {
-                    ZoneId = Int32.Parse( row[zoneIdField].ToString() );
+                    Grid g = new Grid(_queryConfig);
+                    if (row.ContainsKey(zoneIdField) && results.First() == row)
+                    {
+                        ZoneId = Int32.Parse(row[zoneIdField].ToString());
+                    }
+
+                    g.SetProperties(Queries, row);
+                    Grids.Add(g);
+                    g.Created();
                 }
 
-                g.SetProperties(Queries, row);
-                Grids.Add(g);
-                g.Created();
-            }
-
-            foreach(var grid in Grids)
-            {
-                sql = String.Format(grid.SelectString,grid.SelectArgValues);
-                results = Database.QueryHelper.RunQuery(_connection,sql);
-                foreach(var row in results)
+                foreach (var grid in Grids)
                 {
-                    var wp = new Waypoint(_queryConfig);
+                    sql = String.Format(grid.SelectString, grid.SelectArgValues);
+                    results = Database.QueryHelper.RunQuery(_connection, sql);
+                    foreach (var row in results)
+                    {
+                        var wp = new Waypoint(_queryConfig);
 
-                    wp.SetProperties(grid.Queries,row);
+                        wp.SetProperties(grid.Queries, row);
 
-                    wp.GridReference = grid;
-                    grid.Waypoints.Add(wp);
-                    wp.Created();
+                        wp.GridReference = grid;
+                        grid.Waypoints.Add(wp);
+                        wp.Created();
+                    }
                 }
             }
         }
@@ -119,6 +124,89 @@ namespace EQEmu.Grids
 
             NeedsInserted.Add(grid);
             Grids.Add(grid);
+        }
+
+        /// <summary>
+        /// Provide a directory path to save to
+        /// </summary>
+        /// <param name="file"></param>
+        public override void SaveXML(string dir)
+        {
+            using (var fs = new FileStream(dir + "\\" + this.Zone + ".grids.xml", FileMode.Create))
+            {
+                var ary = _grids.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs, ary);
+            }
+
+            using (var fs = new FileStream(dir + "\\" + this.Zone + ".waypoints.xml", FileMode.Create))
+            {
+                List<Waypoint> allwaypoints = new List<Waypoint>();
+                foreach (var g in _grids)
+                {
+                    allwaypoints.AddRange(g.Waypoints);
+                }
+
+                var ary = allwaypoints.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs, ary);
+            }
+        }
+
+        public override void LoadXML(string file)
+        {
+            var dir = System.IO.Path.GetDirectoryName(file);
+            var filename = System.IO.Path.GetFileName(file);
+            int period1 = filename.IndexOf('.', 0);
+            int period2 = filename.IndexOf('.', period1 + 1);
+
+            Zone = filename.Substring(0, period1);
+            
+            Grid[] grids;
+            using (var fs = new FileStream(file, FileMode.Open))
+            {
+                var x = new XmlSerializer(_grids.ToArray().GetType());
+                var obj = x.Deserialize(fs);
+                grids = obj as Grid[];
+            }
+
+            if (grids != null)
+            {
+                ClearObjects();
+                Grids.Clear();
+                Created();
+                foreach (var grid in grids)
+                {
+                    Grids.Add(grid);
+                    AddObject(grid);
+                    grid.InitConfig(_queryConfig);
+                    grid.Created();
+                }
+            }
+
+            Waypoint[] wps;
+            var wpfile = dir + "\\" + Zone + ".waypoints.xml";
+
+            if (grids.Count() > 0 && System.IO.File.Exists(wpfile) )
+            {
+                using (var fs = new FileStream(wpfile, FileMode.Open))
+                {
+                    var x = new XmlSerializer(grids.ElementAt(0).Waypoints.ToArray().GetType());
+                    var obj = x.Deserialize(fs);
+                    wps = obj as Waypoint[];
+                }
+
+                foreach (var wp in wps)
+                {
+                    var grid = grids.FirstOrDefault(x => x.Id == wp.GridId);
+                    if (grid != null)
+                    {
+                        grid.AddWaypoint(wp);
+                        wp.Created();
+                        wp.InitConfig(_queryConfig);
+                    }
+                }
+            }
         }
 
         public void RemoveGrid(Grid grid)

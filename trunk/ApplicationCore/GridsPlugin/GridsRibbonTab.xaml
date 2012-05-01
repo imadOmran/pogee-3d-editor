@@ -15,6 +15,10 @@
         <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />
         <m:RibbonButton LargeImageSource="Images/Zoom_32x32.png" Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Offline">
+        <m:RibbonButton Label="Open File" Name="OpenFileButton" Click="OpenFileButton_Click" />
+        <m:RibbonButton Label="Save To File" Name="SaveFileButton" Click="SaveFileButton_Click" />
+    </m:RibbonGroup>    
     <m:RibbonGroup Header="Edit Grid">
         <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="New Grid" Name="NewGridButton" Click="NewGridButton_Click" />
         <m:RibbonButton SmallImageSource="Images/delete_12x12.png" Label="Remove Grid" Click="RemoveGridButton_Click" />        

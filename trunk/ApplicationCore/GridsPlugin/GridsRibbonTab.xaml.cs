@@ -218,5 +218,31 @@ namespace GridsPlugin
         {
 
         }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GridsViewModel.GridsService != null && GridsViewModel.GridsService.ZoneGrids != null)
+            {
+                var sd = new SaveFileDialog();
+                if ((bool)sd.ShowDialog())
+                {
+                    GridsViewModel.GridsService.ZoneGrids.SaveXML(System.IO.Path.GetDirectoryName(sd.FileName));
+                }
+            }
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GridsViewModel.GridsService != null)
+            {
+                var sd = new OpenFileDialog();
+                if ((bool)sd.ShowDialog())
+                {
+                    //not too fond of this, function call would be easier to read, the setter intializes the zonegrid object
+                    GridsViewModel.GridsService.Zone = "";
+                    GridsViewModel.GridsService.ZoneGrids.LoadXML(sd.FileName);
+                }
+            }
+        }
     }
 }
