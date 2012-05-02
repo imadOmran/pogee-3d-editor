@@ -11,10 +11,33 @@ using MySql.Data.MySqlClient;
 
 namespace EQEmu.Grids
 {
+    public delegate void GridDataLoadedHandler(object sender, GridDataLoadedEventArgs e);
+    public class GridDataLoadedEventArgs : EventArgs
+    {
+        public GridDataLoadedEventArgs(int zoneid, string zonename)
+        {
+            ZoneId = zoneid;
+            ZoneName = zonename;
+        }
+
+        public int ZoneId { get; private set; }
+        public string ZoneName { get; private set; }
+    }
+
     public class ZoneGrids : EQEmu.Database.ManageDatabase
     {
         private readonly MySqlConnection _connection;
-        private string _zone;        
+        private string _zone;
+
+        public event GridDataLoadedHandler GridDataLoaded;
+        private void OnGridDataLoaded(string zonename, int zoneid)
+        {
+            var e = GridDataLoaded;
+            if (e != null)
+            {
+                GridDataLoaded(this, new GridDataLoadedEventArgs(zoneid, zonename));
+            }
+        }
 
         //private List<Grid> _grids = new List<Grid>();
         private ObservableCollection<Grid> _grids = new ObservableCollection<Grid>();
@@ -46,6 +69,10 @@ namespace EQEmu.Grids
                 foreach (Grid g in Grids)
                 {
                     g.ZoneId = value;
+                    foreach (var wp in g.Waypoints)
+                    {
+                        wp.ZoneId = value;
+                    }
                 }
             }
         }
@@ -189,6 +216,9 @@ namespace EQEmu.Grids
 
             if (grids.Count() > 0 && System.IO.File.Exists(wpfile) )
             {
+                this._zone = grids.ElementAt(0).ZoneName;
+                this._zoneId = grids.ElementAt(0).ZoneId;
+
                 using (var fs = new FileStream(wpfile, FileMode.Open))
                 {
                     var x = new XmlSerializer(grids.ElementAt(0).Waypoints.ToArray().GetType());
@@ -207,6 +237,7 @@ namespace EQEmu.Grids
                     }
                 }
             }
+            OnGridDataLoaded(Zone, ZoneId);
         }
 
         public void RemoveGrid(Grid grid)

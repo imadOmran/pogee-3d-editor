@@ -16,7 +16,7 @@ namespace GridsPlugin
 {
     public class GridsRibbonTabViewModel : GridsViewModelBase
     {
-        private DelegateCommand _editMultipleCommand;
+        private DelegateCommand _editMultipleCommand;        
 
         public GridsRibbonTabViewModel([Dependency("GridsDataService")] GridsDataService service)
             : base(service)
@@ -30,7 +30,7 @@ namespace GridsPlugin
                 x =>
                 {
                     return SelectedWaypoints != null && SelectedWaypoints.Count() > 1;
-                });
+                });                
         }
 
         public override IEnumerable<Waypoint> SelectedWaypoints

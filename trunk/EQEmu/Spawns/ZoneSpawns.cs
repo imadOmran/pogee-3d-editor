@@ -293,7 +293,7 @@ namespace EQEmu.Spawns
         /// <param name="file"></param>
         public override void SaveXML(string dir)
         {
-            using (var fs = new FileStream(dir+"\\"+this.Zone+"."+this.Version+".xml", FileMode.Create))
+            using (var fs = new FileStream(dir+"\\"+this.Zone+"."+this.Version+".spawn2.xml", FileMode.Create))
             {
                 var ary = _spawns.ToArray();
                 var x = new XmlSerializer(ary.GetType());

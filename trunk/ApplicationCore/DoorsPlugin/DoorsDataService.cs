@@ -41,6 +41,12 @@ namespace DoorsPlugin
             get { return _zone; }
         }
 
+        private int _version;
+        public int Version
+        {
+            get { return _version; }
+        }
+
         public WLD WLDObject
         {
             get { return _wld; }
@@ -89,10 +95,18 @@ namespace DoorsPlugin
             else return null;
         }
 
-        public void LoadZone(string zone)
+        public void LoadZone(string zone,int version=0)
         {
             _zone = zone;
-            _dmanager = new DoorManager(zone, _connection, this.TypeQueryConfig);            
+            _version = version;
+
+            if (_dmanager != null)
+            {
+                _dmanager.DoorDataLoaded -= _dmanager_DoorDataLoaded;
+            }
+
+            _dmanager = new DoorManager(zone,_version, _connection, this.TypeQueryConfig);
+            _dmanager.DoorDataLoaded += new DoorDataLoadedHandler(_dmanager_DoorDataLoaded);
 
             if (_doors3d != null)
             {
@@ -113,6 +127,14 @@ namespace DoorsPlugin
             };
 
             NotifyPropertyChanged("Zone");
+        }
+
+        void _dmanager_DoorDataLoaded(object sender, DoorDataLoadedEventArgs e)
+        {
+            _zone = e.Zone;
+            _version = e.Version;
+            NotifyPropertyChanged("Zone");
+            NotifyPropertyChanged("Version");
         }
 
         public void ShowDoorsSelected(IEnumerable<Door> doors)

@@ -12,6 +12,12 @@ namespace EQEmu.Doors
 {
         public class Door : DatabaseObject
         {
+            private Door()
+                : base(null)
+            {
+
+            }
+
             public Door(QueryConfig config)
                 :base(config)
             {

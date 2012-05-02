@@ -13,10 +13,34 @@ using EQEmu.Database;
 
 namespace EQEmu.Doors
 {
+    public delegate void DoorDataLoadedHandler(object sender, DoorDataLoadedEventArgs e);
+    public class DoorDataLoadedEventArgs : EventArgs
+    {
+        public DoorDataLoadedEventArgs(string zonename,int version)
+        {
+            Version = version;
+            Zone = zonename;
+        }
+
+        public int Version { get; private set; }
+        public string Zone { get; private set; }
+    }
+
     public class DoorManager : ManageDatabase
     {
         private readonly MySqlConnection _connection;
         private string _zone;
+        private int _version;
+
+        public event DoorDataLoadedHandler DoorDataLoaded;
+        private void OnDoorDataLoaded(string zone, int version)
+        {
+            var e = DoorDataLoaded;
+            if (e != null)
+            {
+                e(this, new DoorDataLoadedEventArgs(zone, version));
+            }
+        }
 
         private ObservableCollection<Door> _doors = new ObservableCollection<Door>();
         public ObservableCollection<Door> Doors
@@ -27,7 +51,7 @@ namespace EQEmu.Doors
             }
         }
 
-        public DoorManager(string zone,MySqlConnection connection,QueryConfig config) : base(config)
+        public DoorManager(string zone,int version,MySqlConnection connection,QueryConfig config) : base(config)
         {
             _zone = zone;
             _connection = connection;
@@ -52,6 +76,11 @@ namespace EQEmu.Doors
         public string Zone
         {
             get { return _zone; }
+        }
+
+        public int Version
+        {
+            get { return _version; }
         }
 
         public void RetrieveDoors(string zone)
@@ -110,7 +139,10 @@ namespace EQEmu.Doors
 
         public override void SaveXML(string dir)
         {
-            using (var fs = new FileStream(dir + "\\" + this.Zone + "." + "0" + ".xml", FileMode.Create))
+            var ddir = System.IO.Path.GetDirectoryName(dir);
+
+
+            using (var fs = new FileStream(ddir + "\\" + this.Zone + "." + "0" + ".doors.xml", FileMode.Create))
             {
                 var ary = _doors.ToArray();
                 var x = new XmlSerializer(ary.GetType());
@@ -126,36 +158,41 @@ namespace EQEmu.Doors
         public override void LoadXML(string file)
         {
             //base.LoadXML(file);
-            /*
             var filename = System.IO.Path.GetFileName(file);
             int period1 = filename.IndexOf('.', 0);
             int period2 = filename.IndexOf('.', period1 + 1);
 
-            Zone = filename.Substring(0, period1);
-            Version = int.Parse(filename.Substring(period1 + 1, period2 - period1 - 1));
+            _zone = filename.Substring(0, period1);
+            _version = int.Parse(filename.Substring(period1 + 1, period2 - period1 - 1));
 
-            Spawn2[] spawns;
+            Door[] doors;
             using (var fs = new FileStream(file, FileMode.Open))
             {
-                var x = new XmlSerializer(_spawns.ToArray().GetType());
+                var x = new XmlSerializer(_doors.ToArray().GetType());
                 var obj = x.Deserialize(fs);
-                spawns = obj as Spawn2[];
+                doors = obj as Door[];
             }
 
 
-            if (spawns != null)
+            if (doors != null)
             {
                 ClearObjects();
-                UnlockObject();
-                foreach (var sp in spawns)
-                {
-                    AddSpawn(sp);
-                    sp.Created();
-                    sp.InitConfig(_queryConfig);
-                }
+                Doors.Clear();
                 Created();
+
+                if (doors.Count() > 0)
+                {
+                    _zone = doors.ElementAt(0).Zone;
+                }
+
+                foreach (var door in doors)
+                {
+                    AddDoor(door);
+                    door.Created();
+                    door.InitConfig(_queryConfig);
+                }
+                OnDoorDataLoaded(Zone, 0);
             }
-            */
         }
 
         public override List<IDatabaseObject> DirtyComponents
