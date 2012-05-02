@@ -31,6 +31,7 @@ namespace DoorsPlugin
                 x =>
                 {
                     var fd = new OpenFileDialog();
+                    fd.Filter = "S3D Files | *.s3d";
                     if((bool)fd.ShowDialog())
                     {
                         DoorService.OpenModels(fd.FileName);
@@ -141,6 +142,11 @@ namespace DoorsPlugin
                     break;
                 case "Zone":
                     NotifyPropertyChanged("Doors");
+                    NotifyPropertyChanged("Zone");                    
+                    break;
+                case "Version":
+                    Version = DoorService.Version;
+                    NotifyPropertyChanged("Version");
                     break;
                 default:
                     break;

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 
 using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Practices.Unity;
+using Microsoft.Win32;
 
 using ApplicationCore;
 using ApplicationCore.UserControls.Ribbon.Tabs;
@@ -89,6 +90,25 @@ namespace DoorsPlugin
                     var window = new TextWindow(DoorsViewModel.DoorService.DoorManager.GetSQL());
                     window.ShowDialog();
                 }
+            }
+        }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var sd = new SaveFileDialog();
+            sd.Filter = "XML Files | *.xml";
+            if ((bool)sd.ShowDialog())
+            {
+                DoorsViewModel.SaveXML(sd.FileName);
+            }
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var sd = new OpenFileDialog();
+            if ((bool)sd.ShowDialog())
+            {
+                DoorsViewModel.LoadXML(sd.FileName);
             }
         }
     }

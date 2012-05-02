@@ -13,5 +13,10 @@ namespace DoorsPlugin
     {
         DoorsDataService DoorService { get; }
         Door SelectedDoor { get; set; }
+        string Zone { get; set; }
+        int Version { get; set; }
+
+        void SaveXML(string file);
+        void LoadXML(string file);
     }
 }

@@ -53,7 +53,13 @@ namespace GridsPlugin
             get { return _zoneGrids; }
             set
             {
+                if (_zoneGrids != null)
+                {
+                    _zoneGrids.GridDataLoaded -= _zoneGrids_GridDataLoaded;
+                }
+
                 _zoneGrids = value;
+                _zoneGrids.GridDataLoaded += new EQEmu.Grids.GridDataLoadedHandler(_zoneGrids_GridDataLoaded);
 
                 _grids3d = new EQEmuDisplay3D.GridsDisplay3D(value);
 
@@ -70,6 +76,12 @@ namespace GridsPlugin
 
                 NotifyPropertyChanged("ZoneGrids");
             }
+        }
+
+        void _zoneGrids_GridDataLoaded(object sender, EQEmu.Grids.GridDataLoadedEventArgs e)
+        {
+            _zone = e.ZoneName;
+            NotifyPropertyChanged("Zone");
         }
 
         private ModelVisual3D _modelVisual = null;

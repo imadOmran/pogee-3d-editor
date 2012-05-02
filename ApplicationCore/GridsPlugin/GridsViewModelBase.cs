@@ -100,6 +100,10 @@ namespace GridsPlugin
                 case "ZoneGrids":
                     NotifyPropertyChanged("Grids");
                     break;
+                case "Zone":
+                    NotifyPropertyChanged("Zone");
+                    NotifyPropertyChanged("ZoneIdNumber");
+                    break;
                 case "SelectedGrid":
                     NotifyPropertyChanged("SelectedGrid");
                     break;

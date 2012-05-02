@@ -37,9 +37,23 @@ namespace DoorsPlugin
             {
                 if (_service != null)
                 {
-                    _service.LoadZone(value);
+                    _service.LoadZone(value,Version);
                     NotifyPropertyChanged("Zone");
                 }
+            }
+        }
+
+        private int _version = 0;
+        public int Version
+        {
+            get
+            {
+                return _version;
+            }
+            set
+            {
+                _version = value;
+                NotifyPropertyChanged("Version");
             }
         }
         
@@ -62,6 +76,31 @@ namespace DoorsPlugin
         public DoorsDataService DoorService
         {
             get { return _service; }
+        }
+
+
+        public void SaveXML(string file)
+        {
+            if (DoorService != null)
+            {
+                if (DoorService.DoorManager != null)
+                {
+                    DoorService.DoorManager.SaveXML(file);
+                }
+            }
+        }
+
+        public void LoadXML(string file)
+        {
+            if (DoorService != null)
+            {
+                DoorService.LoadZone("");
+                if (DoorService.DoorManager != null)
+                {
+                    DoorService.DoorManager.LoadXML(file);
+                    NotifyPropertyChanged("Zone");
+                }
+            }        
         }
     }
 }

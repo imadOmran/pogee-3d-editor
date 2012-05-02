@@ -3,9 +3,10 @@
   <query type="EQEmu.Doors.DoorManager">
     <select>
       <sql>
-        <![CDATA[SELECT * FROM doors WHERE zone = '{0}';]]>
+        <![CDATA[SELECT * FROM doors WHERE zone = '{0}' AND version = '{1}';]]>
       </sql>
       <param>Zone</param>
+      <param>Version</param>
       <store field="id" type="int">Id</store>
       <store field="doorid" type="int">DoorId</store>
       <store field="zone" type="string">Zone</store>
