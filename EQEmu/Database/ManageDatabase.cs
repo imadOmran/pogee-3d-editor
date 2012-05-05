@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 namespace EQEmu.Database
 {

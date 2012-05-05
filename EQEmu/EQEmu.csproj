@@ -147,6 +147,7 @@
     <Compile Include="Spawns\SpawnGroupAggregator.cs" />
     <Compile Include="Spawns\ZoneSpawns.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="Zone\ZonePoint.cs" />
     <Compile Include="Zone\ZonePoints.cs" />
   </ItemGroup>
   <ItemGroup>

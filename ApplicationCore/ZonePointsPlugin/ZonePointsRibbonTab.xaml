@@ -12,6 +12,10 @@
         <!--<m:RibbonButton Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />-->
         <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Offline">
+        <m:RibbonButton Label="Open File" Name="OpenFileButton" Click="OpenFileButton_Click" />
+        <m:RibbonButton Label="Save To File" Name="SaveFileButton" Click="SaveFileButton_Click"  />
+    </m:RibbonGroup>
     <m:RibbonGroup Header="Edit">
         <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="Create Zone Point" Command="{Binding AddZonePointCommand}" />
         <m:RibbonButton SmallImageSource="Images/delete_12x12.png"  Label="Remove Zone Point" Command="{Binding RemoveZonePointCommand}" />        

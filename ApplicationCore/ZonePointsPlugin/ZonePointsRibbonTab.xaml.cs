@@ -109,5 +109,43 @@ namespace ZonePointsPlugin
                 window.ShowDialog();                
             }
         }
+
+        private EQEmu.Zone.ZonePoints GetZonePoints()
+        {
+            if (ZonePointsViewModel != null
+                && ZonePointsViewModel.ZonePointsService != null)
+            {
+                return ZonePointsViewModel.ZonePointsService.ZonePoints;
+            }
+            else return null;
+        }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            var zps = GetZonePoints();
+            if ( zps != null )
+            {
+                var sd = new SaveFileDialog();
+                sd.Filter = "XML Files | *.xml";
+                if( (bool)sd.ShowDialog() ){
+                    ZonePointsViewModel.ZonePointsService.ZonePoints.SaveXML(System.IO.Path.GetDirectoryName(sd.FileName));
+                }
+            }
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ZonePointsViewModel.ZonePointsService != null)
+            {
+                var od = new OpenFileDialog();
+                od.Filter = "XML Files | *.xml";
+                if ((bool)od.ShowDialog())
+                {
+                    ZonePointsViewModel.ZonePointsService.Zone = "";
+                    var zps = GetZonePoints();
+                    if (zps != null) zps.LoadXML(od.FileName);
+                }                
+            }
+        }
     }
 }

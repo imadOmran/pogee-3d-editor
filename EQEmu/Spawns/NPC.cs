@@ -104,12 +104,15 @@ namespace EQEmu.Spawns
             if (_maxIdForZone != null)
             {
                 var sql = String.Format(_maxIdForZone.SelectQuery, zone);
-                var results = QueryHelper.RunQuery(_connection, sql);
-                if (results.Count > 0)
+                var results = QueryHelper.TryRunQuery(_connection, sql);
+                if (results != null)
                 {
-                    if (results.ElementAt(0)["id"].GetType() != typeof(System.DBNull))
+                    if (results.Count > 0)
                     {
-                        return (int)results.ElementAt(0)["id"] + 1;
+                        if (results.ElementAt(0)["id"].GetType() != typeof(System.DBNull))
+                        {
+                            return (int)results.ElementAt(0)["id"] + 1;
+                        }
                     }
                 }
             }
