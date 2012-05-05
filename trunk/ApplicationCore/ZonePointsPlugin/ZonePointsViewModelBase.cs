@@ -17,6 +17,7 @@ namespace ZonePointsPlugin
         public ZonePointsViewModelBase(ZonePointsDataService service)
         {
             _service = service;
+            _service.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(_service_PropertyChanged);
 
             AddZonePointCommand = new DelegateCommand(
                 x =>
@@ -39,6 +40,19 @@ namespace ZonePointsPlugin
                     return ZonePointsService != null && ZonePointsService.ZonePoints != null && SelectedZonePoint != null;
                 });
 
+        }
+
+        void _service_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Zone":
+                    NotifyPropertyChanged("Zone");
+                    NotifyPropertyChanged("ZonePoints");
+                    break;
+                default:
+                    break;
+            }
         }
 
         public DelegateCommand AddZonePointCommand

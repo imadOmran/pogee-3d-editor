@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
+using System.IO;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -11,203 +13,31 @@ using EQEmu.Database;
 
 namespace EQEmu.Zone
 {
-    public class ZonePoint : Database.DatabaseObject
+    public delegate void ZonePointDataLoadedHandler(object sender, ZonePointDataLoadedEventArgs e);
+    public class ZonePointDataLoadedEventArgs : EventArgs
     {
-        private int _id;
-        private int _version;
-        private int _number;
-        private int _clientVersionMask;
-        private int _targetZoneId;
-        private int _targetInstance;
-
-        private string _zone;
-        
-        private float _x;
-        private float _y;
-        private float _z;
-        private float _targetX;
-        private float _targetY;
-        private float _targetZ;
-        private float _heading;
-        private float _targetHeading;
-        private float _buffer;
-
-        public ZonePoint(QueryConfig config) : base(config)
+        public ZonePointDataLoadedEventArgs(string zonename)
         {
-
+            ZoneName = zonename;
         }
-
-        public float Buffer
-        {
-            get { return _buffer; }
-            set
-            {
-                _buffer = value;
-                Dirtied();
-            }
-        }
-
-        public float TargetHeading
-        {
-            get { return _targetHeading; }
-            set
-            {
-                _targetHeading = value;
-                Dirtied();
-            }
-        }
-
-        public float Heading
-        {
-            get { return _heading; }
-            set
-            {
-                _heading = value;
-                Dirtied();
-            }
-        }
-
-        public float X
-        {
-            get { return _x; }
-            set
-            {
-                _x = value;
-                Dirtied();
-            }
-        }
-
-        public float Y
-        {
-            get { return _y; }
-            set
-            {
-                _y = value;
-                Dirtied();
-            }
-        }
-
-        public float Z
-        {
-            get { return _z; }
-            set
-            {
-                _z = value;
-                Dirtied();
-            }
-        }
-
-        public float TargetX
-        {
-            get { return _targetX; }
-            set
-            {
-                _targetX = value;
-                Dirtied();
-            }
-        }
-
-        public float TargetY
-        {
-            get { return _targetY; }
-            set
-            {
-                _targetY = value;
-                Dirtied();
-            }
-        }
-
-        public float TargetZ
-        {
-            get { return _targetZ; }
-            set
-            {
-                _targetZ = value;
-                Dirtied();
-            }
-        }
-        
-        public string Zone
-        {
-            get { return _zone; }
-            set
-            {
-                _zone = value;
-                Dirtied();
-            }
-        }
-
-        public int TargetInstance
-        {
-            get { return _targetInstance; }
-            set
-            {
-                _targetInstance = value;
-                Dirtied();
-            }
-        }
-
-        public int TargetZoneId
-        {
-            get { return _targetZoneId; }
-            set
-            {
-                _targetZoneId = value;
-                Dirtied();
-            }
-        }
-
-        public int Id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
-                Dirtied();
-            }
-        }
-
-        public int Version
-        {
-            get { return _version; }
-            set
-            {
-                _version = value;
-                Dirtied();
-            }
-        }
-
-        public int Number
-        {
-            get { return _number; }
-            set
-            {
-                _number = value;
-                Dirtied();
-            }
-        }
-
-        public int ClientVersionMask
-        {
-            get { return _clientVersionMask; }
-            set
-            {
-                _clientVersionMask = value;
-                Dirtied();
-            }
-        }
-
-        public override string ToString()
-        {
-            return this.Zone.ToString() + " to " + this.TargetZoneId.ToString();
-        }
-    }
+        public string ZoneName { get; private set; }
+    }    
 
     public class ZonePoints : Database.ManageDatabase
     {
         private readonly MySqlConnection _connection;
-        private readonly string _zone;        
+        private string _zone;        
         private ObservableCollection<ZonePoint> _zonePoints = new ObservableCollection<ZonePoint>();
+
+        public event ZonePointDataLoadedHandler DataLoaded;
+        private void OnZonePointDataLoaded(string zone)
+        {
+            var e = DataLoaded;
+            if (e != null)
+            {
+                e(this, new ZonePointDataLoadedEventArgs(zone));
+            }
+        }
 
         public ZonePoints(MySqlConnection conn, string zone, QueryConfig config)
             : base(config)
@@ -216,16 +46,22 @@ namespace EQEmu.Zone
             _zone = zone;
 
             string sql = String.Format(SelectString, SelectArgValues);
-            var results = QueryHelper.RunQuery(conn,sql);
+            var results = QueryHelper.TryRunQuery(conn,sql);
 
             ZonePoint zp;
-            foreach (Dictionary<string, object> row in results)
+
+            if (results != null)
             {
-                zp = new ZonePoint(_queryConfig);
-                zp.SetProperties(Queries, row);
-                zp.Created();
-                _zonePoints.Add(zp);
+                foreach (Dictionary<string, object> row in results)
+                {
+                    zp = new ZonePoint(_queryConfig);
+                    zp.SetProperties(Queries, row);
+                    zp.Created();
+                    _zonePoints.Add(zp);
+                }
             }
+
+            Created();
         }
 
         public ObservableCollection<ZonePoint> Points
@@ -310,6 +146,53 @@ namespace EQEmu.Zone
         public string GetSQL()
         {
             return GetQuery(Points);
+        }
+
+        /// <summary>
+        /// Save as XML to directory
+        /// </summary>
+        /// <param name="dir"></param>
+        public override void SaveXML(string dir)
+        {
+            using (var fs = new FileStream(dir + "\\" + this.Zone + ".zonepoints.xml", FileMode.Create))
+            {
+                var ary = _zonePoints.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs, ary);
+            }
+        }
+
+        public override void LoadXML(string file)
+        {
+            var dir = System.IO.Path.GetDirectoryName(file);
+            var filename = System.IO.Path.GetFileName(file);
+            int period1 = filename.IndexOf('.', 0);
+            int period2 = filename.IndexOf('.', period1 + 1);
+
+            _zone = filename.Substring(0, period1);
+
+            ZonePoint[] zps;
+            using (var fs = new FileStream(file, FileMode.Open))
+            {
+                var x = new XmlSerializer(_zonePoints.ToArray().GetType());
+                var obj = x.Deserialize(fs);
+                zps = obj as ZonePoint[];
+            }
+
+            if (zps.Count() > 0)
+            {
+                ClearObjects();
+                _zonePoints.Clear();
+                Created();
+                foreach (var zp in zps)
+                {
+                    AddObject(zp);
+                    _zonePoints.Add(zp);
+                    zp.InitConfig(_queryConfig);
+                    zp.Created();
+                }
+                OnZonePointDataLoaded(_zone);
+            }
         }
 
     }

@@ -53,9 +53,15 @@ namespace ZonePointsPlugin
             get { return _zonePoints; }
             set
             {
-                _zonePoints = value;
+                if (_zonePoints != null)
+                {
+                    _zonePoints.DataLoaded -= _zonePoints_DataLoaded;
+                }
 
-                _zp3d = new EQEmuDisplay3D.ZonePointsDisplay3D(value);
+                _zonePoints = value;
+                _zonePoints.DataLoaded += new EQEmu.Zone.ZonePointDataLoadedHandler(_zonePoints_DataLoaded);
+
+                _zp3d = new EQEmuDisplay3D.ZonePointsDisplay3D(value);                
 
                 if (_viewClipping != null)
                 {
@@ -70,6 +76,12 @@ namespace ZonePointsPlugin
 
                 NotifyPropertyChanged("ZonePoints");
             }
+        }
+
+        void _zonePoints_DataLoaded(object sender, EQEmu.Zone.ZonePointDataLoadedEventArgs e)
+        {
+            _zone = e.ZoneName;
+            NotifyPropertyChanged("Zone");
         }
 
         public string Zone
