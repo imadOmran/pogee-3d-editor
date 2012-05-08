@@ -437,6 +437,11 @@ namespace EQEmu.Spawns
                 e(this, new EventArgs());
             }
         }
+
+        public string GetSQL()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public delegate void SpawnChanceTotalChangedHandler(SpawnGroup sender,EventArgs e);

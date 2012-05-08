@@ -319,5 +319,10 @@ namespace EQEmu.Grids
                 return Waypoints.Where(x => x.Dirty).ToList<IDatabaseObject>();
             }
         }
+
+        public string GetSQL()
+        {
+            throw new NotImplementedException();
+        }
     }        
 }

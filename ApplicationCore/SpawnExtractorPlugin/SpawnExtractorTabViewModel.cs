@@ -179,7 +179,18 @@ namespace SpawnExtractorPlugin
 
             if (LoadSpawnEntries)
             {
-                _spawns = new ZoneSpawns(_connection, Zone, _config, ZoneVersion);
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+                {
+                    var zps = new ZoneSpawnsDatabase(_connection, _config);
+                    _spawns = zps;
+                    zps.Lookup(Zone, ZoneVersion);
+                }
+                else
+                {
+                    _spawns = new ZoneSpawnsLocal(_config);
+                    _spawns.Zone = Zone;
+                    _spawns.Version = ZoneVersion;
+                }
             }
 
             var zoneNpcs = spawns.Where(x => x.IsNPC > 0 && x.PetOwnerID == 0 && x.IsMercenary == 0 );
@@ -220,29 +231,9 @@ namespace SpawnExtractorPlugin
 
             if (LoadSpawnEntries)
             {
-                bool offline = false;
-
                 foreach (var npc in zoneNpcs)
                 {
-                    Spawn2 spawn = null;
-
-                    if (offline)
-                    {
-                        spawn = _spawns.GetNewSpawnOffline();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            spawn = _spawns.GetNewSpawn();
-                        }
-                        catch (EQEmu.Database.DatabaseAccessException)
-                        {
-                            spawn = _spawns.GetNewSpawnOffline();
-                            offline = true;
-                        }
-                    }
-
+                    Spawn2 spawn = _spawns.GetNewSpawn();
                     spawn.Created();
 
                     if (LoadSpawnGroups)

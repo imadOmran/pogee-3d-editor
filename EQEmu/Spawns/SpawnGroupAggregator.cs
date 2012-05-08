@@ -73,7 +73,6 @@ namespace EQEmu.Spawns
             var qconf = Queries.ExtensionQueries.FirstOrDefault(x => { return x.Name == "GetMaxID"; });
             var results = Database.QueryHelper.TryRunQuery(_connection, qconf.SelectQuery);
 
-            int id = 0;
             sg = new SpawnGroup(_connection, _queryConfig);
             if (results != null)
             {

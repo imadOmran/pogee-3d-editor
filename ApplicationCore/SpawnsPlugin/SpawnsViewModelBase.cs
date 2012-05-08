@@ -145,11 +145,10 @@ namespace SpawnsPlugin
 
         public bool LoadFile(string file)
         {
-            SpawnsService.Zone = Zone;
-            SpawnsService.Version = Version;
-            if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
+            if (SpawnsService != null)
             {
-                SpawnsService.ZoneSpawns.LoadXML(file);
+                var zone = SpawnsService.CreateNewZone(Zone, Version, true);
+                zone.LoadXML(file);
                 return true;
             }
             return false;

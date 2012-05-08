@@ -184,5 +184,10 @@ namespace EQEmu.Loot
         {
             return "Id:" + this.Id.ToString();
         }
+
+        public string GetSQL()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
