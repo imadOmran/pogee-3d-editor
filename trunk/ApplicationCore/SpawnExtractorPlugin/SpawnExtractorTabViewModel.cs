@@ -220,9 +220,29 @@ namespace SpawnExtractorPlugin
 
             if (LoadSpawnEntries)
             {
+                bool offline = false;
+
                 foreach (var npc in zoneNpcs)
                 {
-                    var spawn = _spawns.GetNewSpawn();
+                    Spawn2 spawn = null;
+
+                    if (offline)
+                    {
+                        spawn = _spawns.GetNewSpawnOffline();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            spawn = _spawns.GetNewSpawn();
+                        }
+                        catch (EQEmu.Database.DatabaseAccessException)
+                        {
+                            spawn = _spawns.GetNewSpawnOffline();
+                            offline = true;
+                        }
+                    }
+
                     spawn.Created();
 
                     if (LoadSpawnGroups)
