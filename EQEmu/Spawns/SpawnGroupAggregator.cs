@@ -71,29 +71,33 @@ namespace EQEmu.Spawns
             SpawnGroup sg = null;
 
             var qconf = Queries.ExtensionQueries.FirstOrDefault(x => { return x.Name == "GetMaxID"; });
-            var results = Database.QueryHelper.RunQuery(_connection, qconf.SelectQuery);
-            var row = results.FirstOrDefault();
-            if (row != null)
+            var results = Database.QueryHelper.TryRunQuery(_connection, qconf.SelectQuery);
+
+            int id = 0;
+            sg = new SpawnGroup(_connection, _queryConfig);
+            if (results != null)
             {
-                sg = new SpawnGroup(_connection, _queryConfig);
-                sg.SetProperties(qconf, row);
-                sg.Id += 1;
-
-                if (SpawnGroups.Count() > 0)
+                var row = results.FirstOrDefault();
+                if (row != null)
                 {
-                    //in case we created/generated an entry not yet in the database 
-                    //look in the collection for a max Id
-                    var maxLoaded = SpawnGroups.Max(x => { return x.Id; });
-                    if (maxLoaded >= sg.Id)
-                    {
-                        sg.Id = maxLoaded + 1;
-                    }
+                    sg.SetProperties(qconf, row);
+                    sg.Id += 1;
                 }
-                
-                sg.Created();
-                AddSpawnGroup(sg);
-            }          
+            }
 
+            if (SpawnGroups.Count() > 0)
+            {
+                //in case we created/generated an entry not yet in the database 
+                //look in the collection for a max Id
+                var maxLoaded = SpawnGroups.Max(x => { return x.Id; });
+                if (maxLoaded >= sg.Id)
+                {
+                    sg.Id = maxLoaded + 1;
+                }
+            }
+
+            sg.Created();
+            AddSpawnGroup(sg);
             return sg;
         }
         

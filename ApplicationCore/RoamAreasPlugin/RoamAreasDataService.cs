@@ -136,6 +136,8 @@ namespace RoamAreasPlugin
             set
             {
                 _selectedArea = value;
+                if (_selectedArea == null) return;
+
                 _modelVisual.Children.Remove(_cursor);
                 if (_display3d != null)
                 {
