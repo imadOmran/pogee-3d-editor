@@ -236,6 +236,7 @@ namespace SpawnsPlugin
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             var fd = new OpenFileDialog();
+            fd.Filter = "XML Files | *.spawn2.xml";
             if ((bool)fd.ShowDialog())
             {
                 SpawnsViewModel.LoadFile(fd.FileName);

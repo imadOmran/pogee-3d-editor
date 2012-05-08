@@ -7,15 +7,15 @@
              mc:Ignorable="d" 
              Header="Grids"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Query">
+    <m:RibbonGroup Header="Database">
         <StackPanel>
-            <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
-            <m:RibbonTextBox Label="Zone ID" Text="{Binding ZoneIdNumber}" />
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone ID" Text="{Binding ZoneIdNumber}" />
         </StackPanel>
         <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Update Query" Name="GetQueryButton" Click="GetQueryButton_Click" />
         <m:RibbonButton LargeImageSource="Images/Zoom_32x32.png" Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Offline">
+    <m:RibbonGroup Header="File">
         <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click" />
         <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click" />
     </m:RibbonGroup>    

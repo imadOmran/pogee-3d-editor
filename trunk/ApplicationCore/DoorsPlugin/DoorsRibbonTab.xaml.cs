@@ -95,8 +95,7 @@ namespace DoorsPlugin
 
         private void SaveFileButton_Click(object sender, RoutedEventArgs e)
         {
-            var sd = new SaveFileDialog();
-            sd.Filter = "XML Files | *.xml";
+            var sd = new SaveFileDialog();            
             if ((bool)sd.ShowDialog())
             {
                 DoorsViewModel.SaveXML(sd.FileName);
@@ -106,6 +105,7 @@ namespace DoorsPlugin
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             var sd = new OpenFileDialog();
+            sd.Filter = "XML Files | *.doors.xml";
             if ((bool)sd.ShowDialog())
             {
                 DoorsViewModel.LoadXML(sd.FileName);

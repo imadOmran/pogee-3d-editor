@@ -7,17 +7,19 @@
              mc:Ignorable="d" 
              Header="Doors"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Query">
-        <m:RibbonTextBox Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />    
-        <m:RibbonTextBox Label="Version" ToolTip="Zone Version" Text="{Binding Version}" />
-        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
+    <m:RibbonGroup Header="Database">
+        <StackPanel>
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Zone" ToolTip="Zone Short Name (i.e. 'sebilis')" Text="{Binding Zone}" />
+            <m:RibbonTextBox HorizontalAlignment="Right" Label="Version" ToolTip="Zone Version" Text="{Binding Version}" />
+        </StackPanel>
+        <m:RibbonButton LargeImageSource="Images/Zoom_32x32.png" Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Offline">
+    <m:RibbonGroup Header="File">
         <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click" />
         <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Object Models">
-        <m:RibbonButton LargeImageSource="Images/OpenFile.png" Label="Open" Command="{Binding OpenCommand}" />
+        <m:RibbonButton ToolTip="Open object file (ie. [zone]_obj.s3d)" LargeImageSource="Images/OpenFile.png" Label="Open" Command="{Binding OpenCommand}" />
         <m:RibbonButton Label="Set Door Model" Command="{Binding SetMeshCommand}" />
         <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" ToolTip="Available Models" SelectionBoxWidth="250">
             <m:RibbonGallery SelectedItem="{Binding SelectedMesh}">

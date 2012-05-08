@@ -138,7 +138,7 @@ namespace ZonePointsPlugin
             if (ZonePointsViewModel.ZonePointsService != null)
             {
                 var od = new OpenFileDialog();
-                od.Filter = "XML Files | *.xml";
+                od.Filter = "XML Files | *.zonepoints.xml";
                 if ((bool)od.ShowDialog())
                 {
                     ZonePointsViewModel.ZonePointsService.Zone = "";

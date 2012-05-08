@@ -236,6 +236,7 @@ namespace GridsPlugin
             if (GridsViewModel.GridsService != null)
             {
                 var sd = new OpenFileDialog();
+                sd.Filter = "XML Files | *.grids.xml";
                 if ((bool)sd.ShowDialog())
                 {
                     //not too fond of this, function call would be easier to read, the setter intializes the zonegrid object
