@@ -93,6 +93,9 @@
   <ItemGroup>
     <Resource Include="Images\saveHS.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Zoom_32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetFileName)" "$(SolutionDir)\\ApplicationCore\\$(OutDir)\\Plugins" /Y</PostBuildEvent>

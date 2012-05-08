@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Header="Roam Areas"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Query">
+    <m:RibbonGroup Header="Database">
         <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
         <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Query" Click="RibbonButton_Click"></m:RibbonButton>
     </m:RibbonGroup>
