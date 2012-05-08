@@ -256,5 +256,10 @@ namespace EQEmu.RoamAreas
                 return Vertices.Where(x => x.Dirty).ToList<Database.IDatabaseObject>();
             }
         }
+
+        public string GetSQL()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

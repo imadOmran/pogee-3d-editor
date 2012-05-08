@@ -266,9 +266,15 @@ namespace EQEmu.Database
         public void InitConfig(QueryConfig config)
         {
             _queryConfig = config;
-            if (config != null && config.TypeQueryMappings.ContainsKey(GetType()))
+
+            if (config == null) return;
+
+            var type = config.TypeQueryMappings.Keys.FirstOrDefault(x => this.GetType().IsSubclassOf(x));
+            if (type == null) type = this.GetType();
+
+            if (config != null && type != null && config.TypeQueryMappings.ContainsKey(type))
             {
-                _queries = config.TypeQueryMappings[GetType()];
+                _queries = config.TypeQueryMappings[type];
 
                 _selectString = _queries.SelectQuery;
                 ThrowIfDeleteDetected(_selectString);

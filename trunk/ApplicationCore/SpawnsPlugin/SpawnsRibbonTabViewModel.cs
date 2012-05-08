@@ -83,14 +83,8 @@ namespace SpawnsPlugin
             if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
             {
                 EQEmu.Spawns.Spawn2 newspawn;
-                try
-                {
-                    newspawn = SpawnsService.ZoneSpawns.GetNewSpawn();
-                }
-                catch (EQEmu.Database.DatabaseAccessException)
-                {
-                    newspawn = SpawnsService.ZoneSpawns.GetNewSpawnOffline();
-                }
+
+                newspawn = SpawnsService.ZoneSpawns.GetNewSpawn();
                 newspawn.X = p.X; newspawn.Y = p.Y; newspawn.Z = p.Z + ZAdjustment;
 
                 newspawn.RoamAreaId = DefaultRoamArea;

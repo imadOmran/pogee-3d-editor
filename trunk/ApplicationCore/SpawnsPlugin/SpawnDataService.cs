@@ -43,17 +43,43 @@ namespace SpawnsPlugin
             get { return _zone; }
             set
             {
-                if (_connection != null)
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
                 {
-                    ZoneSpawns = new EQEmu.Spawns.ZoneSpawns(_connection, value, TypeQueryConfig, _version);
-                    _zone = value;
+                    var zps = new EQEmu.Spawns.ZoneSpawnsDatabase(_connection, TypeQueryConfig);
+                    ZoneSpawns = zps;
+                    zps.Lookup(value, _version);
                 }
                 else
                 {
-                    _zone = "";
+                    ZoneSpawns = new EQEmu.Spawns.ZoneSpawnsLocal(TypeQueryConfig);
+                    ZoneSpawns.Zone = value;
+                    ZoneSpawns.Version = _version;
                 }
+
+                _zone = value;
                 NotifyPropertyChanged("Zone");
             }
+        }
+
+        public EQEmu.Spawns.ZoneSpawns CreateNewZone(string zone,int version,bool local = false)
+        {
+            if (local)
+            {
+                ZoneSpawns = new EQEmu.Spawns.ZoneSpawnsLocal(TypeQueryConfig);
+                ZoneSpawns.Zone = zone;
+                ZoneSpawns.Version = _version;
+            }
+            else
+            {
+                var zps = new EQEmu.Spawns.ZoneSpawnsDatabase(_connection, TypeQueryConfig);
+                ZoneSpawns = zps;
+                zps.Lookup(zone, _version);
+            }
+
+            _zone = zone;           
+            NotifyPropertyChanged("Zone");
+
+            return ZoneSpawns;
         }
 
         private EQEmuDisplay3D.Spawn2Display3D _spawn3d = null;
