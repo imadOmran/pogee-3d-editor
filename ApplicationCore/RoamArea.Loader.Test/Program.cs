@@ -20,7 +20,7 @@ namespace RoamArea.Loader.Test
             EQEmu.Database.Configuration conf = new EQEmu.Database.Configuration();
             MySqlConnection connection = GetDatabaseConnection(ref conf);
 
-            var roamarea = new EQEmu.RoamAreas.ZoneRoamAreas(connection, "misty", config);
+            var roamarea = new EQEmu.RoamAreas.ZoneRoamAreasDatabase("misty",connection,config);
         }
 
         private static MySqlConnection GetDatabaseConnection(ref EQEmu.Database.Configuration configuration)

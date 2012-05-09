@@ -10,6 +10,11 @@
     <m:RibbonGroup Header="Database">
         <m:RibbonTextBox Label="Zone" Text="{Binding Zone}" />
         <m:RibbonButton LargeImageSource="Images/saveHS.png" Label="Save Query" Click="RibbonButton_Click"></m:RibbonButton>
+        <m:RibbonButton Label="View Query" Name="ViewQueryButton" Click="ViewQueryButton_Click"></m:RibbonButton>
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="File">
+        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Name="OpenFileButton" Click="OpenFileButton_Click"  />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Name="SaveFileButton" Click="SaveFileButton_Click"  />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Edit">
         <m:RibbonButton SmallImageSource="Images/077_AddFile_16x16_72.png" Label="New Area" Click="RibbonButton_Click_1" />

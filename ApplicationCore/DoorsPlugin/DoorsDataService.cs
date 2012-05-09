@@ -105,7 +105,15 @@ namespace DoorsPlugin
                 _dmanager.DoorDataLoaded -= _dmanager_DoorDataLoaded;
             }
 
-            _dmanager = new DoorManager(zone,_version, _connection, this.TypeQueryConfig);
+            if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
+            {
+                _dmanager = new DoorManagerDatabase(_zone, _version, _connection, TypeQueryConfig);
+            }
+            else
+            {
+                _dmanager = new DoorManagerLocal(_zone, _version, TypeQueryConfig);
+            }
+
             _dmanager.DoorDataLoaded += new DoorDataLoadedHandler(_dmanager_DoorDataLoaded);
 
             if (_doors3d != null)

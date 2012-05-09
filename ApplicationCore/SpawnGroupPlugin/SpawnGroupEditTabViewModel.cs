@@ -7,9 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
+using MySql.Data.MySqlClient;
+
 using ApplicationCore;
 
 using EQEmu.Spawns;
+using EQEmu.Database;
 
 namespace SpawnGroupPlugin
 {
@@ -20,10 +23,17 @@ namespace SpawnGroupPlugin
         private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
         private BackgroundWorker _packWork;
 
-        public SpawnGroupEditTabViewModel(SpawnGroupAggregator manager, NPCAggregator finder)
+        public SpawnGroupEditTabViewModel(MySqlConnection connection,QueryConfig config, NPCAggregator finder)
         {
-            if (manager == null) throw new NullReferenceException("null parameter");
-            _manager = manager;
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                _manager = new SpawnGroupAggregatorDatabase(connection, config);
+            }
+            else
+            {
+                _manager = new SpawnGroupAggregatorLocal(config);
+            }
+
             _npcFinder = finder;
 
             RemoveSelectedEntryCommand = new DelegateCommand(
@@ -274,10 +284,16 @@ namespace SpawnGroupPlugin
             set
             {
                 _zoneFilter = value;
-                _manager.LookupByZone(value);
-                SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
-                NotifyPropertyChanged("ZoneFilter");
-                NotifyPropertyChanged("SpawnGroups");
+
+                var sggr = _manager as SpawnGroupAggregatorDatabase;
+                if (sggr == null) return;
+                else
+                {
+                    sggr.LookupByZone(value);
+                    SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
+                    NotifyPropertyChanged("ZoneFilter");
+                    NotifyPropertyChanged("SpawnGroups");
+                }
             }
         }
 

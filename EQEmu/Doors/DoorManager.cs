@@ -26,13 +26,20 @@ namespace EQEmu.Doors
         public string Zone { get; private set; }
     }
 
-    public class DoorManager : ManageDatabase
-    {
-        private readonly MySqlConnection _connection;
+    public abstract class DoorManager : ManageDatabase
+    {        
         private string _zone;
         private int _version;
+        private ObservableCollection<Door> _doors = new ObservableCollection<Door>();
 
         public event DoorDataLoadedHandler DoorDataLoaded;
+
+        public DoorManager(string zone,int version,QueryConfig config) : base(config)
+        {
+            _zone = zone;
+            _version = version;
+        }
+
         private void OnDoorDataLoaded(string zone, int version)
         {
             var e = DoorDataLoaded;
@@ -42,20 +49,13 @@ namespace EQEmu.Doors
             }
         }
 
-        private ObservableCollection<Door> _doors = new ObservableCollection<Door>();
+
         public ObservableCollection<Door> Doors
         {
             get
             {
                 return _doors;
             }
-        }
-
-        public DoorManager(string zone,int version,MySqlConnection connection,QueryConfig config) : base(config)
-        {
-            _zone = zone;
-            _connection = connection;
-            RetrieveDoors(zone);
         }
 
         public Door GetClosestDoor(Point3D point,double tolerance=10.0)
@@ -81,25 +81,6 @@ namespace EQEmu.Doors
         public int Version
         {
             get { return _version; }
-        }
-
-        public void RetrieveDoors(string zone)
-        {
-            string sql = String.Format(SelectString, SelectArgValues);
-            var results = QueryHelper.TryRunQuery(_connection, sql);
-
-            if (results != null)
-            {
-                Door door;
-                foreach (Dictionary<string, object> row in results)
-                {
-                    door = new Door(_queryConfig);
-                    door.SetProperties(Queries, row);
-                    door.Created();
-                    _doors.Add(door);
-                }
-            }
-            Created();
         }
 
         public Door DoorFactory()

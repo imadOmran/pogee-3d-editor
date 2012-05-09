@@ -111,5 +111,39 @@ namespace RoamAreasPlugin
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
+
+        private void ViewQueryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (RoamAreaViewModel != null && RoamAreaViewModel.RoamAreasDataService != null)
+            {
+                var za = RoamAreaViewModel.RoamAreasDataService.ZoneAreas;
+                if (za != null)
+                {
+                    var window = new TextWindow(za.GetSQL());
+                    window.ShowDialog();
+                }
+            }
+        }
+
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (RoamAreaViewModel != null && RoamAreaViewModel.RoamAreasDataService != null)
+            {
+                var za = RoamAreaViewModel.RoamAreasDataService.ZoneAreas;
+                if (za != null)
+                {
+                    var sd = new SaveFileDialog();
+                    if ((bool)sd.ShowDialog())
+                    {
+                        za.SaveXML( System.IO.Path.GetDirectoryName(sd.FileName) );
+                    }
+                }
+            }
+        }
     }
 }

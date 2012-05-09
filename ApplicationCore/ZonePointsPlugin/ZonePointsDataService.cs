@@ -89,18 +89,14 @@ namespace ZonePointsPlugin
             get { return _zone; }
             set
             {
-                if (_connection != null)
+                _zone = value;
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
                 {
-                    ZonePoints = new EQEmu.Zone.ZonePoints(_connection, value, TypeQueryConfig);                   
-
-                    //_selectedSpawn = null;
-                    //_selectedGroundSpawns = null;
-
-                    _zone = value;
+                    ZonePoints = new EQEmu.Zone.ZonePointsDatabase(value, _connection, TypeQueryConfig);
                 }
                 else
                 {
-                    _zone = "";
+                    ZonePoints = new EQEmu.Zone.ZonePointsLocal(value, TypeQueryConfig);
                 }
                 NotifyPropertyChanged("Zone");
             }

@@ -9,6 +9,8 @@ using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
+using EQEmu.Database;
+
 namespace EQEmu.Grids
 {
     public delegate void GridDataLoadedHandler(object sender, GridDataLoadedEventArgs e);
@@ -22,14 +24,49 @@ namespace EQEmu.Grids
 
         public int ZoneId { get; private set; }
         public string ZoneName { get; private set; }
-    }
+    }   
 
-    public class ZoneGrids : EQEmu.Database.ManageDatabase
-    {
-        private readonly MySqlConnection _connection;
+    public abstract class ZoneGrids : EQEmu.Database.ManageDatabase
+    {        
         private string _zone;
+        private int _zoneId;
+
+        private ObservableCollection<Grid> _grids = new ObservableCollection<Grid>();
 
         public event GridDataLoadedHandler GridDataLoaded;
+
+        public ZoneGrids(string zone,QueryConfig config)
+            : base(config)
+        {
+            _zone = zone;
+        }
+
+        public void AddGrid(Grid grid)
+        {
+            if (Grids.Contains(grid)) return;
+
+            if (Grids.Count > 0)
+            {
+                int max = Grids.Max(x => x.Id);
+                grid.Id = max + 1;
+            }
+            else
+            {
+                grid.Id = 1;
+            }
+
+            AddObject(grid);
+            Grids.Add(grid);
+        }
+
+        public void RemoveGrid(Grid grid)
+        {
+            if (!Grids.Contains(grid)) return;
+            RemoveObject(grid);
+            grid.RemoveAllWaypoints();
+            Grids.Remove(grid);            
+        }
+        
         private void OnGridDataLoaded(string zonename, int zoneid)
         {
             var e = GridDataLoaded;
@@ -38,9 +75,7 @@ namespace EQEmu.Grids
                 GridDataLoaded(this, new GridDataLoadedEventArgs(zoneid, zonename));
             }
         }
-
-        //private List<Grid> _grids = new List<Grid>();
-        private ObservableCollection<Grid> _grids = new ObservableCollection<Grid>();
+        
         public ObservableCollection<Grid> Grids
         {
             get { return _grids; }
@@ -58,8 +93,7 @@ namespace EQEmu.Grids
                 }
             }
         }
-
-        private int _zoneId;
+        
         public int ZoneId
         {
             get { return _zoneId; }
@@ -75,82 +109,6 @@ namespace EQEmu.Grids
                     }
                 }
             }
-        }
-
-        public ZoneGrids(EQEmu.Database.QueryConfig config)
-            :base(config)
-        {
-
-        }
-
-        public ZoneGrids(MySqlConnection connection, string zone, EQEmu.Database.QueryConfig config)
-            :base(config)
-        {
-            _connection = connection;
-            _zone = zone;
-
-            if (_connection == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            var sql = String.Format(SelectString, SelectArgValues);
-            var results = Database.QueryHelper.TryRunQuery(_connection, sql);
-            var v = _queries.SelectQueryFields.FirstOrDefault(x => x.Property == "ZoneId");
-            string zoneIdField = null;
-            if (v != null)
-            {
-                zoneIdField = v.Column;
-            }
-
-            if (results != null)
-            {
-
-                foreach (var row in results)
-                {
-                    Grid g = new Grid(_queryConfig);
-                    if (row.ContainsKey(zoneIdField) && results.First() == row)
-                    {
-                        ZoneId = Int32.Parse(row[zoneIdField].ToString());
-                    }
-
-                    g.SetProperties(Queries, row);
-                    Grids.Add(g);
-                    g.Created();
-                }
-
-                foreach (var grid in Grids)
-                {
-                    sql = String.Format(grid.SelectString, grid.SelectArgValues);
-                    results = Database.QueryHelper.RunQuery(_connection, sql);
-                    foreach (var row in results)
-                    {
-                        var wp = new Waypoint(_queryConfig);
-
-                        wp.SetProperties(grid.Queries, row);
-
-                        wp.GridReference = grid;
-                        grid.Waypoints.Add(wp);
-                        wp.Created();
-                    }
-                }
-            }
-        }
-
-        public void AddGrid(Grid grid)
-        {
-            if (Grids.Count > 0)
-            {
-                int max = Grids.Max(x => x.Id);
-                grid.Id = max + 1;
-            }
-            else
-            {
-                grid.Id = 1;
-            }
-
-            NeedsInserted.Add(grid);
-            Grids.Add(grid);
         }
 
         /// <summary>
@@ -240,21 +198,6 @@ namespace EQEmu.Grids
             OnGridDataLoaded(Zone, ZoneId);
         }
 
-        public void RemoveGrid(Grid grid)
-        {
-            if (NeedsInserted.Contains(grid))
-            {
-                NeedsInserted.Remove(grid);
-            }
-            else
-            {
-                grid.RemoveAllWaypoints();
-                NeedsDeleted.Add(grid);
-            }
-            
-            Grids.Remove(grid);
-        }
-
         public string GetSQL()
         {
             return GetQuery(Grids);
@@ -292,31 +235,6 @@ namespace EQEmu.Grids
                 writer.Flush();
             }
         }
-
-        /*
-        public override List<Database.IDatabaseObject> DirtyComponents
-        {
-            get
-            {
-                return this.Grids.Where( x => Dirty
-            }
-        }
-        */
-
-        //public override string InsertString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
-
-        //public override string UpdateString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
-
-        //public override string DeleteString
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
 
         public override List<Database.IDatabaseObject> DirtyComponents
         {

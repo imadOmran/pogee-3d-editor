@@ -129,7 +129,9 @@
       <Name>SpawnsPlugin</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\OpenFile.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\delete_12x12.png" />
   </ItemGroup>
