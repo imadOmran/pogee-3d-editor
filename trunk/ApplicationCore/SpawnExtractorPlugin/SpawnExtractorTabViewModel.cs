@@ -37,7 +37,16 @@ namespace SpawnExtractorPlugin
 
             _npcs = new NPCAggregator(connection, config);
             _npcs.Created();
-            _spawngroups = new SpawnGroupAggregator(connection, config);
+
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                _spawngroups = new SpawnGroupAggregatorDatabase(connection, config);
+            }
+            else
+            {
+                _spawngroups = new SpawnGroupAggregatorLocal(config);
+            }
+
             _spawngroups.Created();
             Zone = "";
             ZoneVersion = 0;

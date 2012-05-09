@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -91,6 +92,7 @@ namespace EQEmu.RoamAreas
         }
 
         private ObservableCollection<RoamAreaEntry> _vertices = new ObservableCollection<RoamAreaEntry>();
+        [XmlIgnore]
         public ObservableCollection<RoamAreaEntry> Vertices
         {
             get { return _vertices; }
@@ -100,6 +102,11 @@ namespace EQEmu.RoamAreas
             : base(config)
         {
             _id = id;
+        }
+
+        private RoamArea() : base(null)
+        {
+
         }
 
         public RoamArea(QueryConfig config)
@@ -212,6 +219,7 @@ namespace EQEmu.RoamAreas
             return vert;
         }
 
+        [XmlIgnore]
         public override string DeleteString
         {
             get
@@ -223,6 +231,7 @@ namespace EQEmu.RoamAreas
             }
         }
 
+        [XmlIgnore]
         public override string InsertString
         {
             get
@@ -234,6 +243,7 @@ namespace EQEmu.RoamAreas
             }
         }
 
+        [XmlIgnore]
         public override string UpdateString
         {
             get
@@ -249,6 +259,7 @@ namespace EQEmu.RoamAreas
             }
         }
 
+        [XmlIgnore]
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get

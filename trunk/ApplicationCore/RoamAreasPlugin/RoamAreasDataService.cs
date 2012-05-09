@@ -35,15 +35,15 @@ namespace RoamAreasPlugin
             get { return _zone; }
             set
             {
-                if (_connection != null)
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
                 {
-                    ZoneAreas = new EQEmu.RoamAreas.ZoneRoamAreas(_connection, value, TypeQueryConfig);                    
-                    _zone = value;
+                    ZoneAreas = new EQEmu.RoamAreas.ZoneRoamAreasDatabase(value, _connection, TypeQueryConfig);                                
                 }
                 else
                 {
-                    _zone = "";
+                    ZoneAreas = new EQEmu.RoamAreas.ZoneRoamAreasLocal(value, TypeQueryConfig);
                 }
+                _zone = value;
                 NotifyPropertyChanged("Zone");
             }
         }

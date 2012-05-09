@@ -33,15 +33,15 @@ namespace GridsPlugin
             get { return _zone; }
             set
             {
-                if (_connection != null)
+                if (_connection != null && _connection.State == System.Data.ConnectionState.Open)
                 {
-                    ZoneGrids = new EQEmu.Grids.ZoneGrids(_connection, value,TypeQueryConfig);
-                    _zone = value;
+                    ZoneGrids = new EQEmu.Grids.ZoneGridsDatabase(value, _connection, TypeQueryConfig);                    
                 }
                 else
                 {
-                    _zone = "";
-                }                
+                    ZoneGrids = new EQEmu.Grids.ZoneGridsLocal(value, TypeQueryConfig);
+                }
+                _zone = value;
                 NotifyPropertyChanged("Zone");
             }
         }

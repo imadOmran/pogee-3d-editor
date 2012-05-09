@@ -23,9 +23,8 @@ namespace EQEmu.Zone
         public string ZoneName { get; private set; }
     }    
 
-    public class ZonePoints : Database.ManageDatabase
-    {
-        private readonly MySqlConnection _connection;
+    public abstract class ZonePoints : Database.ManageDatabase
+    {        
         private string _zone;        
         private ObservableCollection<ZonePoint> _zonePoints = new ObservableCollection<ZonePoint>();
 
@@ -39,29 +38,10 @@ namespace EQEmu.Zone
             }
         }
 
-        public ZonePoints(MySqlConnection conn, string zone, QueryConfig config)
+        public ZonePoints(string zone, QueryConfig config)
             : base(config)
-        {
-            _connection = conn;
+        {            
             _zone = zone;
-
-            string sql = String.Format(SelectString, SelectArgValues);
-            var results = QueryHelper.TryRunQuery(conn,sql);
-
-            ZonePoint zp;
-
-            if (results != null)
-            {
-                foreach (Dictionary<string, object> row in results)
-                {
-                    zp = new ZonePoint(_queryConfig);
-                    zp.SetProperties(Queries, row);
-                    zp.Created();
-                    _zonePoints.Add(zp);
-                }
-            }
-
-            Created();
         }
 
         public ObservableCollection<ZonePoint> Points
@@ -125,22 +105,17 @@ namespace EQEmu.Zone
 
         public void Add(ZonePoint zp)
         {
-            NeedsInserted.Add(zp);
-            _zonePoints.Add(zp);
+            if (Points.Contains(zp)) return;
+
+            AddObject(zp);
+            Points.Add(zp);
         }
 
         public void Remove(ZonePoint zp)
         {
-            if (NeedsInserted.Contains(zp))
-            {
-                NeedsInserted.Remove(zp);
-            }
-            else
-            {
-                NeedsDeleted.Add(zp);
-            }
-
-            _zonePoints.Remove(zp);
+            if (!Points.Contains(zp)) return;
+            RemoveObject(zp);
+            Points.Remove(zp);
         }
 
         public string GetSQL()

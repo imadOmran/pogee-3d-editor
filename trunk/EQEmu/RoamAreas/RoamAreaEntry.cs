@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Media3D;
+using System.Xml.Serialization;
 
 using EQEmu.Database;
 
@@ -21,6 +22,12 @@ namespace EQEmu.RoamAreas
 
         public RoamAreaEntry(QueryConfig config)
             : base(config)
+        {
+
+        }
+
+        private RoamAreaEntry()
+            : base(null)
         {
 
         }

@@ -13,6 +13,18 @@ namespace EQEmu.Grids
 {
     public class Grid : ManageDatabase
     {
+        private bool _longOperationInProgress = false;
+        private string _npcName = "";
+        private ObservableCollection<Waypoint> _waypoints = new ObservableCollection<Waypoint>();
+
+        private int _id;
+        private int _zoneid;
+
+        private WanderTypes _wanderType;
+        private PauseTypes _pauseType;
+
+        private readonly TypeQueriesExtension _queryByNpcName = null;
+
         public enum WanderTypes
         {
             Circular = 0,
@@ -28,91 +40,10 @@ namespace EQEmu.Grids
             Random
         }
 
-        private bool _longOperationInProgress = false;
-        [Browsable(false)]
-        public bool LongOperationInProgress
-        {
-            get { return _longOperationInProgress; }
-        }
-
-        public string ZoneName
-        {
-            get;
-            set;
-        }
-
-        private string _npcName;
-        public string NPCName
-        {
-            get { return _npcName; }
-            set
-            {
-                _npcName = value;
-                Dirtied();
-            }
-        }
-
-        private ObservableCollection<Waypoint> _waypoints = new ObservableCollection<Waypoint>();
-        [Browsable(false)]
-        [XmlIgnore]
-        public ObservableCollection<Waypoint> Waypoints
-        {
-            get { return _waypoints; }
-        }
-
-        private int _id;
-        public int Id
-        {
-            get { return _id; }
-            set 
-            { 
-                _id = value;
-                foreach (Waypoint wp in Waypoints)
-                {
-                    wp.GridId = value;
-                }
-            }
-        }
-
-        private int _zoneid;
-        public int ZoneId
-        {
-            get { return _zoneid; }
-            set { _zoneid = value; }
-        }
-
-        private WanderTypes _wanderType;
-        public WanderTypes WanderType
-        {
-            get { return _wanderType; }
-            set
-            {
-                _wanderType = value;
-                Dirtied();
-            }
-        }
-
-        private PauseTypes _pauseType;
-        public PauseTypes PauseType
-        {
-            get { return _pauseType; }
-            set
-            {
-                _pauseType = value;
-                Dirtied();
-            }
-        }
-
-        private Grid()
-            : base(null)
-        {
-
-        }
-
         public Grid(QueryConfig config)
             : base(config)
         {
-            NPCName = "";
+            _queryByNpcName = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "QueryByNPCName");
         }
 
         public void AddWaypoint()
@@ -123,37 +54,23 @@ namespace EQEmu.Grids
 
         public void AddWaypoint(Waypoint wp)
         {
+            if (Waypoints.Contains(wp)) return;
+
             if (wp.GridId != Id || wp.ZoneId != ZoneId || wp.Number < GetNextNewWaypointNumber())
             {
                 throw new Exception("Attempted to add conflicting waypoint, request a waypoint before adding via GetNewWaypoint method");
             }
 
             wp.GridReference = this;
+            AddObject(wp);
             Waypoints.Add(wp);
-
-            // object was finalized, any changes now are recorded
-            if (CreatedObj)
-            {
-                NeedsInserted.Add(wp);
-            }
         }
 
         public void RemoveWaypoint(Waypoint wp)
         {
-            if (CreatedObj)
-            {
-                if (NeedsInserted.Contains(wp))
-                {
-                    //this waypoint was not retrieved from the database
-                    NeedsInserted.Remove(wp);
-                }
-                else
-                {
-                    //waypoint was in the database
-                    NeedsDeleted.Add(wp);
-                }
-            }
+            if (!Waypoints.Contains(wp)) return;
 
+            RemoveObject(wp);
             Waypoints.Remove(wp);
         }
 
@@ -172,23 +89,7 @@ namespace EQEmu.Grids
 
         public void RemoveAllWaypoints()
         {
-            if (CreatedObj)
-            {
-                foreach (Waypoint wp in Waypoints)
-                {
-                    if (NeedsInserted.Contains(wp))
-                    {
-                        //this waypoint was not retrieved from the database
-                        NeedsInserted.Remove(wp);
-                    }
-                    else
-                    {
-                        //waypoint was in the database
-                        NeedsDeleted.Add(wp);
-                    }
-                }
-            }
-            Waypoints.Clear();
+            RemoveWaypoints(Waypoints.ToArray());
         }
 
         public void RemoveNonPauseNodes()
@@ -228,15 +129,15 @@ namespace EQEmu.Grids
         public string GenerateQueryForNPC(QueryType type)
         {
             if (NPCName == "") return "";
+            var q = _queryByNpcName;
+            if (q == null) return "";
 
             string sql = Environment.NewLine + "-- NPC connection" + Environment.NewLine;
-            var q = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "QueryByNPCName");
-
             switch (type)
             {
                 case QueryType.UPDATE:
                 case QueryType.INSERT:
-                    sql += String.Format(q.UpdateQuery, ResolveArgs(q.UpdateArgs) );
+                    sql += String.Format(q.UpdateQuery, ResolveArgs(q.UpdateArgs));
                     break;
                 case QueryType.DELETE:
                     break;
@@ -265,9 +166,9 @@ namespace EQEmu.Grids
         {
             get
             {
-                string sql = String.Format("SET @GridID = {0};",Id) + Environment.NewLine;
+                string sql = String.Format("SET @GridID = {0};", Id) + Environment.NewLine;
                 //string sql = "";
-                if(Dirty)
+                if (Dirty)
                 {
                     sql += base.UpdateString;
                 }
@@ -288,11 +189,11 @@ namespace EQEmu.Grids
                 return sql;
             }
         }
-        
+
         public Waypoint GetNewWaypoint()
         {
             int number = GetNextNewWaypointNumber();
-            Waypoint wp = new Waypoint(Id, ZoneId, number,_queryConfig);
+            Waypoint wp = new Waypoint(Id, ZoneId, number, _queryConfig);
             wp.GridReference = this;
             wp.Created();
 
@@ -324,5 +225,74 @@ namespace EQEmu.Grids
         {
             throw new NotImplementedException();
         }
-    }        
+
+        public string ZoneName
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public ObservableCollection<Waypoint> Waypoints
+        {
+            get { return _waypoints; }
+        }
+
+        [Browsable(false)]
+        public bool LongOperationInProgress
+        {
+            get { return _longOperationInProgress; }
+        }
+
+        public string NPCName
+        {
+            get { return _npcName; }
+            set
+            {
+                _npcName = value;
+                Dirtied();
+            }
+        }
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                foreach (Waypoint wp in Waypoints)
+                {
+                    wp.GridId = value;
+                }
+            }
+        }
+
+        public int ZoneId
+        {
+            get { return _zoneid; }
+            set { _zoneid = value; }
+        }
+
+        
+        public WanderTypes WanderType
+        {
+            get { return _wanderType; }
+            set
+            {
+                _wanderType = value;
+                Dirtied();
+            }
+        }
+
+        public PauseTypes PauseType
+        {
+            get { return _pauseType; }
+            set
+            {
+                _pauseType = value;
+                Dirtied();
+            }
+        }
+    }     
 }
