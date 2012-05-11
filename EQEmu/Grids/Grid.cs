@@ -40,6 +40,12 @@ namespace EQEmu.Grids
             Random
         }
 
+        private Grid()
+            : base(null)
+        {
+
+        }
+
         public Grid(QueryConfig config)
             : base(config)
         {

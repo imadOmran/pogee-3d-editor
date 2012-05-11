@@ -30,11 +30,12 @@ namespace SpawnsPlugin
                 case "ZoneSpawns":
                     NotifyPropertyChanged("Spawns");
                     break;
-
                 case "Zone":
                     NotifyPropertyChanged("Zone");
                     break;
-
+                case "Version":
+                    NotifyPropertyChanged("Version");                   
+                    break;
                 default:
                     break;
             }
