@@ -349,7 +349,20 @@ namespace ApplicationCore
                 new XmlSerializer(typeof(EQEmu.Database.Configuration));
             MySql.Data.MySqlClient.MySqlConnection conn = null;
 
-            if (!File.Exists("./connection.xml")) return null;
+            var confPath = System.IO.Path.Combine(
+                System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData),
+                "EQEmu/connection.xml");
+
+            //check for a configuration file in the user directory first
+            if (!File.Exists(confPath))
+            {
+                confPath = "./connection.xml";
+                if (!File.Exists(confPath))
+                {
+                    return null;
+                }
+            }
+
             EQEmu.Database.Configuration conf;
 
             using (XmlReader reader = XmlReader.Create("./connection.xml"))
@@ -362,11 +375,11 @@ namespace ApplicationCore
                 {
                     conn.Open();
                 }
-                catch (System.Exception)
+                catch (System.Exception e)
                 {
                     conn.Close();
 
-                    System.Windows.MessageBox.Show("Could not open database connection");
+                    System.Windows.MessageBox.Show(confPath+"\nCould not open database connection\n"+ e.Message);
                 }
             }
 
