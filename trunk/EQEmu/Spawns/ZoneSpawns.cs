@@ -14,11 +14,35 @@ using EQEmu.Database;
 
 namespace EQEmu.Spawns
 {
+    public delegate void SpawnsDataLoadedHandler(object sender, SpawnsLoadedEventArgs e);
+    public class SpawnsLoadedEventArgs : EventArgs
+    {
+        public SpawnsLoadedEventArgs(string zonename,int version)
+        {
+            ZoneName = zonename;
+            Version = version;
+        }
+
+        public int Version { get; private set; }
+        public string ZoneName { get; private set; }
+    }   
+
     public abstract class ZoneSpawns : Database.ManageDatabase
     {
         protected string _zone;
         protected int _version = 0;
         private ObservableCollection<Spawn2> _spawns = new ObservableCollection<Spawn2>();
+
+        public event SpawnsDataLoadedHandler DataLoaded;
+
+        protected void OnDataLoaded(string zonename, int version)
+        {
+            var e = DataLoaded;
+            if (e != null)
+            {
+                e(this, new SpawnsLoadedEventArgs(zonename, version));
+            }
+        }
 
         public ZoneSpawns(QueryConfig config) : base(config)
         {
@@ -179,6 +203,8 @@ namespace EQEmu.Spawns
                     sp.InitConfig(_queryConfig);
                 }                
             }
+
+            OnDataLoaded(Zone, Version);
         }
 
         public void SaveQueryToFile(string file)

@@ -89,7 +89,13 @@ namespace SpawnsPlugin
             get { return _zoneSpawns; }
             set
             {
+                if (_zoneSpawns != null)
+                {
+                    _zoneSpawns.DataLoaded -= _zoneSpawns_DataLoaded;
+                }
+
                 _zoneSpawns = value;
+                _zoneSpawns.DataLoaded += new EQEmu.Spawns.SpawnsDataLoadedHandler(_zoneSpawns_DataLoaded);
 
 
                 if (_spawn3d != null)
@@ -112,6 +118,15 @@ namespace SpawnsPlugin
 
                 NotifyPropertyChanged("ZoneSpawns");
             }
+        }
+
+        void _zoneSpawns_DataLoaded(object sender, EQEmu.Spawns.SpawnsLoadedEventArgs e)
+        {
+            _zone = e.ZoneName;
+            _version = e.Version;
+
+            NotifyPropertyChanged("Zone");
+            NotifyPropertyChanged("Version");
         }
 
         private ModelVisual3D _modelVisual = null;

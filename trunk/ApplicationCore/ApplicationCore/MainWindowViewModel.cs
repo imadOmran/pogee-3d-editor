@@ -365,6 +365,8 @@ namespace ApplicationCore
                 catch (System.Exception)
                 {
                     conn.Close();
+
+                    System.Windows.MessageBox.Show("Could not open database connection");
                 }
             }
 
