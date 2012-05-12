@@ -15,7 +15,7 @@ namespace EQEmu.Spawns
         private int _spawnGroupId;
         private int _npcId;
         private short _chance;
-        private NPC _npc;
+        private Npc _npc;
 
         private SpawnEntry()
             : base(null)
@@ -41,7 +41,7 @@ namespace EQEmu.Spawns
 
         [Browsable(false)]
         [XmlIgnore]
-        public NPC NPC
+        public Npc NPC
         {
             get { return _npc; }
             set

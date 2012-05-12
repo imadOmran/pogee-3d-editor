@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using MySql.Data.MySqlClient;
+
 using EQEmu.Loot;
 using EQEmu.Spawns;
+using EQEmu.Database;
 
 using ApplicationCore;
 
@@ -13,18 +16,26 @@ namespace LootPlugin
     public class LootEditTabViewModel : ApplicationCore.ViewModels.ViewModelBase
     {
         private LootTableAggregator _manager;
-        private NPCAggregator _npcmanager;
+        private NpcAggregator _npcmanager;
 
         private DelegateCommand _clearCacheCommand;
         private DelegateCommand _createLootTableCommand;
         private DelegateCommand _createLootDropCommand;
         private DelegateCommand _removeSelectedEntryCommand;
 
-        public LootEditTabViewModel(LootTableAggregator manager,NPCAggregator npcmanager)
+        public LootEditTabViewModel(MySqlConnection connection,QueryConfig config,LootTableAggregator manager)
         {
             _manager = manager;
             _manager.Created();
-            _npcmanager = npcmanager;
+
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                _npcmanager = new NpcAggregatorDatabase(connection, config);
+            }
+            else
+            {
+                _npcmanager = new NpcAggregatorLocal(config);
+            }
 
             _addExistingLootDropCommand = new DelegateCommand(
                 x =>
@@ -148,8 +159,8 @@ namespace LootPlugin
             }
         }
 
-        private IEnumerable<NPC> _npcItems;
-        public IEnumerable<NPC> NPCItems
+        private IEnumerable<Npc> _npcItems;
+        public IEnumerable<Npc> NPCItems
         {
             get { return _npcItems; }
             set

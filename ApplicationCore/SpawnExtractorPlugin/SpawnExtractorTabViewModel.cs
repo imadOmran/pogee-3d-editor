@@ -20,22 +20,30 @@ namespace SpawnExtractorPlugin
     {
         private readonly MySql.Data.MySqlClient.MySqlConnection _connection;
         private readonly EQEmu.Database.QueryConfig _config;
-        private readonly NPCPropertyTemplateManager _templates;
+        private readonly NpcPropertyTemplateManager _templates;
 
         private DelegateCommand _removeCommand;
         private DelegateCommand _applyTemplateCommand;
 
-        private NPCAggregator _npcs;
+        private NpcAggregator _npcs;
         private SpawnGroupAggregator _spawngroups;
         private ZoneSpawns _spawns;
 
-        public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config,NPCPropertyTemplateManager templates)
+        public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config,NpcPropertyTemplateManager templates)
         {
             _connection = connection;
             _config = config;
             _templates = templates;
 
-            _npcs = new NPCAggregator(connection, config);
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                _npcs = new NpcAggregatorDatabase(connection, config);
+            }
+            else
+            {
+                _npcs = new NpcAggregatorLocal(config);
+            }
+            
             _npcs.Created();
 
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
@@ -87,7 +95,7 @@ namespace SpawnExtractorPlugin
             ApplyTemplateCommand = new DelegateCommand(
                 x =>
                 {
-                    var npcs = x as IEnumerable<NPC>;
+                    var npcs = x as IEnumerable<Npc>;
                     if (npcs == null) return;
 
                     SelectedTemplate.SetProperties(npcs);
@@ -99,7 +107,7 @@ namespace SpawnExtractorPlugin
 
         }
         
-        public IEnumerable<INPCPropertyTemplate> Templates
+        public IEnumerable<INpcPropertyTemplate> Templates
         {
             get { return _templates.Templates; }
         }
@@ -118,8 +126,8 @@ namespace SpawnExtractorPlugin
             }
         }
 
-        private INPCPropertyTemplate _selectedTemplate;
-        public INPCPropertyTemplate SelectedTemplate
+        private INpcPropertyTemplate _selectedTemplate;
+        public INpcPropertyTemplate SelectedTemplate
         {
             get { return _selectedTemplate; }
             set
@@ -129,8 +137,8 @@ namespace SpawnExtractorPlugin
             }
         }
         
-        private NPC _selectedNPC;
-        public NPC SelectedNPC 
+        private Npc _selectedNPC;
+        public Npc SelectedNPC 
         {
             get
             {
@@ -212,7 +220,7 @@ namespace SpawnExtractorPlugin
                 if ( _npcs.NPCs.Count(x => x.Level == sp.Level && x.Name == sp.SpawnName) == 0)
                 {
                     var npc = _npcs.CreateNPC();
-                    NPC.SetNPCProperties(ref npc, sp);
+                    Npc.SetNPCProperties(ref npc, sp);
                     npc.Version = ZoneVersion;
                     npc.Id = id;
                     _npcs.AddNPC(npc);
@@ -330,7 +338,7 @@ namespace SpawnExtractorPlugin
             return str;
         }
 
-        public IEnumerable<NPC> NPCs
+        public IEnumerable<Npc> NPCs
         {
             get { return _npcs.NPCs; }
         }

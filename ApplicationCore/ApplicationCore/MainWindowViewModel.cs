@@ -170,7 +170,7 @@ namespace ApplicationCore
                     )
 
                 .Include(
-                    x => x.Implements<EQEmu.Spawns.INPCPropertyTemplate>(),
+                    x => x.Implements<EQEmu.Spawns.INpcPropertyTemplate>(),
                     Then.Register().WithTypeName().UsingSingletonMode()
                     )
                     
@@ -178,8 +178,8 @@ namespace ApplicationCore
                 .ApplyAutoRegistration();
 
             //we need to eventually make this more generic so we don't end up with a ton of these
-            var npcmanager = new EQEmu.Spawns.NPCPropertyTemplateManager();
-            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INPCPropertyTemplate>();
+            var npcmanager = new EQEmu.Spawns.NpcPropertyTemplateManager();
+            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INpcPropertyTemplate>();
             _container.RegisterInstance(npcmanager);
         }
 

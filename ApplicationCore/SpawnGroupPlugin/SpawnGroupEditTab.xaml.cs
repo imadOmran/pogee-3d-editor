@@ -88,7 +88,7 @@ namespace SpawnGroupPlugin
         {
             if (ViewModel.SelectedSpawnGroup != null)
             {
-                foreach (EQEmu.Spawns.NPC npc in NPCsDataGrid.SelectedItems)
+                foreach (EQEmu.Spawns.Npc npc in NPCsDataGrid.SelectedItems)
                 {
                     var entry = ViewModel.SelectedSpawnGroup.CreateEntry();
                     entry.Chance = 0;
@@ -145,6 +145,32 @@ namespace SpawnGroupPlugin
             {
                 ViewModel.LoadXml(od.FileName);
             }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var od = new OpenFileDialog();
+            od.Filter = " XML Files | *.npctypes.xml";
+            if ((bool)od.ShowDialog())
+            {
+                ViewModel.LoadXmlNpcs(od.FileName);                
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var sd = new SaveFileDialog();
+            if ((bool)sd.ShowDialog())
+            {
+                string zone = "";
+                if (ViewModel.ZoneFilter != null) zone = ViewModel.ZoneFilter;
+                ViewModel.SaveXmlNpcs(zone, System.IO.Path.GetDirectoryName(sd.FileName));                
+            }
+        }
+
+        private void ClearNpcCacheButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearNpcCache();
         }
     }
 }

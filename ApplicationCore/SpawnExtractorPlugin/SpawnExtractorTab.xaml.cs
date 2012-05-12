@@ -37,7 +37,7 @@ namespace SpawnExtractorPlugin
         void NPCDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {                  
             var header = e.Column.Header.ToString();
-            var pinfo = typeof(EQEmu.Spawns.NPC).GetProperty(header);
+            var pinfo = typeof(EQEmu.Spawns.Npc).GetProperty(header);
             var attr = pinfo.GetCustomAttributes(typeof(BrowsableAttribute), true);
             if (attr.Count() > 0)
             {
@@ -111,7 +111,7 @@ namespace SpawnExtractorPlugin
         {
             if( NPCDataGrid.SelectedItems.Count > 1 )
             {
-                var window = new PropertyEditorWindow(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>());
+                var window = new PropertyEditorWindow(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>());
                 window.ShowDialog();
                 NPCDataGrid.Items.Refresh();
             }
@@ -124,7 +124,7 @@ namespace SpawnExtractorPlugin
             {
                 if (EditorViewModel.ApplyTemplateCommand.CanExecute(null))
                 {
-                    EditorViewModel.ApplyTemplateCommand.Execute(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>());
+                    EditorViewModel.ApplyTemplateCommand.Execute(NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>());
                     NPCDataGrid.Items.Refresh();
                 }
             }
@@ -133,7 +133,7 @@ namespace SpawnExtractorPlugin
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             int num = EditorViewModel.StartId;
-            foreach (var npc in NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            foreach (var npc in NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>())
             {
                 npc.Id = num++;
             }

@@ -243,7 +243,7 @@ namespace LootPlugin
         private void AddLootDropToNPC(object sender, RoutedEventArgs e)
         {
             if( ViewModel.SelectedLootDrop == null ) return;
-            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>())
             {
                 //first load the loottable into the aggregator
                 ViewModel.LookupLootTable(npc.LootTableId);
@@ -266,7 +266,7 @@ namespace LootPlugin
         private void SetNPCLootTable(object sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedLootTable == null) return;
-            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.NPC>())
+            foreach (var npc in NPCLookupDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>())
             {
                 npc.LootTableId = ViewModel.SelectedLootTable.Id;
             }

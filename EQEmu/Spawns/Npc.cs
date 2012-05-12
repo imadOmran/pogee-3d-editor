@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -10,9 +11,9 @@ using EQEmu.Database;
 
 namespace EQEmu.Spawns
 {
-    public class NPC : Database.DatabaseObject
+    public class Npc : Database.DatabaseObject
     {
-        public static void SetNPCProperties(ref NPC npc,ZoneEntryStruct data)
+        public static void SetNPCProperties(ref Npc npc,ZoneEntryStruct data)
         {
             npc.Name = data.SpawnName;
             npc.Level = data.Level;
@@ -926,7 +927,13 @@ namespace EQEmu.Spawns
         private TypeRace _race;
         private TypeBodyType _bodyType;
 
-        public NPC(Database.QueryConfig conf)
+        private Npc()
+            : base(null)
+        {
+
+        }
+
+        public Npc(Database.QueryConfig conf)
             : base(conf)
         {
 
@@ -1632,7 +1639,7 @@ namespace EQEmu.Spawns
                 Dirtied();
             }
         }
-
+        
         public bool Enrage
         {
             get { return IsAttackSet(SpecialAttacks.Enrage); }

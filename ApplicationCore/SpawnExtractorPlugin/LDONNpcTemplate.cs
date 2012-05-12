@@ -12,60 +12,60 @@ namespace EQEmu.Spawns
      *  These templates can therefore be modified without having to recompile the source, C# as a scripting language basically
      */
 
-    class CastersTemplate : INPCPropertyTemplate
+    class CastersTemplate : INpcPropertyTemplate
     {
-        public void SetProperties(IEnumerable<NPC> npcs)
+        public void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
                 switch (npc.Class)
                 {
-                    case NPC.NPCClass.Cleric:
-                    case NPC.NPCClass.ClericGM:
+                    case Npc.NPCClass.Cleric:
+                    case Npc.NPCClass.ClericGM:
                         npc.SpellsId = 1;
                         break;
-                    case NPC.NPCClass.Shaman:
-                    case NPC.NPCClass.ShamanGM:
+                    case Npc.NPCClass.Shaman:
+                    case Npc.NPCClass.ShamanGM:
                         npc.SpellsId = 6;
                         break;
-                    case NPC.NPCClass.Wizard:
-                    case NPC.NPCClass.WizardGM:
+                    case Npc.NPCClass.Wizard:
+                    case Npc.NPCClass.WizardGM:
                         npc.SpellsId = 2;
                         break;
-                    case NPC.NPCClass.Enchanter:
-                    case NPC.NPCClass.EnchanterGM:
+                    case Npc.NPCClass.Enchanter:
+                    case Npc.NPCClass.EnchanterGM:
                         npc.SpellsId = 5;
                         break;
-                    case NPC.NPCClass.Magician:
-                    case NPC.NPCClass.MagicianGM:
+                    case Npc.NPCClass.Magician:
+                    case Npc.NPCClass.MagicianGM:
                         npc.SpellsId = 4;
                         break;
-                    case NPC.NPCClass.Necromancer:
-                    case NPC.NPCClass.NecromancerGM:
+                    case Npc.NPCClass.Necromancer:
+                    case Npc.NPCClass.NecromancerGM:
                         npc.SpellsId = 3;
                         break;
-                    case NPC.NPCClass.ShadowKnight:
-                    case NPC.NPCClass.ShadowKnightGM:
+                    case Npc.NPCClass.ShadowKnight:
+                    case Npc.NPCClass.ShadowKnightGM:
                         npc.SpellsId = 9;
                         break;
-                    case NPC.NPCClass.Paladin:
-                    case NPC.NPCClass.PaladinGM:
+                    case Npc.NPCClass.Paladin:
+                    case Npc.NPCClass.PaladinGM:
                         npc.SpellsId = 8;
                         break;
-                    case NPC.NPCClass.Ranger:
-                    case NPC.NPCClass.RangerGM:
+                    case Npc.NPCClass.Ranger:
+                    case Npc.NPCClass.RangerGM:
                         npc.SpellsId = 10;
                         break;
-                    case NPC.NPCClass.Druid:
-                    case NPC.NPCClass.DruidGM:
+                    case Npc.NPCClass.Druid:
+                    case Npc.NPCClass.DruidGM:
                         npc.SpellsId = 7;
                         break;
-                    case NPC.NPCClass.Beastlord:
-                    case NPC.NPCClass.BeastlordGM:
+                    case Npc.NPCClass.Beastlord:
+                    case Npc.NPCClass.BeastlordGM:
                         npc.SpellsId = 12;
                         break;
-                    case NPC.NPCClass.Bard:
-                    case NPC.NPCClass.BardGM:
+                    case Npc.NPCClass.Bard:
+                    case Npc.NPCClass.BardGM:
                         npc.SpellsId = 11;
                         break;
 
@@ -82,11 +82,11 @@ namespace EQEmu.Spawns
         }
     }
 
-    class LDONNormalToHighRisk : INPCPropertyTemplate
+    class LDONNormalToHighRisk : INpcPropertyTemplate
     {
         private LDONNpcTemplate _normal = new LDONNpcTemplate();
 
-        public void SetProperties(IEnumerable<NPC> npcs)
+        public void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
@@ -104,29 +104,29 @@ namespace EQEmu.Spawns
         }
     }
 
-    class LDONGukTemplate : INPCPropertyTemplate
+    class LDONGukTemplate : INpcPropertyTemplate
     {
-        public void SetProperties(IEnumerable<NPC> npcs)
+        public void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
                 switch (npc.BodyType)
                 {
-                    case NPC.TypeBodyType.Undead:
+                    case Npc.TypeBodyType.Undead:
                         break;
                 }
 
                 switch (npc.Race)
                 {
-                    case NPC.TypeRace.FroglokGhost:
-                    case NPC.TypeRace.UndeadFroglok:
-                    case NPC.TypeRace.WatchfulEye:
-                    case NPC.TypeRace.Froglok:
+                    case Npc.TypeRace.FroglokGhost:
+                    case Npc.TypeRace.UndeadFroglok:
+                    case Npc.TypeRace.WatchfulEye:
+                    case Npc.TypeRace.Froglok:
                         npc.FactionId = 725;
                         break;
 
-                    case NPC.TypeRace.Spider:
-                    case NPC.TypeRace.Goo:
+                    case Npc.TypeRace.Spider:
+                    case Npc.TypeRace.Goo:
                         npc.FactionId = 79;
                         break;
                 }
@@ -148,22 +148,22 @@ namespace EQEmu.Spawns
         }
     }
 
-    class LDONRujTemplate : INPCPropertyTemplate
+    class LDONRujTemplate : INpcPropertyTemplate
     {
-        public void SetProperties(IEnumerable<NPC> npcs)
+        public void SetProperties(IEnumerable<Npc> npcs)
         {
 
             foreach (var npc in npcs)
             {
                 switch (npc.Race)
                 {
-                    case NPC.TypeRace.RujarkianOrc:
-                    case NPC.TypeRace.NewBear:
-                    case NPC.TypeRace.Boar:
-                    case NPC.TypeRace.Wolf:
+                    case Npc.TypeRace.RujarkianOrc:
+                    case Npc.TypeRace.NewBear:
+                    case Npc.TypeRace.Boar:
+                    case Npc.TypeRace.Wolf:
                         npc.FactionId = 722;
                         break;
-                    case NPC.TypeRace.NewGoblin:
+                    case Npc.TypeRace.NewGoblin:
                         npc.FactionId = 721;
                         break;
                     default:
@@ -179,17 +179,17 @@ namespace EQEmu.Spawns
         }
     }
 
-    class LDONNpcTemplate : INPCPropertyTemplate
+    class LDONNpcTemplate : INpcPropertyTemplate
     {
-        public virtual void SetProperties(IEnumerable<NPC> npcs)
+        public virtual void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
-                if (npc.Race == NPC.TypeRace.InvisibleMan)
+                if (npc.Race == Npc.TypeRace.InvisibleMan)
                 {
                     continue;
                 }
-                if (npc.Race == NPC.TypeRace.Box || npc.Class == NPC.NPCClass.LDoNObject)
+                if (npc.Race == Npc.TypeRace.Box || npc.Class == Npc.NPCClass.LDoNObject)
                 {
                     npc.HealthPoints = 5000;
                     continue;
@@ -287,11 +287,11 @@ namespace EQEmu.Spawns
         }
     }
 
-    class LDONConvert18To28Template : INPCPropertyTemplate
+    class LDONConvert18To28Template : INpcPropertyTemplate
     {
-        private INPCPropertyTemplate _base = new LDONNpc28Template();
+        private INpcPropertyTemplate _base = new LDONNpc28Template();
 
-        public void SetProperties(IEnumerable<NPC> npcs)
+        public void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
@@ -307,18 +307,18 @@ namespace EQEmu.Spawns
     }
 
 
-    class LDONNpc28Template : INPCPropertyTemplate
+    class LDONNpc28Template : INpcPropertyTemplate
     {
-        public virtual void SetProperties(IEnumerable<NPC> npcs)
+        public virtual void SetProperties(IEnumerable<Npc> npcs)
         {
             foreach (var npc in npcs)
             {
-                if (npc.Race == NPC.TypeRace.InvisibleMan)
+                if (npc.Race == Npc.TypeRace.InvisibleMan)
                 {
                     continue;
                 }
 
-                if (npc.Race == NPC.TypeRace.Box || npc.Class == NPC.NPCClass.LDoNObject)
+                if (npc.Race == Npc.TypeRace.Box || npc.Class == Npc.NPCClass.LDoNObject)
                 {
                     npc.HealthPoints = 5000;
                     continue;
