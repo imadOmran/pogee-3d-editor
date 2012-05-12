@@ -53,8 +53,18 @@ namespace SpawnGroupPlugin
                 _manager = new SpawnGroupAggregatorLocal(config);
             }
 
+            _manager.DataLoaded += new SpawnGroupDataLoadedHandler(_manager_DataLoaded);
             _npcFinder = finder;
             InitCommands();
+        }
+
+        void _manager_DataLoaded(object sender, SpawnGroupDataLoadedEventArgs e)
+        {
+            if (_manager.SpawnGroups.Count() > 0)
+            {
+                SelectedSpawnGroup = _manager.SpawnGroups.ElementAt(0);
+            }
+            RefreshCommands();
         }
 
         private void InitCommands()
@@ -216,9 +226,27 @@ namespace SpawnGroupPlugin
                 });
         }
 
+        public void RefreshCommands()
+        {
+            _adjustChanceTotalCommand.RaiseCanExecuteChanged();
+            _clearCacheCommand.RaiseCanExecuteChanged();
+            _createNewCommand.RaiseCanExecuteChanged();
+            _nextIdCommand.RaiseCanExecuteChanged();
+            _packCommand.RaiseCanExecuteChanged();
+            _prevIdCommand.RaiseCanExecuteChanged();
+            _removeSelectedCommand.RaiseCanExecuteChanged();
+            _removeSpawnGroupCommand.RaiseCanExecuteChanged();
+            _viewQueryCommand.RaiseCanExecuteChanged();
+        }
+
         public void SaveAsXml(string zone, string dir)
         {
             _manager.SaveXML(zone, dir);
+        }
+
+        public void LoadXml(string file)
+        {
+            _manager.LoadXML(file);
         }
 
         public ICollection<NPC> NPCFilter

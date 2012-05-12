@@ -15,10 +15,16 @@ namespace EQEmu.Spawns
         private IEnumerable<Spawn2> _updateSpawn2 = null;
         protected List<SpawnGroup> _spawnGroups = new List<SpawnGroup>();
         private int _filterById;
+        private static string _defaultFilePrefix = "global";
 
         public SpawnGroupAggregator(Database.QueryConfig queryConfig)
             : base(queryConfig)
         {
+        }
+
+        public static string DefaultFilePrefix
+        {
+            get { return _defaultFilePrefix; }
         }
 
         public int FilterById
@@ -141,7 +147,7 @@ namespace EQEmu.Spawns
         public void SaveXML(string zone, string dir)
         {
             _zone = zone;
-            if (zone == "" || zone == null) _zone = "global";            
+            if (zone == "" || zone == null) _zone = _defaultFilePrefix;            
             SaveXML(dir);
         }
 
@@ -167,10 +173,86 @@ namespace EQEmu.Spawns
                 x.Serialize(fs, ary);
             }            
         }
+
+        public override void LoadXML(string file)
+        {
+            var dir = System.IO.Path.GetDirectoryName(file);
+            var filename = System.IO.Path.GetFileName(file);
+            int period1 = filename.IndexOf('.', 0);
+            int period2 = filename.IndexOf('.', period1 + 1);
+
+            string zone = filename.Substring(0, period1);
+
+            SpawnGroup[] spawngroups;            
+            using (var fs = new FileStream(file, FileMode.Open))
+            {
+                var x = new XmlSerializer( _spawnGroups.ToArray().GetType());
+                var obj = x.Deserialize(fs);
+                spawngroups = obj as SpawnGroup[];                
+            }
+
+            if (spawngroups != null)
+            {
+                ClearCache();
+                Created();
+                foreach (var sg in spawngroups)
+                {                    
+                    sg.InitConfig(_queryConfig);
+                    sg.Created();
+                    AddSpawnGroup(sg);
+                }
+            }
+
+            SpawnEntry[] entries;
+            file = dir + "\\" + zone + ".spawnentries.xml";
+
+            if (_spawnGroups.Count > 0 && System.IO.File.Exists(file))
+            {
+                using(var fs = new FileStream(file, FileMode.Open) )
+                {
+                    var x = new XmlSerializer( _spawnGroups.ElementAt(0).Entries.ToArray().GetType() );
+                    var obj = x.Deserialize(fs);
+                    entries = obj as SpawnEntry[];
+                }
+
+                foreach (var entry in entries)
+                {
+                    var sg = SpawnGroups.FirstOrDefault(x => x.Id == entry.SpawnGroupID);
+                    entry.InitConfig(_queryConfig);
+                    entry.Created();
+                    if (sg != null)
+                    {
+                        sg.AddEntry(entry);
+                    }
+                }
+            }
+            OnSpawnGroupDataLoaded(zone);
+        }
         
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { throw new NotImplementedException(); }
         }
+
+        public event SpawnGroupDataLoadedHandler DataLoaded;
+        private void OnSpawnGroupDataLoaded(string zone)
+        {
+            var e = DataLoaded;
+            if (e != null)
+            {
+                e(this, new SpawnGroupDataLoadedEventArgs(zone));
+            }
+        }
     }
+
+    public delegate void SpawnGroupDataLoadedHandler(object sender, SpawnGroupDataLoadedEventArgs e);
+    public class SpawnGroupDataLoadedEventArgs : EventArgs
+    {
+        public SpawnGroupDataLoadedEventArgs(string zonename)
+        {
+            ZoneName = zonename;
+        }
+        
+        public string ZoneName { get; private set; }
+    }   
 }

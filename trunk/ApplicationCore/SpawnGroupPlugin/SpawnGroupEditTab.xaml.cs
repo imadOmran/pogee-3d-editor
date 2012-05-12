@@ -136,5 +136,15 @@ namespace SpawnGroupPlugin
                 ViewModel.SaveAsXml(zone, System.IO.Path.GetDirectoryName(sd.FileName) );
             }
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var od = new OpenFileDialog();
+            od.Filter = " XML Files | *.spawngroups.xml";
+            if ((bool)od.ShowDialog())
+            {
+                ViewModel.LoadXml(od.FileName);
+            }
+        }
     }
 }

@@ -81,14 +81,12 @@ namespace EQEmu.Spawns
             }
         }
 
-        [XmlIgnore]
         public string NpcName
         {
             get;
             set;
         }
 
-        [XmlIgnore]
         public short NpcLevel
         {
             get;
