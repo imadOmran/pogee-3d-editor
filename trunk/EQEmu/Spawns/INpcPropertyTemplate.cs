@@ -5,8 +5,8 @@ using System.Text;
 
 namespace EQEmu.Spawns
 {
-    public interface INPCPropertyTemplate
+    public interface INpcPropertyTemplate
     {
-        void SetProperties(IEnumerable<NPC> npcs);
+        void SetProperties(IEnumerable<Npc> npcs);
     }
 }

@@ -146,9 +146,11 @@
     <Compile Include="RoamAreas\ZoneRoamAreasDatabase.cs" />
     <Compile Include="RoamAreas\ZoneRoamAreasLocal.cs" />
     <Compile Include="Spawns\INpcPropertyTemplate.cs" />
-    <Compile Include="Spawns\NPC.cs" />
-    <Compile Include="Spawns\NPCAggregator.cs" />
-    <Compile Include="Spawns\NPCPropertyTemplateManager.cs" />
+    <Compile Include="Spawns\Npc.cs" />
+    <Compile Include="Spawns\NpcAggregator.cs" />
+    <Compile Include="Spawns\NpcAggregatorDatabase.cs" />
+    <Compile Include="Spawns\NpcAggregatorLocal.cs" />
+    <Compile Include="Spawns\NpcPropertyTemplateManager.cs" />
     <Compile Include="Spawns\Spawn2.cs" />
     <Compile Include="Spawns\SpawnEntry.cs" />
     <Compile Include="Spawns\SpawnGroup.cs" />

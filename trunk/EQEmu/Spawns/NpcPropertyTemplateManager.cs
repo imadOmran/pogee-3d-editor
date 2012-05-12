@@ -5,11 +5,11 @@ using System.Text;
 
 namespace EQEmu.Spawns
 {
-    public class NPCPropertyTemplateManager
+    public class NpcPropertyTemplateManager
     {
-       private IEnumerable<INPCPropertyTemplate> _templates = new List<INPCPropertyTemplate>();
+       private IEnumerable<INpcPropertyTemplate> _templates = new List<INpcPropertyTemplate>();
 
-       public IEnumerable<INPCPropertyTemplate> Templates
+       public IEnumerable<INpcPropertyTemplate> Templates
         {
             get { return _templates; }
             set

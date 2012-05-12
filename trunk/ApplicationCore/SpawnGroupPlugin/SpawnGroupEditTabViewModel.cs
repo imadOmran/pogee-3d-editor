@@ -19,7 +19,7 @@ namespace SpawnGroupPlugin
     public class SpawnGroupEditTabViewModel : ApplicationCore.ViewModels.ViewModelBase
     {
         private readonly SpawnGroupAggregator _manager;
-        private readonly NPCAggregator _npcFinder;
+        private readonly NpcAggregator _npcFinder;
         private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         private string _npcFilterString;
@@ -42,19 +42,19 @@ namespace SpawnGroupPlugin
         private DelegateCommand _removeSelectedCommand;
         private DelegateCommand _viewQueryCommand;
 
-        public SpawnGroupEditTabViewModel(MySqlConnection connection,QueryConfig config, NPCAggregator finder)
+        public SpawnGroupEditTabViewModel(MySqlConnection connection,QueryConfig config)
         {
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
             {
                 _manager = new SpawnGroupAggregatorDatabase(connection, config);
+                _npcFinder = new NpcAggregatorDatabase(connection, config);
             }
             else
             {
                 _manager = new SpawnGroupAggregatorLocal(config);
+                _npcFinder = new NpcAggregatorLocal(config);
             }
-
-            _manager.DataLoaded += new SpawnGroupDataLoadedHandler(_manager_DataLoaded);
-            _npcFinder = finder;
+            _manager.DataLoaded += new SpawnGroupDataLoadedHandler(_manager_DataLoaded);            
             InitCommands();
         }
 
@@ -249,7 +249,17 @@ namespace SpawnGroupPlugin
             _manager.LoadXML(file);
         }
 
-        public ICollection<NPC> NPCFilter
+        public void LoadXmlNpcs(string file)
+        {
+            _npcFinder.LoadXML(file);
+        }
+
+        public void SaveXmlNpcs(string zone, string dir)
+        {
+            _npcFinder.SaveXML(zone, dir);
+        }
+
+        public ICollection<Npc> NPCFilter
         {
             get { return _npcFinder.NPCs; }
         }        
@@ -263,6 +273,11 @@ namespace SpawnGroupPlugin
                 _npcFinder.Lookup(value);
                 NotifyPropertyChanged("NPCFilterString");
             }
+        }
+
+        public void ClearNpcCache()
+        {
+            _npcFinder.ClearCache();
         }
 
         public IEnumerable<SpawnGroup> SpawnGroups
@@ -340,14 +355,15 @@ namespace SpawnGroupPlugin
                 _zoneFilter = value;
 
                 var sggr = _manager as SpawnGroupAggregatorDatabase;
+                _npcFinder.LookupByZone(value);
                 if (sggr == null) return;
                 else
                 {
-                    sggr.LookupByZone(value);
+                    sggr.LookupByZone(value);                    
                     SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
                     NotifyPropertyChanged("ZoneFilter");
                     NotifyPropertyChanged("SpawnGroups");
-                }
+                }                
             }
         }
                 

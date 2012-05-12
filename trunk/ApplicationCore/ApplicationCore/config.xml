@@ -735,7 +735,7 @@ SELECT * FROM spawn2 where spawngroupid = {0};
     </update>
   </query>
 
-  <query type="EQEmu.Spawns.NPC">
+  <query type="EQEmu.Spawns.Npc">
     <update>
       <sql>
 <![CDATA[UPDATE npc_types SET loottable_id = {0}, name = '{1}', level = {2} WHERE id = {3};]]>
@@ -789,7 +789,7 @@ VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15
     </insert>
   </query>
 
-  <query type="EQEmu.Spawns.NPCAggregator">
+  <query type="EQEmu.Spawns.NpcAggregator">
     <select>
       <sql>
         <![CDATA[
@@ -804,7 +804,7 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
     </select>
   </query>
 
-  <query-extension type="EQEmu.Spawns.NPCAggregator" name="MaxIdForZone">
+  <query-extension type="EQEmu.Spawns.NpcAggregator" name="MaxIdForZone">
     <select>
       <sql>
         <![CDATA[SELECT MAX(npc_types.id) as id, zone.short_name as zoneid 
@@ -814,7 +814,7 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
     </select>
   </query-extension>
 
-  <query-extension type="EQEmu.Spawns.NPCAggregator" name="LookupByZone">
+  <query-extension type="EQEmu.Spawns.NpcAggregator" name="LookupByZone">
     <select>
       <sql>
         <![CDATA[

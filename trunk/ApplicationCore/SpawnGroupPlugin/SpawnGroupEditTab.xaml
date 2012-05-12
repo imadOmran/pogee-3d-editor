@@ -7,13 +7,20 @@
              d:DesignHeight="418" Width="729" HorizontalAlignment="Left" Background="#FFCECECE">
     <Grid>
         <DockPanel>
-            <Grid DockPanel.Dock="Right" Width="246" Margin="15,15,15,15" Background="White">
-                <StackPanel Orientation="Horizontal">
-                    <Label>NPC Name</Label>
-                    <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
-                    <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
-                </StackPanel>             
-                <DataGrid Name="NPCsDataGrid" Margin="0,31,0,0" ItemsSource="{Binding Path=NPCFilter}" />
+            <Grid DockPanel.Dock="Right" Width="257" Margin="15,15,15,15" Background="White">         
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load" Click="Button_Click_3" />
+                        <Button Content="Save" Click="Button_Click_4" />
+                        <Button Content="Clear Cache" x:Name="ClearNpcCacheButton" Click="ClearNpcCacheButton_Click" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>NPC Name</Label>
+                        <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
+                        <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
+                    </StackPanel>                    
+                </StackPanel>
+                <DataGrid Margin="0,50,0,0" Name="NPCsDataGrid" ItemsSource="{Binding Path=NPCFilter}" />
             </Grid>
             <Grid>
                 <DockPanel>
