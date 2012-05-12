@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -16,6 +17,18 @@ namespace EQEmu.Spawns
         private short _chance;
         private NPC _npc;
 
+        private SpawnEntry()
+            : base(null)
+        {
+
+        }
+
+        public SpawnEntry(Database.QueryConfig config)
+            : base(config)
+        {
+
+        }
+
         public int SpawnGroupID
         {
             get { return _spawnGroupId; }
@@ -27,6 +40,7 @@ namespace EQEmu.Spawns
         }
 
         [Browsable(false)]
+        [XmlIgnore]
         public NPC NPC
         {
             get { return _npc; }
@@ -67,22 +81,18 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public string NpcName
         {
             get;
             set;
         }
 
+        [XmlIgnore]
         public short NpcLevel
         {
             get;
             set;
-        }
-
-        public SpawnEntry(Database.QueryConfig config)
-            : base(config)
-        {
-
         }
     }
 }

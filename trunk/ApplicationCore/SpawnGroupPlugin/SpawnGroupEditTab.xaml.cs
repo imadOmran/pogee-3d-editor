@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Microsoft.Win32;
+
 using ApplicationCore;
 
 namespace SpawnGroupPlugin
@@ -123,5 +125,16 @@ namespace SpawnGroupPlugin
         }
 
         public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var sd = new SaveFileDialog();            
+            if ((bool)sd.ShowDialog())
+            {
+                string zone = "";
+                if (ViewModel.ZoneFilter != null) zone = ViewModel.ZoneFilter;
+                ViewModel.SaveAsXml(zone, System.IO.Path.GetDirectoryName(sd.FileName) );
+            }
+        }
     }
 }
