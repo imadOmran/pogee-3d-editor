@@ -105,7 +105,7 @@
                             </TabItem>
                             <TabItem Name="FileTab" Header="File">
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Width="50" Content="Load" />
+                                    <Button Width="50" Content="Load" Click="Button_Click_2" />
                                     <Button Width="50" Content="Save" Click="Button_Click_1" />
                                 </StackPanel>
                             </TabItem>
