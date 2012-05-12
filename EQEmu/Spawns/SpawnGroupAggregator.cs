@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.IO;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
@@ -81,7 +83,6 @@ namespace EQEmu.Spawns
 
             IEnumerable<SpawnGroup> sorted = SpawnGroups.OrderBy(x => x.Id);
             int i = start;
-            NeedsInserted.Clear();
             var updates = new List<Spawn2>();
 
             foreach (var spawn in sorted)
@@ -108,7 +109,6 @@ namespace EQEmu.Spawns
                 spawn.Created();
 
                 i += 1;
-                NeedsInserted.Add(spawn);
 
                 if (worker != null)
                 {
@@ -134,6 +134,38 @@ namespace EQEmu.Spawns
             updates.AddRange(SpawnGroups);
 
             return GetQuery(updates);
+        }
+
+        private string _zone = "";
+
+        public void SaveXML(string zone, string dir)
+        {
+            _zone = zone;
+            if (zone == "" || zone == null) _zone = "global";            
+            SaveXML(dir);
+        }
+
+        public override void SaveXML(string dir)
+        {
+            using (var fs = new FileStream(dir + "\\" + _zone + ".spawngroups.xml", FileMode.Create))
+            {
+                var ary = _spawnGroups.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs, ary);
+            }
+
+            using (var fs = new FileStream(dir + "\\" + _zone + ".spawnentries.xml", FileMode.Create))
+            {
+                List<SpawnEntry> allEntries = new List<SpawnEntry>();
+                foreach (var g in _spawnGroups)
+                {
+                    allEntries.AddRange(g.Entries);
+                }
+
+                var ary = allEntries.ToArray();
+                var x = new XmlSerializer(ary.GetType());
+                x.Serialize(fs, ary);
+            }            
         }
         
         public override List<Database.IDatabaseObject> DirtyComponents

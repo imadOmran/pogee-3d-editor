@@ -21,7 +21,26 @@ namespace SpawnGroupPlugin
         private readonly SpawnGroupAggregator _manager;
         private readonly NPCAggregator _npcFinder;
         private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
+
+        private string _npcFilterString;
+        private string _zoneFilter;
+        private int _packStart = 0;
+        private int _packEnd = 0;
+        private int _packProgress = 0;
+
+        private SpawnEntry _selectedEntry = null;
+        private SpawnGroup _selectedSpawnGroup = null;
         private BackgroundWorker _packWork;
+
+        private DelegateCommand _packCommand;
+        private DelegateCommand _clearCacheCommand;
+        private DelegateCommand _adjustChanceTotalCommand;
+        private DelegateCommand _prevIdCommand;
+        private DelegateCommand _nextIdCommand;
+        private DelegateCommand _createNewCommand;
+        private DelegateCommand _removeSpawnGroupCommand;
+        private DelegateCommand _removeSelectedCommand;
+        private DelegateCommand _viewQueryCommand;
 
         public SpawnGroupEditTabViewModel(MySqlConnection connection,QueryConfig config, NPCAggregator finder)
         {
@@ -35,7 +54,11 @@ namespace SpawnGroupPlugin
             }
 
             _npcFinder = finder;
+            InitCommands();
+        }
 
+        private void InitCommands()
+        {
             RemoveSelectedEntryCommand = new DelegateCommand(
                 x =>
                 {
@@ -66,6 +89,7 @@ namespace SpawnGroupPlugin
                 x =>
                 {
                     var sg = _manager.CreateSpawnGroup();
+                    _manager.AddSpawnGroup(sg);
                     if (sg != null)
                     {
                         SelectedSpawnGroup = sg;
@@ -95,7 +119,7 @@ namespace SpawnGroupPlugin
                 {
                     if (_manager.SpawnGroups.Count() > 1 && SelectedSpawnGroup != null)
                     {
-                        return true; 
+                        return true;
                     }
                     else return false;
                 });
@@ -144,7 +168,7 @@ namespace SpawnGroupPlugin
                 x =>
                 {
                     var entries = x as IEnumerable<object>;
-                    
+
                     if (entries != null && entries.Count() > 0)
                     {
                         var total = SelectedSpawnGroup.ChanceTotal;
@@ -158,7 +182,7 @@ namespace SpawnGroupPlugin
                                 unitsLeft--;
                                 if (unitsLeft == 0) break;
                             }
-                        }                       
+                        }
                     }
                     else return;
                 },
@@ -192,12 +216,16 @@ namespace SpawnGroupPlugin
                 });
         }
 
+        public void SaveAsXml(string zone, string dir)
+        {
+            _manager.SaveXML(zone, dir);
+        }
+
         public ICollection<NPC> NPCFilter
         {
             get { return _npcFinder.NPCs; }
-        }
+        }        
         
-        private string _npcFilterString;
         public string NPCFilterString
         {
             get { return _npcFilterString; }
@@ -219,9 +247,8 @@ namespace SpawnGroupPlugin
                 }
                 else return null;
             }
-        }
+        }        
         
-        private SpawnGroup _selectedSpawnGroup = null;
         public SpawnGroup SelectedSpawnGroup
         {
             get { return _selectedSpawnGroup; }
@@ -276,8 +303,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("FilterID");
             }
         }
-
-        private string _zoneFilter;
+        
         public string ZoneFilter
         {
             get { return _zoneFilter; }
@@ -296,8 +322,7 @@ namespace SpawnGroupPlugin
                 }
             }
         }
-
-        private int _packStart = 0;
+                
         public int PackStart 
         {
             get { return _packStart; } 
@@ -308,8 +333,7 @@ namespace SpawnGroupPlugin
                 PackCommand.RaiseCanExecuteChanged();
             }
         }
-
-        private int _packEnd = 0;
+                
         public int PackEnd
         {
             get { return _packEnd; }
@@ -364,8 +388,7 @@ namespace SpawnGroupPlugin
             PackProgress = e.ProgressPercentage;
             PackCommand.RaiseCanExecuteChanged();
         }
-
-        private int _packProgress = 0;
+                
         public int PackProgress
         {
             get { return _packProgress; }
@@ -374,9 +397,8 @@ namespace SpawnGroupPlugin
                 _packProgress = value;
                 NotifyPropertyChanged("PackProgress");
             }
-        }
+        }        
         
-        private SpawnEntry _selectedEntry = null;
         public SpawnEntry SelectedEntry
         {
             get { return _selectedEntry; }
@@ -388,7 +410,6 @@ namespace SpawnGroupPlugin
             }
         }
 
-        private DelegateCommand _removeSpawnGroupCommand;
         public DelegateCommand RemoveSpawnGroupCommand
         {
             get { return _removeSpawnGroupCommand; }
@@ -399,7 +420,7 @@ namespace SpawnGroupPlugin
             }
         }
 
-        private DelegateCommand _removeSelectedCommand;
+        
         public DelegateCommand RemoveSelectedEntryCommand
         {
             get { return _removeSelectedCommand; }
@@ -409,8 +430,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("RemoveSelectedCommand");
             }
         }
-
-        private DelegateCommand _viewQueryCommand;
+                
         public DelegateCommand ViewQueryCommand
         {
             get { return _viewQueryCommand; }
@@ -420,8 +440,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("ViewQueryCommand");
             }
         }
-
-        private DelegateCommand _createNewCommand;
+        
         public DelegateCommand CreateNewCommand
         {
             get { return _createNewCommand; }
@@ -431,8 +450,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("CreateNewCommand");
             }
         }
-
-        private DelegateCommand _nextIdCommand;
+                
         public DelegateCommand NextIdCommand
         {
             get { return _nextIdCommand; }
@@ -442,8 +460,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("NextIdCommand");
             }
         }
-
-        private DelegateCommand _prevIdCommand;
+                
         public DelegateCommand PreviousIdCommand
         {
             get { return _prevIdCommand; }
@@ -453,8 +470,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("NextIdCommand");
             }
         }
-
-        private DelegateCommand _adjustChanceTotalCommand;
+                
         public DelegateCommand AdjustChanceTotalCommand
         {
             get { return _adjustChanceTotalCommand; }
@@ -464,8 +480,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("AdjustChanceTotalCommand");
             }
         }
-
-        private DelegateCommand _clearCacheCommand;
+        
         public DelegateCommand ClearCacheCommand
         {
             get { return _clearCacheCommand; }
@@ -475,8 +490,7 @@ namespace SpawnGroupPlugin
                 NotifyPropertyChanged("ClearCacheCommand");
             }
         }
-
-        private DelegateCommand _packCommand;
+                
         public DelegateCommand PackCommand
         {
             get { return _packCommand; }

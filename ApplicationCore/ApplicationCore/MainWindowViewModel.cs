@@ -365,7 +365,7 @@ namespace ApplicationCore
 
             EQEmu.Database.Configuration conf;
 
-            using (XmlReader reader = XmlReader.Create("./connection.xml"))
+            using (XmlReader reader = XmlReader.Create(confPath))
             {
                 conf = (EQEmu.Database.Configuration)serializer.Deserialize(reader);
                 string connStr = string.Format("server={0};user={1};database={2};port={3};password={4};ConnectionTimeout={5};",

@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
 using EQEmu.Database;
 
 namespace EQEmu.Spawns
-{
+{    
     public class SpawnGroupDatabase : SpawnGroup
     {
         private readonly MySqlConnection _connection;
         private readonly TypeQueriesExtension _getSpawn2;
+
+        private SpawnGroupDatabase()
+        {
+
+        }
 
         public SpawnGroupDatabase(MySqlConnection connection, QueryConfig config)
             : base(config)

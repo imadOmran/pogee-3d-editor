@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 using MySql.Data.MySqlClient;
 
 namespace EQEmu.Spawns
 {
+    [XmlInclude(typeof(SpawnGroupLocal))]
+    [XmlInclude(typeof(SpawnGroupDatabase))]
     public abstract class SpawnGroup : Database.ManageDatabase
     {
         private int _id;
@@ -24,11 +27,10 @@ namespace EQEmu.Spawns
         
         protected ObservableCollection<SpawnEntry> _entries = new ObservableCollection<SpawnEntry>();
 
-        public SpawnEntry CreateEntry()
+        protected SpawnGroup()
+            : base(null)
         {
-            var entry =  new SpawnEntry(_queryConfig);
-            entry.SpawnGroupID = Id;
-            return entry;
+
         }
 
         public SpawnGroup(Database.QueryConfig config) : base (config)
@@ -44,6 +46,13 @@ namespace EQEmu.Spawns
 
         public abstract IEnumerable<Spawn2> GetLinkedSpawn2();
         public abstract void GetEntries();
+
+        public SpawnEntry CreateEntry()
+        {
+            var entry = new SpawnEntry(_queryConfig);
+            entry.SpawnGroupID = Id;
+            return entry;
+        }
 
         public SpawnEntry AddEntry(NPC npc)
         {
@@ -253,16 +262,19 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public int ChanceTotal
         {
             get { return Entries.Sum(x => { return x.Chance; }); }
         }
 
+        [XmlIgnore]
         public ObservableCollection<SpawnEntry> Entries
         {
             get { return _entries; }
         }
 
+        [XmlIgnore]
         public override string UpdateString
         {
             get
@@ -278,6 +290,7 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public override string DeleteString
         {
             get
@@ -288,6 +301,7 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public override string InsertString
         {
             get
@@ -298,6 +312,7 @@ namespace EQEmu.Spawns
             }
         }
 
+        [XmlIgnore]
         public override List<Database.IDatabaseObject> DirtyComponents
         {
             get { return Entries.Where(x => x.Dirty).ToList<Database.IDatabaseObject>(); }

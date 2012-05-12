@@ -103,6 +103,12 @@
                                     <ListView ItemsSource="{Binding SpawnGroups}" SelectedItem="{Binding SelectedSpawnGroup}" Height="114" />
                                 </StackPanel>
                             </TabItem>
+                            <TabItem Name="FileTab" Header="File">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Width="50" Content="Load" />
+                                    <Button Width="50" Content="Save" Click="Button_Click_1" />
+                                </StackPanel>
+                            </TabItem>
                         </TabControl>                        
                     </Grid>
                     <Grid>
@@ -111,7 +117,7 @@
                                 <Button Margin="10,0,0,0" HorizontalAlignment="Left"  Content="Remove Selection" Command="{Binding RemoveSelectedEntryCommand}" CommandParameter="{Binding SelectedEntry}"  />
                                 <StackPanel Orientation="Horizontal">
                                     <Label>Chance Total</Label>
-                                    <TextBlock Text="{Binding ChanceTotal}" Width="56" />
+                                    <TextBlock Text="{Binding ChanceTotal}" VerticalAlignment="Center" Width="56" />
                                     <Button Content="Adjust Totals" Margin="10,0,0,0" Click="Button_Click" />
                                 </StackPanel>
                             </StackPanel>

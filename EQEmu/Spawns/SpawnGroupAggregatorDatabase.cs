@@ -25,7 +25,7 @@ namespace EQEmu.Spawns
             SpawnGroup sg = null;
 
             var qconf = Queries.ExtensionQueries.FirstOrDefault(x => { return x.Name == "GetMaxID"; });
-            var results = Database.QueryHelper.TryRunQuery(_connection, qconf.SelectQuery);
+            var results = Database.QueryHelper.RunQuery(_connection, qconf.SelectQuery);
 
             sg = new SpawnGroupDatabase(_connection, _queryConfig);
             if (results != null)
@@ -50,7 +50,7 @@ namespace EQEmu.Spawns
             }
 
             sg.Created();
-            AddSpawnGroup(sg);
+            //AddSpawnGroup(sg);
             return sg;
         }
 
