@@ -7,7 +7,7 @@
              d:DesignHeight="1200" HorizontalAlignment="Left" Background="#FFCECECE">
     <UserControl.Resources>
         <Style x:Key="groupBoxStyle" TargetType="GroupBox">
-            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Background" Value="#FFE8E8E8" />
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="1.5" />
         </Style>
