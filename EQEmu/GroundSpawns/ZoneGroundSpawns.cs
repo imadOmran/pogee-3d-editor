@@ -66,7 +66,7 @@ namespace EQEmu.GroundSpawns
             var spawn = sender as GroundSpawn;
             if (spawn == null) return;
 
-            var q = spawn.Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetItemName");
+            var q = spawn.Queries.GetExtensionQuery("GetItemName");
             if (q == null) return;
 
             var sql = String.Format(q.SelectQuery, spawn.ResolveArgs(q.SelectArgs));

@@ -23,19 +23,20 @@ namespace LootPlugin
         private DelegateCommand _createLootDropCommand;
         private DelegateCommand _removeSelectedEntryCommand;
 
-        public LootEditTabViewModel(MySqlConnection connection,QueryConfig config,LootTableAggregator manager)
+        public LootEditTabViewModel(MySqlConnection connection,QueryConfig config)
         {
-            _manager = manager;
-            _manager.Created();
-
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
             {
+                _manager = new LootTableAggregatorDatabase(connection, config);
                 _npcmanager = new NpcAggregatorDatabase(connection, config);
             }
             else
             {
+                _manager = new LootTableAggregatorLocal(config);
                 _npcmanager = new NpcAggregatorLocal(config);
             }
+            _npcmanager.Created();
+            _manager.Created();
 
             _addExistingLootDropCommand = new DelegateCommand(
                 x =>
@@ -70,7 +71,7 @@ namespace LootPlugin
             CreateLootTableCommand = new DelegateCommand(
                 x =>
                 {
-                    var table = _manager.CreateLootTable(true);
+                    var table = _manager.CreateLootTable();
                     if (table != null)
                     {
                         _manager.AddLootTable(table);
@@ -84,7 +85,7 @@ namespace LootPlugin
             CreateLootDropCommand = new DelegateCommand(
                 x =>
                 {
-                    var drop = _manager.CreateLootDrop(true);
+                    var drop = _manager.CreateLootDrop();
                     drop.CreateForInsert();
                     drop.Created();
                     if (drop != null)

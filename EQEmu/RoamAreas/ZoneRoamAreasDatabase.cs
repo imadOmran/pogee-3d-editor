@@ -16,6 +16,8 @@ namespace EQEmu.RoamAreas
         public ZoneRoamAreasDatabase(string zone, MySqlConnection connection, QueryConfig config)
             : base(zone, config)
         {
+            _connection = connection;
+
             var sql = String.Format(SelectString, SelectArgValues);
             var results = Database.QueryHelper.RunQuery(_connection, sql);
 

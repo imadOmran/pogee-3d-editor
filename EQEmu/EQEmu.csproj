@@ -132,6 +132,8 @@
     <Compile Include="Loot\LootDrop.cs" />
     <Compile Include="Loot\LootTable.cs" />
     <Compile Include="Loot\LootTableAggregator.cs" />
+    <Compile Include="Loot\LootTableAggregatorDatabase.cs" />
+    <Compile Include="Loot\LootTableAggregatorLocal.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapStructs.cs" />
     <Compile Include="Path\Path.cs" />

@@ -793,7 +793,7 @@ VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15
     <select>
       <sql>
         <![CDATA[
-SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;        
+SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 50;        
         ]]>
       </sql>
       <param>FilterName</param>
@@ -801,6 +801,38 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 250;
       <store field="level" type="int">Level</store>
       <store field="id" type="int">Id</store>
       <store field="loottable_id" type="int">LootTableId</store>
+      <store field="hp" type="int">HealthPoints</store>
+      <store field="mana" type="int">Mana"</store>
+      <store field="gender" type="int">Gender</store>
+      <store field="lastname">LastName</store>
+      <store field="race" type="int">Race</store>
+      <store field="class" type="int">Class</store>
+      <store field="bodytype" type="int">BodyType</store>
+      <store field="mindmg" type="int">MinDamage</store>
+      <store field="maxdmg" type="int">MaxDamage</store>
+      <store field="size" type="int">Size</store>
+      <store field="runspeed" type="float">RunSpeed</store>
+      <store field="texture" type="int">Texture</store>
+      <store field="helmtexture" type="int">HelmTexture</store>
+      <store field="face" type="int">Face</store>
+      <store field="luclin_hairstyle" type="int">LuclinHairStyle</store>
+      <store field="luclin_haircolor" type="int">LuclinHairColor</store>
+      <store field="luclin_eyecolor" type="int">LuclinEyeColor</store>
+      <store field="luclin_eyecolor2" type="int">LuclinEyeColor2</store>
+      <store field="luclin_beard" type="int">LuclinBeard</store>
+      <store field="luclin_beardcolor" type="int">LuclinBeardColor</store>
+      <store field="findable" type="bool">Findable</store>
+      <store field="version" type="int">Version</store>
+      <store field="d_meele_texture1" type="int">DMeleeTexture1</store>
+      <store field="d_meele_texture2" type="int">DMeleeTexture2</store>
+      <store field="armortint_red" type="int">ArmorTintRed</store>
+      <store field="armortint_green" type="int">ArmorTintGreen</store>
+      <store field="armortint_blue" type="int">ArmorTintBlue</store>
+      <store field="drakkin_heritage" type="int">DrakkinHeritage</store>
+      <store field="drakkin_tattoo" type="int">DrakkinTattoo</store>
+      <store field="drakkin_details" type="int">DrakkinDetails</store>
+      <store field="npc_faction_id" type="int">FactionId</store>
+      <store field="npc_spells_id" type="int">SpellsId</store>     
     </select>
   </query>
 
@@ -829,7 +861,39 @@ AND spawn2.zone = '{0}' GROUP BY npc_types.id;
       <store field="name" type="string">Name</store>
       <store field="level" type="int">Level</store>
       <store field="id" type="int">Id</store>
-      <store field="loottable_id" type="int">LootTableId</store>
+      <store field="loottable_id" type="int">LootTableId</store>      
+      <store field="hp" type="int">HealthPoints</store>      
+      <store field="mana" type="int">Mana"</store>      
+      <store field="gender" type="int">Gender</store>      
+      <store field="lastname">LastName</store>      
+      <store field="race" type="int">Race</store>      
+      <store field="class" type="int">Class</store>      
+      <store field="bodytype" type="int">BodyType</store>      
+      <store field="mindmg" type="int">MinDamage</store>      
+      <store field="maxdmg" type="int">MaxDamage</store>      
+      <store field="size" type="int">Size</store>      
+      <store field="runspeed" type="float">RunSpeed</store>      
+      <store field="texture" type="int">Texture</store>      
+      <store field="helmtexture" type="int">HelmTexture</store>      
+      <store field="face" type="int">Face</store>      
+      <store field="luclin_hairstyle" type="int">LuclinHairStyle</store>      
+      <store field="luclin_haircolor" type="int">LuclinHairColor</store>      
+      <store field="luclin_eyecolor" type="int">LuclinEyeColor</store>      
+      <store field="luclin_eyecolor2" type="int">LuclinEyeColor2</store>      
+      <store field="luclin_beard" type="int">LuclinBeard</store>      
+      <store field="luclin_beardcolor" type="int">LuclinBeardColor</store>      
+      <store field="findable" type="int">Findable</store>      
+      <store field="version" type="int">Version</store>      
+      <store field="d_meele_texture1" type="int">DMeleeTexture1</store>      
+      <store field="d_meele_texture2" type="int">DMeleeTexture2</store>      
+      <store field="armortint_red" type="int">ArmorTintRed</store>      
+      <store field="armortint_green" type="int">ArmorTintGreen</store>      
+      <store field="armortint_blue" type="int">ArmorTintBlue</store>      
+      <store field="drakkin_heritage" type="int">DrakkinHeritage</store>      
+      <store field="drakkin_tattoo" type="int">DrakkinTattoo</store>      
+      <store field="drakkin_details" type="int">DrakkinDetails</store>      
+      <store field="npc_faction_id" type="int">FactionId</store>      
+      <store field="npc_spells_id" type="int">SpellsId</store>
     </select>
   </query-extension>
 

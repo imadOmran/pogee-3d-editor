@@ -25,9 +25,9 @@ namespace EQEmu.Spawns
             : base(config)
         {
             _connection = connection;
-            _allVersions = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetAllVersions");
-            _getMaxZoneId = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxZoneID");
-            _getMaxId = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetMaxID");
+            _allVersions = Queries.GetExtensionQuery("GetAllVersions");
+            _getMaxZoneId = Queries.GetExtensionQuery("GetMaxZoneID");
+            _getMaxId = Queries.GetExtensionQuery("GetMaxID");
         }
 
         public void Lookup(string zone, int version)

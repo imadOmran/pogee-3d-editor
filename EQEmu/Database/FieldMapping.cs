@@ -84,6 +84,11 @@ namespace EQEmu.Database
             get { return _extQueries; }
         }
 
+        public TypeQueriesExtension GetExtensionQuery(string name)
+        {
+            return _extQueries.FirstOrDefault(x => x.Name == name);
+        }
+
         private static string _XMLTagName = "query";
         private static string _XMLTagNameExt = "query-extension";
         private static string _XMLInsertTag = "insert";

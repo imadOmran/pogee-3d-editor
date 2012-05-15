@@ -23,6 +23,7 @@ namespace MapPlugin
             switch (e.PropertyName)
             {
                 case "Map":
+                    CloseCommand.RaiseCanExecuteChanged();                    
                     NotifyPropertyChanged("Triangles");
                     break;
                 default:
@@ -66,6 +67,17 @@ namespace MapPlugin
         {
             OpenFile();
             return;
+        }
+
+        public override bool CanExecuteCloseCommand(object arg)
+        {
+            if (MapService != null && MapService.Map != null) return true;
+            else return false;            
+        }
+
+        public override void ExecuteCloseCommand(object arg)
+        {
+            MapService.CloseMap();
         }
     }
 }

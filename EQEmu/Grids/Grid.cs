@@ -49,7 +49,8 @@ namespace EQEmu.Grids
         public Grid(QueryConfig config)
             : base(config)
         {
-            _queryByNpcName = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "QueryByNPCName");
+            _queryByNpcName = _queries.GetExtensionQuery("QueryByNPCName");
+            //_queryByNpcName = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "QueryByNPCName");
         }
 
         public void AddWaypoint()

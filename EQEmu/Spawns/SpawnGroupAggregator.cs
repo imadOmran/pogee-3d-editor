@@ -66,6 +66,7 @@ namespace EQEmu.Spawns
         }
 
         public abstract SpawnGroup CreateSpawnGroup();
+        public abstract IEnumerable<SpawnGroup> LookupByZone(string zone);
         
         protected virtual SpawnGroup Lookup(int id)
         {
@@ -226,7 +227,7 @@ namespace EQEmu.Spawns
                     }
                 }
             }
-            OnSpawnGroupDataLoaded(zone);
+            OnSpawnGroupDataLoaded(zone,spawngroups);
         }
         
         public override List<Database.IDatabaseObject> DirtyComponents
@@ -235,12 +236,12 @@ namespace EQEmu.Spawns
         }
 
         public event SpawnGroupDataLoadedHandler DataLoaded;
-        private void OnSpawnGroupDataLoaded(string zone)
+        private void OnSpawnGroupDataLoaded(string zone, IEnumerable<SpawnGroup> items)
         {
             var e = DataLoaded;
             if (e != null)
             {
-                e(this, new SpawnGroupDataLoadedEventArgs(zone));
+                e(this, new SpawnGroupDataLoadedEventArgs(zone,items));
             }
         }
     }
@@ -248,11 +249,13 @@ namespace EQEmu.Spawns
     public delegate void SpawnGroupDataLoadedHandler(object sender, SpawnGroupDataLoadedEventArgs e);
     public class SpawnGroupDataLoadedEventArgs : EventArgs
     {
-        public SpawnGroupDataLoadedEventArgs(string zonename)
+        public SpawnGroupDataLoadedEventArgs(string zonename,IEnumerable<SpawnGroup> items)
         {
             ZoneName = zonename;
+            ItemsLoaded = items;
         }
-        
+
+        public IEnumerable<SpawnGroup> ItemsLoaded { get; private set; }
         public string ZoneName { get; private set; }
     }   
 }

@@ -32,8 +32,8 @@ namespace EQEmu.Spawns
             npc.Face = data.Face;
             npc.Findable = data.Findable;
 
-            npc.DMeleeTexture1 = data.MeleeTexture1;
-            npc.DMeleeTexture2 = data.MeleeTexture2;
+            npc.DMeleeTexture1 = (int)data.MeleeTexture1;
+            npc.DMeleeTexture2 = (int)data.MeleeTexture2;
 
             npc.LuclinBeard = data.Beard;
             npc.LuclinBeardColor = data.BeardColor;
@@ -49,9 +49,9 @@ namespace EQEmu.Spawns
             npc.ArmorTintGreen = data.ArmorTintGreen;
             npc.ArmorTintRed = data.ArmorTintRed;
 
-            npc.DrakkinDetails = data.DrakkinDetails;
-            npc.DrakkinHeritage = data.DrakkinHeritage;
-            npc.DrakkinTattoo = data.DrakkinTattoo;
+            npc.DrakkinDetails = (int)data.DrakkinDetails;
+            npc.DrakkinHeritage = (int)data.DrakkinHeritage;
+            npc.DrakkinTattoo = (int)data.DrakkinTattoo;
         }
 
         public enum TypeBodyType
@@ -870,14 +870,14 @@ namespace EQEmu.Spawns
         private int _luclinEyeColor2;
         private int _luclinBeard;
         private int _luclinBeardColor;
-        private uint _dMeleeTexture1;
-        private uint _dMeleeTexture2;
+        private int _dMeleeTexture1;
+        private int _dMeleeTexture2;
         private int _armorTintRed;
         private int _armorTintGreen;
         private int _armorTintBlue;
-        private uint _drakkinHeritage;
-        private uint _drakkinTattoo;
-        private uint _drakkinDetails;
+        private int _drakkinHeritage;
+        private int _drakkinTattoo;
+        private int _drakkinDetails;
         private int _aggroRadius;
         private int _npcFactionId;
         private int _npcSpellsId;
@@ -1240,7 +1240,7 @@ namespace EQEmu.Spawns
             }
         }
 
-        public uint DMeleeTexture1
+        public int DMeleeTexture1
         {
             get { return _dMeleeTexture1; }
             set
@@ -1250,7 +1250,7 @@ namespace EQEmu.Spawns
             }
         }
 
-        public uint DMeleeTexture2
+        public int DMeleeTexture2
         {
             get { return _dMeleeTexture2; }
             set
@@ -1290,7 +1290,7 @@ namespace EQEmu.Spawns
             }
         }
 
-        public uint DrakkinHeritage
+        public int DrakkinHeritage
         {
             get { return _drakkinHeritage; }
             set
@@ -1300,7 +1300,7 @@ namespace EQEmu.Spawns
             }
         }
 
-        public uint DrakkinTattoo
+        public int DrakkinTattoo
         {
             get { return _drakkinTattoo; }
             set
@@ -1310,7 +1310,7 @@ namespace EQEmu.Spawns
             }
         }
 
-        public uint DrakkinDetails
+        public int DrakkinDetails
         {
             get { return _drakkinDetails; }
             set
