@@ -13,18 +13,22 @@ namespace EQEmu.Spawns
     public class SpawnGroupAggregatorDatabase : SpawnGroupAggregator
     {
         private readonly MySqlConnection _connection;
+        private readonly TypeQueriesExtension _getMaxId;
+        private readonly TypeQueriesExtension _getByZone;
 
         public SpawnGroupAggregatorDatabase(MySqlConnection connection,QueryConfig config)
             : base(config)
         {
             _connection = connection;
+            _getMaxId = Queries.GetExtensionQuery("GetMaxID");
+            _getByZone = Queries.GetExtensionQuery("GetByZone");
         }
 
         public override SpawnGroup CreateSpawnGroup()
         {
             SpawnGroup sg = null;
 
-            var qconf = Queries.ExtensionQueries.FirstOrDefault(x => { return x.Name == "GetMaxID"; });
+            var qconf = _getMaxId;
             var results = Database.QueryHelper.RunQuery(_connection, qconf.SelectQuery);
 
             sg = new SpawnGroupDatabase(_connection, _queryConfig);
@@ -75,11 +79,11 @@ namespace EQEmu.Spawns
             return sg;
         }
 
-        public IEnumerable<SpawnGroup> LookupByZone(string zone)
+        public override IEnumerable<SpawnGroup> LookupByZone(string zone)
         {
             ClearCache();
 
-            var query = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetByZone");
+            var query = _getByZone;
             if (query != null)
             {
                 string sql = String.Format(query.SelectQuery, new string[] { zone });

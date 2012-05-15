@@ -9,6 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="File">
         <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenCommand}" />
+        <m:RibbonButton Label="Close" Command="{Binding CloseCommand}" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Properties">
         <TextBlock Text="{Binding Triangles,StringFormat=Triangles {0}}" />        

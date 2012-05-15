@@ -4,146 +4,206 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="418" Width="729" HorizontalAlignment="Left" Background="#FFCECECE">
+             d:DesignHeight="750" HorizontalAlignment="Left" Background="#FFCECECE">
+    <UserControl.Resources>
+        <Style x:Key="groupBoxStyle" TargetType="GroupBox">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1.5" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <DockPanel>
-            <Grid DockPanel.Dock="Right" Width="257" Margin="15,15,15,15" Background="White">         
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Load" Click="Button_Click_3" />
-                        <Button Content="Save" Click="Button_Click_4" />
-                        <Button Content="Clear Cache" x:Name="ClearNpcCacheButton" Click="ClearNpcCacheButton_Click" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label>NPC Name</Label>
-                        <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="150" Height="26" />
-                        <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
-                    </StackPanel>                    
-                </StackPanel>
-                <DataGrid Margin="0,50,0,0" Name="NPCsDataGrid" ItemsSource="{Binding Path=NPCFilter}" />
+        <DockPanel Margin="0,0,-52,0">
+            <Grid DockPanel.Dock="Right" Width="300" Margin="15,15,15,15" Background="White">
+                <TabControl Margin="0,0,37,0">
+                    <TabItem Header="Search NPCs">
+                        <GroupBox Header="Results" Style="{StaticResource groupBoxStyle}">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label>NPC Name</Label>
+                                        <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="122" Height="26" />
+                                        <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
+
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <DataGrid Name="NPCsDataGrid" ItemsSource="{Binding Path=NPCFilter}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </TabItem>
+                    <TabItem Header="File">
+                        <StackPanel>
+                            <GroupBox Header="NPC XML Data" Style="{StaticResource groupBoxStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Load" Click="Button_Click_3" />
+                                    <Button Content="Save" Click="Button_Click_4" />
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Cache">
+                        <StackPanel>
+                            <GroupBox Header="NPC Cache" Style="{StaticResource groupBoxStyle}">
+                                <Button Content="Clear Cache" x:Name="ClearNpcCacheButton" Click="ClearNpcCacheButton_Click" />
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
             </Grid>
             <Grid>
                 <DockPanel>
-                    <Grid DockPanel.Dock="Top" Margin="15,15,15,15" Background="White">    
+                    <Grid DockPanel.Dock="Top" Margin="15,15,15,15" Background="White">
                         <TabControl>
                             <TabItem Header="Edit">
                                 <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />                                        
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label>By Zone:</Label>
-                                        <TextBox Text="{Binding ZoneFilter}" Width="124" />
-                                    </StackPanel>
+                                    <GroupBox Header="Search" Style="{StaticResource groupBoxStyle}">
+                                        <StackPanel Margin="5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label>By Zone:</Label>
+                                                <TextBox Text="{Binding ZoneFilter}" Width="125" />
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label VerticalAlignment="Center">Search ID</Label>
+                                                <TextBox Text="{Binding FilterID}" VerticalAlignment="Center" Width="121" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
 
                                     <StackPanel Orientation="Horizontal">
-                                        <Label VerticalAlignment="Center">Search ID</Label>
-                                        <TextBox Text="{Binding FilterID}" VerticalAlignment="Center" Width="117" />
-                                        <StackPanel Margin="15,0,0,0">
-                                            <Button FontFamily="Marlett" FontSize="12" Content="5" Command="{Binding NextIdCommand}" />
-                                            <Button FontFamily="Marlett" FontSize="12" Content="6" Command="{Binding PreviousIdCommand}" />
-                                        </StackPanel>
+                                        <Button Margin="5,5,5,5" Content="Create Spawn Group" HorizontalAlignment="Left" Command="{Binding CreateNewCommand}" />
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label>Spawn Group ID</Label>
-                                        <TextBlock Text="{Binding Path=SelectedSpawnGroup.Id}" Width="117" VerticalAlignment="Center" />
-                                        <Button Content="Delete" Command="{Binding RemoveSpawnGroupCommand}" />
-                                    </StackPanel>
-                                    <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                                        <Label>Name</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.Name}" Width="148" />
-                                        <Label>Spawn Limit</Label>
-                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.SpawnLimit}" Width="50" />
-                                    </StackPanel>
-                                    <GroupBox Header="Roam Box">
+
+                                    <GroupBox Header="Selection" Style="{StaticResource groupBoxStyle}">
                                         <StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Grid.Column="0">
+                                                    <Label VerticalAlignment="Center">ID</Label>
+                                                    <TextBlock Background="White" Text="{Binding Path=SelectedSpawnGroup.Id}" Width="117" VerticalAlignment="Center" />
+                                                    <StackPanel Margin="15,0,0,0">
+                                                        <Button FontFamily="Marlett" FontSize="12" Content="5" Command="{Binding NextIdCommand}" />
+                                                        <Button FontFamily="Marlett" FontSize="12" Content="6" Command="{Binding PreviousIdCommand}" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <Button Grid.Column="1" ToolTip="Delete this spawngroup" Command="{Binding RemoveSpawnGroupCommand}" HorizontalAlignment="Right" Width="32" Height="32">
+                                                    <Image Source="Images/delete.png" />
+                                                </Button>
+                                            </Grid>
+
+
+
                                             <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                                                <Label>Distance</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDistance}" Width="82" />
-                                                <Label>Delay</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDelay}" Width="57" />
+                                                <Label>Name</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.Name}" Width="148" />
+                                                <Label>Spawn Limit</Label>
+                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.SpawnLimit}" Width="50" />
                                             </StackPanel>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label>Min X</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingX}" Width="61" />
-                                                <Label>Max X</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingX}" Width="61" />
-                                                <Label>Min Y</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingY}" Width="61" />
-                                                <Label>Max Y</Label>
-                                                <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingY}" Width="61" />
-                                            </StackPanel>
+                                            <GroupBox Header="Roam Box" Margin="2" Style="{StaticResource groupBoxStyle}">
+                                                <StackPanel>
+                                                    <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
+                                                        <Label>Distance</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDistance}" Width="82" />
+                                                        <Label>Delay</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.RoamingDelay}" Width="57" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Label>Min X</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingX}" Width="61" />
+                                                        <Label>Max X</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingX}" Width="61" />
+                                                    </StackPanel>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Label>Min Y</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MinRoamingY}" Width="61" />
+                                                        <Label>Max Y</Label>
+                                                        <TextBox Text="{Binding Path=SelectedSpawnGroup.MaxRoamingY}" Width="61" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </GroupBox>
                                         </StackPanel>
+                                    </GroupBox>
+
+                                    <GroupBox Header="Entries" Style="{StaticResource groupBoxStyle}">
+                                        <DockPanel>
+                                            <Grid DockPanel.Dock="Top">
+                                                <Button HorizontalAlignment="Right" ToolTip="Remove Selection" Command="{Binding RemoveSelectedEntryCommand}" CommandParameter="{Binding SelectedEntry}">
+                                                    <Image Source="Images/delete.png" Width="16" Height="16" />
+                                                </Button>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label>Chance Total</Label>
+                                                    <TextBlock Text="{Binding ChanceTotal}" VerticalAlignment="Center" Width="56" />
+                                                    <Button Content="Adjust Totals" Margin="10,0,0,0" Click="Button_Click" />
+                                                </StackPanel>
+                                            </Grid>
+                                            <DataGrid Name="EntriesDataGrid" Margin="10,10,10,10"  ItemsSource="{Binding SpawnEntries}" SelectedItem="{Binding SelectedEntry}" Height="225" />
+                                        </DockPanel>
                                     </GroupBox>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="Utility">
                                 <StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="56" />
-                                            <ColumnDefinition Width="367" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.ColumnSpan="2" >Pack Cached SpawngroupIDs</Label>
+                                    <GroupBox Header="Pack ID" Style="{StaticResource groupBoxStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="56" />
+                                                <ColumnDefinition Width="367" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
 
-                                        <Label Grid.Row="1" Grid.Column="0">Start ID</Label>
-                                        <TextBox Text="{Binding PackStart}" Grid.Row="1" Grid.Column="1" />
+                                            <Label Grid.Row="1" Grid.Column="0">Start ID</Label>
+                                            <TextBox Text="{Binding PackStart}" Grid.Row="1" Grid.Column="1" />
 
-                                        <Label Grid.Row="2" Grid.Column="0">End ID</Label>
-                                        <TextBox Text="{Binding PackEnd}" Grid.Row="2" Grid.Column="1" />
+                                            <Label Grid.Row="2" Grid.Column="0">End ID</Label>
+                                            <TextBox Text="{Binding PackEnd}" Grid.Row="2" Grid.Column="1" />
 
-                                        <Button Grid.Row="3" Content="Pack" Command="{Binding PackCommand}" />
-                                        <ProgressBar Value="{Binding PackProgress}" Grid.Row="3" Grid.Column="1" />
+                                            <Button Grid.Row="3" Content="Pack" Command="{Binding PackCommand}" />
+                                            <ProgressBar Value="{Binding PackProgress}" Grid.Row="3" Grid.Column="1" />
 
-                                    </Grid>
-                                </StackPanel>                                
+                                        </Grid>
+                                    </GroupBox>
+                                </StackPanel>
                             </TabItem>
                             <TabItem Name="CacheTab" Header="Cache">
                                 <StackPanel>
-                                    <Button HorizontalAlignment="Left" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" Width="77" />                                                                
-                                    <ListView ItemsSource="{Binding SpawnGroups}" SelectedItem="{Binding SelectedSpawnGroup}" Height="114" />
+                                    <GroupBox Header="Loaded Spawngroups" Style="{StaticResource groupBoxStyle}">
+                                        <StackPanel>
+                                            <Button HorizontalAlignment="Left" Content="Clear Cache" ToolTip="Clears cache - subsequent searchs will fetch from the database" Command="{Binding ClearCacheCommand}" Width="77" />
+                                        </StackPanel>
+                                    </GroupBox>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Name="FileTab" Header="File">
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Width="50" Content="Load" Click="Button_Click_2" />
-                                    <Button Width="50" Content="Save" Click="Button_Click_1" />
+                                <StackPanel>
+                                    <GroupBox Header="XML Data" Style="{StaticResource groupBoxStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Width="50" Content="Load" Click="Button_Click_2" />
+                                            <Button Width="50" Content="Save" Click="Button_Click_1" />
+                                        </StackPanel>
+                                    </GroupBox>
                                 </StackPanel>
                             </TabItem>
-                        </TabControl>                        
-                    </Grid>
-                    <Grid>
-                        <DockPanel>
-                            <StackPanel DockPanel.Dock="Top">
-                                <Button Margin="10,0,0,0" HorizontalAlignment="Left"  Content="Remove Selection" Command="{Binding RemoveSelectedEntryCommand}" CommandParameter="{Binding SelectedEntry}"  />
-                                <StackPanel Orientation="Horizontal">
-                                    <Label>Chance Total</Label>
-                                    <TextBlock Text="{Binding ChanceTotal}" VerticalAlignment="Center" Width="56" />
-                                    <Button Content="Adjust Totals" Margin="10,0,0,0" Click="Button_Click" />
+                            <TabItem Name="DatabaseTab" Header="Database">
+                                <StackPanel>
+                                    <GroupBox Header="Update Query" Style="{StaticResource groupBoxStyle}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button HorizontalAlignment="Left" Content="View Query" Command="{Binding ViewQueryCommand}" />
+                                            <Button HorizontalAlignment="Left" Content="Save Query" />
+                                        </StackPanel>
+                                    </GroupBox>
                                 </StackPanel>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                            <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="View Query" Command="{Binding ViewQueryCommand}" />
-                                <Button Margin="10,0,0,10" HorizontalAlignment="Left" Content="Save Query" />
-                            </StackPanel>
-                            <DataGrid Name="EntriesDataGrid" Margin="10,10,10,10"  ItemsSource="{Binding SpawnEntries}" SelectedItem="{Binding SelectedEntry}" />
-                        <!--<ListView Margin="10,10,10,10" ItemsSource="{Binding Path=SelectedSpawnGroup.Entries}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="NPC ID" Width="50" DisplayMemberBinding="{Binding NpcID}" />
-                                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding NpcName}" />
-                                    <GridViewColumn Header="Level" Width="40" DisplayMemberBinding="{Binding NpcLevel}" />
-                                    <GridViewColumn Header="Chance" Width="100" DisplayMemberBinding="{Binding Chance}" />
-                                </GridView>
-                            </ListView.View>
-                        </ListView>-->
-                        </DockPanel>
+                            </TabItem>
+                        </TabControl>
                     </Grid>
                 </DockPanel>
             </Grid>

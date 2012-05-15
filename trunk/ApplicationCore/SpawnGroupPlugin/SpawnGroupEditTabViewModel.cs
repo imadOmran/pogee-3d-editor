@@ -356,14 +356,10 @@ namespace SpawnGroupPlugin
 
                 var sggr = _manager as SpawnGroupAggregatorDatabase;
                 _npcFinder.LookupByZone(value);
-                if (sggr == null) return;
-                else
-                {
-                    sggr.LookupByZone(value);                    
-                    SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
-                    NotifyPropertyChanged("ZoneFilter");
-                    NotifyPropertyChanged("SpawnGroups");
-                }                
+                _manager.LookupByZone(value);
+                SelectedSpawnGroup = _manager.SpawnGroups.FirstOrDefault();
+                NotifyPropertyChanged("ZoneFilter");
+                NotifyPropertyChanged("SpawnGroups");
             }
         }
                 

@@ -24,7 +24,7 @@ namespace EQEmu.Spawns
             : base(config)
         {
             _connection = connection;
-            _getSpawn2 = Queries.ExtensionQueries.FirstOrDefault(x => x.Name == "GetSpawn2");
+            _getSpawn2 = Queries.GetExtensionQuery("GetSpawn2");
         }
 
         public override IEnumerable<Spawn2> GetLinkedSpawn2()

@@ -38,7 +38,8 @@ namespace EQEmu.Loot
         public LootDrop(MySqlConnection connection, QueryConfig config)
             : base(config)
         {
-            _newQuery = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "NewInsert");
+            _newQuery = _queries.GetExtensionQuery("NewInsert");
+            //_newQuery = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "NewInsert");
             _connection = connection;
         }
 

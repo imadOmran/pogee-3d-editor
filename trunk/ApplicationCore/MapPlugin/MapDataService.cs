@@ -36,20 +36,29 @@ namespace MapPlugin
                 if (_map3d != null)
                 {
                     _map3d.Dispose();
+                    _map3d = null;
                 }
 
-                _map3d = new EQEmuDisplay3D.MapDisplay3D(_map);
-
-                if(_viewClipping != null)
+                if (value != null)
                 {
-                    _map3d.Clipping = _viewClipping;
+                    _map3d = new EQEmuDisplay3D.MapDisplay3D(_map);
+
+                    if (_viewClipping != null)
+                    {
+                        _map3d.Clipping = _viewClipping;
+                    }
+                    Model3D = new ModelVisual3D()
+                    {
+                        Content = _map3d.Model,
+                        Transform = Transform3D
+                    };
+                }
+                else
+                {
+                    Model3D = new ModelVisual3D();
                 }
 
-                Model3D = new ModelVisual3D()
-                {
-                    Content = _map3d.Model,          
-                    Transform = Transform3D                   
-                };
+
 
                 NotifyPropertyChanged("Map");
             }
@@ -67,27 +76,13 @@ namespace MapPlugin
                                 Map = map;
                             }));
                     });
-
-                ////delegate defining work to be done
-                //Func<EQEmu.Map.Map> work = (Func<EQEmu.Map.Map>)( () =>
-                //    {
-                //        return EQEmu.Map.Map.LoadFile(file);
-                //    });
-
-                ////asynchronously invoke delegate on thread pool
-                ////1st parameter is the EndInvoke callback
-                //work.BeginInvoke((res) =>
-                //{
-                //    //get the return value from the delegate
-                //    var value = work.EndInvoke(res);                    
-                //    //marshal property notification onto the correct thread
-                //    _dispatcher.Invoke((Action)(() =>
-                //        {
-                //            Map = value;
-                //        }));
-                //}, null);
-
             }
+        }
+
+        public void CloseMap()
+        {
+            _map3d.Dispose();
+            Map = null;
         }
 
         private ModelVisual3D _modelVisual = null;

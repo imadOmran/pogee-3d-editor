@@ -19,8 +19,10 @@ namespace EQEmu.Spawns
             : base(config)
         {
             _connection = connection;
-            _lookupByZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "LookupByZone");
-            _maxIdForZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "MaxIdForZone");
+            _lookupByZone = _queries.GetExtensionQuery("LookupByZone");
+            _maxIdForZone = _queries.GetExtensionQuery("MaxIdForZone");
+            //_lookupByZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "LookupByZone");
+            //_maxIdForZone = _queries.ExtensionQueries.FirstOrDefault(x => x.Name == "MaxIdForZone");
         }
 
         public override void Lookup(string name)
@@ -28,12 +30,13 @@ namespace EQEmu.Spawns
             FilterName = name;
             var sql = String.Format(Queries.SelectQuery, ResolveArgs(Queries.SelectArgs));
             var results = Database.QueryHelper.RunQuery(_connection, sql);
-
+            
             NPCs.Clear();
             foreach (var dictionary in results)
             {
                 var npc = new Npc(_queryConfig);
-                npc.SetProperties(Queries, dictionary);
+                //npc.SetProperties(Queries, dictionary);
+                npc.SetPropertiesFaster(Queries, dictionary);
                 AddNPC(npc);
                 npc.Created();
             }
