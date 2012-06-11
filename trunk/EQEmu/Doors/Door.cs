@@ -71,6 +71,8 @@ namespace EQEmu.Doors
 
                 ClickablePortal = 58,
 
+                Unknown59 = 59,
+
                 VerticalLiftLow_0 = 60,
                 VerticalLiftLow_1 = 61,
                 VerticalLiftLow_2 = 62,
