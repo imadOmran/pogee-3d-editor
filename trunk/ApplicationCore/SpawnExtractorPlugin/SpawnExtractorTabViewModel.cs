@@ -239,6 +239,7 @@ namespace SpawnExtractorPlugin
                         sg.AddEntry(name).NPC = name;
                     }
                     sg.Created();
+                    _spawngroups.AddSpawnGroup(sg);
                     sg.BalanceChance();
                     sg.Name = String.Format("{0}_{1}_v{2}", Zone, npc.ElementAt(0).Name, ZoneVersion);
                     spawngroupMap[npc.ElementAt(0).Name] = sg;
