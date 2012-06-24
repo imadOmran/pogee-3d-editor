@@ -17,10 +17,12 @@ namespace EQEmu.Spawns
 
         public override void Lookup(string name)
         {
+            var lname = name.ToLower();
+
             NPCs.Clear();
             foreach (var npc in CachedNpcs)
-            {
-                if (npc.Name.Contains(name))
+            {                
+                if (npc.Name.ToLower().Contains(lname))
                 {
                     AddNPC(npc);
                 }

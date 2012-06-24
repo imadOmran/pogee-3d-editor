@@ -169,6 +169,7 @@
       <DependentUpon>PropertyEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertyEditorWindowViewModel.cs" />
+    <Compile Include="Setup\IAppSetup.cs" />
     <Compile Include="TextWindow.xaml.cs">
       <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>

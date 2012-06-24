@@ -1,0 +1,32 @@
+﻿<m:RibbonTab x:Class="SpawnExtractorPlugin.SpawnExtractorRibbonTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             mc:Ignorable="d" 
+             Header="Spawn Extractor"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <m:RibbonGroup Header="File">
+        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenFileCommand}" />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Database">
+        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Info">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Zone:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding Zone}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label>Version:</Label>
+                <TextBlock VerticalAlignment="Center" Text="{Binding ZoneVersion}" />
+            </StackPanel>
+        </StackPanel>
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <m:RibbonButton Label="Delete" SmallImageSource="Images/delete.png" Command="{Binding RemoveCommand}" />        
+    </m:RibbonGroup>
+</m:RibbonTab>

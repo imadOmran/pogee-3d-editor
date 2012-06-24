@@ -8,6 +8,7 @@ using System.IO;
 using MySql.Data.MySqlClient;
 
 using Microsoft.Practices.Unity;
+using Microsoft.Win32;
 
 using ApplicationCore;
 
@@ -16,6 +17,42 @@ using SpawnsPlugin;
 
 namespace SpawnExtractorPlugin
 {
+    public delegate void FileLoadingHandler(object sender, FileLoadingEventArgs e);
+
+    public class FileLoadingEventArgs
+    {
+        public enum LoadingState
+        {
+            PreLoad,
+            Loaded,
+            Error
+        }
+
+        public FileLoadingEventArgs(string file, LoadingState state)
+        {
+            FileName = file;
+            State = state;
+        }
+
+        public string FileName
+        {
+            get;
+            private set;
+        }
+
+        public LoadingState State
+        {
+            get;
+            private set;
+        }
+
+        public string Error
+        {
+            get;
+            set;
+        }            
+    }
+
     public class SpawnExtractorTabViewModel : ApplicationCore.ViewModels.ViewModelBase, ApplicationCore.ViewModels.Editors.IEditorViewModel
     {
         private readonly MySql.Data.MySqlClient.MySqlConnection _connection;
@@ -24,16 +61,25 @@ namespace SpawnExtractorPlugin
 
         private DelegateCommand _removeCommand;
         private DelegateCommand _applyTemplateCommand;
+        private DelegateCommand _openFileCommand;
+        private DelegateCommand _loadFileCommand;
 
         private NpcAggregator _npcs;
         private SpawnGroupAggregator _spawngroups;
         private ZoneSpawns _spawns;
+
+        private string _fileSelected;
+
+        public event FileLoadingHandler FileSelectionChanged;
 
         public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config,NpcPropertyTemplateManager templates)
         {
             _connection = connection;
             _config = config;
             _templates = templates;
+            _startId = 0;
+            Zone = "";
+            ZoneVersion = 0;            
 
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
             {
@@ -42,8 +88,7 @@ namespace SpawnExtractorPlugin
             else
             {
                 _npcs = new NpcAggregatorLocal(config);
-            }
-            
+            }            
             _npcs.Created();
 
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
@@ -54,57 +99,7 @@ namespace SpawnExtractorPlugin
             {
                 _spawngroups = new SpawnGroupAggregatorLocal(config);
             }
-
             _spawngroups.Created();
-            Zone = "";
-            ZoneVersion = 0;
-            _startId = 0;
-
-            RemoveCommand = new DelegateCommand(
-                x =>
-                {
-                    //remove all entries where this npc exists
-                    foreach(var sg in _spawngroups.SpawnGroups.ToArray())
-                    {
-                        var entries = sg.Entries.Where(y => y.NpcID == SelectedNPC.Id).ToArray();
-                        foreach (var entry in entries)
-                        {
-                            sg.RemoveEntry(entry);
-                        }
-
-                        //if no more entries remove the spawn2 that contains this spawngroup
-                        if (sg.Entries.Count == 0)
-                        {
-                            _spawngroups.RemoveSpawnGroup(sg);
-
-                            var spawns = _spawns.Spawns.Where(y => y.SpawnGroupId == sg.Id).ToArray();
-                            foreach (var sp in spawns)
-                            {
-                                _spawns.RemoveSpawn(sp);
-                            }
-
-                        }
-                    }
-                    _npcs.RemoveNPC(SelectedNPC);
-                },
-                x =>
-                {
-                    return SelectedNPC != null;
-                });
-
-            ApplyTemplateCommand = new DelegateCommand(
-                x =>
-                {
-                    var npcs = x as IEnumerable<Npc>;
-                    if (npcs == null) return;
-
-                    SelectedTemplate.SetProperties(npcs);
-                },
-                x =>
-                {
-                    return SelectedTemplate != null;
-                });
-
         }
         
         public IEnumerable<INpcPropertyTemplate> Templates
@@ -170,9 +165,12 @@ namespace SpawnExtractorPlugin
         {
         }
 
-        public void OpenXML(string file)
+        public void OpenXML(string file,string zone,int version)
         {            
             XmlSerializer serializer = new XmlSerializer(typeof(List<ZoneEntryStruct>));
+
+            Zone = zone;
+            ZoneVersion = version;
 
             List<ZoneEntryStruct> spawns;
 
@@ -275,11 +273,50 @@ namespace SpawnExtractorPlugin
             {
                 serv.ZoneSpawns = _spawns;
             }
+
+            OnFileLoaded(FileSelected, FileLoadingEventArgs.LoadingState.Loaded);
         }
 
         public DelegateCommand RemoveCommand
         {
-            get { return _removeCommand; }
+            get 
+            {
+                if (_removeCommand == null)
+                {
+                    _removeCommand = new DelegateCommand(
+                        x =>
+                        {
+                            //remove all entries where this npc exists
+                            foreach (var sg in _spawngroups.SpawnGroups.ToArray())
+                            {
+                                var entries = sg.Entries.Where(y => y.NpcID == SelectedNPC.Id).ToArray();
+                                foreach (var entry in entries)
+                                {
+                                    sg.RemoveEntry(entry);
+                                }
+
+                                //if no more entries remove the spawn2 that contains this spawngroup
+                                if (sg.Entries.Count == 0)
+                                {
+                                    _spawngroups.RemoveSpawnGroup(sg);
+
+                                    var spawns = _spawns.Spawns.Where(y => y.SpawnGroupId == sg.Id).ToArray();
+                                    foreach (var sp in spawns)
+                                    {
+                                        _spawns.RemoveSpawn(sp);
+                                    }
+
+                                }
+                            }
+                            _npcs.RemoveNPC(SelectedNPC);
+                        },
+                        x =>
+                        {
+                            return SelectedNPC != null;
+                        });
+                }
+                return _removeCommand; 
+            }
             set
             {
                 _removeCommand = value;
@@ -289,11 +326,90 @@ namespace SpawnExtractorPlugin
 
         public DelegateCommand ApplyTemplateCommand
         {
-            get { return _applyTemplateCommand; }
+            get 
+            {
+                if (_applyTemplateCommand == null)
+                {
+                    _applyTemplateCommand = new DelegateCommand(
+                    x =>
+                    {
+                        var npcs = x as IEnumerable<Npc>;
+                        if (npcs == null) return;
+
+                        SelectedTemplate.SetProperties(npcs);
+                    },
+                    x =>
+                    {
+                        return SelectedTemplate != null;
+                    });
+                }
+                return _applyTemplateCommand; 
+            }
+        }
+
+        public DelegateCommand OpenFileCommand
+        {
+            get
+            {
+                if (_openFileCommand == null)
+                {
+                    _openFileCommand = new DelegateCommand(
+                        x =>
+                        {
+                            OpenFileDialog fd = new OpenFileDialog();
+                            if (fd.ShowDialog() == true)
+                            {
+                                FileSelected = fd.FileName;                                
+                            }
+                        },
+                        y =>
+                        {
+                            return true;
+                        });
+                }
+                return _openFileCommand;
+            }
+        }
+
+        public DelegateCommand LoadFileCommand
+        {
+            get
+            {
+                if (_loadFileCommand == null)
+                {
+                    _loadFileCommand = new DelegateCommand(
+                        x =>
+                        {
+                            try
+                            {
+                                OpenXML(FileSelected, Zone, ZoneVersion);
+                            }
+                            catch (System.IO.FileFormatException ex)
+                            {
+                                OnFileLoaded(FileSelected, FileLoadingEventArgs.LoadingState.Error, "Data format:" + ex.Message);
+                            }
+                            catch (Exception ex)
+                            {
+                                OnFileLoaded(FileSelected, FileLoadingEventArgs.LoadingState.Error, ex.Message);
+                            }
+                        },
+                        y =>
+                        {
+                            return _fileSelected != null;
+                        });
+                }
+                return _loadFileCommand;
+            }
+        }
+
+        public string FileSelected
+        {
+            get { return _fileSelected; }
             set
             {
-                _applyTemplateCommand = value;
-                NotifyPropertyChanged("ApplyTemplateCommand");
+                _fileSelected = value;
+                NotifyPropertyChanged("FileSelected");
+                OnFileLoaded(value, FileLoadingEventArgs.LoadingState.PreLoad);
             }
         }
 
@@ -353,6 +469,16 @@ namespace SpawnExtractorPlugin
             {
                 _service = value;
                 NotifyPropertyChanged("Service");
+            }
+        }
+
+        private void OnFileLoaded(string file, FileLoadingEventArgs.LoadingState state,string message=null)
+        {
+            var e = FileSelectionChanged;
+            if (e != null)
+            {
+                e(this, new FileLoadingEventArgs(file, state) { Error = message });
+                LoadFileCommand.RaiseCanExecuteChanged();
             }
         }
     }
