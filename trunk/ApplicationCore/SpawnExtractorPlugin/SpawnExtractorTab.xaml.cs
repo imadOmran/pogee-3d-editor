@@ -30,8 +30,29 @@ namespace SpawnExtractorPlugin
         public SpawnExtractorTab(SpawnExtractorTabViewModel viewmodel)
         {
             InitializeComponent();
+
             ViewModel = viewmodel;
+            viewmodel.FileSelectionChanged += new FileLoadingHandler(viewmodel_FileSelectionChanged);
+
+
             NPCDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCDataGrid_AutoGeneratingColumn);            
+        }
+
+        void viewmodel_FileSelectionChanged(object sender, FileLoadingEventArgs e)
+        {
+            switch (e.State)
+            {
+                case FileLoadingEventArgs.LoadingState.PreLoad:
+                    InputBox.Visibility = System.Windows.Visibility.Visible;
+                    break;
+                case FileLoadingEventArgs.LoadingState.Loaded:
+                    InputBox.Visibility = System.Windows.Visibility.Collapsed;
+                    NPCDataGrid.Items.Refresh();
+                    break;
+                case FileLoadingEventArgs.LoadingState.Error:
+                    MessageBox.Show("Could not load file " + e.FileName + ":" + e.Error);
+                    break;
+            }            
         }
 
         void NPCDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -70,41 +91,10 @@ namespace SpawnExtractorPlugin
 
         public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
 
-        private void LoadButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog fd = new OpenFileDialog();
-            if (fd.ShowDialog() == true)
-            {
-                InputBox.Visibility = System.Windows.Visibility.Visible;
-                _fileSelected = fd.FileName;
-            }
-        }
-
         private void NPCQueryButton_Click(object sender, RoutedEventArgs e)
         {
             var window = new TextWindow(EditorViewModel.NPCQuery());
             window.ShowDialog();
-        }
-
-        private string _fileSelected;
-
-        private void FinishButton_Click(object sender, RoutedEventArgs e)
-        {
-            InputBox.Visibility = System.Windows.Visibility.Collapsed;
-            try
-            {
-                EditorViewModel.OpenXML(_fileSelected);
-            }
-            catch (System.IO.FileFormatException ex)
-            {
-                MessageBox.Show("Incorrect data format:" + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not open file:" + ex.Message);
-            }
-
-            NPCDataGrid.Items.Refresh();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

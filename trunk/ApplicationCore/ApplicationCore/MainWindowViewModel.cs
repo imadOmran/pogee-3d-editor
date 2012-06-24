@@ -78,7 +78,15 @@ namespace ApplicationCore
         public MySqlConnection DBConnection
         {
             get { return _container.Resolve<MySqlConnection>(); }
-        } 
+        }
+
+        private void ModuleConfiguration()
+        {
+            foreach (var setup in _container.ResolveAll<Setup.IAppSetup>())
+            {
+                setup.ConfigureContainer(_container);
+            }
+        }
 
         private void Registration()
         {
@@ -153,6 +161,12 @@ namespace ApplicationCore
             _container.ConfigureAutoRegistration()
                 .ExcludeSystemAssemblies()
 
+                //used to allow modules to configure the container
+                .Include(
+                    x => x.Implements<Setup.IAppSetup>(),
+                    Then.Register().WithTypeName().UsingSingletonMode()
+                    )
+
                 .Include(
                     x => x.DecoratedWith<AutoRegisterAttribute>() && x.Implements<UserControls.Ribbon.Tabs.IRibbonTab>(),
                     Then.Register().WithTypeName().UsingSingletonMode()
@@ -177,9 +191,12 @@ namespace ApplicationCore
 
                 .ApplyAutoRegistration();
 
+            //assemblies are loaded... allow them to do configuration
+            ModuleConfiguration();
+
             //we need to eventually make this more generic so we don't end up with a ton of these
             var npcmanager = new EQEmu.Spawns.NpcPropertyTemplateManager();
-            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INpcPropertyTemplate>();
+            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INpcPropertyTemplate>();            
             _container.RegisterInstance(npcmanager);
         }
 
