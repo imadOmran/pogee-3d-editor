@@ -266,12 +266,12 @@ namespace SpawnExtractorPlugin
                     spawn.Heading = npc.Heading;
                     _spawns.AddSpawn(spawn);
                 }
-            }
 
-            var serv = _service as SpawnsPlugin.SpawnDataService;
-            if(serv != null)
-            {
-                serv.ZoneSpawns = _spawns;
+                var serv = _service as SpawnsPlugin.SpawnDataService;
+                if (serv != null)
+                {
+                    serv.ZoneSpawns = _spawns;
+                }
             }
 
             OnFileLoaded(FileSelected, FileLoadingEventArgs.LoadingState.Loaded);

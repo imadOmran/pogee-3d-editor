@@ -32,6 +32,7 @@ namespace EQEmu.Spawns
             var results = Database.QueryHelper.RunQuery(_connection, sql);
             
             NPCs.Clear();
+            UnlockObject();
             foreach (var dictionary in results)
             {
                 var npc = new Npc(_queryConfig);
@@ -40,6 +41,7 @@ namespace EQEmu.Spawns
                 AddNPC(npc);
                 npc.Created();
             }
+            Created();
         }
 
         public override int GetNextIdForZone(string zone)
