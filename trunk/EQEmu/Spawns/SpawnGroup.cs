@@ -340,7 +340,7 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return Name;
+            return Id.ToString() + ":" + Name;
         }
     }
 
