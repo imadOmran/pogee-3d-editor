@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using System.Collections.ObjectModel;
 
 using MySql.Data.MySqlClient;
 
@@ -13,7 +14,7 @@ namespace EQEmu.Spawns
     public abstract class SpawnGroupAggregator : Database.ManageDatabase
     {        
         private IEnumerable<Spawn2> _updateSpawn2 = null;
-        protected List<SpawnGroup> _spawnGroups = new List<SpawnGroup>();
+        protected ObservableCollection<SpawnGroup> _spawnGroups = new ObservableCollection<SpawnGroup>();
         private int _filterById;
         private static string _defaultFilePrefix = "global";
 

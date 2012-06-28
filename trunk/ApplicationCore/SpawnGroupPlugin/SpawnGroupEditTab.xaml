@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="750" HorizontalAlignment="Left" Background="#FFCECECE">
+             d:DesignHeight="750" d:DesignWidth="1024" HorizontalAlignment="Left" Background="#FFCECECE">
     <UserControl.Resources>
         <Style x:Key="groupBoxStyle" TargetType="GroupBox">
             <Setter Property="Background" Value="#FFE8E8E8" />
@@ -13,46 +13,23 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <DockPanel Margin="0,0,0,0" Width="800">
-            <Grid DockPanel.Dock="Right" Width="365" Margin="15,15,15,15" Background="White">
-                <TabControl Margin="0,0,37,0">
-                    <TabItem Header="Search NPCs">
-                        <GroupBox Header="Results" Style="{StaticResource groupBoxStyle}">
-                            <ScrollViewer VerticalScrollBarVisibility="Visible">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label>NPC Name</Label>
-                                        <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="122" Height="26" />
-                                        <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />                     
+                <ColumnDefinition Width="400" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+            
+            <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Right"/>
+            <GridSplitter Grid.Column="0" Width="10" HorizontalAlignment="Right"/>
 
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <DataGrid Name="NPCsDataGrid" ItemsSource="{Binding Path=NPCFilter}" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </ScrollViewer>
-                        </GroupBox>
-                    </TabItem>
-                    <TabItem Header="File">
-                        <StackPanel>
-                            <GroupBox Header="NPC XML Data" Style="{StaticResource groupBoxStyle}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Content="Load" Click="Button_Click_3" />
-                                    <Button Content="Save" Click="Button_Click_4" />
-                                </StackPanel>
-                            </GroupBox>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Header="Cache">
-                        <StackPanel>
-                            <GroupBox Header="NPC Cache" Style="{StaticResource groupBoxStyle}">
-                                <Button Content="Clear Cache" x:Name="ClearNpcCacheButton" Click="ClearNpcCacheButton_Click" />
-                            </GroupBox>
-                        </StackPanel>
-                    </TabItem>
-                </TabControl>
+            <Grid Margin="15" Grid.Column="0">                
+                <ScrollViewer VerticalScrollBarVisibility="Visible" />
+                <ListView ItemsSource="{Binding SpawnGroups}" SelectedItem="{Binding SelectedSpawnGroup}">
+                </ListView>
             </Grid>
-            <Grid>
+
+            <Grid Grid.Column="1">
                 <DockPanel>
                     <Grid DockPanel.Dock="Top" Margin="15,15,15,15" Background="White">
                         <TabControl>
@@ -207,6 +184,45 @@
                     </Grid>
                 </DockPanel>
             </Grid>
-        </DockPanel>
+
+            <Grid Grid.Column="2" Margin="15,15,15,15" Background="White">
+                <TabControl Margin="0,0,37,0">
+                    <TabItem Header="Search NPCs">
+                        <GroupBox Header="Results" Style="{StaticResource groupBoxStyle}">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label>NPC Name</Label>
+                                        <TextBox Text="{Binding NPCFilterString}"  VerticalAlignment="Top" Width="122" Height="26" />
+                                        <Button Name="AddNPCButton" VerticalAlignment="Top" Margin="3" Content="Add" Click="AddNPCButton_Click" />
+
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <DataGrid Name="NPCsDataGrid" ItemsSource="{Binding Path=NPCFilter}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </TabItem>
+                    <TabItem Header="File">
+                        <StackPanel>
+                            <GroupBox Header="NPC XML Data" Style="{StaticResource groupBoxStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="Load" Click="Button_Click_3" />
+                                    <Button Content="Save" Click="Button_Click_4" />
+                                </StackPanel>
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Cache">
+                        <StackPanel>
+                            <GroupBox Header="NPC Cache" Style="{StaticResource groupBoxStyle}">
+                                <Button Content="Clear Cache" x:Name="ClearNpcCacheButton" Click="ClearNpcCacheButton_Click" />
+                            </GroupBox>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
