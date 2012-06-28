@@ -337,6 +337,11 @@ namespace EQEmu.Spawns
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public delegate void SpawnChanceTotalChangedHandler(SpawnGroup sender,EventArgs e);
