@@ -80,6 +80,17 @@ namespace EQEmu.Spawns
         {
             return "Default Casters Template";
         }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.General; }
+        }
     }
 
     class LDONNormalToHighRisk : INpcPropertyTemplate
@@ -100,7 +111,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - Convert Level ~18 to High Risk";
+            return "Convert Tier1 to Tier1(High Risk) (approx. level 18)";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 
@@ -144,7 +166,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - Guk";
+            return "Guk Theme";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 
@@ -175,7 +208,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - Rujarkian Hills";
+            return "Rujarkian Hills Theme";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 
@@ -283,7 +327,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - Teir1 (15-24) Template";
+            return "Teir1 (15-24) Template";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 
@@ -302,7 +357,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - Convert Level 18 to Level 28";
+            return "Convert Tier1 (approx. level 18) to Tier2 (approx. level 28)";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 
@@ -363,7 +429,18 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "LDON - (28) Template";
+            return "Tier2 Template (approx. level 28)";
+        }
+
+
+        public string Name
+        {
+            get { return ToString(); }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.LDoN; }
         }
     }
 }

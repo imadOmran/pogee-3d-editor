@@ -193,11 +193,6 @@ namespace ApplicationCore
 
             //assemblies are loaded... allow them to do configuration
             ModuleConfiguration();
-
-            //we need to eventually make this more generic so we don't end up with a ton of these
-            var npcmanager = new EQEmu.Spawns.NpcPropertyTemplateManager();
-            npcmanager.Templates = _container.ResolveAll<EQEmu.Spawns.INpcPropertyTemplate>();            
-            _container.RegisterInstance(npcmanager);
         }
 
         private void CompilePluginsDirectory()

@@ -85,7 +85,7 @@
                     <GridSplitter Grid.Column="0" Width="10" HorizontalAlignment="Right" />
                     <Grid Grid.Column="1">
                         <Grid>
-                            <TabControl Name="MainTabControl">
+                            <TabControl Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
                                 <TabItem>
                                     <TabItem.Header>
                                         <Label>3D World</Label>
