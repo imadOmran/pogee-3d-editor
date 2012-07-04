@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 
 using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Practices.Unity;
+using Microsoft.Win32;
 
 using ApplicationCore;
 using ApplicationCore.UserControls.Ribbon.Tabs;
@@ -69,6 +70,16 @@ namespace SpawnExtractorPlugin
         {
             var window = new TextWindow(ExtractorViewModel.NPCQuery());
             window.ShowDialog();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var od = new SaveFileDialog();
+            if ((bool)od.ShowDialog())
+            {
+                var dir = System.IO.Path.GetDirectoryName(od.FileName);
+                ExtractorViewModel.SaveXML(dir);
+            }
         }
     }
 }

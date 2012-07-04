@@ -124,7 +124,8 @@ namespace EQEmu.Spawns
             Trap = 65,
             InvisMan = 66,
             Special = 67,
-            Unknown68 = 68
+            Unknown68 = 68,
+            Unknown100 = 100
         }
         public enum TypeRace
         {
