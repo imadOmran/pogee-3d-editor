@@ -12,7 +12,7 @@
         <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Database">
-        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" />
+        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Click="NPCQueryButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Info">
         <StackPanel>
@@ -27,6 +27,7 @@
         </StackPanel>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
-        <m:RibbonButton Label="Delete" SmallImageSource="Images/delete.png" Command="{Binding RemoveCommand}" />        
+        <m:RibbonButton Label="Delete" SmallImageSource="Images/delete.png" Command="{Binding RemoveCommand}" />   
+        <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>

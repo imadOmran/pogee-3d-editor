@@ -64,5 +64,11 @@ namespace SpawnExtractorPlugin
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
+
+        private void NPCQueryButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new TextWindow(ExtractorViewModel.NPCQuery());
+            window.ShowDialog();
+        }
     }
 }

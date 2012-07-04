@@ -302,5 +302,36 @@ namespace ApplicationCore
             SelectionRectangle.Margin = margin;
             _selectionInProgress = false;
         }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //some ugly builtin functionality for automatically selecting the same named ribbon tab when 
+            //a tab item is selected
+            if (e.AddedItems.Count <= 0) return;
+
+            TabItem tab = null;
+
+            foreach(var sitem in e.AddedItems)
+            {
+                tab = sitem as TabItem;
+                break;
+            }
+
+            if (tab != null)
+            {
+                string tabname = tab.Header.ToString().Replace("System.Windows.Controls.Label:", "").Trim();                
+                foreach (var item in ribbon.Items)
+                {
+                    var ribTab = item as RibbonTab;
+                    if (ribTab != null)
+                    {
+                        if (ribTab.Header.ToString() == tabname)
+                        {
+                            ribbon.SelectedItem = item;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

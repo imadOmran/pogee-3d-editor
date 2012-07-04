@@ -33,9 +33,53 @@ namespace SpawnExtractorPlugin
 
             ViewModel = viewmodel;
             viewmodel.FileSelectionChanged += new FileLoadingHandler(viewmodel_FileSelectionChanged);
+            viewmodel.PropertyChanged += new PropertyChangedEventHandler(viewmodel_PropertyChanged);
 
+            var categories = viewmodel.Templates.GroupBy(x => x.Category);
+            foreach (var cat in categories)
+            {
+                var itemCategory = new TreeViewItem();
+                itemCategory.Header = cat.Key;                
 
-            NPCDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCDataGrid_AutoGeneratingColumn);            
+                foreach (var i in cat)
+                {
+                    var item = new TreeViewItem();
+                    item.Header = i.Name;
+                    itemCategory.Items.Add(item);
+                }
+
+                TreeView.Items.Add(itemCategory);
+            }
+
+            TreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeView_SelectedItemChanged);
+            NPCDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCDataGrid_AutoGeneratingColumn);
+            NPCDataGrid.SelectedCellsChanged += new SelectedCellsChangedEventHandler(NPCDataGrid_SelectedCellsChanged);
+        }
+
+        void viewmodel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Items":
+                    NPCDataGrid.Items.Refresh();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void NPCDataGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            EditorViewModel.SelectedNpcs = NPCDataGrid.SelectedItems.Cast<EQEmu.Spawns.Npc>();
+        }
+
+        void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var item = e.NewValue as TreeViewItem;
+            if (item != null)
+            {
+                EditorViewModel.SelectedTemplate = EditorViewModel.Templates.Where(x => x.Name == (string)item.Header).FirstOrDefault();
+            }
         }
 
         void viewmodel_FileSelectionChanged(object sender, FileLoadingEventArgs e)

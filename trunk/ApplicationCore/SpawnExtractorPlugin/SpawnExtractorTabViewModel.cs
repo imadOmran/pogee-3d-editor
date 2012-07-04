@@ -128,6 +128,7 @@ namespace SpawnExtractorPlugin
             set
             {
                 _selectedTemplate = value;
+                ApplyTemplateCommand.RaiseCanExecuteChanged();
                 NotifyPropertyChanged("SelectedTemplate");
             }
         }
@@ -156,8 +157,28 @@ namespace SpawnExtractorPlugin
                     }
                 }
 
+                if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
+
                 NotifyPropertyChanged("SelectedNPC");
                 RemoveCommand.RaiseCanExecuteChanged();
+                ApplyTemplateCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private IEnumerable<Npc> _selectedNpcs;
+        public IEnumerable<Npc> SelectedNpcs
+        {
+            get { return _selectedNpcs; }
+            set
+            {
+                _selectedNpcs = value;
+                if (_selectedNpcs.Count() > 0)
+                {
+                    SelectedNPC = _selectedNpcs.First();
+                }
+                else { SelectedNPC = null; }
+
+                NotifyPropertyChanged("SelectedNpcs");
             }
         }
 
@@ -333,14 +354,13 @@ namespace SpawnExtractorPlugin
                     _applyTemplateCommand = new DelegateCommand(
                     x =>
                     {
-                        var npcs = x as IEnumerable<Npc>;
-                        if (npcs == null) return;
-
-                        SelectedTemplate.SetProperties(npcs);
+                        if (_selectedNpcs == null) return;
+                        SelectedTemplate.SetProperties(_selectedNpcs);
+                        NotifyPropertyChanged("Items");
                     },
                     x =>
                     {
-                        return SelectedTemplate != null;
+                        return SelectedTemplate != null && SelectedNPC != null;
                     });
                 }
                 return _applyTemplateCommand; 
