@@ -186,6 +186,24 @@ namespace SpawnExtractorPlugin
         {
         }
 
+        public void SaveXML(string dir)
+        {
+            if (_spawns != null)
+            {
+                _spawns.SaveXML(dir);
+            }
+
+            if (_spawngroups != null)
+            {
+                _spawngroups.SaveXML(Zone,dir);
+            }
+
+            if (_npcs != null)
+            {
+                _npcs.SaveXML(Zone, dir);
+            }
+        }
+
         public void OpenXML(string file,string zone,int version)
         {            
             XmlSerializer serializer = new XmlSerializer(typeof(List<ZoneEntryStruct>));
@@ -255,7 +273,7 @@ namespace SpawnExtractorPlugin
                     var sg = _spawngroups.CreateSpawnGroup();
                     foreach (var name in npc)
                     {
-                        sg.AddEntry(name).NPC = name;
+                        sg.AddEntry(name);
                     }
                     sg.Created();
                     _spawngroups.AddSpawnGroup(sg);

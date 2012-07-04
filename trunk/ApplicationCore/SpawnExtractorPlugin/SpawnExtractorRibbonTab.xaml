@@ -9,10 +9,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <m:RibbonGroup Header="File">
         <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenFileCommand}" />
-        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" x:Name="SaveButton" Click="SaveButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Database">
-        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Click="NPCQueryButton_Click" />
+        <m:RibbonButton Label="View Query" LargeImageSource="Images/Zoom_32x32.png" Click="NPCQueryButton_Click" />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Info">
         <StackPanel>

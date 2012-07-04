@@ -111,7 +111,7 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "Convert Tier1 to Tier1(High Risk) (approx. level 18)";
+            return "Convert Tier1 to Tier2";
         }
 
 
@@ -357,7 +357,7 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "Convert Tier1 (approx. level 18) to Tier2 (approx. level 28)";
+            return "Convert Tier1 to Tier3";
         }
 
 
@@ -429,7 +429,7 @@ namespace EQEmu.Spawns
 
         public override string ToString()
         {
-            return "Tier2 Template (approx. level 28)";
+            return "Tier3";
         }
 
 

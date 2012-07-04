@@ -58,6 +58,8 @@ namespace EQEmu.Spawns
         {
             var entry = CreateEntry();
             entry.NpcID = npc.Id;
+            entry.NpcLevel = (short)npc.Level;
+            entry.NpcName = npc.Name;
             entry.Created();
             AddEntry(entry);
             return entry;
