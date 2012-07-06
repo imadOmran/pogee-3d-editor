@@ -12,6 +12,36 @@ namespace EQEmu.Spawns
      *  These templates can therefore be modified without having to recompile the source, C# as a scripting language basically
      */
 
+    class InvisTemplate : INpcPropertyTemplate
+    {
+        public void SetProperties(IEnumerable<Npc> npcs)
+        {
+            foreach (var npc in npcs)
+            {
+                if (npc.BodyType == Npc.TypeBodyType.Undead || npc.BodyType == Npc.TypeBodyType.SummonedUndead)
+                {
+                    npc.SeeInvisUndead = false;
+                    npc.SeeInvis = true;
+                }
+                else
+                {
+                    npc.SeeInvis = false;
+                    npc.SeeInvisUndead = true;
+                }
+            }
+        }
+
+        public string Name
+        {
+            get { return "Default Invisibility"; }
+        }
+
+        public string Category
+        {
+            get { return NpcPropertyCategories.General; }
+        }
+    }
+
     class CastersTemplate : INpcPropertyTemplate
     {
         public void SetProperties(IEnumerable<Npc> npcs)

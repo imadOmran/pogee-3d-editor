@@ -116,6 +116,10 @@
       <Project>{DDC35EA0-1A5D-44C4-95DF-DA0D40998585}</Project>
       <Name>ApplicationCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SpawnGroupPlugin\SpawnGroupPlugin.csproj">
+      <Project>{80AC7EAF-8689-4398-9E26-4289B81762A2}</Project>
+      <Name>SpawnGroupPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpawnsPlugin\SpawnsPlugin.csproj">
       <Project>{736FAFCE-BEDA-4B2F-A8BA-D5A87C4E1C58}</Project>
       <Name>SpawnsPlugin</Name>

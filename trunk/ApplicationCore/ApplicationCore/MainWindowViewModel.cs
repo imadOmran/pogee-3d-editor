@@ -82,9 +82,18 @@ namespace ApplicationCore
 
         private void ModuleConfiguration()
         {
-            foreach (var setup in _container.ResolveAll<Setup.IAppSetup>())
+            var setups = _container.ResolveAll<Setup.IAppSetup>();
+            if (setups != null)
             {
-                setup.ConfigureContainer(_container);
+                foreach (var setup in setups)
+                {
+                    setup.InitialConfiguration(_container);
+                }
+
+                foreach (var setup in setups)
+                {
+                    setup.FinalConfiguration(_container);
+                }
             }
         }
 

@@ -280,6 +280,11 @@ namespace SpawnGroupPlugin
             _npcFinder.ClearCache();
         }
 
+        public SpawnGroupAggregator Aggregator
+        {
+            get { return _manager; }
+        }
+
         public IEnumerable<SpawnGroup> SpawnGroups
         {
             get
