@@ -14,6 +14,7 @@ using ApplicationCore;
 
 using EQEmu.Spawns;
 using SpawnsPlugin;
+using SpawnGroupPlugin;
 
 namespace SpawnExtractorPlugin
 {
@@ -147,7 +148,7 @@ namespace SpawnExtractorPlugin
                 var serv = _service as SpawnsPlugin.SpawnDataService;
                 if (serv != null)
                 {
-                    var groups = _spawngroups.SpawnGroups.Where(x => x.Entries.Where(y => y.NPC == value).Count() > 0);
+                    var groups = _spawngroups.SpawnGroups.Where(x => x.Entries.Where(y => y.NPC == value || y.NpcID == value.Id ).Count() > 0);
                     var selSpawns = _spawns.Spawns.Where(x => groups.Where(y => y.Id == x.SpawnGroupId).Count() > 0);
 
                     if (selSpawns != null && selSpawns.Count() > 0)
@@ -268,6 +269,9 @@ namespace SpawnExtractorPlugin
             Dictionary<string, SpawnGroup> spawngroupMap = new Dictionary<string, SpawnGroup>();
             if (LoadSpawnGroups)
             {
+                //all added spawngroups need to be flagged for insertion
+                _spawngroups.Created();
+
                 foreach (var npc in _npcs.NPCs.GroupBy(x => x.Name))
                 {
                     var sg = _spawngroups.CreateSpawnGroup();
@@ -507,6 +511,24 @@ namespace SpawnExtractorPlugin
             {
                 _service = value;
                 NotifyPropertyChanged("Service");
+            }
+        }
+
+        private SpawnGroupEditTabViewModel _spawnGroupViewModel;
+        [Dependency]
+        public SpawnGroupEditTabViewModel SpawnGroupViewModel
+        {
+            get { return _spawnGroupViewModel; }
+            set
+            {
+                _spawnGroupViewModel = value;
+
+                if (value != null && _spawnGroupViewModel.Aggregator != null)
+                {
+                    _spawngroups = _spawnGroupViewModel.Aggregator;
+                }
+
+                NotifyPropertyChanged("SpawnGroupViewModel");
             }
         }
 

@@ -9,9 +9,13 @@ using ApplicationCore.Setup;
 
 namespace SpawnExtractorPlugin
 {
-    class AppSetup : IAppSetup
+    class SpawnExtractorAppSetup : IAppSetup
     {
-        public void ConfigureContainer(Microsoft.Practices.Unity.IUnityContainer container)
+        public void InitialConfiguration(IUnityContainer container)
+        {            
+        }
+
+        public void FinalConfiguration(IUnityContainer container)
         {
             //eventually this should be it's own plugin - when the next plugin requires use of the manager
             var npcmanager = new EQEmu.Spawns.NpcPropertyTemplateManager();
@@ -19,7 +23,7 @@ namespace SpawnExtractorPlugin
             container.RegisterInstance(npcmanager);
 
             var vm = container.Resolve<SpawnExtractorTabViewModel>();
-            container.RegisterInstance(vm);            
+            container.RegisterInstance(vm);         
         }
     }
 }
