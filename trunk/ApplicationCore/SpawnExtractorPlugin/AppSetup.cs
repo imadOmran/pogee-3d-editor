@@ -17,9 +17,11 @@ namespace SpawnExtractorPlugin
 
         public void FinalConfiguration(IUnityContainer container)
         {
-            //eventually this should be it's own plugin - when the next plugin requires use of the manager
-            var npcmanager = new EQEmu.Spawns.NpcPropertyTemplateManager();
+            var npcmanager = container.Resolve<EQEmu.Spawns.NpcPropertyTemplateManager>();
             npcmanager.Templates = container.ResolveAll<EQEmu.Spawns.INpcPropertyTemplate>();
+
+            //register it just in case resolve created a new instance of the manager
+            //as opposed to one being already registered with the container
             container.RegisterInstance(npcmanager);
 
             var vm = container.Resolve<SpawnExtractorTabViewModel>();
