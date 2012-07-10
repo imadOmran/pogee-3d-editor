@@ -34,6 +34,7 @@ namespace SpawnExtractorPlugin
             ViewModel = viewmodel;
             viewmodel.FileSelectionChanged += new FileLoadingHandler(viewmodel_FileSelectionChanged);
             viewmodel.PropertyChanged += new PropertyChangedEventHandler(viewmodel_PropertyChanged);
+            viewmodel.TemplateAppliedToNpcs += new TemplateApplied(viewmodel_TemplateAppliedToNpcs);
 
             var categories = viewmodel.Templates.GroupBy(x => x.Category);
             foreach (var cat in categories)
@@ -54,6 +55,11 @@ namespace SpawnExtractorPlugin
             TreeView.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(TreeView_SelectedItemChanged);
             NPCDataGrid.AutoGeneratingColumn += new EventHandler<DataGridAutoGeneratingColumnEventArgs>(NPCDataGrid_AutoGeneratingColumn);
             NPCDataGrid.SelectedCellsChanged += new SelectedCellsChangedEventHandler(NPCDataGrid_SelectedCellsChanged);
+        }
+
+        void viewmodel_TemplateAppliedToNpcs(object sender, TemplateAppliedEventArgs e)
+        {
+            NPCDataGrid.Items.Refresh();
         }
 
         void viewmodel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -171,6 +177,11 @@ namespace SpawnExtractorPlugin
             {
                 npc.Id = num++;
             }
+        }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            NPCDataGrid.Items.Refresh();
         }
     }
 }

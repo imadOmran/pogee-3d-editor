@@ -55,5 +55,12 @@ namespace EQEmu.Spawns
             }
             else return new List<SpawnGroup>();
         }
+
+        public override void PackCachedId(int start, int end, System.ComponentModel.BackgroundWorker worker = null)
+        {
+            base.PackCachedId(start, end, worker);
+            //there's no need to have items up for deletion, the source data did not come from a database
+            NeedsDeleted.Clear();
+        }
     }
 }

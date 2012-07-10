@@ -76,7 +76,7 @@ namespace EQEmu.Spawns
             return sg;
         }
 
-        public void PackCachedId(int start, int end,BackgroundWorker worker=null)
+        public virtual void PackCachedId(int start, int end,BackgroundWorker worker=null)
         {
             if (start == end || start > end)
             {

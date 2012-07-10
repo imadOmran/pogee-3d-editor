@@ -30,4 +30,8 @@
         <m:RibbonButton Label="Delete" SmallImageSource="Images/delete.png" Command="{Binding RemoveCommand}" />   
         <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Utility">
+        <m:RibbonTextBox Label="Start Id" Text="{Binding StartId}" />
+        <m:RibbonButton Label="Set Ids" Command="{Binding SetIdCommand}" Click="RibbonButton_Click" />
+    </m:RibbonGroup>
 </m:RibbonTab>
