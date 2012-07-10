@@ -19,6 +19,28 @@ using SpawnGroupPlugin;
 namespace SpawnExtractorPlugin
 {
     public delegate void FileLoadingHandler(object sender, FileLoadingEventArgs e);
+    public delegate void TemplateApplied(object sender, TemplateAppliedEventArgs e);
+
+    public class TemplateAppliedEventArgs
+    {
+        public TemplateAppliedEventArgs(INpcPropertyTemplate template,IEnumerable<Npc> npcs)
+        {
+            Template = template;
+            AffectedNpcs = npcs;
+        }
+
+        public IEnumerable<Npc> AffectedNpcs
+        {
+            get;
+            private set;
+        }
+
+        public INpcPropertyTemplate Template
+        {
+            get;
+            private set;
+        }
+    }
 
     public class FileLoadingEventArgs
     {
@@ -64,6 +86,7 @@ namespace SpawnExtractorPlugin
         private DelegateCommand _applyTemplateCommand;
         private DelegateCommand _openFileCommand;
         private DelegateCommand _loadFileCommand;
+        private DelegateCommand _setIdCommand;
 
         private NpcAggregator _npcs;
         private SpawnGroupAggregator _spawngroups;
@@ -72,6 +95,7 @@ namespace SpawnExtractorPlugin
         private string _fileSelected;
 
         public event FileLoadingHandler FileSelectionChanged;
+        public event TemplateApplied TemplateAppliedToNpcs;
 
         public SpawnExtractorTabViewModel(MySqlConnection connection,EQEmu.Database.QueryConfig config,NpcPropertyTemplateManager templates)
         {
@@ -163,6 +187,7 @@ namespace SpawnExtractorPlugin
                 NotifyPropertyChanged("SelectedNPC");
                 RemoveCommand.RaiseCanExecuteChanged();
                 ApplyTemplateCommand.RaiseCanExecuteChanged();
+                SetIdCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -320,6 +345,38 @@ namespace SpawnExtractorPlugin
             OnFileLoaded(FileSelected, FileLoadingEventArgs.LoadingState.Loaded);
         }
 
+        public DelegateCommand SetIdCommand
+        {
+            get
+            {
+                if (_setIdCommand == null)
+                {
+                    _setIdCommand = new DelegateCommand(
+                        x =>
+                        {
+                            int num = StartId;                            
+                            foreach (var npc in SelectedNpcs.OrderBy(item => item.Id))
+                            {
+                                npc.Id = num++;
+                            }
+
+                            //this hsould not be here... update mechanism hack
+                            OnTemplateAppliedToNpcs(null, _selectedNpcs);
+                        },
+                        y =>
+                        {
+                            return SelectedNpcs != null && SelectedNpcs.Count() > 0;
+                        });
+                }
+                return _setIdCommand;
+            }
+            set
+            {
+                _setIdCommand = value;
+                NotifyPropertyChanged("SetIdCommand");
+            }
+        }
+
         public DelegateCommand RemoveCommand
         {
             get 
@@ -379,6 +436,8 @@ namespace SpawnExtractorPlugin
                         if (_selectedNpcs == null) return;
                         SelectedTemplate.SetProperties(_selectedNpcs);
                         NotifyPropertyChanged("Items");
+
+                        OnTemplateAppliedToNpcs(SelectedTemplate, _selectedNpcs);
                     },
                     x =>
                     {
@@ -539,6 +598,15 @@ namespace SpawnExtractorPlugin
             {
                 e(this, new FileLoadingEventArgs(file, state) { Error = message });
                 LoadFileCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void OnTemplateAppliedToNpcs(INpcPropertyTemplate template,IEnumerable<Npc> npcs)
+        {
+            var e = TemplateAppliedToNpcs;
+            if (e != null)
+            {
+                e(this, new TemplateAppliedEventArgs(template, npcs));
             }
         }
     }

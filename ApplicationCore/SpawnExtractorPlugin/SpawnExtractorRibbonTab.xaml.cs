@@ -81,5 +81,10 @@ namespace SpawnExtractorPlugin
                 ExtractorViewModel.SaveXML(dir);
             }
         }
+
+        private void RibbonButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
