@@ -26,10 +26,9 @@ namespace ZonePointsPlugin
             set;
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as IZonePointsControl == null) return;
-
+            base.OnLeftMouseClick(sender, e);
             var pt = e.PointInWorld;
             Transform3D.TryTransform(pt, out pt);
 
@@ -50,12 +49,18 @@ namespace ZonePointsPlugin
 
             if (ZonePointsService != null && ZonePointsService.ZonePoints != null)
             {
-                var zp = ZonePointsService.ZonePoints.GetClosestPoint(pt,true);
+                var zp = ZonePointsService.ZonePoints.GetClosestPoint(pt, true);
                 if (zp != null)
                 {
                     SelectedZonePoint = zp;
                 }
             }
+        }
+
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if (e.ActiveRibbonControl as IZonePointsControl == null) return;
+            base.User3DClickAt(sender, e);
         }
     }
 }

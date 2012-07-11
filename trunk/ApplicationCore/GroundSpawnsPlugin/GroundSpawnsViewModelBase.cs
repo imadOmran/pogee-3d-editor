@@ -37,8 +37,6 @@ namespace GroundSpawnsPlugin
             //}
         }
 
-        abstract public override void User3DClickAt(object sender, World3DClickEventArgs e);
-
         public override IDataService Service
         {
             get { return _service; }

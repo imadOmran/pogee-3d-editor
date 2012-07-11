@@ -16,25 +16,9 @@ namespace PathingPlugin
     {
         public PathingRibbonTabViewModel([Dependency("PathingDataService")] PathingDataService _service)
             : base(_service)
-        {
-            //_service.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(service_PropertyChanged);
+        {        
         }
-
-        /*
-        void service_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            SaveCommand.RaiseCanExecuteChanged();
-            switch (e.PropertyName)
-            {                 
-                case "Pathing":
-                    //update bindings
-                    break;
-                default:
-                    break;
-            }
-        }
-        */
-
+        
         public void OpenFile()
         {
             OpenFileDialog fd = new OpenFileDialog();
@@ -57,10 +41,9 @@ namespace PathingPlugin
             set;
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as IPathingControl == null) return;
-
+            base.OnLeftMouseClick(sender, e);
             if (PathingService != null && PathingService.Pathing != null)
             {
                 Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, e.PointInWorld.Z);
@@ -68,7 +51,7 @@ namespace PathingPlugin
                 {
                     Transform3D.TryTransform(p, out p);
                 }
-                
+
 
                 if (Keyboard.IsKeyDown(Key.LeftShift))
                 {
@@ -91,7 +74,7 @@ namespace PathingPlugin
                     SelectedNode.Y = p.Y;
                     SelectedNode.Z = p.Z + ZAdjustment;
                     return;
-                }                
+                }
 
                 var node = PathingService.Pathing.GetNearbyNode(p);
                 if (node != null)
@@ -127,6 +110,12 @@ namespace PathingPlugin
                     SelectedNode = node;
                 }
             }
+        }
+
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if (e.ActiveRibbonControl as IPathingControl == null) return;
+            base.User3DClickAt(sender, e);
         }
 
         public override bool CanExecuteOpenCommand(object arg)

@@ -19,6 +19,7 @@ using Microsoft.Win32;
 
 using ApplicationCore.UserControls.Ribbon.Tabs;
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 
 namespace GridsPlugin
@@ -196,7 +197,7 @@ namespace GridsPlugin
                 //{
                 //    GridsViewModel.GridsService.ZoneGrids.SaveQueryToFile(sd.FileName);
                 //}
-                var window = new ApplicationCore.TextWindow(GridsViewModel.GridsService.ZoneGrids.GetSQL());
+                var window = new TextWindow(GridsViewModel.GridsService.ZoneGrids.GetSQL());
                 window.Title = "Update Query";
                 window.Show();               
                 return;

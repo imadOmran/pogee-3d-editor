@@ -39,9 +39,7 @@ namespace LineOfSightAreaPlugin
         public LineOfSightAreaDataService LineOfSightAreasService
         {
             get { return _service; }
-        }
-
-        abstract public override void User3DClickAt(object sender, World3DClickEventArgs e);
+        }       
 
         public override IDataService Service
         {

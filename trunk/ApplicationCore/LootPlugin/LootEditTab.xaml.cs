@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 
 namespace LootPlugin
 {

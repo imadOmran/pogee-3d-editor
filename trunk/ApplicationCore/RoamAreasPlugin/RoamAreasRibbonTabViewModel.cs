@@ -20,8 +20,9 @@ namespace RoamAreasPlugin
 
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
+            base.OnLeftMouseClick(sender, e);
             if (e.ActiveRibbonControl as IRoamAreaEditorControl != null)
             {
                 Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, 0);

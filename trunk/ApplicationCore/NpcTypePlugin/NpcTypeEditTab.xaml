@@ -20,7 +20,7 @@
             </StackPanel>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Right"/>
+        <GridSplitter Grid.Column="1" Width="10" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Right"/>
         <GridSplitter Grid.Column="3" Width="10" ResizeBehavior="PreviousAndNext" HorizontalAlignment="Right"/>
         <DataGrid Grid.Column="2" x:Name="DataGrid" ItemsSource="{Binding Npcs}" SelectedItem="{Binding SelectedNpc}" />
     </Grid>

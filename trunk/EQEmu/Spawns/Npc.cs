@@ -912,15 +912,23 @@ namespace EQEmu.Spawns
         private bool _uniqueByName;        
         private bool _npcAggro;
         private string _npcSpecialAttacks = "";
-
+        private int _meleeTypePrimary;
+        private int _meleeTypeSecondary;
         private bool _seeInvis;
         private bool _seeInvisUndead;
-        
-        
         private float _size;
         private float _runSpeed;
         private float _slowMitigation;
-
+        private float _attackSpeed;
+        private bool _seeHide;
+        private bool _seeImprovedHide;
+        private bool _isBot;
+        private int _exclude;
+        private int _accuracy;
+        private int _maxLevel;
+        private int _scaleRate;
+        private int _privateCorpse;
+        private int _emoteId;
         private bool _findable;
 
         private TypeGender _gender;
@@ -1411,6 +1419,106 @@ namespace EQEmu.Spawns
             }
         }
 
+        public float AttackSpeed
+        {
+            get { return _attackSpeed; }
+            set
+            {
+                _attackSpeed = value;
+                Dirtied();
+            }
+        }
+
+        public bool SeeHide
+        {
+            get { return _seeHide; }
+            set
+            {
+                _seeHide = value;
+                Dirtied();
+            }
+        }
+
+        public int EmoteId
+        {
+            get { return _emoteId; }
+            set
+            {
+                _emoteId = value;
+                Dirtied();
+            }
+        }
+
+        public int PrivateCorpse
+        {
+            get { return _privateCorpse; }
+            set
+            {
+                _privateCorpse = value;
+                Dirtied();
+            }
+        }
+
+        public int ScaleRate
+        {
+            get { return _scaleRate; }
+            set
+            {
+                _scaleRate = value;
+                Dirtied();
+            }
+        }
+
+        public int MaxLevel
+        {
+            get { return _maxLevel; }
+            set
+            {
+                _maxLevel = value;
+                Dirtied();
+            }
+        }
+
+        public int Accuracy
+        {
+            get { return _accuracy; }
+            set
+            {
+                _accuracy = value;
+                Dirtied();
+            }
+        }
+
+        public int Exclude
+        {
+            get { return _exclude; }
+            set
+            {
+                _exclude = value;
+                Dirtied();
+            }
+        }
+
+        public bool SeeImprovedHide
+        {
+            get { return _seeImprovedHide; }
+            set
+            {
+                _seeImprovedHide = value;
+                Dirtied();
+            }
+        }
+
+        public bool IsBot
+        {
+            get { return _isBot; }
+            set
+            {
+                _isBot = value;
+                Dirtied();
+            }
+        }
+
         public int MagicResist
         {
             get { return _magicResist; }
@@ -1637,6 +1745,26 @@ namespace EQEmu.Spawns
             set
             {
                 _npcAggro = value;
+                Dirtied();
+            }
+        }
+
+        public int MeleeTypePrimary
+        {
+            get { return _meleeTypePrimary; }
+            set
+            {
+                _meleeTypePrimary = value;
+                Dirtied();
+            }
+        }
+
+        public int MeleeTypeSecondary
+        {
+            get { return _meleeTypeSecondary; }
+            set
+            {
+                _meleeTypeSecondary = value;
                 Dirtied();
             }
         }

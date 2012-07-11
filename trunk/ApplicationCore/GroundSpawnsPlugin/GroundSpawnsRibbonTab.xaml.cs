@@ -19,6 +19,7 @@ using Microsoft.Win32;
 
 using ApplicationCore.UserControls.Ribbon.Tabs;
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 
 namespace GroundSpawnsPlugin
@@ -105,7 +106,7 @@ namespace GroundSpawnsPlugin
             if (GroundSpawnsViewModel.GroundSpawnsService != null)
             {
                 var window =
-                    new ApplicationCore.TextWindow(
+                    new TextWindow(
                         GroundSpawnsViewModel.GroundSpawnsService.ZoneGroundSpawns.GetSQL());
                 window.Show();
             }
@@ -127,12 +128,12 @@ namespace GroundSpawnsPlugin
                         spawns.Add(sp);
                     }
 
-                    var window = new ApplicationCore.PropertyEditorWindow(spawns);
+                    var window = new PropertyEditorWindow(spawns);
                     window.ShowDialog();
                 }
                 else
                 {
-                    var window = new ApplicationCore.PropertyEditorWindow(GroundSpawnsViewModel.GroundSpawnsService.SelectedGroundSpawn);
+                    var window = new PropertyEditorWindow(GroundSpawnsViewModel.GroundSpawnsService.SelectedGroundSpawn);
                     window.ShowDialog();
                 }
             }

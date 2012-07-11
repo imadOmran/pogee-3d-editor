@@ -135,9 +135,7 @@
   <query type="EQEmu.RoamAreas.ZoneRoamAreas">
     <select>
       <sql>
-        <![CDATA[
-        SELECT id,min_z,max_z,spawn_random,pause_time,pause_variance,zone FROM roam_areas WHERE zone = '{0}';
-        ]]>
+        <![CDATA[SELECT id,min_z,max_z,spawn_random,pause_time,pause_variance,zone FROM roam_areas WHERE zone = '{0}';]]>
       </sql>
       <param>Zone</param>
       <store field="max_z" type="float">MaxZ</store>
@@ -153,9 +151,7 @@
   <query type="EQEmu.RoamAreas.RoamAreaEntry">
     <update>
       <sql>
-        <![CDATA[
-UPDATE roam_area_vertices SET x = {0}, y = {1} WHERE num = {2} AND roam_area_id = {3} AND zone = '{4}';        
-        ]]>        
+        <![CDATA[UPDATE roam_area_vertices SET x = {0}, y = {1} WHERE num = {2} AND roam_area_id = {3} AND zone = '{4}';]]>        
       </sql>
       <param>X</param>
       <param>Y</param>
@@ -165,9 +161,7 @@ UPDATE roam_area_vertices SET x = {0}, y = {1} WHERE num = {2} AND roam_area_id 
     </update>
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO roam_area_vertices (num,roam_area_id,zone,x,y) VALUES ({0},{1},'{2}',{3},{4});        
-        ]]>
+        <![CDATA[INSERT INTO roam_area_vertices (num,roam_area_id,zone,x,y) VALUES ({0},{1},'{2}',{3},{4});]]>
       </sql>
       <param>Number</param>
       <param>RoamAreaId</param>
@@ -177,9 +171,7 @@ INSERT INTO roam_area_vertices (num,roam_area_id,zone,x,y) VALUES ({0},{1},'{2}'
     </insert>
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM roam_area_vertices WHERE num = {0} AND roam_area_id = {1} AND zone = '{2}';       
-        ]]>
+        <![CDATA[DELETE FROM roam_area_vertices WHERE num = {0} AND roam_area_id = {1} AND zone = '{2}';]]>
       </sql>
       <param>Number</param>
       <param>RoamAreaId</param>
@@ -190,9 +182,7 @@ DELETE FROM roam_area_vertices WHERE num = {0} AND roam_area_id = {1} AND zone =
   <query type="EQEmu.RoamAreas.RoamArea">
     <select>
       <sql>
-        <![CDATA[
-SELECT x,y,num,roam_area_id,zone FROM roam_area_vertices WHERE roam_area_id = '{0}' AND zone = '{1}' ORDER BY num; 
-        ]]>
+        <![CDATA[SELECT x,y,num,roam_area_id,zone FROM roam_area_vertices WHERE roam_area_id = '{0}' AND zone = '{1}' ORDER BY num;]]>
       </sql>
       <param>Id</param>
       <param>Zone</param>
@@ -204,9 +194,7 @@ SELECT x,y,num,roam_area_id,zone FROM roam_area_vertices WHERE roam_area_id = '{
     </select>
     <insert>
       <sql>
-        <![CDATA[
-INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_variance) VALUES ({0},'{1}',{2},{3},{4},{5},{6});        
-        ]]>
+        <![CDATA[INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_variance) VALUES ({0},'{1}',{2},{3},{4},{5},{6});]]>
       </sql>
       <param>Id</param>
       <param>Zone</param>
@@ -218,9 +206,7 @@ INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_varian
     </insert>
     <update>
       <sql>
-        <![CDATA[
-UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance = {4} WHERE zone = '{5}' AND id = {6};
-        ]]>        
+        <![CDATA[UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance = {4} WHERE zone = '{5}' AND id = {6};]]>        
       </sql>
       <param>MaxZ</param>
       <param>MinZ</param>
@@ -232,9 +218,7 @@ UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time =
     </update>
     <delete>
       <sql>
-        <![CDATA[
-DELETE FROM roam_areas WHERE zone = '{0}' AND id = {1};        
-        ]]>
+        <![CDATA[DELETE FROM roam_areas WHERE zone = '{0}' AND id = {1};]]>
       </sql>
       <param>Zone</param>
       <param>Id</param>
@@ -832,7 +816,53 @@ SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 50;
       <store field="drakkin_tattoo" type="int">DrakkinTattoo</store>
       <store field="drakkin_details" type="int">DrakkinDetails</store>
       <store field="npc_faction_id" type="int">FactionId</store>
-      <store field="npc_spells_id" type="int">SpellsId</store>     
+      <store field="npc_spells_id" type="int">SpellsId</store>
+
+      <store field="hp_regen_rate" type="int">HPRegenRate</store>
+      <store field="mana_regen_rate" type="int">ManaRegenRate</store>
+      <store field="merchant_id" type="int">MerchantId</store>
+      <store field="alt_currency_id" type="int">AltCurrencyId</store>
+      <store field="adventure_template_id" type="int">AdventureTemplate</store>
+      <store field="trap_template" type="int">TrapTemplate</store>
+      <store field="attack_count" type="int">AttackCount</store>
+      <store field="npcspecialattks" type="string">NPCSpecialAttacks</store>
+      <store field="aggroradius" type="int">AggroRadius</store>
+      <store field="prim_melee_type" type="int">MeleeTypePrimary</store>
+      <store field="sec_melee_type" type="int">MeleeTypeSecondary</store>
+      <store field="MR" type="int">MagicResist</store>
+      <store field="CR" type="int">ColdResist</store>
+      <store field="DR" type="int">DiseaseResist</store>
+      <store field="FR" type="int">FireResist</store>
+      <store field="PR" type="int">PoisonResist</store>
+      <store field="Corrup" type="int">CorruptResist</store>
+      <store field="see_invis" type="bool">SeeInvis</store>
+      <store field="see_invis_undead" type="bool">SeeInvisUndead</store>
+      <store field="qglobal" type="int">QGlobal</store>
+      <store field="AC" type="int">ArmorClass</store>
+      <store field="npc_aggro" type="bool">NPCAggro</store>
+      <store field="spawn_limit" type="int">SpawnLimit</store>
+      <store field="attack_speed" type="float">AttackSpeed</store>
+      <store field="STR" type="int">Strength</store>
+      <store field="STA" type="int">Stamina</store>
+      <store field="DEX" type="int">Dexterity</store>
+      <store field="AGI" type="int">Agility</store>
+      <store field="_INT" type="int">Intelligence</store>
+      <store field="WIS" type="int">Wisdom</store>
+      <store field="CHA" type="int">Charisma</store>
+      <store field="see_hide" type="bool">SeeHide</store>
+      <store field="see_improved_hide" type="bool">SeeImprovedHide</store>
+      <store field="trackable" type="bool">Trackable</store>
+      <store field="isbot" type="bool">IsBot</store>
+      <store field="exclude" type="int">Exclude</store>
+      <store field="ATK" type="int">Attack</store>
+      <store field="Accuracy" type="int">Accuracy</store>
+      <store field="slow_mitigation" type="float">SlowMitigation</store>
+      <store field="maxlevel" type="int">MaxLevel</store>
+      <store field="scalerate" type="int">ScaleRate</store>
+      <store field="private_corpse" type="int">PrivateCorpse</store>
+      <store field="unique_spawn_by_name" type="bool">UniqueByName</store>
+      <store field="underwater" type="bool">UnderWater</store>
+      <store field="emoteid" type="int">EmoteId</store>
     </select>
   </query>
 

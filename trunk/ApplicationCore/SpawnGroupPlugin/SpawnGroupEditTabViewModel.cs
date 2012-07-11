@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using MySql.Data.MySqlClient;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 
 using EQEmu.Spawns;
 using EQEmu.Database;
