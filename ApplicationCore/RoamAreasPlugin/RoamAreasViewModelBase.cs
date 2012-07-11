@@ -10,8 +10,6 @@ namespace RoamAreasPlugin
 {
     abstract public class RoamAreasViewModelBase : EditorViewModelBase, IRoamAreasViewModel
     {
-        abstract public override void User3DClickAt(object sender, World3DClickEventArgs e);
-
         private readonly RoamAreasDataService _service;
 
         public RoamAreasViewModelBase(RoamAreasDataService service)

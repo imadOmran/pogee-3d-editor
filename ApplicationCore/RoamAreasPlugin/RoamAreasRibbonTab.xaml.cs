@@ -17,6 +17,7 @@ using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Win32;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.UserControls.Ribbon.Tabs;
 using ApplicationCore.ViewModels.Editors;
 
@@ -127,7 +128,24 @@ namespace RoamAreasPlugin
 
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (RoamAreaViewModel != null && RoamAreaViewModel.RoamAreasDataService != null)
+            {
+                var od = new OpenFileDialog();
+                od.Filter = "XML Files | *.roamareas.xml";
+                if ((bool)od.ShowDialog())
+                {
+                    RoamAreaViewModel.Zone = "";
+                    var za = RoamAreaViewModel.RoamAreasDataService.ZoneAreas;
+                    if (za != null)
+                    {
+                        za.LoadXML(od.FileName);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Zone area not created");
+                    }
+                }
+            }
         }
 
         private void SaveFileButton_Click(object sender, RoutedEventArgs e)

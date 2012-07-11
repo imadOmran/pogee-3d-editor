@@ -29,6 +29,7 @@ using HelixToolkit;
 using HelixToolkit.Wpf;
 
 using ApplicationCore.ViewModels.Editors;
+using ApplicationCore.UserControls;
 
 namespace ApplicationCore
 {
@@ -243,7 +244,7 @@ namespace ApplicationCore
             
         }
 
-        public void WorldMouseClickAt(Point3D p,object selectedControl, IsPointInsideSelectionBox selectionBoxCheck )
+        public void WorldMouseClickAt(Point3D p, MouseButtonEventArgs args, object selectedControl, IsPointInsideSelectionBox selectionBoxCheck)
         {
             foreach (var control in Container.ResolveAll<UserControls.IEditorControl>())
             {
@@ -256,7 +257,8 @@ namespace ApplicationCore
                         {
                             ActiveRibbonControl = selectedControl as UserControls.Ribbon.IRibbonItem,
                             PointInWorld = p,
-                            CheckSelection = selectionBoxCheck
+                            CheckSelection = selectionBoxCheck,
+                            MouseButtonArgs = args
                         });
                 }
                 catch (System.Exception e)

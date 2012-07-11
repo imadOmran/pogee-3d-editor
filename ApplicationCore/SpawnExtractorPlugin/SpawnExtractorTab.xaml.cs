@@ -17,6 +17,7 @@ using System.ComponentModel;
 using Microsoft.Win32;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 
 namespace SpawnExtractorPlugin
 {
@@ -140,6 +141,14 @@ namespace SpawnExtractorPlugin
         }
 
         public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelected(object o)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(o));
+            }
+        }
 
         private void NPCQueryButton_Click(object sender, RoutedEventArgs e)
         {

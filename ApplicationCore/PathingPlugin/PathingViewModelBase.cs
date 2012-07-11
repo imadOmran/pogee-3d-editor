@@ -50,9 +50,7 @@ namespace PathingPlugin
                     break;
             }
         }
-
-        abstract public override void User3DClickAt(object sender, World3DClickEventArgs e);
-
+        
         #region New Command
 
         private DelegateCommand _newCommand;

@@ -177,11 +177,18 @@ namespace DoorsPlugin
             }
         }
 
-        public override void User3DClickAt( object sender, World3DClickEventArgs e )
+
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as IDoorsControl == null) return;            
+            if (e.ActiveRibbonControl as IDoorsControl == null) return;
             if (DoorService == null || DoorService.DoorManager == null) return;
-            
+
+            base.User3DClickAt(sender, e);
+        }
+
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
+        {
+            base.OnLeftMouseClick(sender, e);
             Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, e.PointInWorld.Z);
             if (Transform3D != null)
             {

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Microsoft.Practices.Unity;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 using GridsPlugin;
 
@@ -97,11 +98,10 @@ namespace SpawnsPlugin
             }
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as ISpawnsControl == null) return;
-            
-            if (SpawnsService != null && SpawnsService.ZoneSpawns != null )
+            base.OnLeftMouseClick(sender, e);
+            if (SpawnsService != null && SpawnsService.ZoneSpawns != null)
             {
                 Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, e.PointInWorld.Z);
 
@@ -115,14 +115,14 @@ namespace SpawnsPlugin
                     double transX = p.X - SelectedSpawn.X;
                     double transY = p.Y - SelectedSpawn.Y;
                     double transZ = p.Z - SelectedSpawn.Z + ZAdjustment;
-                    
+
                     SelectedSpawn.X = p.X; SelectedSpawn.Y = p.Y; SelectedSpawn.Z = p.Z + ZAdjustment;
                     //TODO hack visual update
                     SelectedSpawn = SelectedSpawn;
                     if (SelectedSpawns != null && SelectedSpawns.Count() > 0)
                     {
                         //translate all selections
-                        foreach(var spawn in SelectedSpawns.Where( x => x != SelectedSpawn ))
+                        foreach (var spawn in SelectedSpawns.Where(x => x != SelectedSpawn))
                         {
                             spawn.X += transX;
                             spawn.Y += transY;
@@ -134,7 +134,7 @@ namespace SpawnsPlugin
                     return;
                 }
 
-                if(Keyboard.IsKeyDown(Key.LeftCtrl) && SelectedSpawn != null)
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && SelectedSpawn != null)
                 {
                     if (SelectedSpawns != null)
                     {
@@ -167,7 +167,7 @@ namespace SpawnsPlugin
                         var spt = new Point3D(x.X, x.Y, x.Z);
                         Transform3D.TryTransform(spt, out spt);
                         double dist = 5.0;
-                        return e.CheckSelection(spt,dist);
+                        return e.CheckSelection(spt, dist);
                     }))
                 {
                     selSpawns.Add(s);
@@ -188,12 +188,13 @@ namespace SpawnsPlugin
                         SelectedSpawns = null;
                     }
                 }
-
-                //SpawnsService.World3DMouseClickAt(e.PointInWorld);
             }
+        }
 
-
-            //throw new NotImplementedException();
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if (e.ActiveRibbonControl as ISpawnsControl == null) return;
+            base.User3DClickAt(sender, e);
         }
         
         private GridsDataService _gridsService = null;

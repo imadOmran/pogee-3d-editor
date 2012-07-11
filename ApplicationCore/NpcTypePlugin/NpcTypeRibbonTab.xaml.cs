@@ -61,6 +61,7 @@ namespace NpcTypePlugin
         private void RibbonButton_Click(object sender, RoutedEventArgs e)
         {
             var od = new OpenFileDialog();
+            od.Filter = "XML Files | *.npctypes.xml";
             if ((bool)od.ShowDialog() == true)
             {
                 NpcEditViewModel.OpenXML(od.FileName);

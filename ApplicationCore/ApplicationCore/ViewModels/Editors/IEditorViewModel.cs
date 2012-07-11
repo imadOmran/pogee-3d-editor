@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ApplicationCore.ViewModels.Editors
 {
@@ -13,6 +14,7 @@ namespace ApplicationCore.ViewModels.Editors
         public UserControls.Ribbon.IRibbonItem ActiveRibbonControl { get; set; }
         public object Parameter { get; set; }
         public IsPointInsideSelectionBox CheckSelection { get; set; }
+        public MouseButtonEventArgs MouseButtonArgs { get; set; }
 
         public World3DClickEventArgs()
         {

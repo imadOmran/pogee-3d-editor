@@ -25,11 +25,10 @@ namespace GroundSpawnsPlugin
             get;
             set;        
         }
-        
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as IGroundSpawnsControl == null) return;
-            
+            base.OnLeftMouseClick(sender, e);
             if (this.GroundSpawnsService != null)
             {
                 Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, e.PointInWorld.Z);
@@ -40,7 +39,7 @@ namespace GroundSpawnsPlugin
 
                 if (Keyboard.IsKeyDown(Key.LeftAlt) && SelectedGroundSpawn != null)
                 {
-                    SelectedGroundSpawn.CenterPositionAt(new Point3D(p.X,p.Y,p.Z+ZAdjustment) );
+                    SelectedGroundSpawn.CenterPositionAt(new Point3D(p.X, p.Y, p.Z + ZAdjustment));
                     return;
                 }
 
@@ -50,7 +49,7 @@ namespace GroundSpawnsPlugin
                     {
                         var pt3d = new Point3D(x.MidPoint.X, x.MidPoint.Y, x.MaxZ);
                         pt3d = Transform3D.Transform(pt3d);
-                        return e.CheckSelection(pt3d,0);
+                        return e.CheckSelection(pt3d, 0);
                     });
                     if (selections.Count() > 0)
                     {
@@ -74,7 +73,13 @@ namespace GroundSpawnsPlugin
                     SelectedGroundSpawn = spawn;
                     SelectedGroundSpawns = null;
                 }
-            }            
+            } 
+        }
+        
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if (e.ActiveRibbonControl as IGroundSpawnsControl == null) return;
+            base.User3DClickAt(sender, e);
         }
     }
 }

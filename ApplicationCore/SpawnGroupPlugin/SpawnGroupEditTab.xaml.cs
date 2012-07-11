@@ -125,6 +125,14 @@ namespace SpawnGroupPlugin
         }
 
         public event ApplicationCore.UserControls.ObjectSelected ObjectSelected;
+        private void OnObjectSelected(object o)
+        {
+            var e = ObjectSelected;
+            if (e != null)
+            {
+                e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(o));
+            }
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {

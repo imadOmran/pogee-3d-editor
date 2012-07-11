@@ -93,17 +93,18 @@ namespace LineOfSightAreaPlugin
             set;
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if ( e.ActiveRibbonControl as ILineOfSightAreaEditorControl == null ) return;
-
-            Point3D p = new Point3D( e.PointInWorld.X, e.PointInWorld.Y, 0 );
-            if ( Transform3D != null ) {
-                Transform3D.TryTransform( p, out p );
+            base.OnLeftMouseClick(sender, e);
+            Point3D p = new Point3D(e.PointInWorld.X, e.PointInWorld.Y, 0);
+            if (Transform3D != null)
+            {
+                Transform3D.TryTransform(p, out p);
             }
 
-            if ( Keyboard.IsKeyDown( Key.LeftShift ) && SelectedArea != null ) {
-                this.SelectedArea.AddVertex( p );
+            if (Keyboard.IsKeyDown(Key.LeftShift) && SelectedArea != null)
+            {
+                this.SelectedArea.AddVertex(p);
                 return;
             }
             else if (Keyboard.IsKeyDown(Key.LeftAlt) && SelectedArea != null && LineOfSightAreasService.SelectedVertex != null)
@@ -115,9 +116,16 @@ namespace LineOfSightAreaPlugin
                 LineOfSightAreasService.SelectedArea = SelectedArea;
             }
 
-            if ( SelectedArea != null ) {
-                SelectedVertex = new Point3D( p.X, p.Y, p.Z );
+            if (SelectedArea != null)
+            {
+                SelectedVertex = new Point3D(p.X, p.Y, p.Z);
             }
+        }
+
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if ( e.ActiveRibbonControl as ILineOfSightAreaEditorControl == null ) return;
+            base.User3DClickAt(sender, e);
         }
 
         public override void NewArea()

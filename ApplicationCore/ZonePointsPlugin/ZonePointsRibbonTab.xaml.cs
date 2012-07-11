@@ -19,6 +19,7 @@ using Microsoft.Win32;
 
 using ApplicationCore.UserControls.Ribbon.Tabs;
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 
 namespace ZonePointsPlugin

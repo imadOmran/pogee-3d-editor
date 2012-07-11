@@ -143,11 +143,6 @@ namespace ZonePointsPlugin
             RemoveZonePointCommand.RaiseCanExecuteChanged();
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private readonly ZonePointsDataService _service;
         public ZonePointsDataService ZonePointsService
         {

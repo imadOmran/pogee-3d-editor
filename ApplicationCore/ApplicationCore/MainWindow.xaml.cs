@@ -18,6 +18,8 @@ using System.Windows.Media.Media3D;
 using Microsoft.Windows.Controls.Ribbon;
 using Microsoft.Practices.Unity;
 
+using ApplicationCore.UserControls;
+
 namespace ApplicationCore
 {
     /// <summary>
@@ -74,7 +76,7 @@ namespace ApplicationCore
 
             if (e.ChangedButton == MouseButton.Left)
             {
-                vm.WorldMouseClickAt(point, ribbon.SelectedItem, null);
+                vm.WorldMouseClickAt(point,e,ribbon.SelectedItem, null);
             }
         }
 
@@ -150,23 +152,7 @@ namespace ApplicationCore
                 };
             }
 
-            vm.WorldMouseClickAt(point, ribbon.SelectedItem, new ViewModels.Editors.IsPointInsideSelectionBox(action));
-
-            //vm.WorldMouseClickAt(point, ribbon.SelectedItem,
-            //    (point3D) =>
-            //    {
-            //        var p2d = HelixToolkit.Wpf.Viewport3DHelper.Point3DtoPoint2D(View3D.Viewport,point3D);
-
-            //        if (p2d.X <= largeX && p2d.X >= smallX &&
-            //            p2d.Y <= largeY && p2d.Y >= smallY)
-            //        {
-            //            return true;
-            //        }
-            //        else
-            //        {
-            //            return false;
-            //        }
-            //    });
+            vm.WorldMouseClickAt(point,e,ribbon.SelectedItem, new ViewModels.Editors.IsPointInsideSelectionBox(action));
         }
 
         private void ViewClippingButton_Click(object sender, RoutedEventArgs e)

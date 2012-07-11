@@ -21,6 +21,15 @@ namespace EQEmu.RoamAreas
             set
             {
                 _id = value;
+
+                if (Vertices != null)
+                {
+                    foreach (var entry in Vertices)
+                    {
+                        entry.RoamAreaId = value;
+                    }
+                }
+
                 Dirtied();
             }
         }
@@ -158,6 +167,7 @@ namespace EQEmu.RoamAreas
             }
 
             this.Vertices.Add(entry);
+            entry.RoamAreaId = Id;
             
             // object was finalized, any changes now are recorded
             if (CreatedObj)

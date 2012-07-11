@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Microsoft.Practices.Unity;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 
 using EQEmu.Grids;
@@ -76,10 +77,9 @@ namespace GridsPlugin
             set;
         }
 
-        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        protected override void OnLeftMouseClick(object sender, World3DClickEventArgs e)
         {
-            if (e.ActiveRibbonControl as IGridsControl == null) return;
-
+            base.OnLeftMouseClick(sender, e);
             EQEmu.Grids.Waypoint waypoint = null;
 
             if (this.GridsService != null && SelectedGrid != null)
@@ -102,8 +102,8 @@ namespace GridsPlugin
                     SelectedGrid = SelectedGrid;
                     SelectedWaypoint = waypoint;
 
-                    return;                    
-                }                
+                    return;
+                }
                 //adjust waypoint heading
                 if (Keyboard.IsKeyDown(Key.LeftCtrl) && SelectedWaypoint != null)
                 {
@@ -155,7 +155,12 @@ namespace GridsPlugin
                     }
                 }
             }
-            
+        }
+
+        public override void User3DClickAt(object sender, World3DClickEventArgs e)
+        {
+            if (e.ActiveRibbonControl as IGridsControl == null) return;
+            base.User3DClickAt(sender, e);
         }
     }
 }

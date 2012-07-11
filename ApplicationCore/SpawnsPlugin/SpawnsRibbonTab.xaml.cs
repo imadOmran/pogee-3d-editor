@@ -19,6 +19,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Win32;
 
 using ApplicationCore;
+using ApplicationCore.UserControls;
 using ApplicationCore.UserControls.Ribbon.Tabs;
 using ApplicationCore.ViewModels.Editors;
 

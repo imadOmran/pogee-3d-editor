@@ -95,6 +95,63 @@ namespace EQEmu.RoamAreas
             }
         }
 
+        public override void LoadXML(string file)
+        {
+            var dir = System.IO.Path.GetDirectoryName(file);
+            var filename = System.IO.Path.GetFileName(file);
+            int period1 = filename.IndexOf('.', 0);
+            int period2 = filename.IndexOf('.', period1 + 1);
+
+            _zone = filename.Substring(0, period1);
+
+            //deserialize the areas first
+            RoamArea[] areas;
+            using (var fs = new FileStream(file, FileMode.Open))
+            {
+                var x = new XmlSerializer(_roamAreas.ToArray().GetType());
+                var obj = x.Deserialize(fs);
+                areas = obj as RoamArea[];                
+            }
+
+            //load each area into the zone collection
+            if (areas != null)
+            {
+                ClearObjects();
+                _roamAreas.Clear();
+                Created();
+                foreach (var area in areas)
+                {
+                    AddArea(area);
+                    area.InitConfig(_queryConfig);
+                    area.Created();
+                }
+            }
+            
+            //then load the zone area entries and map them accordingly
+            RoamAreaEntry[] entries;
+            var entryFile = dir + "\\" + _zone + ".roamentry.xml";
+            if (RoamAreas.Count > 0 && System.IO.File.Exists(entryFile))
+            {
+                using (var fs = new FileStream(entryFile, FileMode.Open))
+                {
+                    var x = new XmlSerializer(RoamAreas.First().Vertices.ToArray().GetType());
+                    var obj = x.Deserialize(fs);
+                    entries = obj as RoamAreaEntry[];
+                }
+                //ALL entries are in array, now to determine which area they need to go into
+                foreach (var entry in entries)
+                {
+                    var entryArea = RoamAreas.FirstOrDefault(x => x.Id == entry.RoamAreaId);
+                    if (entryArea != null)
+                    {
+                        entryArea.AddEntry(entry);
+                        entry.InitConfig(_queryConfig);
+                        entry.Created();
+                    }
+                }
+            }
+        }
+
         public string Zone
         {
             get { return _zone; }

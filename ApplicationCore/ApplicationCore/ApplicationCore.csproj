@@ -153,24 +153,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutoRegisterAttribute.cs" />
-    <Compile Include="DatabaseConfigWindow.xaml.cs">
+    <Compile Include="UserControls\DatabaseConfigWindow.xaml.cs">
       <DependentUpon>DatabaseConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataServices\DataServiceBase.cs" />
     <Compile Include="DataServices\IDataService.cs" />
     <Compile Include="DataServices\IModel3DProvider.cs" />
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\Math.cs" />
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="ProgressWindow.xaml.cs">
+    <Compile Include="UserControls\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PropertyEditorWindow.xaml.cs">
+    <Compile Include="UserControls\PropertyEditorWindow.xaml.cs">
       <DependentUpon>PropertyEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PropertyEditorWindowViewModel.cs" />
+    <Compile Include="UserControls\PropertyEditorWindowViewModel.cs" />
     <Compile Include="Setup\IAppSetup.cs" />
-    <Compile Include="TextWindow.xaml.cs">
+    <Compile Include="UserControls\TextWindow.xaml.cs">
       <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\IEditorControl.cs" />
@@ -181,7 +181,7 @@
     <Compile Include="ViewModels\Editors\EditorViewModelBase.cs" />
     <Compile Include="ViewModels\Editors\IEditorViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
-    <Page Include="DatabaseConfigWindow.xaml">
+    <Page Include="UserControls\DatabaseConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -197,15 +197,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProgressWindow.xaml">
+    <Page Include="UserControls\ProgressWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PropertyEditorWindow.xaml">
+    <Page Include="UserControls\PropertyEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TextWindow.xaml">
+    <Page Include="UserControls\TextWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
