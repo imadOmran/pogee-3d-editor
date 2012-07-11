@@ -7,6 +7,11 @@
              mc:Ignorable="d" 
              Header="NPCs"
              d:DesignHeight="300" d:DesignWidth="300">
-    <m:RibbonGroup Header="Group1">       
+    <m:RibbonGroup Header="File">       
+        <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Click="RibbonButton_Click" />
+        <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Click="RibbonButton_Click_1" />
+    </m:RibbonGroup>
+    <m:RibbonGroup Header="Selection">
+        <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>

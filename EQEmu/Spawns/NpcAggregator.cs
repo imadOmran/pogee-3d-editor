@@ -78,6 +78,15 @@ namespace EQEmu.Spawns
         public abstract int GetNextIdForZone(string zone);
         public abstract void LookupByZone(string zone);
 
+        public void LoadCached()
+        {
+            _npcs.Clear();
+            foreach (var npc in CachedNpcs)
+            {
+                _npcs.Add(npc);
+            }
+        }
+
         public override void SaveXML(string dir)
         {
             using (var fs = new FileStream(dir + "\\" + _zone + ".npctypes.xml", FileMode.Create))

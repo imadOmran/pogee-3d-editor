@@ -940,6 +940,16 @@ namespace EQEmu.Spawns
 
         }
 
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                Dirtied();
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -1016,16 +1026,6 @@ namespace EQEmu.Spawns
             set
             {
                 _level = value;
-                Dirtied();
-            }
-        }
-
-        public int Id
-        {
-            get { return _id; }
-            set
-            {
-                _id = value;
                 Dirtied();
             }
         }

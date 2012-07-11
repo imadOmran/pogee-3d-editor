@@ -49,5 +49,31 @@ namespace NpcTypePlugin
                 _viewModel = value;
             }
         }
+
+        public NpcTypeEditViewModel NpcEditViewModel
+        {
+            get
+            {
+                return _viewModel as NpcTypeEditViewModel;
+            }
+        }
+
+        private void RibbonButton_Click(object sender, RoutedEventArgs e)
+        {
+            var od = new OpenFileDialog();
+            if ((bool)od.ShowDialog() == true)
+            {
+                NpcEditViewModel.OpenXML(od.FileName);
+            }
+        }
+
+        private void RibbonButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            var sd = new SaveFileDialog();
+            if ((bool)sd.ShowDialog() == true)
+            {
+                NpcEditViewModel.SaveXML(System.IO.Path.GetDirectoryName(sd.FileName));
+            }
+        }
     }
 }
