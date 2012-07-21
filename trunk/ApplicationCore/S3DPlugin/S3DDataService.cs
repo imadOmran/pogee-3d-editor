@@ -191,7 +191,7 @@ namespace S3DPlugin
                                 if(archive.Name.Contains( zone + ".wld" ) )
                                 {
                                     _wld = wld;
-                                    if (archive.Name.Contains("_obj"))
+                                    if (archive.Name.Contains("_obj") || archive.Name.Contains("_chr"))
                                     {
                                         _wld.ResolveMeshNames();
                                     }

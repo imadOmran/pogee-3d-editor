@@ -948,6 +948,11 @@ namespace EQEmu.Spawns
 
         }
 
+        public Npc ShallowCopy()
+        {
+            return (Npc)MemberwiseClone();
+        }
+
         public int Id
         {
             get { return _id; }

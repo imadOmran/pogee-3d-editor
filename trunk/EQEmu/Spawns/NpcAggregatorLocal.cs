@@ -19,7 +19,7 @@ namespace EQEmu.Spawns
         {
             var lname = name.ToLower();
 
-            NPCs.Clear();
+            NPCs.Clear();            
             foreach (var npc in CachedNpcs)
             {                
                 if (npc.Name.ToLower().Contains(lname))
@@ -41,6 +41,8 @@ namespace EQEmu.Spawns
 
         public override void LookupByZone(string zone)
         {
+            NPCs.Clear();
+            ClearObjects();
             foreach (var npc in CachedNpcs)
             {
                 AddNPC(npc);

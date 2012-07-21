@@ -11,7 +11,14 @@
         <m:RibbonButton Label="Open File" LargeImageSource="Images/OpenFile.png" Click="RibbonButton_Click" />
         <m:RibbonButton Label="Save To File" LargeImageSource="Images/saveHS.png" Click="RibbonButton_Click_1" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Database">
+        <m:RibbonTextBox Label="Zone" Text="{Binding ZoneFilter}" />
+        <m:RibbonButton Label="View Query" x:Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
+    </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
         <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
+        <m:RibbonButton Label="Create" Command="{Binding CreateNpcCommand}" />
+        <m:RibbonButton Label="Delete" Command="{Binding RemoveNpcCommand}" />
+        <m:RibbonButton Label="Duplicate" Command="{Binding CopyNpcCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>
