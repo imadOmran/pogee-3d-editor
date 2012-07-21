@@ -20,6 +20,7 @@ using Microsoft.Win32;
 
 using ApplicationCore;
 using ApplicationCore.UserControls.Ribbon.Tabs;
+using ApplicationCore.UserControls;
 using ApplicationCore.ViewModels.Editors;
 
 namespace NpcTypePlugin
@@ -75,6 +76,13 @@ namespace NpcTypePlugin
             {
                 NpcEditViewModel.SaveXML(System.IO.Path.GetDirectoryName(sd.FileName));
             }
+        }
+
+        private void ViewQueryButton_Click(object sender, RoutedEventArgs e)
+        {
+            var sql = NpcEditViewModel.NpcManager.GetSQL();
+            var window = new TextWindow(sql);
+            window.ShowDialog();
         }
     }
 }

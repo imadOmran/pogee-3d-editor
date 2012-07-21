@@ -24,8 +24,12 @@ namespace NpcTypePlugin
         private INpcPropertyTemplate _selectedTemplate;
         private IEnumerable<Npc> _selectedNpcs;
         private Npc _selectedNpc;
+        private string _zoneFilter;
 
         private DelegateCommand _applyTemplateCommand;
+        private DelegateCommand _createNpcCommand;
+        private DelegateCommand _removeNpcCommand;
+        private DelegateCommand _copyNpcCommand;
 
         public NpcTypeEditViewModel(MySqlConnection connection, EQEmu.Database.QueryConfig config, NpcPropertyTemplateManager templates)
         {
@@ -127,6 +131,28 @@ namespace NpcTypePlugin
                 if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
                 NotifyPropertyChanged("SelectedNpc");
                 ApplyTemplateCommand.RaiseCanExecuteChanged();
+                RemoveNpcCommand.RaiseCanExecuteChanged();
+                CreateNpcCommand.RaiseCanExecuteChanged();
+                CopyNpcCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string ZoneFilter
+        {
+            get
+            {
+                return _zoneFilter;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _zoneFilter = value;
+                    _npcs.LookupByZone(_zoneFilter);                    
+                }
+                
+                NotifyPropertyChanged("ZoneFilter");
+                NotifyPropertyChanged("Npcs");
             }
         }
 
@@ -149,6 +175,93 @@ namespace NpcTypePlugin
                 }
 
                 return _applyTemplateCommand;
+            }
+        }
+
+        public DelegateCommand CreateNpcCommand
+        {
+            get
+            {
+                if (_createNpcCommand == null)
+                {
+                    _createNpcCommand = new DelegateCommand(
+                        x =>
+                        {
+                            var npc = _npcs.CreateNPC();
+                            npc.Created();
+                            _npcs.AddNPC(npc);
+                            SelectedNpc = npc;
+                        },
+                        y =>
+                        {
+                            return _npcs != null;
+                        });
+                }
+                return _createNpcCommand;
+            }
+        }
+
+        public DelegateCommand RemoveNpcCommand
+        {
+            get
+            {
+                if (_removeNpcCommand == null)
+                {
+                    _removeNpcCommand = new DelegateCommand(
+                        x =>
+                        {
+                            if (SelectedNpcs != null)
+                            {
+                                foreach (var npc in SelectedNpcs.ToArray())
+                                {
+                                    _npcs.RemoveNPC(npc);
+                                }
+                                SelectedNpc = null;
+                            }
+                            else
+                            {
+                                _npcs.RemoveNPC(SelectedNpc);
+                                SelectedNpc = null;
+                            }
+                            NotifyPropertyChanged("Npcs");
+                        },
+                        y =>
+                        {
+                            return _npcs != null && SelectedNpc != null;
+                        });
+                }
+                return _removeNpcCommand;
+            }
+        }
+
+        public DelegateCommand CopyNpcCommand
+        {
+            get
+            {
+                if (_copyNpcCommand == null)
+                {
+                    _copyNpcCommand = new DelegateCommand(
+                        x =>
+                        {
+                            if (SelectedNpcs != null)
+                            {
+                                foreach (var npc in SelectedNpcs)
+                                {
+                                    _npcs.AddNPC(npc.ShallowCopy());                                    
+                                }
+                            }
+                            else
+                            {
+                                _npcs.AddNPC(SelectedNpc.ShallowCopy());
+                            }
+
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null;
+                        });
+                }
+                return _copyNpcCommand;
             }
         }
 

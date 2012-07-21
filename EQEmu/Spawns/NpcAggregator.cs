@@ -130,6 +130,7 @@ namespace EQEmu.Spawns
                 {
                     //AddNPC(npc);
                     _cache.Add(npc);
+                    AddObject(npc);
                     npc.Created();
                     npc.InitConfig(_queryConfig);
                 }
