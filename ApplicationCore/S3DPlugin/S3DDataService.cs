@@ -105,6 +105,12 @@ namespace S3DPlugin
             _display3d.RenderMesh(new List<Mesh>() { mesh });
         }
 
+        public void RenderMeshes(IEnumerable<Mesh> meshes)
+        {
+            if (meshes == null) return;
+            _display3d.RenderMesh(meshes);
+        }
+
         public void RenderAll()
         {
             if (_display3d != null)

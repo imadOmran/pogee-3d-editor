@@ -107,8 +107,11 @@
     <Compile Include="Files\WLD\Fragments\Fragment.cs" />
     <Compile Include="Files\WLD\Fragments\Mesh.cs" />
     <Compile Include="Files\S3D\S3D.cs" />
+    <Compile Include="Files\WLD\Fragments\MeshReference.cs" />
     <Compile Include="Files\WLD\Fragments\ModelReference.cs" />
     <Compile Include="Files\WLD\Fragments\ObjectLocation.cs" />
+    <Compile Include="Files\WLD\Fragments\SkeletonTrackReference.cs" />
+    <Compile Include="Files\WLD\Fragments\SkeletonTrackSet.cs" />
     <Compile Include="Files\WLD\Structs.cs" />
     <Compile Include="Files\WLD\Fragments\BitmapInfo.cs" />
     <Compile Include="Files\WLD\Fragments\BitmapInfoReference.cs" />

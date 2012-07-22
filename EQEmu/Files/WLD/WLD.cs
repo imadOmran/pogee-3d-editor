@@ -78,6 +78,14 @@ namespace EQEmu.Files.WLD
             }
         }
 
+        public IEnumerable<ModelReference> Models
+        {
+            get
+            {
+                return _fragments.Where(x => x as ModelReference != null).Cast<ModelReference>();
+            }
+        }
+
         public IEnumerable<Texture> Textures
         {
             get
@@ -123,6 +131,30 @@ namespace EQEmu.Files.WLD
             get
             {
                 return _fragments.Where(x => x as ObjectLocation != null).Cast<ObjectLocation>();
+            }
+        }
+
+        public IEnumerable<MeshReference> MeshReferences
+        {
+            get
+            {
+                return _fragments.Where(x => x as MeshReference != null).Cast<MeshReference>();
+            }
+        }
+
+        public IEnumerable<SkeletonTrackReference> SkeletonTrackReferences
+        {
+            get
+            {
+                return _fragments.Where(x => x as SkeletonTrackReference != null).Cast<SkeletonTrackReference>();
+            }
+        }
+
+        public IEnumerable<SkeletonTrackSet> SkeletonTrackSet
+        {
+            get
+            {
+                return _fragments.Where(x => x as SkeletonTrackSet != null).Cast<SkeletonTrackSet>();
             }
         }
 
@@ -394,6 +426,24 @@ namespace EQEmu.Files.WLD
                         bitmapInfoRef.Handler(stream);
                         wld._fragments.Add(bitmapInfoRef);
                         break;
+                    case 0x09:
+                        break;
+                    case 0x10:
+                        var skelset = new SkeletonTrackSet(i, nameRef);
+                        skelset.Handler(stream);
+                        wld._fragments.Add(skelset);
+                        break;
+                    case 0x11:
+                        var skeltrackRef = new SkeletonTrackReference(i, nameRef);
+                        skeltrackRef.Handler(stream);
+                        wld._fragments.Add(skeltrackRef);
+                        break;
+                    case 0x14:
+                        var modelref = new ModelReference(i, nameRef);
+                        modelref.Handler(stream);
+                        wld._fragments.Add(modelref);
+                        modelref.MagicString = wld.GetStringAtHashIndex(modelref.MagicStringRef);
+                        break;
                     case 0x15:
                         var objlocation = new ObjectLocation(i, nameRef);
                         objlocation.Handler(stream);
@@ -401,6 +451,11 @@ namespace EQEmu.Files.WLD
                         break;
                     case 0x22:
                         //num_0x22++;
+                        break;
+                    case 0x2d:
+                        var meshref = new MeshReference(i, nameRef);
+                        meshref.Handler(stream);
+                        wld._fragments.Add(meshref);
                         break;
                     case 0x31:
                         var tlist = new TextureList(i, nameRef);
