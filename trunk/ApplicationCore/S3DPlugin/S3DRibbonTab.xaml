@@ -21,6 +21,13 @@
         </m:RibbonComboBox>
         <m:RibbonButton Label="Render All" Command="{Binding RenderAllCommand}" />
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Models">
+        <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" SelectionBoxWidth="250">
+            <m:RibbonGallery SelectedItem="{Binding SelectedModel}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding Models}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
+    </m:RibbonGroup>
     <m:RibbonGroup Header="Status">
         <StackPanel>
         <TextBlock Text="{Binding Path=LoadStatus.OperationDescription}" />
