@@ -431,16 +431,28 @@ namespace EQEmu.Files.WLD
                     case 0x10:
                         var skelset = new SkeletonTrackSet(i, nameRef);
                         skelset.Handler(stream);
+                        wld.GetStringAtHashIndex(0-skelset.FragmentNameRef);
                         wld._fragments.Add(skelset);
                         break;
                     case 0x11:
                         var skeltrackRef = new SkeletonTrackReference(i, nameRef);
-                        skeltrackRef.Handler(stream);
+                        skeltrackRef.Handler(stream);                        
                         wld._fragments.Add(skeltrackRef);
+                        break;
+                    case 0x12:
+                        var skelpiece = new SkeletonPieceTrack(i, nameRef);
+                        skelpiece.Handler(stream);
+                        wld._fragments.Add(skelpiece);
+                        break;
+                    case 0x13:
+                        var skelpref = new SkeletonPieceTrackReference(i, nameRef);
+                        skelpref.Handler(stream);
+                        wld._fragments.Add(skelpref);
                         break;
                     case 0x14:
                         var modelref = new ModelReference(i, nameRef);
                         modelref.Handler(stream);
+                        modelref.FragmentName = wld.GetStringAtHashIndex(0 - modelref.FragmentNameRef);
                         wld._fragments.Add(modelref);
                         modelref.MagicString = wld.GetStringAtHashIndex(modelref.MagicStringRef);
                         break;

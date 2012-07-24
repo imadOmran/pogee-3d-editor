@@ -69,9 +69,12 @@ namespace EQEmu.Files.WLD.Fragments
             {
                 stream.Read(barray, 0, size);
                 var entry1 = Functions.ByteArrayToStructure<SkeletonTrackSetEntry1>(barray);
+                List<int> skelTree = new List<int>();
                 for (int j = 0; j < entry1.entryCount; j++)
                 {
-                    stream.Seek(4, System.IO.SeekOrigin.Current);
+                    stream.Read(barray, 0, 4);
+                    skelTree.Add(BitConverter.ToInt32(barray, 0));
+                    //stream.Seek(4, System.IO.SeekOrigin.Current);
                 }
             }
 
