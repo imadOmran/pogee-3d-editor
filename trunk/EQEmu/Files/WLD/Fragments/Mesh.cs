@@ -63,6 +63,27 @@ namespace EQEmu.Files.WLD.Fragments
         }
     }
 
+    public class VertexPiece
+    {
+        public VertexPiece(int vertexCount, int skeletonSetIndex)
+        {
+            VertexCount = vertexCount;
+            SkeletonSetIndex = skeletonSetIndex;
+        }
+
+        public int VertexCount
+        {
+            get;
+            private set;
+        }
+
+        public int SkeletonSetIndex
+        {
+            get;
+            private set;
+        }
+    }
+
     public class Mesh : Fragment<Fragment36Struct>
     {
         private float _scale;
@@ -75,6 +96,7 @@ namespace EQEmu.Files.WLD.Fragments
         private List<Vertex> _vertices = new List<Vertex>();
         private List<Polygon> _polygons = new List<Polygon>();
         private List<PolyTexture> _polygonTextures = new List<PolyTexture>();
+        private List<VertexPiece> _vertexPieces = new List<VertexPiece>();
 
         public Mesh(int num,int name)
             : base(num,name)
@@ -176,7 +198,12 @@ namespace EQEmu.Files.WLD.Fragments
             BuildPolygons(barray);
 
             //vertexpiece skip
-            stream.Seek(4 * fragment.VertexPieceCount, SeekOrigin.Current);
+            barray = new byte[4];
+            for (int i = 0; i < fragment.VertexPieceCount; i++)
+            {                
+                stream.Read(barray, 0, 4);
+                _vertexPieces.Add(new VertexPiece(BitConverter.ToInt16(barray, 0), BitConverter.ToInt16(barray, 2)));
+            }
 
             size = Marshal.SizeOf(typeof(PolyTexture)) * PolygonTextureCount;
             barray = new byte[size];
@@ -212,6 +239,11 @@ namespace EQEmu.Files.WLD.Fragments
         public int PolygonTextureCount
         {
             get { return _numPolyTex; }
+        }
+
+        public IEnumerable<VertexPiece> VertexPieces
+        {
+            get { return _vertexPieces; }
         }
 
         private void BuildPolyTextures(byte[] polyTexs)

@@ -110,6 +110,8 @@
     <Compile Include="Files\WLD\Fragments\MeshReference.cs" />
     <Compile Include="Files\WLD\Fragments\ModelReference.cs" />
     <Compile Include="Files\WLD\Fragments\ObjectLocation.cs" />
+    <Compile Include="Files\WLD\Fragments\SkeletonPieceTrack.cs" />
+    <Compile Include="Files\WLD\Fragments\SkeletonPieceTrackReference.cs" />
     <Compile Include="Files\WLD\Fragments\SkeletonTrackReference.cs" />
     <Compile Include="Files\WLD\Fragments\SkeletonTrackSet.cs" />
     <Compile Include="Files\WLD\Structs.cs" />

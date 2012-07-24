@@ -202,6 +202,47 @@ namespace EQEmuDisplay3D
             RenderObjects();
         }
 
+        public void RenderModel(ModelReference model)
+        {
+            var wld = _wld;
+            List<MeshReference> meshrefs = new List<MeshReference>();
+            foreach (var refs in model.References)
+            {
+                var meshref = wld.MeshReferences.Where(x => x.FragmentNumber == refs).FirstOrDefault();
+                if (meshref != null)
+                {
+                    meshrefs.Add(meshref);
+                    continue;
+                }
+
+                var skel = wld.SkeletonTrackReferences.Where(x => x.FragmentNumber == refs).FirstOrDefault();
+                if (skel != null)
+                {
+                    var skelset = wld.SkeletonTrackSet.Where(x => x.FragmentNumber == skel.SkeletonTrackSetReference).FirstOrDefault();
+                    if (skelset != null)
+                    {
+                        foreach (var ms in skelset.MeshReferences)
+                        {
+                            var m = wld.MeshReferences.Where(x => x.FragmentNumber == ms).FirstOrDefault();
+                            if (m != null) meshrefs.Add(m);
+                        }
+                    }
+                }
+            }
+
+            List<Mesh> meshes = new List<Mesh>();
+            foreach (var m in meshrefs)
+            {
+                var mesh = wld.ZoneMeshes.Where(x => x.FragmentNumber == m.FragmentReference).FirstOrDefault();
+                if (mesh != null) meshes.Add(mesh);
+            }
+
+            if (meshes.Count > 0)
+            {
+                RenderMesh(meshes);                
+            }
+        }
+
         public void RenderMesh(IEnumerable<Mesh> meshes)
         {
             if (meshes == null) return;

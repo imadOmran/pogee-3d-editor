@@ -111,6 +111,12 @@ namespace S3DPlugin
             _display3d.RenderMesh(meshes);
         }
 
+        public void RenderModel(ModelReference model)
+        {
+            if (model == null) return;
+            _display3d.RenderModel(model);
+        }
+
         public void RenderAll()
         {
             if (_display3d != null)
