@@ -147,25 +147,27 @@ namespace EQEmu.Files.WLD.Fragments
             var tgroup = new Transform3DGroup();
 
             var root = _trackSet.Entries.ElementAt(index);
-            var frag = _wld.SkeletonPieces.FirstOrDefault(x => x.FragmentNumber == root.EntryStruct.fragment1);
-            if (frag != null)
+            var fragRef = _wld.SkeletonPieceReferences.FirstOrDefault(x => x.FragmentNumber == root.EntryStruct.fragment1 - 1);
+            if (fragRef != null)
             {
-                if (parentTransform != null)
+                var frag = _wld.SkeletonPieces.FirstOrDefault(x => x.FragmentNumber == fragRef.SkeletonPieceTrackRef);
+                if (frag != null)
                 {
-                    tgroup.Children.Add(parentTransform);
+                    if (parentTransform != null)
+                    {
+                        tgroup.Children.Add(parentTransform);
+                    }
+
+                    var shift = new TranslateTransform3D(frag.ShiftX, frag.ShiftY, frag.ShiftZ);
+                    tgroup.Children.Add(shift);
+
+                    //var xRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), frag.RotateXDegrees));
+                    //var yRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), frag.RotateYDegrees));
+                    //var zRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), frag.RotateZDegrees));
+                    //tgroup.Children.Add(xRotate);
+                    //tgroup.Children.Add(yRotate);
+                    //tgroup.Children.Add(zRotate);
                 }
-
-                var shift = new TranslateTransform3D(frag.ShiftX, frag.ShiftY, frag.ShiftZ);
-                tgroup.Children.Add(shift);
-
-                /*
-                var xRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), frag.RotateXDegrees));
-                var yRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), frag.RotateYDegrees));
-                var zRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), frag.RotateZDegrees));
-                tgroup.Children.Add(xRotate);
-                tgroup.Children.Add(yRotate);
-                tgroup.Children.Add(zRotate);
-                */
             }
 
             _transforms[index] = tgroup;
