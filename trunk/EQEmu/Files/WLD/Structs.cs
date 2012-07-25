@@ -60,10 +60,17 @@ namespace EQEmu.Files.WLD
     {
         private float _x, _y, _z;
         private float _u, _v;
+        private int _bodyPiece = -1;
 
         public Vertex(float x, float y, float z)
         {
             _x = x; _y = y; _z = z;
+        }
+
+        public int BodyPiece
+        {
+            get { return _bodyPiece; }
+            set { _bodyPiece = value; }
         }
 
         public float X
