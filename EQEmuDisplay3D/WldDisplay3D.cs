@@ -201,10 +201,11 @@ namespace EQEmuDisplay3D
             RenderMesh(_zoneMeshes);
             RenderObjects();
         }
-
+        
         public void RenderModel(ModelReference model)
         {
             var wld = _wld;
+            TrackAnimationBuilder animation = null;
             List<MeshReference> meshrefs = new List<MeshReference>();
             foreach (var refs in model.References)
             {
@@ -221,6 +222,8 @@ namespace EQEmuDisplay3D
                     var skelset = wld.SkeletonTrackSet.Where(x => x.FragmentNumber == skel.SkeletonTrackSetReference).FirstOrDefault();
                     if (skelset != null)
                     {
+                        animation = new TrackAnimationBuilder(skelset, _wld);
+
                         foreach (var ms in skelset.MeshReferences)
                         {
                             var m = wld.MeshReferences.Where(x => x.FragmentNumber == ms).FirstOrDefault();
@@ -239,11 +242,11 @@ namespace EQEmuDisplay3D
 
             if (meshes.Count > 0)
             {
-                RenderMesh(meshes);                
-            }
+                RenderMesh(meshes, animation);                
+            }            
         }
 
-        public void RenderMesh(IEnumerable<Mesh> meshes)
+        public void RenderMesh(IEnumerable<Mesh> meshes, TrackAnimationBuilder animation=null)
         {
             if (meshes == null) return;
             Model3DGroup group = Model as Model3DGroup;
@@ -301,6 +304,28 @@ namespace EQEmuDisplay3D
                     Point3D p1 = new Point3D(poly.V1.X, poly.V1.Y, poly.V1.Z);
                     Point3D p2 = new Point3D(poly.V2.X, poly.V2.Y, poly.V2.Z);
                     Point3D p3 = new Point3D(poly.V3.X, poly.V3.Y, poly.V3.Z);
+
+                    if (animation != null)
+                    {
+                        if (animation.SkeletonPieceTransforms.ContainsKey(poly.V1.BodyPiece))
+                        {
+                            var atrans = animation.SkeletonPieceTransforms[poly.V1.BodyPiece];
+                            p1 = atrans.Transform(p1);
+                        }
+
+                        if (animation.SkeletonPieceTransforms.ContainsKey(poly.V2.BodyPiece))
+                        {
+                            var atrans = animation.SkeletonPieceTransforms[poly.V2.BodyPiece];
+                            p2 = atrans.Transform(p2);
+                        }
+
+                        if (animation.SkeletonPieceTransforms.ContainsKey(poly.V3.BodyPiece))
+                        {
+                            var atrans = animation.SkeletonPieceTransforms[poly.V3.BodyPiece];
+                            p3 = atrans.Transform(p3);
+                        }
+                    }
+
                     var rotate = new RotateTransform3D();
                     rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
                     p1 = rotate.Transform(p1);

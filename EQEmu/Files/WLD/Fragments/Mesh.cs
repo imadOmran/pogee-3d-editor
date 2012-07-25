@@ -199,10 +199,18 @@ namespace EQEmu.Files.WLD.Fragments
 
             //vertexpiece skip
             barray = new byte[4];
+            int vertIndex = 0;
             for (int i = 0; i < fragment.VertexPieceCount; i++)
-            {                
+            {   
                 stream.Read(barray, 0, 4);
-                _vertexPieces.Add(new VertexPiece(BitConverter.ToInt16(barray, 0), BitConverter.ToInt16(barray, 2)));
+                var vp = new VertexPiece(BitConverter.ToInt16(barray, 0), BitConverter.ToInt16(barray, 2));
+                var range = _vertices.GetRange(vertIndex, vp.VertexCount);
+                foreach (var v in range)
+                {
+                    v.BodyPiece = vp.SkeletonSetIndex;                    
+                }
+                vertIndex += vp.VertexCount;
+                _vertexPieces.Add(vp);                
             }
 
             size = Marshal.SizeOf(typeof(PolyTexture)) * PolygonTextureCount;

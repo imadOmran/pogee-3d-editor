@@ -158,6 +158,22 @@ namespace EQEmu.Files.WLD
             }
         }
 
+        public IEnumerable<SkeletonPieceTrackReference> SkeletonPieceReferences
+        {
+            get
+            {
+                return _fragments.Where(x => x as SkeletonPieceTrackReference != null).Cast<SkeletonPieceTrackReference>();
+            }
+        }
+
+        public IEnumerable<SkeletonPieceTrack> SkeletonPieces
+        {
+            get
+            {
+                return _fragments.Where(x => x as SkeletonPieceTrack != null).Cast<SkeletonPieceTrack>();
+            }
+        }
+
         public string GetStringAtHashIndex(int num)
         {
             string val = "";
@@ -431,7 +447,7 @@ namespace EQEmu.Files.WLD
                     case 0x10:
                         var skelset = new SkeletonTrackSet(i, nameRef);
                         skelset.Handler(stream);
-                        wld.GetStringAtHashIndex(0-skelset.FragmentNameRef);
+                        skelset.FragmentName = wld.GetStringAtHashIndex(0-skelset.FragmentNameRef);
                         wld._fragments.Add(skelset);
                         break;
                     case 0x11:
@@ -447,6 +463,7 @@ namespace EQEmu.Files.WLD
                     case 0x13:
                         var skelpref = new SkeletonPieceTrackReference(i, nameRef);
                         skelpref.Handler(stream);
+                        //skelpref.FragmentName = wld.GetStringAtHashIndex(0 - skelpref.FragmentNameRef);
                         wld._fragments.Add(skelpref);
                         break;
                     case 0x14:
