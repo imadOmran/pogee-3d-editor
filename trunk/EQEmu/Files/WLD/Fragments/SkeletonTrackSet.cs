@@ -153,20 +153,20 @@ namespace EQEmu.Files.WLD.Fragments
                 var frag = _wld.SkeletonPieces.FirstOrDefault(x => x.FragmentNumber == fragRef.SkeletonPieceTrackRef);
                 if (frag != null)
                 {
+                    var shift = new TranslateTransform3D(frag.ShiftX, frag.ShiftY, frag.ShiftZ);
+                    tgroup.Children.Add(shift);
+
+                    var xRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), frag.RotateXDegrees));
+                    var yRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), frag.RotateYDegrees));
+                    var zRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), frag.RotateZDegrees));
+                    tgroup.Children.Add(xRotate);
+                    tgroup.Children.Add(yRotate);
+                    tgroup.Children.Add(zRotate);
+
                     if (parentTransform != null)
                     {
                         tgroup.Children.Add(parentTransform);
                     }
-
-                    var shift = new TranslateTransform3D(frag.ShiftX, frag.ShiftY, frag.ShiftZ);
-                    tgroup.Children.Add(shift);
-
-                    //var xRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(1, 0, 0), frag.RotateXDegrees));
-                    //var yRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), frag.RotateYDegrees));
-                    //var zRotate = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), frag.RotateZDegrees));
-                    //tgroup.Children.Add(xRotate);
-                    //tgroup.Children.Add(yRotate);
-                    //tgroup.Children.Add(zRotate);
                 }
             }
 
