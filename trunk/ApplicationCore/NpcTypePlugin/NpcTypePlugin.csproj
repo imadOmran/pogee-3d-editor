@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HelixToolkit">
+      <HintPath>..\..\Helix\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2012.1.1.33275, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Helix\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\UnityAutoRegistration.1.0-bin\UnityAutoRegistration.1.0-bin\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -68,6 +75,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EQEmuDisplay3D\EQEmuDisplay3D.csproj">
+      <Project>{4443C51A-26CC-426A-B0CE-C59634C8BF26}</Project>
+      <Name>EQEmuDisplay3D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\EQEmu\EQEmu.csproj">
       <Project>{FF3C817F-BA5C-4850-9CB9-2376DAF69DEF}</Project>
       <Name>EQEmu</Name>

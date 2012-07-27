@@ -2,20 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Collections.ObjectModel;
+using System.Windows.Media.Media3D;
 
 using MySql.Data.MySqlClient;
+
+using HelixToolkit.Wpf;
 
 using ApplicationCore;
 using ApplicationCore.ViewModels;
 using ApplicationCore.ViewModels.Editors;
 
 using EQEmu.Spawns;
+using EQEmu.Files.S3D;
+using EQEmu.Files.WLD;
 using EQEmu.Database;
+using EQEmuDisplay3D;
 
 namespace NpcTypePlugin
 {
     public class NpcTypeEditViewModel : ViewModelBase, IEditorViewModel
     {
+        public enum ModelSource
+        {
+            Zone,
+            Global
+        }
+
         private readonly MySqlConnection _connection;
         private readonly QueryConfig _config;
         private readonly NpcPropertyTemplateManager _templates;
@@ -26,16 +40,28 @@ namespace NpcTypePlugin
         private Npc _selectedNpc;
         private string _zoneFilter;
 
+        private WldDisplay3D _globalChrDisplay3d;
+        private WldDisplay3D _zoneChrDisplay3d;
+
+        private WLD _globalChr;
+        private WLD _zoneChr;
+
+        private ObservableCollection<object> _models = new ObservableCollection<object>();
+
         private DelegateCommand _applyTemplateCommand;
         private DelegateCommand _createNpcCommand;
         private DelegateCommand _removeNpcCommand;
         private DelegateCommand _copyNpcCommand;
+
+        private Dictionary<Npc.TypeRace, string> _modelMappings;
 
         public NpcTypeEditViewModel(MySqlConnection connection, EQEmu.Database.QueryConfig config, NpcPropertyTemplateManager templates)
         {
             _connection = connection;
             _config = config;
             _templates = templates;
+
+            _modelMappings = Npc.LoadModelMappings("modelmapping.xml");
 
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
             {
@@ -48,12 +74,87 @@ namespace NpcTypePlugin
             _npcs.Created();
 
             _npcs.NPCs.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(NPCs_CollectionChanged);
+            Models.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Models_CollectionChanged);
+        }
+
+        void Models_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            NotifyPropertyChanged("Models");
         }
 
         void NPCs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             NotifyPropertyChanged("Npcs");
-        }        
+        }
+
+        public ObservableCollection<object> Models
+        {
+            get { return _models; }
+            private set
+            {
+                _models = value;
+                NotifyPropertyChanged("Models");
+            }
+        }
+
+        public void OpenModels(ModelSource source, string path)
+        {
+            var s3d = S3D.Load(path);
+            var wld = s3d.Files.FirstOrDefault(x => x.Name.Contains(".wld"));
+            if (wld != null)
+            {
+                if (source == ModelSource.Global)
+                {
+                    using(var ms = new MemoryStream(wld.Bytes))
+                    {
+                        Models.Clear();
+
+                        _globalChr = WLD.Load(ms);
+                        _globalChr.Files = s3d;
+                        _globalChrDisplay3d = new WldDisplay3D(_globalChr);
+                        _globalChrDisplay3d.UpdateAll();
+
+                        System.Threading.ThreadPool.QueueUserWorkItem(x =>
+                        {
+                            _globalChr.ResolveMeshNames();
+                        });
+
+                        Models.Add(new DefaultLights());
+                        Models.Add(new CoordinateSystemVisual3D());
+                        Models.Add(
+                            new ModelVisual3D()
+                            {
+                                Content= _globalChrDisplay3d.Model
+                            });
+                    }
+                }
+                else if (source == ModelSource.Zone)
+                {
+                    using (var ms = new MemoryStream(wld.Bytes))
+                    {
+                        Models.Clear();
+
+                        _zoneChr = WLD.Load(ms);
+                        _zoneChr.Files = s3d;
+                        _zoneChrDisplay3d = new WldDisplay3D(_zoneChr);
+                        _zoneChrDisplay3d.UpdateAll();
+
+                        System.Threading.ThreadPool.QueueUserWorkItem(x =>
+                        {
+                            _zoneChr.ResolveMeshNames();
+                        });
+
+                        Models.Add(new DefaultLights());
+                        Models.Add(new CoordinateSystemVisual3D());
+                        Models.Add(
+                            new ModelVisual3D()
+                            {
+                                Content = _zoneChrDisplay3d.Model
+                            });
+                    }
+                }
+            }
+        }
 
         public void OpenXML(string file)
         {
@@ -129,6 +230,36 @@ namespace NpcTypePlugin
             {
                 _selectedNpc = value;
                 if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
+
+                if (_selectedNpc != null)
+                {
+                    if (_modelMappings.ContainsKey(_selectedNpc.Race))
+                    {
+                        var modelStr = _modelMappings[_selectedNpc.Race];
+                        if (modelStr.Contains('#'))
+                        {
+                            if (_selectedNpc.Gender == Npc.TypeGender.Female)
+                            {
+                                modelStr = modelStr.Replace('#', 'F');
+                            }
+                            else
+                            {
+                                modelStr = modelStr.Replace('#', 'M');
+                            }
+                        }
+
+                        if (_zoneChrDisplay3d != null)
+                        {
+                            _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                        }
+
+                        if (_globalChrDisplay3d != null)
+                        {
+                            _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                        }
+                    }
+                }
+
                 NotifyPropertyChanged("SelectedNpc");
                 ApplyTemplateCommand.RaiseCanExecuteChanged();
                 RemoveNpcCommand.RaiseCanExecuteChanged();

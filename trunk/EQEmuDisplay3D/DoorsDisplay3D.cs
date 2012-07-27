@@ -181,9 +181,9 @@ namespace EQEmuDisplay3D
                 {
                     var builder = new MeshBuilder();
                     var transforms = dr.GetTransforms();
-                    if (dr.Polygons.ElementAt(0).Image != null)
+                    if (dr.Polygons.ElementAt(0).BitmapInfo != null)
                     {
-                        var img = dr.Polygons.ElementAt(0).Image;
+                        var img = dr.Polygons.ElementAt(0).BitmapInfo.Image;
                         var brush = new System.Windows.Media.ImageBrush(img);
                         brush.ViewportUnits = System.Windows.Media.BrushMappingMode.Absolute;
                         brush.TileMode = System.Windows.Media.TileMode.Tile;

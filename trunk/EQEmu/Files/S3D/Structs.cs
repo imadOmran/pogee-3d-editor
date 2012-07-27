@@ -11,6 +11,11 @@ namespace EQEmu.Files.S3D
         public string Name { get; set; }
         public PFSMeta Meta { get; set; }
         public byte[] Bytes { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        } 
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

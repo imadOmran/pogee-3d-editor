@@ -201,8 +201,17 @@ namespace EQEmuDisplay3D
             RenderMesh(_zoneMeshes);
             RenderObjects();
         }
+
+        public void RenderModel(string name,int textureNumber=0,int headNumber=0)
+        {
+            var model = _wld.Models.FirstOrDefault(x => x.FragmentName.Substring(0, 3).ToLower() == name.ToLower());
+            if (model != null)
+            {
+                RenderModel(model, textureNumber, headNumber);
+            }
+        }
         
-        public void RenderModel(ModelReference model)
+        public void RenderModel(ModelReference model,int textureNumber=0,int headNumber=0)
         {
             var wld = _wld;
             TrackAnimationBuilder animation = null;
@@ -236,17 +245,29 @@ namespace EQEmuDisplay3D
             List<Mesh> meshes = new List<Mesh>();
             foreach (var m in meshrefs)
             {
-                var mesh = wld.ZoneMeshes.Where(x => x.FragmentNumber == m.FragmentReference).FirstOrDefault();
+                var mesh = wld.ZoneMeshes.FirstOrDefault(x => x.FragmentNumber == m.FragmentReference);
+                if (headNumber > 0)
+                {
+                    //see if it's a head mesh
+                    int pos = mesh.FragmentName.IndexOf("HE00");
+                    if (pos > 0)
+                    {
+                        string hNum = String.Format("HE{0:d2}",headNumber);
+                        string hMeshName = mesh.FragmentName.Substring(0, pos) + hNum + mesh.FragmentName.Substring(pos + hNum.Length);
+                        var hMesh = wld.ZoneMeshes.FirstOrDefault(x => x.FragmentName == hMeshName);
+                        if (hMesh != null) mesh = hMesh;                        
+                    }                    
+                }
                 if (mesh != null) meshes.Add(mesh);
             }
 
             if (meshes.Count > 0)
             {
-                RenderMesh(meshes, animation);                
+                RenderMesh(meshes, animation,textureNumber);                
             }            
         }
 
-        public void RenderMesh(IEnumerable<Mesh> meshes, TrackAnimationBuilder animation=null)
+        public void RenderMesh(IEnumerable<Mesh> meshes, TrackAnimationBuilder animation=null, int textureNum=0)
         {
             if (meshes == null) return;
             Model3DGroup group = Model as Model3DGroup;
@@ -258,16 +279,16 @@ namespace EQEmuDisplay3D
             {
                 foreach (var p in mesh.Polygons)
                 {
-                    if (p.Image != null)
+                    if (p.BitmapInfo != null)
                     {
-                        if (polysbyTex.ContainsKey(p.Image))
+                        if (polysbyTex.ContainsKey(p.BitmapInfo.Image))
                         {
-                            polysbyTex[p.Image].Add(p);
+                            polysbyTex[p.BitmapInfo.Image].Add(p);
                         }
                         else
                         {
-                            polysbyTex[p.Image] = new List<EQEmu.Files.WLD.Polygon>();
-                            polysbyTex[p.Image].Add(p);
+                            polysbyTex[p.BitmapInfo.Image] = new List<EQEmu.Files.WLD.Polygon>();
+                            polysbyTex[p.BitmapInfo.Image].Add(p);
                         }
                     }
                     else
@@ -283,10 +304,27 @@ namespace EQEmuDisplay3D
                 MeshBuilder builder = new MeshBuilder();
                 if (mat == null)
                 {
-                    if (polytex.Value.ElementAt(0).Image != null)
+                    if (polytex.Value.ElementAt(0).BitmapInfo != null)
                     {
                         //mat = HelixToolkit.Wpf.MaterialHelper.CreateImageMaterial(polytex.Value.ElementAt(0).Image, 100.0);
-                        var img = polytex.Value.ElementAt(0).Image;
+                        BitmapImage img = polytex.Value.ElementAt(0).BitmapInfo.Image;                        
+                        if (textureNum > 0)
+                        {
+                            string textureStr = "";
+                            string baseTexture = polytex.Value.ElementAt(0).BitmapInfo.Name;
+
+                            textureStr = String.Format("{0:d2}",textureNum);
+
+                            var index = baseTexture.IndexOf("00");
+                            if (index > 0)
+                            {
+                                textureStr = baseTexture.Substring(0, index) + textureStr + baseTexture.Substring(index + textureStr.Length);
+                                if (_wld.ImageMapping.ContainsKey(textureStr))
+                                {
+                                    img = _wld.ImageMapping[textureStr];
+                                }
+                            }
+                        }
                         var brush = new System.Windows.Media.ImageBrush(img);
                         brush.ViewportUnits = System.Windows.Media.BrushMappingMode.Absolute;
                         //brush.TileMode

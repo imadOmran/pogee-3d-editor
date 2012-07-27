@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
+using System.Xml.Linq;
 
 using MySql.Data.MySqlClient;
 
@@ -13,6 +14,29 @@ namespace EQEmu.Spawns
 {
     public class Npc : Database.DatabaseObject
     {
+        public static Dictionary<TypeRace, string> LoadModelMappings(string file)
+        {
+            Dictionary<Npc.TypeRace, string> mapping = new Dictionary<TypeRace, string>();
+
+            var doc = XDocument.Load(file);
+            if (doc.Root.Name != "mappings") return null;
+
+            foreach (var race in doc.Root.Elements("race"))
+            {
+                var name = race.Attribute("name");
+                string enumStr = name.Value;
+
+                Npc.TypeRace enumValue = 0;
+                var succeeded = Enum.TryParse<Npc.TypeRace>(enumStr, out enumValue);
+                if (!succeeded) continue;
+
+                var modelName = race.Value;
+                mapping[enumValue] = modelName;
+            }
+
+            return mapping;
+        }
+
         public static void SetNPCProperties(ref Npc npc,ZoneEntryStruct data)
         {
             npc.Name = data.SpawnName;

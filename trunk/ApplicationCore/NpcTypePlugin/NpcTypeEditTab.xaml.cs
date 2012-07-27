@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows.Media.Media3D;
 
 using Microsoft.Win32;
 
@@ -56,6 +57,28 @@ namespace NpcTypePlugin
             viewModel.TemplateAppliedToNpc += new TemplateApplied(viewModel_TemplateAppliedToNpc);
 
             DataGrid.SelectedCellsChanged += new SelectedCellsChangedEventHandler(DataGrid_SelectedCellsChanged);
+
+            View3D.PanGesture = new MouseGesture()
+            {
+                MouseAction = MouseAction.MiddleClick
+            };
+            View3D.CameraInertiaFactor = 0.2;
+
+            View3D.Camera = new PerspectiveCamera()
+            {
+                Position = new Point3D(0, 0, 0),
+                FieldOfView = 45,
+                UpDirection = new Vector3D(0, 0, 1),
+                LookDirection = new Vector3D(0, 0, 0)
+            };
+
+            this.Loaded += new RoutedEventHandler(NpcTypeEditTab_Loaded);
+        }
+
+        void NpcTypeEditTab_Loaded(object sender, RoutedEventArgs e)
+        {
+            View3D.ResetCamera();
+            this.Loaded -= NpcTypeEditTab_Loaded;
         }
 
         void viewModel_TemplateAppliedToNpc(object sender, TemplateAppliedEventArgs e)

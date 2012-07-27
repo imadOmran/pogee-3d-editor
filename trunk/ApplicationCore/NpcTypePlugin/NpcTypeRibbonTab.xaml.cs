@@ -84,5 +84,25 @@ namespace NpcTypePlugin
             var window = new TextWindow(sql);
             window.ShowDialog();
         }
+
+        private void OpenGlobalModelButton_Click(object sender, RoutedEventArgs e)
+        {
+            var od = new OpenFileDialog();
+            if ((bool)od.ShowDialog())
+            {
+                var file = od.FileName;
+                NpcEditViewModel.OpenModels(NpcTypeEditViewModel.ModelSource.Global, file);
+            }
+        }
+
+        private void OpenZoneModelButton_Click(object sender, RoutedEventArgs e)
+        {
+            var od = new OpenFileDialog();
+            if ((bool)od.ShowDialog())
+            {
+                var file = od.FileName;
+                NpcEditViewModel.OpenModels(NpcTypeEditViewModel.ModelSource.Zone, file);
+            }
+        }
     }
 }

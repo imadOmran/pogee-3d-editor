@@ -146,6 +146,27 @@ namespace EQEmu.Files.WLD
         public short solid, v1, v2, v3;
     };
 
+    public class BitmapImageInfo
+    {
+        public BitmapImageInfo(BitmapImage image, string name)
+        {
+            Image = image;
+            Name = name;
+        }
+
+        public BitmapImage Image
+        {
+            get;
+            private set;
+        }
+
+        public string Name
+        {
+            get;
+            private set;
+        }
+    }
+
     public class Polygon
     {
         private bool _solid;
@@ -153,7 +174,13 @@ namespace EQEmu.Files.WLD
         private Vertex _v2;
         private Vertex _v3;
 
-        public BitmapImage Image
+        //public BitmapImage Image
+        //{
+        //    get;
+        //    set;
+        //}
+
+        public BitmapImageInfo BitmapInfo
         {
             get;
             set;

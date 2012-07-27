@@ -68,5 +68,41 @@ namespace S3DPlugin
                 e(this, new ApplicationCore.UserControls.ObjectSelectedEventArgs(obj));
             }
         }
+
+        private void TextureUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = S3DViewModel as S3DRibbonTabViewModel;
+            if (vm != null)
+            {
+                vm.TextureNumber += 1;
+            }
+        }
+
+        private void TextureDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = S3DViewModel as S3DRibbonTabViewModel;
+            if (vm != null && vm.TextureNumber > 0)
+            {
+                vm.TextureNumber -= 1;
+            }
+        }
+
+        private void HeadUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = S3DViewModel as S3DRibbonTabViewModel;
+            if (vm != null)
+            {
+                vm.HeadNumber += 1;
+            }
+        }
+
+        private void HeadDownButton_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = S3DViewModel as S3DRibbonTabViewModel;
+            if (vm != null && vm.HeadNumber > 0)
+            {
+                vm.HeadNumber -= 1;
+            }
+        }
     }
 }
