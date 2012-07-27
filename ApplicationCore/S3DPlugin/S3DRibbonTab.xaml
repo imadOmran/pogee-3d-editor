@@ -10,8 +10,17 @@
     <m:RibbonGroup Header="File">
         <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" Command="{Binding OpenCommand}" />
     </m:RibbonGroup>
-    <m:RibbonGroup Header="Properties">
+    <!--<m:RibbonGroup Header="Properties">
         <TextBlock Text="{Binding Triangles,StringFormat=Triangles {0}}" />        
+    </m:RibbonGroup>-->
+    <m:RibbonGroup Header="Archive">
+        <m:RibbonButton Label="Open" LargeImageSource="Images/OpenFile.png" />
+        <m:RibbonButton Label="Save As" LargeImageSource="Images/OpenFile.png" Command="{Binding SaveSelectedFileCommand}" />
+        <m:RibbonComboBox HorizontalAlignment="Right" Label="Files" SelectionBoxWidth="100">
+            <m:RibbonGallery SelectedItem="{Binding SelectedFile}">
+                <m:RibbonGalleryCategory ItemsSource="{Binding Files}" />
+            </m:RibbonGallery>
+        </m:RibbonComboBox>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Meshes">
         <m:RibbonComboBox HorizontalAlignment="Right" Label="Meshes" SelectionBoxWidth="250">
@@ -27,6 +36,20 @@
                 <m:RibbonGalleryCategory ItemsSource="{Binding Models}" />
             </m:RibbonGallery>
         </m:RibbonComboBox>
+        <StackPanel Orientation="Horizontal">
+            <m:RibbonTextBox VerticalAlignment="Center"  Label="Texture" Text="{Binding TextureNumber}" />
+            <StackPanel VerticalAlignment="Center">
+                <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="TextureUpButton" Click="TextureUpButton_Click" />
+                <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="TextureDownButton" Click="TextureDownButton_Click" />
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <m:RibbonTextBox VerticalAlignment="Center"  Label="Head" Text="{Binding HeadNumber}" />
+            <StackPanel VerticalAlignment="Center">
+                <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="HeadUpButton" Click="HeadUpButton_Click" />
+                <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="HeadDownButton" Click="HeadDownButton_Click" />
+            </StackPanel>
+        </StackPanel>
     </m:RibbonGroup>
     <m:RibbonGroup Header="Status">
         <StackPanel>

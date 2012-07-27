@@ -15,6 +15,10 @@
         <m:RibbonTextBox Label="Zone" Text="{Binding ZoneFilter}" />
         <m:RibbonButton Label="View Query" x:Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
     </m:RibbonGroup>
+    <m:RibbonGroup Header="Models">
+        <m:RibbonButton Label="Open Global" ToolTip="ie. global_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenGlobalModelButton" Click="OpenGlobalModelButton_Click" />
+        <m:RibbonButton Label="Open Zone" ToolTip="ie. mistmoore_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenZoneModelButton" Click="OpenZoneModelButton_Click" />
+    </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
         <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
         <m:RibbonButton Label="Create" Command="{Binding CreateNpcCommand}" />

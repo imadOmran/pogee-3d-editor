@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Microsoft.Practices.Unity;
 using Microsoft.Win32;
@@ -9,6 +10,7 @@ using Microsoft.Win32;
 using ApplicationCore;
 using ApplicationCore.ViewModels.Editors;
 
+using EQEmu.Files.S3D;
 using EQEmu.Files.WLD;
 using EQEmu.Files.WLD.Fragments;
 
@@ -17,6 +19,12 @@ namespace S3DPlugin
     public class S3DRibbonTabViewModel : S3DViewModelBase
     {
         private DelegateCommand _renderAllCommand;
+        private DelegateCommand _saveSelectedFileCommand;        
+
+        private ArchiveFile _selectedFile;
+
+        private int _modelTextureNumber = 0;
+        private int _modelHeadNumber = 0;
 
         public S3DRibbonTabViewModel([Dependency("S3DDataService")] S3DDataService _service)
             : base(_service)
@@ -44,6 +52,7 @@ namespace S3DPlugin
                     NotifyPropertyChanged("ZoneMeshes");
                     NotifyPropertyChanged("Models");
                     NotifyPropertyChanged("WLDFiles");
+                    NotifyPropertyChanged("Files");
                     RenderAllCommand.RaiseCanExecuteChanged();
                     break;
                 case "Status":
@@ -61,12 +70,64 @@ namespace S3DPlugin
             set;
         }
 
+        public int TextureNumber
+        {
+            get { return _modelTextureNumber; }
+            set
+            {
+                _modelTextureNumber = value;
+                if (SelectedModel != null) SelectedModel = SelectedModel;
+                NotifyPropertyChanged("TextureNumber");
+            }
+        }
+
+        public int HeadNumber
+        {
+            get { return _modelHeadNumber; }
+            set
+            {
+                _modelHeadNumber = value;
+                if (SelectedModel != null) SelectedModel = SelectedModel;
+                NotifyPropertyChanged("HeadNumber");
+            }
+        }
+
         public DelegateCommand RenderAllCommand
         {
             get { return _renderAllCommand; }
             set
             {
                 _renderAllCommand = value;
+            }
+        }
+
+        public DelegateCommand SaveSelectedFileCommand
+        {
+            get
+            {
+                if (_saveSelectedFileCommand == null)
+                {
+                    _saveSelectedFileCommand = new DelegateCommand(
+                        x =>
+                        {
+                            var sd = new SaveFileDialog();
+                            sd.FileName = _selectedFile.Name;
+                            if ((bool)sd.ShowDialog())
+                            {
+                                using (var fs = new FileStream(sd.FileName, FileMode.Create))
+                                {
+                                    fs.Write(_selectedFile.Bytes, 0, _selectedFile.Bytes.Count());
+                                    fs.Close();
+                                }
+                            }
+                        },
+                        y =>
+                        {
+                            return SelectedFile != null;
+                        });
+
+                }
+                return _saveSelectedFileCommand;
             }
         }
                 
@@ -100,6 +161,29 @@ namespace S3DPlugin
             }
         }
 
+        public ArchiveFile SelectedFile
+        {
+            get { return _selectedFile; }
+            set
+            {
+                _selectedFile = value;              
+                NotifyPropertyChanged("SelectedFile");
+                SaveSelectedFileCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public IEnumerable<ArchiveFile> Files
+        {
+            get
+            {
+                if (S3DService != null && S3DService.S3DArchive != null)
+                {
+                    return S3DService.S3DArchive.Files;
+                }
+                else return null;
+            }
+        }
+
         public IEnumerable<Mesh> ZoneMeshes
         {
             get
@@ -122,7 +206,7 @@ namespace S3DPlugin
 
                 if (_selectedModel != null)
                 {
-                    S3DService.RenderModel(value);
+                    S3DService.RenderModel(value, _modelTextureNumber, _modelHeadNumber);
                 }
 
                 NotifyPropertyChanged("SelectedModel");

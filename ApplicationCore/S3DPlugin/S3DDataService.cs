@@ -50,6 +50,7 @@ namespace S3DPlugin
         private WLD _wld = null;
         private WLD _objectLocations = null;
         private WLD _objects = null;
+        private S3D _archive = null;
 
         private IEnumerable<WLD> _wlds = null;
 
@@ -99,6 +100,11 @@ namespace S3DPlugin
             }
         }
 
+        public S3D S3DArchive
+        {
+            get { return _archive; }
+        }
+
         public void RenderMesh(EQEmu.Files.WLD.Fragments.Mesh mesh)
         {
             if (mesh == null) return;
@@ -111,10 +117,10 @@ namespace S3DPlugin
             _display3d.RenderMesh(meshes);
         }
 
-        public void RenderModel(ModelReference model)
+        public void RenderModel(ModelReference model,int textureNumber,int headNumber=0)
         {
             if (model == null) return;
-            _display3d.RenderModel(model);
+            _display3d.RenderModel(model, textureNumber, headNumber);
         }
 
         public void RenderAll()
@@ -166,6 +172,8 @@ namespace S3DPlugin
                         {
                             return;
                         }
+
+                        _archive = s3d;
 
                         var filename = System.IO.Path.GetFileName(file);
                         int period = filename.IndexOf('.', 0);

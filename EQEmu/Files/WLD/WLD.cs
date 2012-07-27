@@ -126,6 +126,14 @@ namespace EQEmu.Files.WLD
             }
         }
 
+        public Dictionary<string, BitmapImage> ImageMapping
+        {
+            get
+            {
+                return _bitmaps;
+            }
+        }
+
         public IEnumerable<ObjectLocation> ObjectLocations
         {
             get
@@ -219,35 +227,70 @@ namespace EQEmu.Files.WLD
                         if (name == null || fileNames.Exists(x => x == name.File)) continue;
                         fileNames.Add(name.File);
                     }
-
-                    //now create the bitmaps
                 }
             }
 
-            foreach (var f in fileNames.Where(x => x.ToLower().Contains(".bmp")))
+            //foreach (var f in fileNames.Where(x => x.ToLower().Contains(".bmp")))
+            //{
+            //    var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
+            //    if (img == null) continue;
+            //    var bmp = new BitmapImage();
+            //    bmp.CacheOption = BitmapCacheOption.OnLoad;
+
+            //    var ms = new MemoryStream(img.Bytes);
+            //    bmp.BeginInit();
+            //    bmp.StreamSource = ms;
+            //    bmp.EndInit();
+            //    bmp.Freeze();
+            //    _bitmaps[f.ToLower()] = bmp;
+            //}
+
+            foreach(var f in Files.Files.Where(x => x.Name.ToLower().Contains(".bmp")) )
             {
-                var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
-                if (img == null) continue;
+                //var img = Files.Files.FirstOrDefault(x => x.Name == f.Name.ToLower());
+                //if (img == null) continue;
                 var bmp = new BitmapImage();
                 bmp.CacheOption = BitmapCacheOption.OnLoad;
 
-                var ms = new MemoryStream(img.Bytes);
+                var ms = new MemoryStream(f.Bytes);
                 bmp.BeginInit();
                 bmp.StreamSource = ms;
                 bmp.EndInit();
                 bmp.Freeze();
-                _bitmaps[f.ToLower()] = bmp;
+                _bitmaps[f.Name.ToLower()] = bmp;
             }
 
-            foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
+            //foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
+            //{
+            //    //var tmpdir = Environment.GetEnvironmentVariable("TEMP") + "\\tmpimages";
+            //    //Directory.CreateDirectory(tmpdir);
+
+            //    var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
+            //    if (img == null) continue;
+
+            //    var bytes = img.Bytes;
+
+            //    using (var ms = new MemoryStream(bytes))
+            //    {
+            //        var converted = new MemoryStream();
+            //        var dib = FreeImage.LoadFromStream(ms);
+            //        FreeImage.FlipVertical(dib);
+            //        FreeImage.SaveToStream(dib, converted, FREE_IMAGE_FORMAT.FIF_BMP);
+
+            //        converted.Seek(0, SeekOrigin.Begin);
+            //        var bmp = new BitmapImage();
+            //        bmp.CacheOption = BitmapCacheOption.OnLoad;
+            //        bmp.BeginInit();
+            //        bmp.StreamSource = converted;
+            //        bmp.EndInit();
+            //        bmp.Freeze();
+            //        _bitmaps[f.ToLower()] = bmp;
+            //    }
+            //}
+
+            foreach (var f in Files.Files.Where(x => x.Name.ToLower().Contains(".dds")))
             {
-                var tmpdir = Environment.GetEnvironmentVariable("TEMP") + "\\tmpimages";
-                Directory.CreateDirectory(tmpdir);
-
-                var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
-                if (img == null) continue;
-
-                var bytes = img.Bytes;
+                var bytes = f.Bytes;
 
                 using (var ms = new MemoryStream(bytes))
                 {
@@ -263,7 +306,7 @@ namespace EQEmu.Files.WLD
                     bmp.StreamSource = converted;
                     bmp.EndInit();
                     bmp.Freeze();
-                    _bitmaps[f.ToLower()] = bmp;
+                    _bitmaps[f.Name.ToLower()] = bmp;
                 }
             }
 
@@ -274,12 +317,13 @@ namespace EQEmu.Files.WLD
                     //p.Image = GetImage(TextureLists.ElementAt(0), p.TextureListIndex);
                     var tlist = TextureLists.FirstOrDefault(x => x.FragmentNumber == m.FragmentReference);
                     if (tlist == null) continue;
-                    p.Image = GetImage(tlist, p.TextureListIndex);
+                    p.BitmapInfo = GetImage(tlist, p.TextureListIndex);
+                    //p.Image = GetImage(tlist, p.TextureListIndex);
                 }
             }
         }
 
-        public BitmapImage GetImage(TextureList list, int index)
+        public BitmapImageInfo GetImage(TextureList list, int index)
         {
             var textIndex = list.TextureReference.ElementAt(index);
             var texture = Textures.FirstOrDefault(x => x.FragmentNumber == textIndex);
@@ -298,7 +342,7 @@ namespace EQEmu.Files.WLD
 
                 if (_bitmaps.ContainsKey(name.File.ToLower()))
                 {
-                    return _bitmaps[name.File.ToLower()];
+                    return new BitmapImageInfo(_bitmaps[name.File.ToLower()],name.File.ToLower());
                 }
                 else return null;
             }
