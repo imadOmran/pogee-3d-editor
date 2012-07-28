@@ -316,6 +316,8 @@ namespace EQEmuDisplay3D
                             textureStr = String.Format("{0:d2}",textureNum);
 
                             var index = baseTexture.IndexOf("00");
+                            if (index < 0) index = baseTexture.IndexOf("01");
+
                             if (index > 0)
                             {
                                 textureStr = baseTexture.Substring(0, index) + textureStr + baseTexture.Substring(index + textureStr.Length);

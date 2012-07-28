@@ -30,6 +30,9 @@ namespace NpcTypePlugin
             Global
         }
 
+        private int _selectedNpcTexture = 0;
+        private int _selectedNpcHead = 0;
+
         private readonly MySqlConnection _connection;
         private readonly QueryConfig _config;
         private readonly NpcPropertyTemplateManager _templates;
@@ -52,6 +55,11 @@ namespace NpcTypePlugin
         private DelegateCommand _createNpcCommand;
         private DelegateCommand _removeNpcCommand;
         private DelegateCommand _copyNpcCommand;
+
+        private DelegateCommand _incrementTextureCommand;
+        private DelegateCommand _decrementTextureCommand;
+        private DelegateCommand _incrementHeadCommand;
+        private DelegateCommand _decrementHeadCommand;
 
         private Dictionary<Npc.TypeRace, string> _modelMappings;
 
@@ -203,6 +211,32 @@ namespace NpcTypePlugin
         {
             get { return _npcs.NPCs; }
         }
+
+        public int SelectedNpcTexture
+        {
+            get { return _selectedNpcTexture; }
+            set
+            {
+                _selectedNpcTexture = value;
+                SelectedNpc.Texture = value;
+
+                RenderSelectedNpc();
+                NotifyPropertyChanged("SelectedNpcTexture");
+            }
+        }
+
+        public int SelectedNpcHead
+        {
+            get { return _selectedNpcHead; }
+            set
+            {
+                _selectedNpcHead = value;
+                SelectedNpc.HelmTexture = value;
+
+                RenderSelectedNpc();
+                NotifyPropertyChanged("SelectedNpcHead");
+            }
+        }
         
         public IEnumerable<Npc> SelectedNpcs
         {
@@ -219,6 +253,46 @@ namespace NpcTypePlugin
                 NotifyPropertyChanged("SelectedNpcs");
             }
         }
+
+        private void RenderSelectedNpc()
+        {
+            bool exit = false;
+
+            if (_selectedNpc == null) exit = true;
+            if (!exit)
+            {
+                if (_modelMappings.ContainsKey(_selectedNpc.Race))
+                {
+                    var modelStr = _modelMappings[_selectedNpc.Race];
+                    if (modelStr.Contains('#'))
+                    {
+                        if (_selectedNpc.Gender == Npc.TypeGender.Female)
+                        {
+                            modelStr = modelStr.Replace('#', 'F');
+                        }
+                        else
+                        {
+                            modelStr = modelStr.Replace('#', 'M');
+                        }
+                    }
+
+                    if (_zoneChrDisplay3d != null)
+                    {
+                        _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                    }
+
+                    if (_globalChrDisplay3d != null)
+                    {
+                        _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                    }
+                }
+            }
+
+            IncrementHeadCommand.RaiseCanExecuteChanged();
+            DecrementHeadCommand.RaiseCanExecuteChanged();
+            IncrementTextureCommand.RaiseCanExecuteChanged();
+            DecrementTextureCommand.RaiseCanExecuteChanged();
+        }
         
         public Npc SelectedNpc
         {
@@ -229,36 +303,44 @@ namespace NpcTypePlugin
             set
             {
                 _selectedNpc = value;
-                if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
 
                 if (_selectedNpc != null)
                 {
-                    if (_modelMappings.ContainsKey(_selectedNpc.Race))
-                    {
-                        var modelStr = _modelMappings[_selectedNpc.Race];
-                        if (modelStr.Contains('#'))
-                        {
-                            if (_selectedNpc.Gender == Npc.TypeGender.Female)
-                            {
-                                modelStr = modelStr.Replace('#', 'F');
-                            }
-                            else
-                            {
-                                modelStr = modelStr.Replace('#', 'M');
-                            }
-                        }
-
-                        if (_zoneChrDisplay3d != null)
-                        {
-                            _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
-                        }
-
-                        if (_globalChrDisplay3d != null)
-                        {
-                            _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
-                        }
-                    }
+                    SelectedNpcHead = _selectedNpc.HelmTexture;
+                    SelectedNpcTexture = _selectedNpc.Texture;
                 }
+
+                if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
+                RenderSelectedNpc();
+
+                //if (_selectedNpc != null)
+                //{
+                //    if (_modelMappings.ContainsKey(_selectedNpc.Race))
+                //    {
+                //        var modelStr = _modelMappings[_selectedNpc.Race];
+                //        if (modelStr.Contains('#'))
+                //        {
+                //            if (_selectedNpc.Gender == Npc.TypeGender.Female)
+                //            {
+                //                modelStr = modelStr.Replace('#', 'F');
+                //            }
+                //            else
+                //            {
+                //                modelStr = modelStr.Replace('#', 'M');
+                //            }
+                //        }
+
+                //        if (_zoneChrDisplay3d != null)
+                //        {
+                //            _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                //        }
+
+                //        if (_globalChrDisplay3d != null)
+                //        {
+                //            _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                //        }
+                //    }
+                //}
 
                 NotifyPropertyChanged("SelectedNpc");
                 ApplyTemplateCommand.RaiseCanExecuteChanged();
@@ -284,6 +366,86 @@ namespace NpcTypePlugin
                 
                 NotifyPropertyChanged("ZoneFilter");
                 NotifyPropertyChanged("Npcs");
+            }
+        }
+
+        public DelegateCommand IncrementTextureCommand
+        {
+            get
+            {
+                if (_incrementTextureCommand == null)
+                {
+                    _incrementTextureCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcTexture += 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null;
+                        });
+                }
+                return _incrementTextureCommand;
+            }
+        }
+
+        public DelegateCommand DecrementTextureCommand
+        {
+            get
+            {
+                if (_decrementTextureCommand == null)
+                {
+                    _decrementTextureCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcTexture -= 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null && SelectedNpcTexture > 0;
+                        });
+                }
+                return _decrementTextureCommand;
+            }
+        }
+
+        public DelegateCommand IncrementHeadCommand
+        {
+            get
+            {
+                if (_incrementHeadCommand == null)
+                {
+                    _incrementHeadCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcHead += 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null;
+                        });
+                }
+                return _incrementHeadCommand;
+            }
+        }
+
+        public DelegateCommand DecrementHeadCommand
+        {
+            get
+            {
+                if (_decrementHeadCommand == null)
+                {
+                    _decrementHeadCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcHead -= 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null && SelectedNpcHead > 0;
+                        });
+                }
+                return _decrementHeadCommand;
             }
         }
 

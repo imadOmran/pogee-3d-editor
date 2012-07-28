@@ -105,7 +105,7 @@ namespace NpcTypePlugin
             switch (e.PropertyName)
             {
                 case "SelectedNpc":
-                    OnObjectSelected(NpcEditViewModel.SelectedNpc);
+                    //OnObjectSelected(NpcEditViewModel.SelectedNpc);
                     break;
                 default:
                     break;
