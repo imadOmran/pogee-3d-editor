@@ -168,8 +168,9 @@ namespace S3DPlugin
                         {
                             s3d = S3D.Load(file);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
+                            DoStatusUpdate(0, "Failed loading s3d: " + e.Message, false);
                             return;
                         }
 

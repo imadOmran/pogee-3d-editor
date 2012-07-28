@@ -29,6 +29,20 @@
         <DataGrid Grid.Column="2" x:Name="DataGrid" ItemsSource="{Binding Npcs}" SelectedItem="{Binding SelectedNpc}" />
         <Grid Grid.Column="4">
             <h:HelixViewport3D CameraMode="WalkAround" Background="Black" ItemsSource="{Binding Models}" x:Name="View3D" />
+            <StackPanel Height="30" VerticalAlignment="Top" Orientation="Horizontal">
+                <Label Foreground="White">Texture</Label>
+                <TextBox Width="27" Text="{Binding Path=SelectedNpcTexture}" />
+                <StackPanel VerticalAlignment="Center">
+                    <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="TextureUpButton" Command="{Binding IncrementTextureCommand}" />
+                    <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="TextureDownButton" Command="{Binding DecrementTextureCommand}" />
+                </StackPanel>
+                <Label Foreground="White">Head</Label>                
+                <TextBox Width="27" Text="{Binding Path=SelectedNpcHead}" />
+                <StackPanel VerticalAlignment="Center">
+                    <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="HeadUpButton" Command="{Binding IncrementHeadCommand}" />
+                    <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="HeadDownButton" Command="{Binding DecrementHeadCommand}" />
+                </StackPanel>
+            </StackPanel>            
         </Grid>
     </Grid>
 </UserControl>
