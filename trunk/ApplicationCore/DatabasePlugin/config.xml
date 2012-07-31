@@ -342,10 +342,8 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
   <query type="EQEmu.Grids.Waypoint">
     <insert>
       <sql>
-        <![CDATA[  
-  INSERT INTO grid_entries (gridid,zoneid,number,x,y,z,heading,pause,running,name) VALUES
-  (@GridID,{0},{1},{2:0.###},{3:0.###},{4:0.###},{5},{6},{7},'{8}');
-        ]]>        
+        <![CDATA[INSERT INTO grid_entries (gridid,zoneid,number,x,y,z,heading,pause,running,name) VALUES
+  (@GridID,{0},{1},{2:0.###},{3:0.###},{4:0.###},{5},{6},{7},'{8}');]]>        
       </sql>
       <param>ZoneId</param>
       <param>Number</param>
@@ -376,20 +374,14 @@ SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawn
     -->
     <delete>
       <sql>
-        <![CDATA[
-  DELETE FROM grid_entries WHERE gridid = @GridID AND zoneid = {0} AND number = {1};
-        ]]>
+        <![CDATA[DELETE FROM grid_entries WHERE gridid = @GridID AND zoneid = {0} AND number = {1};]]>
       </sql>
       <param>ZoneId</param>
       <param>Number</param>
     </delete>
     <update>
       <sql>
-        <![CDATA[
-  UPDATE grid_entries SET
-  x = {0:F3}, y = {1:F3}, z = {2:F3}, heading = {4}, pause = {5}, running = {6}, name = '{7}'
-  WHERE gridid = @GridID AND zoneid = {8} AND number = {9};
-        ]]>
+        <![CDATA[UPDATE grid_entries SET x = {0:F3}, y = {1:F3}, z = {2:F3}, heading = {4}, pause = {5}, running = {6}, name = '{7}' WHERE gridid = @GridID AND zoneid = {8} AND number = {9};]]>
       </sql>
       <param>X</param>
       <param>Y</param>
