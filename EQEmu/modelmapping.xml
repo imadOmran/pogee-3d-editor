@@ -19,7 +19,7 @@
   <race name="Centaur">16</race>
   <race name="Golem">GOL</race>
   <race name="GiantCyclops">GIA</race>
-  <race name="Trakanon">19</race>
+  <race name="Trakanon">TRK</race>
   <race name="VenrilSathir4arm">20</race>
   <race name="EvilEye">21</race>
   <race name="Beetle">BET</race>
@@ -27,7 +27,7 @@
   <race name="Fish">FIS</race>
   <race name="Fairy">25</race>
   <race name="Froglok">FRO</race>
-  <race name="FroglokGhoul">27</race>
+  <race name="FroglokGhoul">FRG</race>
   <race name="Fungusman">FUN</race>
   <race name="Gargoyle">GAR</race>
   <race name="Gasbag">30</race>
@@ -128,7 +128,7 @@
   <race name="Pegasus">125</race>
   <race name="Djinn">126</race>
   <race name="InvisibleMan">127</race>
-  <race name="Iksar">128</race>
+  <race name="Iksar">ICN</race>
   <race name="Scorpion">129</race>
   <race name="VahShir">130</race>
   <race name="Sarnak">131</race>
@@ -139,7 +139,7 @@
   <race name="Xalgoz">136</race>
   <race name="KunarkGoblin">137</race>
   <race name="Yeti">138</race>
-  <race name="IksarCitizen">139</race>
+  <race name="IksarCitizen">IC#</race>
   <race name="ForestGiant">140</race>
   <race name="Boat">141</race>
   <race name="MinorIllusion">142</race>
@@ -160,7 +160,7 @@
   <race name="Wyvern">157</race>
   <race name="Wurm">158</race>
   <race name="Devourer">159</race>
-  <race name="IksarGolem">160</race>
+  <race name="IksarGolem">IKG</race>
   <race name="IksarSkeleton">161</race>
   <race name="ManEatingPlant">162</race>
   <race name="Raptor">163</race>
