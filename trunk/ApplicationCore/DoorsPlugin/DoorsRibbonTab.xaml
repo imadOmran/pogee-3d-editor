@@ -20,7 +20,7 @@
     </m:RibbonGroup>
     <m:RibbonGroup Header="Object Models">
         <m:RibbonButton ToolTip="Open object file (ie. [zone]_obj.s3d)" LargeImageSource="Images/OpenFile.png" Label="Open" Command="{Binding OpenCommand}" />
-        <m:RibbonButton Label="Set Door Model" Command="{Binding SetMeshCommand}" />
+        <m:RibbonButton LargeImageSource="Images/037_Colorize_32x32_72.png" Label="Set Door Model" Command="{Binding SetMeshCommand}" />
         <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" ToolTip="Available Models" SelectionBoxWidth="250">
             <m:RibbonGallery SelectedItem="{Binding SelectedMesh}">
                 <m:RibbonGalleryCategory ItemsSource="{Binding MeshModels}" />

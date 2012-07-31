@@ -1,0 +1,1292 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<property-mapping>
+  <query type="EQEmu.Doors.DoorManager">
+    <select>
+      <sql>
+        <![CDATA[SELECT * FROM doors WHERE zone = '{0}' AND version = '{1}';]]>
+      </sql>
+      <param>Zone</param>
+      <param>Version</param>
+      <store field="id" type="int">Id</store>
+      <store field="doorid" type="int">DoorId</store>
+      <store field="zone" type="string">Zone</store>
+      <store field="version" type="int">Version</store>
+      <store field="name" type="string">Name</store>
+      <store field="pos_x" type="float">X</store>
+      <store field="pos_y" type="float">Y</store>
+      <store field="pos_z" type="float">Z</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="opentype" type="int">OpenType</store>
+      <store field="guild" type="int">Guild</store>
+      <store field="lockpick" type="int">LockPick</store>
+      <store field="keyitem" type="int">KeyItem</store>
+      <store field="nokeyring" type="int">NumKeyRing</store>
+      <store field="triggerdoor" type="int">TriggerDoor</store>
+      <store field="triggertype" type="int">TriggerType</store>
+      <store field="doorisopen" type="int">DoorIsOpen</store>
+      <store field="door_param" type="int">DoorParam</store>
+      <store field="dest_zone" type="string">DestinationZone</store>
+      <store field="dest_instance" type="int">DestinationInstance</store>
+      <store field="dest_x" type="float">DestinationX</store>
+      <store field="dest_y" type="float">DestinationY</store>
+      <store field="dest_z" type="float">DestinationZ</store>
+      <store field="dest_heading" type="float">DestinationHeading</store>
+      <store field="invert_state" type="int">InvertState</store>
+      <store field="incline" type="int">Incline</store>
+      <store field="size" type="int">Size</store>
+      <store field="buffer" type="int">Buffer</store>
+      <store field="client_version_mask" type="int">ClientVersionMask</store>
+      <store field="is_ldon_door" type="int">IsLdonDoor</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.Doors.Door">
+    <insert>
+      <sql>
+<![CDATA[INSERT INTO doors(`doorid`,`zone`,`version`,`name`,`pos_x`,`pos_y`,`pos_z`,
+                           `heading`,`opentype`,`guild`,`lockpick`,`keyitem`,`nokeyring`,
+                           `triggerdoor`,`triggertype`,`doorisopen`,`door_param`,`dest_zone`,
+                           `dest_instance`,`dest_x`,`dest_y`,`dest_z`,`dest_heading`,`invert_state`,
+                           `incline`,`size`,`buffer`,`is_ldon_door`)
+                   VALUES ({1},'{2}',{3},'{4}',{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},'{18}',{19},{20},{21},{22},{23},{24},{25},{26},{27},{29});]]>        
+      </sql>
+      <param>Id</param>
+      <param>DoorId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>Name</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>OpenType</param>
+      <param>Guild</param>
+      <param>LockPick</param>
+      <param>KeyItem</param>
+      <param>NumKeyRing</param>
+      <param>TriggerDoor</param>
+      <param>TriggerType</param>
+      <param>DoorIsOpen</param>
+      <param>DoorParam</param>
+      <param>DestinationZone</param>
+      <param>DestinationInstance</param>
+      <param>DestinationX</param>
+      <param>DestinationY</param>
+      <param>DestinationZ</param>
+      <param>DestinationHeading</param>
+      <param>InvertState</param>
+      <param>Incline</param>
+      <param>Size</param>
+      <param>Buffer</param>
+      <param>ClientVersionMask</param>
+      <param>IsLdonDoor</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[UPDATE doors SET `doorid` = {1}, `zone` = '{2}',`version` = {3},`name` = '{4}',`pos_x` = {5},`pos_y` = {6},`pos_z` = {7},
+                          `heading` = {8},`opentype` = {9},`guild` = {10},`lockpick` = {11},`keyitem` = {12},`nokeyring` = {13},
+                          `triggerdoor` = {14},`triggertype` = {15},`doorisopen` = {16},`door_param` = {17},`dest_zone` = '{18}',
+                          `dest_instance` = {19},`dest_x` = {20},`dest_y` = {21},`dest_z` = {22},`dest_heading` = {23},`invert_state` = {24},
+                          `incline` = {25},`size` = {26},`buffer` = {27},`client_version_mask` = {28},`is_ldon_door` = {29}
+                  WHERE `zone` = '{2}' AND `id` = {0};]]>
+      </sql>
+      <param>Id</param>
+      <param>DoorId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>Name</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>OpenType</param>
+      <param>Guild</param>
+      <param>LockPick</param>
+      <param>KeyItem</param>
+      <param>NumKeyRing</param>
+      <param>TriggerDoor</param>
+      <param>TriggerType</param>
+      <param>DoorIsOpen</param>
+      <param>DoorParam</param>
+      <param>DestinationZone</param>
+      <param>DestinationInstance</param>
+      <param>DestinationX</param>
+      <param>DestinationY</param>
+      <param>DestinationZ</param>
+      <param>DestinationHeading</param>
+      <param>InvertState</param>
+      <param>Incline</param>
+      <param>Size</param>
+      <param>Buffer</param>
+      <param>ClientVersionMask</param>
+      <param>IsLdonDoor</param>
+    </update>
+    
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM doors WHERE id = {0} AND zone = '{1}';]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+
+  <query type="EQEmu.RoamAreas.ZoneRoamAreas">
+    <select>
+      <sql>
+        <![CDATA[SELECT id,min_z,max_z,spawn_random,pause_time,pause_variance,zone FROM roam_areas WHERE zone = '{0}';]]>
+      </sql>
+      <param>Zone</param>
+      <store field="max_z" type="float">MaxZ</store>
+      <store field="min_z" type="float">MinZ</store>
+      <store field="pause_time" type="int">PauseTime</store>
+      <store field="pause_variance" type="int">PauseVariance</store>
+      <store field="spawn_random" type="bool">SpawnRandom</store>
+      <store field="zone" type="string">Zone</store>
+      <store field="id" type="int">Id</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.RoamAreas.RoamAreaEntry">
+    <update>
+      <sql>
+        <![CDATA[UPDATE roam_area_vertices SET x = {0}, y = {1} WHERE num = {2} AND roam_area_id = {3} AND zone = '{4}';]]>        
+      </sql>
+      <param>X</param>
+      <param>Y</param>
+      <param>Number</param>
+      <param>RoamAreaId</param>
+      <param>Zone</param>
+    </update>
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO roam_area_vertices (num,roam_area_id,zone,x,y) VALUES ({0},{1},'{2}',{3},{4});]]>
+      </sql>
+      <param>Number</param>
+      <param>RoamAreaId</param>
+      <param>Zone</param>
+      <param>X</param>
+      <param>Y</param>
+    </insert>
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM roam_area_vertices WHERE num = {0} AND roam_area_id = {1} AND zone = '{2}';]]>
+      </sql>
+      <param>Number</param>
+      <param>RoamAreaId</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+
+  <query type="EQEmu.RoamAreas.RoamArea">
+    <select>
+      <sql>
+        <![CDATA[SELECT x,y,num,roam_area_id,zone FROM roam_area_vertices WHERE roam_area_id = '{0}' AND zone = '{1}' ORDER BY num;]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="num" type="int">Number</store>
+      <store field="roam_area_id" type="int">RoamAreaId</store>
+      <store field="zone" type="string">Zone</store>
+    </select>
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO roam_areas (id,zone,max_z,min_z,spawn_random,pause_time,pause_variance) VALUES ({0},'{1}',{2},{3},{4},{5},{6});]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>MaxZ</param>
+      <param>MinZ</param>
+      <param>SpawnRandom</param>
+      <param>PauseTime</param>
+      <param>PauseVariance</param>
+    </insert>
+    <update>
+      <sql>
+        <![CDATA[UPDATE roam_areas SET max_z = {0}, min_z = {1}, spawn_random = {2}, pause_time = {3}, pause_variance = {4} WHERE zone = '{5}' AND id = {6};]]>        
+      </sql>
+      <param>MaxZ</param>
+      <param>MinZ</param>
+      <param>SpawnRandom</param>
+      <param>PauseTime</param>
+      <param>PauseVariance</param>
+      <param>Zone</param>
+      <param>Id</param>
+    </update>
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM roam_areas WHERE zone = '{0}' AND id = {1};]]>
+      </sql>
+      <param>Zone</param>
+      <param>Id</param>
+    </delete>
+  </query>
+  
+  <query type="EQEmu.Grids.ZoneGrids">
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT grid.*,zone.short_name FROM grid INNER JOIN zone ON grid.zoneid = zone.zoneidnumber WHERE zone.short_name='{0}';
+        ]]>
+      </sql>
+      <param>Zone</param>      
+      <store field="zoneid" type="int">ZoneId</store>
+      <store field="short_name" type="string">ZoneName</store>
+      <store field="type" type="int">WanderType</store>
+      <store field="type2" type="int">PauseType</store>
+      <store field="id" type="int">Id</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.Zone.ZonePoints">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM zone_points where zone = "{0}";        
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="id" type="int">Id</store>
+      <store field="zone" type="string">Zone</store>
+      <store field="version" type="int">Version</store>
+      <store field="number" type="int">Number</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="target_zone_id" type="int">TargetZoneId</store>      
+      <store field="target_x" type="float">TargetX</store>
+      <store field="target_y" type="float">TargetY</store>
+      <store field="target_z" type="float">TargetZ</store>
+      <store field="target_heading" type="float">TargetHeading</store>
+    </select>    
+  </query>
+
+  <query type="EQEmu.Zone.ZonePoint">
+    <update>
+      <sql>
+        <![CDATA[
+UPDATE zone_points SET x = {2}, y = {3}, z = {4}, target_zone_id = {5}, target_x = {6}, target_y = {7}, target_z = {8}, target_heading = {9}
+ WHERE id = {0} AND zone = '{1}';        
+        ]]>        
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>TargetZoneId</param>
+      <param>TargetX</param>
+      <param>TargetY</param>
+      <param>TargetZ</param>
+      <param>TargetHeading</param>
+    </update>
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO zone_points (number,zone,x,y,z,target_zone_id,target_x,target_y,target_z,target_heading)
+VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
+        ]]>
+      </sql>
+      <param>Number</param>
+      <param>Zone</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>TargetZoneId</param>
+      <param>TargetX</param>
+      <param>TargetY</param>
+      <param>TargetZ</param>
+      <param>TargetHeading</param>
+    </insert>
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM zone_points WHERE id = {0} AND zone = '{1}';        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+
+  <query type="EQEmu.GroundSpawns.ZoneGroundSpawns">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT ground_spawns.*,zone.short_name,items.name as item_name FROM ground_spawns INNER JOIN zone ON ground_spawns.zoneid = zone.zoneidnumber INNER JOIN items ON ground_spawns.item = items.id WHERE zone.short_name='{0}';        
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="zoneid" type="int">ZoneId</store>
+      <store field="id" type="int">Id</store>
+      <store field="item" type="int">Item</store>
+      <store field="version" type="int">Version</store>
+      <store field="max_allowed" type="int">MaxAllowed</store>
+      <store field="respawn_timer" type="long">RespawnTimer</store>
+      <store field="max_x" type="float">MaxX</store>
+      <store field="min_x" type="float">MinX</store>
+      <store field="max_y" type="float">MaxY</store>
+      <store field="min_y" type="float">MinY</store>
+      <store field="max_z" type="float">MaxZ</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="comment" type="string">Comment</store>
+      <store field="name" type="string">Name</store>
+      <store field="item_name" type="string">ItemName</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.Grids.Waypoint">
+    <insert>
+      <sql>
+        <![CDATA[  
+  INSERT INTO grid_entries (gridid,zoneid,number,x,y,z,heading,pause,running,name) VALUES
+  (@GridID,{0},{1},{2:0.###},{3:0.###},{4:0.###},{5},{6},{7},'{8}');
+        ]]>        
+      </sql>
+      <param>ZoneId</param>
+      <param>Number</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>PauseTime</param>
+      <param>Running</param>
+      <param>Name</param>
+    </insert>
+    <!-- EQEMU compatibility
+    <insert>
+      <sql>
+        <![CDATA[  
+  INSERT INTO grid_entries (gridid,zoneid,number,x,y,z,heading,pause) VALUES
+  (@GridID,{0},{1},{2:0.###},{3:0.###},{4:0.###},{5},{6});
+        ]]>        
+      </sql>
+      <param>ZoneId</param>
+      <param>Number</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>PauseTime</param>
+    </insert>
+    -->
+    <delete>
+      <sql>
+        <![CDATA[
+  DELETE FROM grid_entries WHERE gridid = @GridID AND zoneid = {0} AND number = {1};
+        ]]>
+      </sql>
+      <param>ZoneId</param>
+      <param>Number</param>
+    </delete>
+    <update>
+      <sql>
+        <![CDATA[
+  UPDATE grid_entries SET
+  x = {0:F3}, y = {1:F3}, z = {2:F3}, heading = {4}, pause = {5}, running = {6}, name = '{7}'
+  WHERE gridid = @GridID AND zoneid = {8} AND number = {9};
+        ]]>
+      </sql>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Number</param>
+      <param>Heading</param>
+      <param>PauseTime</param>
+      <param>Running</param>
+      <param>Name</param>
+      <param>ZoneId</param>
+      <param>Number</param>
+    </update>
+    
+    <!-- EQEMU compatibility
+    <update>
+      <sql>
+        <![CDATA[
+  UPDATE grid_entries SET
+  x = {0:F3}, y = {1:F3}, z = {2:F3}, heading = {4}, pause = {5}
+  WHERE gridid = @GridID AND zoneid = {6} AND number = {7};
+        ]]>
+      </sql>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Number</param>
+      <param>Heading</param>
+      <param>PauseTime</param>
+      <param>ZoneId</param>
+      <param>Number</param>
+    </update>    
+    -->
+    
+  </query>
+
+  <query type="EQEmu.Grids.Grid"> 
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT * FROM grid_entries WHERE gridid = {0} AND zoneid = {1};
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>ZoneId</param>
+
+      <store field="zoneid" type="int">ZoneId</store>
+      <store field="gridid" type="int">GridId</store>
+      <store field="number" type="int">Number</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="pause" type="int">PauseTime</store>
+      <store field="name" type="string">Name</store>
+      <store field="running" type="bool">Running</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+    </select>
+    
+    <!-- EQEMU compatibility
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT * FROM grid_entries WHERE gridid = {0} AND zoneid = {1};
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>ZoneId</param>
+
+      <store field="zoneid" type="int">ZoneId</store>
+      <store field="gridid" type="int">GridId</store>
+      <store field="number" type="int">Number</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="pause" type="int">PauseTime</store>            
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+    </select>    
+    -->
+    
+    <insert>
+      <sql>
+        <![CDATA[
+  SET @GridID = {0};
+  INSERT INTO grid (id,zoneid,type,type2) VALUES (@GridID,{1},{2},{3});
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>ZoneId</param>
+      <param>WanderType</param>
+      <param>PauseType</param>
+    </insert>
+    <update>
+      <sql>
+        <![CDATA[
+  SET @GridID = {0};
+  UPDATE grid SET type = {1}, type2 = {2} WHERE id = @GridID AND zoneid = {3};
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>WanderType</param>
+      <param>PauseType</param>
+      <param>ZoneId</param>
+    </update>
+    <delete>
+      <sql>
+        <![CDATA[
+  SET @GridID = {0};
+  DELETE FROM grid WHERE id = @GridID AND zoneid = {1};
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>ZoneId</param>
+    </delete>
+  </query>
+
+  <query-extension type="EQEmu.Grids.Grid" name="QueryByNPCName">
+    <update>
+      <sql>
+        <![CDATA[
+        UPDATE spawn2,npc_types,spawnentry SET spawn2.pathgrid = @GridID
+        WHERE npc_types.name = \"{0}\" AND
+        spawn2.zone = \"{1}\" AND
+        npc_types.id = spawnentry.npcID AND
+        spawn2.spawngroupID = spawnentry.spawngroupID;
+        ]]>
+      </sql>
+      <param>NPCName</param>
+      <param>ZoneName</param>
+    </update>
+  </query-extension>
+
+  <query type="EQEmu.GroundSpawns.GroundSpawn">
+    <update>
+      <sql>
+        <![CDATA[
+        UPDATE ground_spawns 
+        SET item = {1}, version = {2}, max_allowed = {3}, respawn_timer = {4},
+            max_x = {5}, min_x = {6}, max_y = {7}, min_y = {8}, max_z = {9}, heading = {10}, comment = '{11}', name = '{12}'
+        WHERE id = {13} AND zoneid = {14};
+        ]]>
+      </sql>
+      <param>ZoneId</param>
+      <param>Item</param>
+      <param>Version</param>
+      <param>MaxAllowed</param>
+      <param>RespawnTimer</param>
+      <param>MaxX</param>
+      <param>MinX</param>
+      <param>MaxY</param>
+      <param>MinY</param>
+      <param>MaxZ</param>
+      <param>Heading</param>
+      <param>Comment</param>
+      <param>Name</param>
+      <param>Id</param>
+      <param>ZoneId</param>
+    </update>
+    <delete>
+      <sql>
+        <![CDATA[
+        DELETE FROM ground_spawns WHERE id = {0} AND zoneid = {1};
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>ZoneId</param>
+    </delete>
+  </query>
+
+  <query-extension type="EQEmu.Spawns.SpawnGroupAggregator" name="GetMaxID">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT MAX(id) AS id FROM spawngroup;        
+        ]]>
+      </sql>
+      <store field="id" type="int">Id</store>
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.SpawnGroupAggregator" name="GetByZone">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT spawngroupid FROM spawn2 where zone = '{0}'
+        ]]>
+      </sql>
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.SpawnGroup" name="GetSpawn2">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM spawn2 where spawngroupid = {0};
+        ]]>
+      </sql>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="roam_area" type="int">RoamAreaId</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>      
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.GroundSpawns.GroundSpawn" name="GetItemName">
+    <select>
+      <sql>
+        <![CDATA[SELECT name FROM items WHERE id = {0};]]>
+      </sql>
+      <param>Item</param>
+      <store field="name" type="string">ItemName</store>
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxZoneID">
+    <select>
+      <sql>
+        <![CDATA[SELECT id FROM spawn2 WHERE id = {0};]]>
+      </sql>
+      <!-- param provided by the method -->
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetMaxID">
+    <select>
+      <sql>
+<![CDATA[SELECT MAX(id) AS id FROM spawn2]]>
+      </sql>
+      <!-- param provided by the method -->
+    </select>
+  </query-extension>
+
+  <query type="EQEmu.Spawns.ZoneSpawns">
+    <select>
+      <sql>
+<![CDATA[SELECT * FROM spawn2 WHERE zone='{0}' and version={1};]]>
+      </sql>
+      <param>Zone</param>
+      <param>Version</param>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="roam_area" type="int">RoamAreaId</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>
+      <store field="version" type="int">Version</store>
+    </select>
+    
+    <!-- EQEMU compatibility
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT * FROM spawn2 WHERE zone='{0}';
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+    </select>            
+    -->
+    
+  </query>
+
+  <query type="EQEmu.Spawns.SpawnGroupAggregator">
+    <select>
+      <sql>
+<![CDATA[SELECT * FROM spawngroup WHERE id = {0};]]>        
+      </sql>
+      <param>FilterById</param>
+      <store field="id" type="int">Id</store>
+      <store field="name" type="string">Name</store>
+      <store field="delay" type="int">RoamingDelay</store>
+      <store field="spawn_limit" type="short">SpawnLimit</store>
+      <store field="dist" type="float">RoamingDistance</store>
+      <store field="min_x" type="float">MinRoamingX</store>
+      <store field="min_y" type="float">MinRoamingY</store>
+      <store field="max_x" type="float">MaxRoamingX</store>
+      <store field="max_y" type="float">MaxRoamingY</store>
+    </select>
+  </query>
+
+  <query type="EQEmu.Spawns.SpawnEntry">
+    <delete>
+      <sql>
+<![CDATA[DELETE FROM spawnentry WHERE npcID = {0} AND spawngroupID = {1};]]>
+      </sql>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>
+    </delete>
+    <insert>
+      <sql>
+<![CDATA[INSERT INTO spawnentry (npcId,spawngroupID,chance) VALUES ({0},{1},{2});]]>
+      </sql>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>
+      <param>Chance</param>
+    </insert>
+    <update>
+      <sql>
+<![CDATA[UPDATE spawnentry SET chance = {0} WHERE npcID = {1} AND spawngroupID = {2};]]>        
+      </sql>
+      <param>Chance</param>
+      <param>NpcID</param>
+      <param>SpawnGroupID</param>      
+    </update>
+  </query>
+
+  <query type="EQEmu.Spawns.Npc">
+    <update>
+      <sql>
+<![CDATA[UPDATE npc_types SET loottable_id = {0}, name = '{1}', level = {2} WHERE id = {3};]]>
+      </sql>
+      <param>LootTableId</param>
+      <param>Name</param>
+      <param>Level</param>
+      <param>Id</param>
+    </update>
+    <insert>
+      <sql>
+<![CDATA[INSERT INTO npc_types(`id`,`loottable_id`,`level`,`name`,`lastname`,`hp`,`mana`,`gender`,`race`,`class`,`bodytype`,`mindmg`,`maxdmg`,`size`,`runspeed`,`texture`,`helmtexture`,`face`,`luclin_hairstyle`,`luclin_haircolor`, `luclin_eyecolor`, `luclin_eyecolor2`,`luclin_beard`, `luclin_beardcolor`, `findable`, `version`, `d_meele_texture1`, `d_meele_texture2`, `armortint_red`, `armortint_green`, `armortint_blue`, `drakkin_heritage`,`drakkin_tattoo`,`drakkin_details`,`npc_faction_id`,`npc_spells_id`,`hp_regen_rate`,`mana_regen_rate`,`alt_currency_id`,`adventure_template_id`,`trap_template`,`attack_count`,`npcspecialattks`,`aggroradius`,`prim_melee_type`,`sec_melee_type`,`MR`,`CR`,`DR`,`FR`,`PR`,`Corrup`,`see_invis`,`see_invis_undead`,`qglobal`,`AC`,`npc_aggro`,`spawn_limit`,`attack_speed`,`STR`,`STA`,`DEX`,`AGI`,`_INT`,`WIS`,`CHA`,`see_hide`,`see_improved_hide`,`trackable`,`isbot`,`exclude`,`ATK`,`Accuracy`,`slow_mitigation`,`maxlevel`,`scalerate`,`private_corpse`,`unique_spawn_by_name`,`underwater`,`emoteid`) 
+VALUES ({3},{0},{2},'{1}','{7}',{4},{5},{6},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},'{43}',{44},{45},{46},{47},{48},{49},{50},{51},{52},{53},{54},{55},{56},{57},{58},{59},{60},{61},{62},{63},{64},{65},{66},{67},{68},{69},{70},{71},{72},{73},{74},{75},{76},{77},{78},{79});]]>
+      </sql>
+      <!-- 0 --><param>LootTableId</param>
+      <!-- 1 --><param>Name</param>
+      <!-- 2 --><param>Level</param>
+      <!-- 3 --><param>Id</param>
+      <!-- 4 --><param>HealthPoints</param>
+      <!-- 5 --><param>Mana</param>
+      <!-- 6 --><param>Gender</param>
+      <!-- 7 --><param>LastName</param>            
+      <!-- 8 --><param>Race</param>
+      <!-- 9 --><param>Class</param>
+      <!-- 10 --><param>BodyType</param>
+      <!-- 11 --><param>MinDamage</param>
+      <!-- 12 --><param>MaxDamage</param>
+      <!-- 13 --><param>Size</param>
+      <!-- 14 --><param>RunSpeed</param>
+      <!-- 15 --><param>Texture</param>
+      <!-- 16 --><param>HelmTexture</param>
+      <!-- 17 --><param>Face</param>
+      <!-- 18 --><param>LuclinHairStyle</param>
+      <!-- 19 --><param>LuclinHairColor</param>
+      <!-- 20 --><param>LuclinEyeColor</param>
+      <!-- 21 --><param>LuclinEyeColor2</param>
+      <!-- 22 --><param>LuclinBeard</param>
+      <!-- 23 --><param>LuclinBeardColor</param>
+      <!-- 24 --><param>Findable</param>
+      <!-- 25 --><param>Version</param>
+      <!-- 26 --><param>DMeleeTexture1</param>
+      <!-- 27 --><param>DMeleeTexture2</param>
+      <!-- 28 --><param>ArmorTintRed</param>
+      <!-- 29 --><param>ArmorTintGreen</param>
+      <!-- 30 --><param>ArmorTintBlue</param>
+      <!-- 31 --><param>DrakkinHeritage</param>
+      <!-- 32 --><param>DrakkinTattoo</param>
+      <!-- 33 --><param>DrakkinDetails</param>
+      <!-- 34 --><param>FactionId</param>
+      <!-- 35 --><param>SpellsId</param>
+      <!-- 36 --><param>HPRegenRate</param>
+      <!-- 37 --><param>ManaRegenRate</param>
+      <!-- 38 --><param>MerchantId</param>
+      <!-- 39 --><param>AltCurrencyId</param>            
+      <!-- 40 --><param>AdventureTemplate</param>
+      <!-- 41 --><param>TrapTemplate</param>
+      <!-- 42 --><param>AttackCount</param>
+      <!-- 43 --><param>NPCSpecialAttacks</param>
+      <!-- 44 --><param>AggroRadius</param>
+      <!-- 45 --><param>MeleeTypePrimary</param>
+      <!-- 46 --><param>MeleeTypeSecondary</param>
+      <!-- 47 --><param>MagicResist</param>
+      <!-- 48 --><param>ColdResist</param>
+      <!-- 49 --><param>DiseaseResist</param>
+      <!-- 50 --><param>FireResist</param>
+      <!-- 51 --><param>PoisonResist</param>
+      <!-- 52 --><param>CorruptResist</param>
+      <!-- 53 --><param>SeeInvis</param>
+      <!-- 54 --><param>SeeInvisUndead</param>
+      <!-- 55 --><param>QGlobal</param>
+      <!-- 56 --><param>ArmorClass</param>
+      <!-- 57 --><param>NPCAggro</param>
+      <!-- 58 --><param>SpawnLimit</param>
+      <!-- 59 --><param>AttackSpeed</param>
+      <!-- 60 --><param>Strength</param>
+      <!-- 61 --><param>Stamina</param>
+      <!-- 62 --><param>Dexterity</param>
+      <!-- 63 --><param>Agility</param>
+      <!-- 64 --><param>Intelligence</param>
+      <!-- 65 --><param>Wisdom</param>
+      <!-- 66 --><param>Charisma</param>
+      <!-- 67 --><param>SeeHide</param>
+      <!-- 68 --><param>SeeImprovedHide</param>
+      <!-- 69 --><param>Trackable</param>
+      <!-- 70 --><param>IsBot</param>
+      <!-- 71 --><param>Exclude</param>
+      <!-- 72 --><param>Attack</param>
+      <!-- 73 --><param>Accuracy</param>
+      <!-- 74 --><param>MaxLevel</param>
+      <!-- 75 --><param>ScaleRate</param>
+      <!-- 76 --><param>PrivateCorpse</param>
+      <!-- 77 --><param>UniqueByName</param>
+      <!-- 78 --><param>UnderWater</param>
+      <!-- 79 --><param>EmoteId</param>
+    </insert>
+  </query>
+
+  <query type="EQEmu.Spawns.NpcAggregator">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM npc_types WHERE name LIKE '%{0}%' LIMIT 50;        
+        ]]>
+      </sql>
+      <param>FilterName</param>
+      <store field="name" type="string">Name</store>
+      <store field="level" type="int">Level</store>
+      <store field="id" type="int">Id</store>
+      <store field="loottable_id" type="int">LootTableId</store>
+      <store field="hp" type="int">HealthPoints</store>
+      <store field="mana" type="int">Mana"</store>
+      <store field="gender" type="int">Gender</store>
+      <store field="lastname">LastName</store>
+      <store field="race" type="int">Race</store>
+      <store field="class" type="int">Class</store>
+      <store field="bodytype" type="int">BodyType</store>
+      <store field="mindmg" type="int">MinDamage</store>
+      <store field="maxdmg" type="int">MaxDamage</store>
+      <store field="size" type="int">Size</store>
+      <store field="runspeed" type="float">RunSpeed</store>
+      <store field="texture" type="int">Texture</store>
+      <store field="helmtexture" type="int">HelmTexture</store>
+      <store field="face" type="int">Face</store>
+      <store field="luclin_hairstyle" type="int">LuclinHairStyle</store>
+      <store field="luclin_haircolor" type="int">LuclinHairColor</store>
+      <store field="luclin_eyecolor" type="int">LuclinEyeColor</store>
+      <store field="luclin_eyecolor2" type="int">LuclinEyeColor2</store>
+      <store field="luclin_beard" type="int">LuclinBeard</store>
+      <store field="luclin_beardcolor" type="int">LuclinBeardColor</store>
+      <store field="findable" type="bool">Findable</store>
+      <store field="version" type="int">Version</store>
+      <store field="d_meele_texture1" type="int">DMeleeTexture1</store>
+      <store field="d_meele_texture2" type="int">DMeleeTexture2</store>
+      <store field="armortint_red" type="int">ArmorTintRed</store>
+      <store field="armortint_green" type="int">ArmorTintGreen</store>
+      <store field="armortint_blue" type="int">ArmorTintBlue</store>
+      <store field="drakkin_heritage" type="int">DrakkinHeritage</store>
+      <store field="drakkin_tattoo" type="int">DrakkinTattoo</store>
+      <store field="drakkin_details" type="int">DrakkinDetails</store>
+      <store field="npc_faction_id" type="int">FactionId</store>
+      <store field="npc_spells_id" type="int">SpellsId</store>
+
+      <store field="hp_regen_rate" type="int">HPRegenRate</store>
+      <store field="mana_regen_rate" type="int">ManaRegenRate</store>
+      <store field="merchant_id" type="int">MerchantId</store>
+      <store field="alt_currency_id" type="int">AltCurrencyId</store>
+      <store field="adventure_template_id" type="int">AdventureTemplate</store>
+      <store field="trap_template" type="int">TrapTemplate</store>
+      <store field="attack_count" type="int">AttackCount</store>
+      <store field="npcspecialattks" type="string">NPCSpecialAttacks</store>
+      <store field="aggroradius" type="int">AggroRadius</store>
+      <store field="prim_melee_type" type="int">MeleeTypePrimary</store>
+      <store field="sec_melee_type" type="int">MeleeTypeSecondary</store>
+      <store field="MR" type="int">MagicResist</store>
+      <store field="CR" type="int">ColdResist</store>
+      <store field="DR" type="int">DiseaseResist</store>
+      <store field="FR" type="int">FireResist</store>
+      <store field="PR" type="int">PoisonResist</store>
+      <store field="Corrup" type="int">CorruptResist</store>
+      <store field="see_invis" type="bool">SeeInvis</store>
+      <store field="see_invis_undead" type="bool">SeeInvisUndead</store>
+      <store field="qglobal" type="int">QGlobal</store>
+      <store field="AC" type="int">ArmorClass</store>
+      <store field="npc_aggro" type="bool">NPCAggro</store>
+      <store field="spawn_limit" type="int">SpawnLimit</store>
+      <store field="attack_speed" type="float">AttackSpeed</store>
+      <store field="STR" type="int">Strength</store>
+      <store field="STA" type="int">Stamina</store>
+      <store field="DEX" type="int">Dexterity</store>
+      <store field="AGI" type="int">Agility</store>
+      <store field="_INT" type="int">Intelligence</store>
+      <store field="WIS" type="int">Wisdom</store>
+      <store field="CHA" type="int">Charisma</store>
+      <store field="see_hide" type="bool">SeeHide</store>
+      <store field="see_improved_hide" type="bool">SeeImprovedHide</store>
+      <store field="trackable" type="bool">Trackable</store>
+      <store field="isbot" type="bool">IsBot</store>
+      <store field="exclude" type="int">Exclude</store>
+      <store field="ATK" type="int">Attack</store>
+      <store field="Accuracy" type="int">Accuracy</store>
+      <store field="slow_mitigation" type="float">SlowMitigation</store>
+      <store field="maxlevel" type="int">MaxLevel</store>
+      <store field="scalerate" type="int">ScaleRate</store>
+      <store field="private_corpse" type="int">PrivateCorpse</store>
+      <store field="unique_spawn_by_name" type="bool">UniqueByName</store>
+      <store field="underwater" type="bool">UnderWater</store>
+      <store field="emoteid" type="int">EmoteId</store>
+    </select>
+  </query>
+
+  <query-extension type="EQEmu.Spawns.NpcAggregator" name="MaxIdForZone">
+    <select>
+      <sql>
+        <![CDATA[SELECT MAX(npc_types.id) as id, zone.short_name as zoneid 
+        FROM npc_types,zone WHERE zone.short_name = '{0}' AND npc_types.id >= zone.zoneidnumber*1000 AND npc_types.id < (zone.zoneidnumber+1)*1000; ]]>
+      </sql>
+      <!-- param provided by method -->
+    </select>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.NpcAggregator" name="LookupByZone">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT npc_types.*
+FROM npc_types,spawngroup,spawnentry,spawn2
+WHERE spawngroup.id = spawnentry.spawngroupid
+AND spawn2.spawngroupid = spawngroup.id
+AND npc_types.id = spawnentry.npcid
+AND spawn2.zone = '{0}' GROUP BY npc_types.id;       
+        ]]>
+      </sql>
+      <store field="name" type="string">Name</store>
+      <store field="level" type="int">Level</store>
+      <store field="id" type="int">Id</store>
+      <store field="loottable_id" type="int">LootTableId</store>      
+      <store field="hp" type="int">HealthPoints</store>      
+      <store field="mana" type="int">Mana"</store>      
+      <store field="gender" type="int">Gender</store>      
+      <store field="lastname">LastName</store>      
+      <store field="race" type="int">Race</store>      
+      <store field="class" type="int">Class</store>      
+      <store field="bodytype" type="int">BodyType</store>      
+      <store field="mindmg" type="int">MinDamage</store>      
+      <store field="maxdmg" type="int">MaxDamage</store>      
+      <store field="size" type="int">Size</store>      
+      <store field="runspeed" type="float">RunSpeed</store>      
+      <store field="texture" type="int">Texture</store>      
+      <store field="helmtexture" type="int">HelmTexture</store>      
+      <store field="face" type="int">Face</store>      
+      <store field="luclin_hairstyle" type="int">LuclinHairStyle</store>      
+      <store field="luclin_haircolor" type="int">LuclinHairColor</store>      
+      <store field="luclin_eyecolor" type="int">LuclinEyeColor</store>      
+      <store field="luclin_eyecolor2" type="int">LuclinEyeColor2</store>      
+      <store field="luclin_beard" type="int">LuclinBeard</store>      
+      <store field="luclin_beardcolor" type="int">LuclinBeardColor</store>      
+      <store field="findable" type="int">Findable</store>      
+      <store field="version" type="int">Version</store>      
+      <store field="d_meele_texture1" type="int">DMeleeTexture1</store>      
+      <store field="d_meele_texture2" type="int">DMeleeTexture2</store>      
+      <store field="armortint_red" type="int">ArmorTintRed</store>      
+      <store field="armortint_green" type="int">ArmorTintGreen</store>      
+      <store field="armortint_blue" type="int">ArmorTintBlue</store>      
+      <store field="drakkin_heritage" type="int">DrakkinHeritage</store>      
+      <store field="drakkin_tattoo" type="int">DrakkinTattoo</store>      
+      <store field="drakkin_details" type="int">DrakkinDetails</store>      
+      <store field="npc_faction_id" type="int">FactionId</store>      
+      <store field="npc_spells_id" type="int">SpellsId</store>
+    </select>
+  </query-extension>
+
+  <query type="EQEmu.Spawns.SpawnGroup">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT spawnentry.*, npc_types.name AS npcname, npc_types.level AS level FROM spawnentry INNER JOIN npc_types ON npc_types.id = spawnentry.npcID WHERE spawngroupID = {0};         
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="spawngroupID" type="int">SpawnGroupID</store>
+      <store field="npcID" type="int">NpcID</store>
+      <store field="chance" type="short">Chance</store>
+      <store field="npcname" type="string">NpcName</store>
+      <store field="level" type="short">NpcLevel</store>
+    </select>
+    <update>
+      <sql>
+        <![CDATA[UPDATE spawngroup SET delay = {0}, spawn_limit = {1}, dist = {2}, min_x = {3}, max_x = {4}, min_y = {5}, max_y = {6}, name = '{7}' WHERE id = {8};]]>
+      </sql>
+      <param>RoamingDelay</param>
+      <param>SpawnLimit</param>
+      <param>RoamingDistance</param>
+      <param>MinRoamingX</param>
+      <param>MaxRoamingX</param>
+      <param>MinRoamingY</param>
+      <param>MaxRoamingY</param>
+      <param>Name</param>
+      <param>Id</param>
+    </update>
+    <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO spawngroup (id,name,delay,spawn_limit,dist,min_x,max_x,min_y,max_y)
+VALUES ({0},'{1}',{2},{3},{4},{5},{6},{7},{8});
+        ]]>
+      </sql>
+      <!--0--><param>Id</param>
+      <!--1--><param>Name</param>
+      <!--2--><param>RoamingDelay</param>
+      <!--3--><param>SpawnLimit</param>
+      <!--4--><param>RoamingDistance</param>
+      <!--5--><param>MinRoamingX</param>
+      <!--6--><param>MaxRoamingX</param>
+      <!--7--><param>MinRoamingY</param>
+      <!--8--><param>MaxRoamingY</param>
+    </insert>
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM spawngroup WHERE id = {0};        
+        ]]>
+      </sql>
+      <param>Id</param>
+    </delete>
+  </query>
+  
+  <query type="EQEmu.Spawns.Spawn2">
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,roam_area,animation,cond_value,_condition,version) VALUES 
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13});]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>SpawnGroupId</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>GridId</param>
+      <param>RoamAreaId</param>
+      <param>IdleAnimation</param>
+      <param>ConditionValue</param>
+      <param>Condition</param>
+      <param>Version</param>
+    </insert>
+    
+    <!-- EQEMU compatibility
+     <insert>
+      <sql>
+        <![CDATA[
+INSERT INTO spawn2 (id,zone,spawngroupId,x,y,z,heading,respawntime,pathgrid,animation) VALUES
+({0},'{1}',{2},{3},{4},{5},{6},{7},{8},{9});
+        ]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+      <param>SpawnGroupId</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>GridId</param>
+      <param>IdleAnimation</param>
+    </insert>   
+    -->
+    
+    <update>
+      <sql>
+<![CDATA[UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, roam_area = {10}, animation = {12}, _condition = {13}, cond_value = {14}  
+WHERE id = {11} AND zone = '{1}';]]>
+      </sql>
+      <param>SpawnGroupId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>Variance</param>
+      <param>GridId</param>
+      <param>RoamAreaId</param>
+      <param>Id</param>
+      <param>IdleAnimation</param>
+      <param>Condition</param>
+      <param>ConditionValue</param>
+    </update>
+    
+    <!-- EQEMU compatibility
+     <update>
+      <sql>
+        <![CDATA[
+UPDATE spawn2 SET spawngroupId = {0}, zone = '{1}', version = {2}, x = {3:F3}, y = {4:F3}, z = {5:F3}, heading = {6:F3}, respawntime = {7}, variance = {8}, pathgrid = {9}, animation = {11}
+WHERE id = {10} AND zone = '{1}';
+        ]]>
+      </sql>
+      <param>SpawnGroupId</param>
+      <param>Zone</param>
+      <param>Version</param>
+      <param>X</param>
+      <param>Y</param>
+      <param>Z</param>
+      <param>Heading</param>
+      <param>RespawnTime</param>
+      <param>Variance</param>
+      <param>GridId</param>
+      <param>Id</param>
+      <param>IdleAnimation</param>
+    </update>   
+    -->
+    
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM spawn2 WHERE id = {0} AND zone = '{1}';]]>
+      </sql>
+      <param>Id</param>
+      <param>Zone</param>
+    </delete>
+  </query>
+
+
+  <query type="EQEmu.Loot.LootTable">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT * FROM loottable,loottable_entries WHERE loottable.id = {0} AND loottable.id = loottable_entries.loottable_id;        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="lootdrop_id" type="int">Id</store>
+      <store field="multiplier" type="int">Multiplier</store>
+      <store field="probability" type="int">Probability</store>
+      <store field="name" type="string">Name</store>
+      <store field="id" type="int">LootTableId</store>
+    </select>
+
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO loottable(id,name,mincash,maxcash) VALUES ({0},'{1}',{2},{3});]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+      <param>MinCash</param>
+      <param>MaxCash</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[UPDATE loottable SET name = '{0}' AND mincash = {1} AND maxcash = {2} WHERE id = {3};]]>
+      </sql>
+      <param>Name</param>
+      <param>MinCash</param>
+      <param>MaxCash</param>
+      <param>Id</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[
+DELETE FROM loottable WHERE id = {0};        
+        ]]>
+      </sql>
+      <param>Id</param>
+    </delete>
+    
+  </query>
+
+  <query type="EQEmu.Loot.LootDropEntry">
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO lootdrop_entries(lootdrop_id,item_id,item_charges,equip_item,chance)
+VALUES (@LootDropID,{1},{2},{3},{4});]]>
+      </sql>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+      <param>ItemCharges</param>
+      <param>EquipItem</param>
+      <param>Chance</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[UPDATE lootdrop_entries SET item_id = {0}, item_charges = {1}, equip_item = {2}, chance = {3}
+WHERE lootdrop_id = @LootDropID AND item_id = {5};]]>
+      </sql>
+      <param>ItemId</param>
+      <param>ItemCharges</param>
+      <param>EquipItem</param>
+      <param>Chance</param>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM lootdrop_entries WHERE lootdrop_id = @LootDropID AND item_id = {1};]]>
+      </sql>
+      <param>LootDropId</param>
+      <param>ItemId</param>
+    </delete>
+  </query>
+
+  <query type="EQEmu.Loot.LootDrop">
+    <select>
+      <sql>
+        <![CDATA[
+SELECT lootdrop.*,lootdrop_entries.*,items.name as itemname FROM lootdrop,lootdrop_entries,items where lootdrop.id = {0} AND lootdrop.id = lootdrop_entries.lootdrop_id AND items.id = lootdrop_entries.item_id;        
+        ]]>
+      </sql>
+      <param>Id</param>
+      <store field="item_id" type="int">ItemId</store>
+      <store field="item_charges" type="int">ItemCharges</store>
+      <store field="equip_item" type="bool">EquipItem</store>
+      <store field="chance" type="int">Chance</store>
+      <store field="itemname" type="string">ItemName</store>
+      <store field="lootdrop_id" type="int">LootDropId</store>
+    </select>
+
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO loottable_entries(loottable_id,lootdrop_id,multiplier,probability) VALUES ({2},@LootDropID,{4},{5});]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+      <param>LootTableId</param>
+      <param>Id</param>
+      <param>Multiplier</param>
+      <param>Probability</param>
+    </insert>
+
+    <update>
+      <sql>
+        <![CDATA[UPDATE lootdrop SET lootdrop.name = '{0}' WHERE id = @LootDropID;  
+UPDATE loottable_entries SET multiplier = {2}, probability = {3} WHERE lootdrop_id = @LootDropID AND loottable_id = {4};]]>
+      </sql>      
+      <param>Name</param>
+      <param>Id</param>
+      <param>Multiplier</param>
+      <param>Probability</param>
+      <param>LootTableId</param>
+    </update>
+
+    <delete>
+      <sql>
+        <![CDATA[DELETE FROM loottable_entries where loottable_id = {0} AND lootdrop_id = @LootDropID;]]>
+      </sql>
+      <param>LootTableId</param>
+      <param>Id</param>
+    </delete>
+  </query>
+
+  <query-extension type="EQEmu.Loot.LootDrop" name="NewInsert">
+    <insert>
+      <sql>
+        <![CDATA[INSERT INTO lootdrop(id,name) VALUES (@LootDropID,'{1}');]]>
+      </sql>
+      <param>Id</param>
+      <param>Name</param>
+    </insert>
+  </query-extension>
+
+  <query-extension type="EQEmu.Spawns.ZoneSpawns" name="GetAllVersions">
+    <select>
+      <sql>
+        <![CDATA[
+        SELECT * FROM spawn2 WHERE zone='{0}';
+        ]]>
+      </sql>
+      <param>Zone</param>
+      <store field="zone" type="string">Zone</store>
+      <store field="pathgrid" type="int">GridId</store>
+      <store field="heading" type="float">Heading</store>
+      <store field="x" type="float">X</store>
+      <store field="y" type="float">Y</store>
+      <store field="z" type="float">Z</store>
+      <store field="roam_area" type="int">RoamAreaId</store>
+      <store field="respawntime" type="int">RespawnTime</store>
+      <store field="spawngroupID" type="int">SpawnGroupId</store>
+      <store field="id" type="int">Id</store>
+      <store field="animation" type="int">IdleAnimation</store>
+      <store field="cond_value" type="int">ConditionValue</store>
+      <store field="_condition" type="int">Condition</store>
+      <store field="version" type="int">Version</store>
+    </select>
+  </query-extension>  
+
+</property-mapping>

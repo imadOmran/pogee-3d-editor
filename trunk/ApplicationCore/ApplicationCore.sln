@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoorsPlugin", "DoorsPlugin\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NpcTypePlugin", "NpcTypePlugin\NpcTypePlugin.csproj", "{710A97A9-EF86-40A4-A38C-BD9001404F33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabasePlugin", "DatabasePlugin\DatabasePlugin.csproj", "{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -441,6 +443,26 @@ Global
 		{710A97A9-EF86-40A4-A38C-BD9001404F33}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{710A97A9-EF86-40A4-A38C-BD9001404F33}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{710A97A9-EF86-40A4-A38C-BD9001404F33}.Release|x86.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuDebug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuDebug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuDebug|x86.ActiveCfg = Debug|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuRelease|Any CPU.Build.0 = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.EQEmuRelease|x86.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4C4816B0-F031-4F58-A2DD-E0FB521C2E6F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
