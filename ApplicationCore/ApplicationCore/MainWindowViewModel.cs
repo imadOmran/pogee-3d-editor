@@ -40,6 +40,8 @@ namespace ApplicationCore
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private List<string> _loadedModuleNames = new List<string>();
+
         private IUnityContainer _container = new UnityContainer();
         public IUnityContainer Container
         {
@@ -76,10 +78,15 @@ namespace ApplicationCore
             }
         }
 
-        public MySqlConnection DBConnection
+        public List<string> LoadedModules
         {
-            get { return _container.Resolve<MySqlConnection>(); }
+            get { return _loadedModuleNames; }
         }
+
+        //public MySqlConnection DBConnection
+        //{
+        //    get { return _container.Resolve<MySqlConnection>(); }
+        //}
 
         private void ModuleConfiguration()
         {
@@ -129,6 +136,7 @@ namespace ApplicationCore
             if (!DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
             {
                 dirCatalog = new DirectoryCatalog(".\\Plugins");
+                _loadedModuleNames.AddRange(dirCatalog.LoadedFiles);                
             }
 
             //this will create a new and load a new assembly, the unity container will be able to resolve types from here

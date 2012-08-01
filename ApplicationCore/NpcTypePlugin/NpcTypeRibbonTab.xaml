@@ -20,9 +20,9 @@
         <m:RibbonButton Label="Open Zone" ToolTip="ie. mistmoore_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenZoneModelButton" Click="OpenZoneModelButton_Click" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
-        <m:RibbonButton Label="Apply Template" Command="{Binding ApplyTemplateCommand}" />
-        <m:RibbonButton Label="Create" Command="{Binding CreateNpcCommand}" />
-        <m:RibbonButton Label="Delete" Command="{Binding RemoveNpcCommand}" />
-        <m:RibbonButton Label="Duplicate" Command="{Binding CopyNpcCommand}" />
+        <m:RibbonButton Label="Apply Template" SmallImageSource="Images/112_ArrowCurve_Blue_Right_32x32_72.png" Command="{Binding ApplyTemplateCommand}" />
+        <m:RibbonButton Label="Create" SmallImageSource="Images/077_AddFile_16x16_72.png"  Command="{Binding CreateNpcCommand}" />
+        <m:RibbonButton Label="Delete" SmallImageSource="Images/delete_12x12.png" Command="{Binding RemoveNpcCommand}" />
+        <m:RibbonButton Label="Duplicate" SmallImageSource="Images/copy.png" Command="{Binding CopyNpcCommand}" />
     </m:RibbonGroup>
 </m:RibbonTab>
