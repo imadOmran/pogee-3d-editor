@@ -69,6 +69,9 @@
                 <m:Ribbon.ApplicationMenu>
                     <m:RibbonApplicationMenu> 
                         <m:RibbonSeparator />
+                        <m:RibbonApplicationMenuItem Header="About" Name="AboutMenuItem" Click="AboutMenuItem_Click">                            
+                        </m:RibbonApplicationMenuItem>
+                        <m:RibbonSeparator />
                         <m:RibbonApplicationMenuItem Header="Exit" Name="ExitMenuItem" Click="ExitMenuItem_Click" />
                     </m:RibbonApplicationMenu>
                 </m:Ribbon.ApplicationMenu>

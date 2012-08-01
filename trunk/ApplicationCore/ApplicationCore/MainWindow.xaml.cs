@@ -319,5 +319,20 @@ namespace ApplicationCore
                 }
             }
         }
+
+        private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as MainWindowViewModel;
+            if (vm != null)
+            {
+                string modules = "Loaded Modules:" + Environment.NewLine;
+                foreach (var f in vm.LoadedModules.OrderBy( x => x ) )
+                {
+                    modules += System.IO.Path.GetFileName(f) + Environment.NewLine;
+                }
+                var window = new UserControls.TextWindow(modules);
+                window.ShowDialog();
+            }
+        }
     }
 }

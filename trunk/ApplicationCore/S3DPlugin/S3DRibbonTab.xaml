@@ -31,23 +31,27 @@
         <m:RibbonButton Label="Render All" Command="{Binding RenderAllCommand}" />
     </m:RibbonGroup>
     <m:RibbonGroup Header="Models">
-        <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" SelectionBoxWidth="250">
-            <m:RibbonGallery SelectedItem="{Binding SelectedModel}">
-                <m:RibbonGalleryCategory ItemsSource="{Binding Models}" />
-            </m:RibbonGallery>
-        </m:RibbonComboBox>
-        <StackPanel Orientation="Horizontal">
-            <m:RibbonTextBox VerticalAlignment="Center"  Label="Texture" Text="{Binding TextureNumber}" />
-            <StackPanel VerticalAlignment="Center">
-                <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="TextureUpButton" Click="TextureUpButton_Click" />
-                <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="TextureDownButton" Click="TextureDownButton_Click" />
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <m:RibbonTextBox VerticalAlignment="Center"  Label="Head" Text="{Binding HeadNumber}" />
-            <StackPanel VerticalAlignment="Center">
-                <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="HeadUpButton" Click="HeadUpButton_Click" />
-                <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="HeadDownButton" Click="HeadDownButton_Click" />
+        <StackPanel>
+            <m:RibbonComboBox HorizontalAlignment="Right" Label="Models" SelectionBoxWidth="250">
+                <m:RibbonGallery SelectedItem="{Binding SelectedModel}">
+                    <m:RibbonGalleryCategory ItemsSource="{Binding Models}" />
+                </m:RibbonGallery>
+            </m:RibbonComboBox>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <m:RibbonTextBox VerticalAlignment="Center"  Label="Texture" Text="{Binding TextureNumber}" />
+                    <StackPanel VerticalAlignment="Center">
+                        <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="TextureUpButton" Click="TextureUpButton_Click" />
+                        <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="TextureDownButton" Click="TextureDownButton_Click" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <m:RibbonTextBox VerticalAlignment="Center"  Label="Head" Text="{Binding HeadNumber}" />
+                    <StackPanel VerticalAlignment="Center">
+                        <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="HeadUpButton" Click="HeadUpButton_Click" />
+                        <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="HeadDownButton" Click="HeadDownButton_Click" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </m:RibbonGroup>
