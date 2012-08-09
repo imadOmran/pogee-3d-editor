@@ -232,7 +232,8 @@ namespace S3DPlugin
             if ((bool)fd.ShowDialog())
             {
                 bool useObjects = false;
-                if (!fd.FileName.Contains('_'))
+                var fname = Path.GetFileName(fd.FileName);
+                if (!fname.Contains('_'))
                 {
                     var result = System.Windows.MessageBox.Show("Load objects?", "Load objects?", System.Windows.MessageBoxButton.YesNo);
                     useObjects = result == System.Windows.MessageBoxResult.Yes ? true : false;
