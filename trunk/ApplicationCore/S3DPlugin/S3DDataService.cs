@@ -156,7 +156,7 @@ namespace S3DPlugin
         {
             if (File.Exists(file))
             {
-                Task.Factory.StartNew( () =>
+                Task.Factory.StartNew(() =>
                     {
                         S3D s3d = null;
                         int status = 0;
@@ -181,18 +181,18 @@ namespace S3DPlugin
                         var zone = filename.Substring(0, period);
                         string dir = Path.GetDirectoryName(file);
 
-                        var archiveFile = s3d.Files.FirstOrDefault(x => x.Name.Contains(zone + ".wld"));
-                        if (archiveFile == null) return;
+                        //var archiveFile = s3d.Files.FirstOrDefault(x => x.Name.Contains(zone + ".wld"));
+                        //if (archiveFile == null) return;
 
                         _wld = null;
                         _objectLocations = null;
                         List<WLD> wlds = new List<WLD>();
 
-                        foreach(var archive in s3d.Files.Where( x => x.Name.Contains(".wld") ) )
+                        foreach (var archive in s3d.Files.Where(x => x.Name.Contains(".wld")))
                         {
                             bool isObjects = archive.Name.Contains("objects.wld");
                             if (isObjects && !getObjects) continue;
-                            
+
                             status += 20;
                             DoStatusUpdate(status, "Loading " + archive.Name);
 
@@ -209,7 +209,7 @@ namespace S3DPlugin
                                     return;
                                 }
                                 wlds.Add(wld);
-                                if(archive.Name.Contains( zone + ".wld" ) )
+                                if (archive.Name.Contains(zone + ".wld"))
                                 {
                                     _wld = wld;
                                     if (archive.Name.Contains("_obj") || archive.Name.Contains("_chr"))
@@ -230,8 +230,8 @@ namespace S3DPlugin
                         _wlds = wlds;
 
                         //load up the _obj.s3d WLD                        
-                        string objFile = dir+"\\"+zone+"_obj.s3d";                       
-                        
+                        string objFile = dir + "\\" + zone + "_obj.s3d";
+
                         if (getObjects && File.Exists(objFile))
                         {
                             status += 10;
@@ -251,39 +251,40 @@ namespace S3DPlugin
                                     {
                                         DoStatusUpdate(0, "Failed loading: " + archive.Name + " " + e.Message, false);
                                         return;
-                                    }                                    
+                                    }
                                     wlds.Add(wld);
                                     _objects = wld;
                                     _objects.Files = objS3d;
-                                }                                
+                                }
                                 if (_objects != null)
                                 {
                                     _objects.ResolveMeshNames();
                                 }
                             }
                         }
-                         
 
                         if (wlds.Count > 0)
                         {
                             status = 90;
-                            DoStatusUpdate(status, "Generating Geometry",false);
-
+                            DoStatusUpdate(status, "Generating Geometry", false);
                             _wld = _wld == null ? wlds.ElementAt(0) : _wld;
-
-                            _dispatcher.BeginInvoke((Action)(() =>
-                                {
-                                    _wld.Files = s3d;
-                                    WLDObject = _wld;
-                                    _wlds = wlds;
-
-                                    Status = new LoadStatus()
-                                    {
-                                        PercentDone = 100,
-                                        OperationDescription = "Done"
-                                    };
-                                }));
                         }
+
+                        _dispatcher.BeginInvoke((Action)(() =>
+                        {
+                            if (_wld != null)
+                            {
+                                _wld.Files = s3d;
+                                WLDObject = _wld;
+                                _wlds = wlds;
+                            }
+
+                            Status = new LoadStatus()
+                            {
+                                PercentDone = 100,
+                                OperationDescription = "Done"
+                            };
+                        }));
                     });
             }
         }

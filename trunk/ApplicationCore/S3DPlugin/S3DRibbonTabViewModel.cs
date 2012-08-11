@@ -57,6 +57,7 @@ namespace S3DPlugin
                     break;
                 case "Status":
                     LoadStatus = S3DService.Status;
+                    NotifyPropertyChanged("Files");
                     NotifyPropertyChanged("LoadStatus");
                     break;
                 default:

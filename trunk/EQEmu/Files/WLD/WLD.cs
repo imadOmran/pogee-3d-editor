@@ -31,7 +31,8 @@ namespace EQEmu.Files.WLD
             return str.Substring(0, str.Length - 1);
         }
 
-        private Dictionary<string, BitmapImage> _bitmaps = new Dictionary<string, BitmapImage>();
+        //private Dictionary<string, BitmapImage> _bitmaps = new Dictionary<string, BitmapImage>();
+        private Dictionary<string, BitmapImageInfo> _bitmaps = new Dictionary<string, BitmapImageInfo>();
         private string[] _strings;
         private string _sHash;
 
@@ -126,7 +127,7 @@ namespace EQEmu.Files.WLD
             }
         }
 
-        public Dictionary<string, BitmapImage> ImageMapping
+        public Dictionary<string, BitmapImageInfo> ImageMapping
         {
             get
             {
@@ -257,7 +258,8 @@ namespace EQEmu.Files.WLD
                 bmp.StreamSource = ms;
                 bmp.EndInit();
                 bmp.Freeze();
-                _bitmaps[f.Name.ToLower()] = bmp;
+                var fname = f.Name.ToLower();
+                _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
             }
 
             //foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
@@ -306,7 +308,8 @@ namespace EQEmu.Files.WLD
                     bmp.StreamSource = converted;
                     bmp.EndInit();
                     bmp.Freeze();
-                    _bitmaps[f.Name.ToLower()] = bmp;
+                    var fname = f.Name.ToLower();
+                    _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
                 }
             }
 
@@ -340,9 +343,12 @@ namespace EQEmu.Files.WLD
                 var name = BitmapNames.FirstOrDefault(x => x.FragmentNumber == bmpInfo.FragmentReferences.ElementAt(0));
                 if (name == null) return null;
 
-                if (_bitmaps.ContainsKey(name.File.ToLower()))
+                var f = name.File.ToLower();
+
+                if (_bitmaps.ContainsKey(f))
                 {
-                    return new BitmapImageInfo(_bitmaps[name.File.ToLower()],name.File.ToLower());
+                    return _bitmaps[f];
+                    //return new BitmapImageInfo(_bitmaps[name.File.ToLower()],name.File.ToLower());
                 }
                 else return null;
             }
