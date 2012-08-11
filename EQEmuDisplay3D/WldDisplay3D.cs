@@ -323,7 +323,7 @@ namespace EQEmuDisplay3D
                                 textureStr = baseTexture.Substring(0, index) + textureStr + baseTexture.Substring(index + textureStr.Length);
                                 if (_wld.ImageMapping.ContainsKey(textureStr))
                                 {
-                                    img = _wld.ImageMapping[textureStr];
+                                    img = _wld.ImageMapping[textureStr].Image;
                                 }
                             }
                         }

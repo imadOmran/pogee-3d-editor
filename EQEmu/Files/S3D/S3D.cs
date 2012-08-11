@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Collections;
 
 using zlib;
 
@@ -127,25 +128,33 @@ namespace EQEmu.Files.S3D
                 fs.Seek(directory.Meta.Offset, SeekOrigin.Begin);
                 size = Marshal.SizeOf(typeof(PFSData));
                 barray = new byte[size];
-                fs.Read(barray, 0, size);
 
-                var data = Functions.ByteArrayToStructure<PFSData>(barray);
+                var tempBuffer = new ArrayList( (int)directory.Meta.Size);
+                int inflatedSize = 0;
+                while( inflatedSize < directory.Meta.Size )
+                {
+                    fs.Read(barray, 0, size);
 
-                var deflatedBuffer = new byte[data.DeflatedLength];
-                var inflatedBuffer = new byte[data.InflatedLength];
+                    var data = Functions.ByteArrayToStructure<PFSData>(barray);
 
-                fs.Read(deflatedBuffer, 0, (int)data.DeflatedLength);
+                    var deflatedBuffer = new byte[data.DeflatedLength];
+                    var inflatedBuffer = new byte[data.InflatedLength];
 
-                s3d = new S3D();
-                s3d.Decompress(deflatedBuffer, (int)data.DeflatedLength, inflatedBuffer, (int)data.InflatedLength);
+                    fs.Read(deflatedBuffer, 0, (int)data.DeflatedLength);
 
-                if (directory.Meta.Size != data.InflatedLength)
+                    s3d = new S3D();
+                    s3d.Decompress(deflatedBuffer, (int)data.DeflatedLength, inflatedBuffer, (int)data.InflatedLength);
+                    tempBuffer.AddRange(inflatedBuffer);
+                    inflatedSize += (int)data.InflatedLength;
+                }
+
+                if (directory.Meta.Size != tempBuffer.Count)
                 {
                     throw new Exception("Directory size mismatch");
                 }
 
                 List<string> fileNames = new List<string>();
-                using (var ms = new MemoryStream(inflatedBuffer))
+                using (var ms = new MemoryStream(tempBuffer.Cast<byte>().ToArray()))
                 {
                     ms.Seek(8, SeekOrigin.Begin);
                     var encoding = new ASCIIEncoding();
