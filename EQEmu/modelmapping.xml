@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <mappings>  
   <race name="Doug">0</race>
-  <race name="Human">1</race>
-  <race name="Barbarian">2</race>
-  <race name="Erudite">3</race>
-  <race name="WoodElf">4</race>
-  <race name="HighElf">5</race>
-  <race name="DarkElf">6</race>
-  <race name="HalfElf">7</race>
-  <race name="Dwarf">8</race>
-  <race name="Troll">9</race>
-  <race name="Ogre">10</race>
-  <race name="Halfling">11</race>
-  <race name="Gnome">12</race>
+  <race name="Human">HU#</race>
+  <race name="Barbarian">BA#</race>
+  <race name="Erudite">ER#</race>
+  <race name="WoodElf">EL#</race>
+  <race name="HighElf">HI#</race>
+  <race name="DarkElf">DA#</race>
+  <race name="HalfElf">HA#</race>
+  <race name="Dwarf">DW#</race>
+  <race name="Troll">TR#</race>
+  <race name="Ogre">OG#</race>
+  <race name="Halfling">HO#</race>
+  <race name="Gnome">GN#</race>
   <race name="Aviak">13</race>
-  <race name="Werewolf">14</race>
+  <race name="Werewolf">WER</race>
   <race name="Brownie">15</race>
   <race name="Centaur">16</race>
   <race name="Golem">GOL</race>
@@ -60,7 +60,7 @@
   <race name="Dracnid">57</race>
   <race name="SolusekRo">58</race>
   <race name="Bloodgill">59</race>
-  <race name="Skeleton">60</race>
+  <race name="Skeleton">SKE</race>
   <race name="Shark">61</race>
   <race name="Tunare">62</race>
   <race name="Tiger">TIG</race>
@@ -75,7 +75,7 @@
   <race name="Ship">72</race>
   <race name="Launch">73</race>
   <race name="Piranha">PIR</race>
-  <race name="Elemental">75</race>
+  <race name="Elemental">ELE</race>
   <race name="Puma">76</race>
   <race name="NeriakCitizen">77</race>
   <race name="EruditeCitizen">78</race>
