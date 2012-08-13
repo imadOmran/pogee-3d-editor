@@ -202,12 +202,23 @@ namespace EQEmuDisplay3D
             RenderObjects();
         }
 
-        public void RenderModel(string name,int textureNumber=0,int headNumber=0)
+        public bool RenderModel(string name,int textureNumber=0,int headNumber=0)
         {
             var model = _wld.Models.FirstOrDefault(x => x.FragmentName.Substring(0, 3).ToLower() == name.ToLower());
             if (model != null)
             {
                 RenderModel(model, textureNumber, headNumber);
+                return true;
+            }
+            else return false;
+        }
+
+        public void ClearVisuals()
+        {
+            Model3DGroup group = Model as Model3DGroup;
+            if (group != null)
+            {
+                group.Children.Clear();
             }
         }
         

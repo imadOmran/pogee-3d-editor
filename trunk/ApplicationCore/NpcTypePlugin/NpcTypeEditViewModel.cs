@@ -49,6 +49,9 @@ namespace NpcTypePlugin
         private WLD _globalChr;
         private WLD _zoneChr;
 
+        private ModelVisual3D _globalModel = null;
+        private ModelVisual3D _zoneModel = null;
+
         private ObservableCollection<object> _models = new ObservableCollection<object>();
 
         private DelegateCommand _applyTemplateCommand;
@@ -115,7 +118,10 @@ namespace NpcTypePlugin
                 {
                     using(var ms = new MemoryStream(wld.Bytes))
                     {
-                        Models.Clear();
+                        if (_globalModel != null && Models.Contains(_globalModel))
+                        {
+                            Models.Remove(_globalModel);
+                        }
 
                         _globalChr = WLD.Load(ms);
                         _globalChr.Files = s3d;
@@ -127,20 +133,27 @@ namespace NpcTypePlugin
                             _globalChr.ResolveMeshNames();
                         });
 
-                        Models.Add(new DefaultLights());
-                        Models.Add(new CoordinateSystemVisual3D());
-                        Models.Add(
-                            new ModelVisual3D()
-                            {
-                                Content= _globalChrDisplay3d.Model
-                            });
+                        if (Models.Count == 0)
+                        {
+                            Models.Add(new DefaultLights());
+                            Models.Add(new CoordinateSystemVisual3D());
+                        }
+
+                        _globalModel = new ModelVisual3D(){
+                            Content = _globalChrDisplay3d.Model
+                        };
+
+                        Models.Add(_globalModel);
                     }
                 }
                 else if (source == ModelSource.Zone)
                 {
                     using (var ms = new MemoryStream(wld.Bytes))
                     {
-                        Models.Clear();
+                        if (_zoneModel != null && Models.Contains(_zoneModel))
+                        {
+                            Models.Remove(_zoneModel);
+                        }
 
                         _zoneChr = WLD.Load(ms);
                         _zoneChr.Files = s3d;
@@ -152,13 +165,18 @@ namespace NpcTypePlugin
                             _zoneChr.ResolveMeshNames();
                         });
 
-                        Models.Add(new DefaultLights());
-                        Models.Add(new CoordinateSystemVisual3D());
-                        Models.Add(
-                            new ModelVisual3D()
-                            {
-                                Content = _zoneChrDisplay3d.Model
-                            });
+                        if (Models.Count == 0)
+                        {
+                            Models.Add(new DefaultLights());
+                            Models.Add(new CoordinateSystemVisual3D());
+                        }
+
+                        _zoneModel = new ModelVisual3D()
+                        {
+                            Content = _zoneChrDisplay3d.Model
+                        };
+
+                        Models.Add(_zoneModel);
                     }
                 }
             }
@@ -276,14 +294,28 @@ namespace NpcTypePlugin
                         }
                     }
 
-                    if (_zoneChrDisplay3d != null)
-                    {
-                        _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
-                    }
+                    bool rendered = false;
 
                     if (_globalChrDisplay3d != null)
                     {
-                        _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                        rendered = _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                        if (!rendered)
+                        {
+                            _globalChrDisplay3d.ClearVisuals();
+                        }
+                    }
+
+                    if (rendered == false && _zoneChrDisplay3d != null)
+                    {
+                        rendered = _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                        if (!rendered)
+                        {
+                            _zoneChrDisplay3d.ClearVisuals();
+                        }
+                    }
+                    else if (rendered == true && _zoneChrDisplay3d != null)
+                    {
+                        _zoneChrDisplay3d.ClearVisuals();
                     }
                 }
             }
