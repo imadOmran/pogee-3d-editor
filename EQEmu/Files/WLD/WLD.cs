@@ -46,6 +46,12 @@ namespace EQEmu.Files.WLD
         private Format _format;
         private List<object> _fragments = new List<object>();
 
+        public string Name
+        {
+            get;
+            private set;
+        }
+
         public Format FileVersion
         {
             get { return _format; }
@@ -427,9 +433,10 @@ namespace EQEmu.Files.WLD
             }
         }
 
-        public static WLD Load(Stream stream)
+        public static WLD Load(Stream stream,string name="default.wld")
         {
             WLD wld = new WLD();
+            wld.Name = name;
             int size = Marshal.SizeOf(typeof(WLDHeader));
             var barray = new byte[size];
             stream.Read(barray, 0, size);

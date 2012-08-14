@@ -71,7 +71,7 @@ namespace DoorsPlugin
             WLD wld = null;
             using(var ms = new MemoryStream(wldFile.Bytes))
             {
-                wld = WLD.Load(ms);
+                wld = WLD.Load(ms,wldFile.Name);
                 wld.Files = s3d;
                 wld.ResolveMeshNames();
             }
