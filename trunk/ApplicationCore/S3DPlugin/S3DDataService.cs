@@ -201,7 +201,7 @@ namespace S3DPlugin
                                 WLD wld = null;
                                 try
                                 {
-                                    wld = WLD.Load(ms);
+                                    wld = WLD.Load(ms,archive.Name);
                                 }
                                 catch (Exception e)
                                 {
@@ -245,7 +245,7 @@ namespace S3DPlugin
                                     WLD wld = null;
                                     try
                                     {
-                                        wld = WLD.Load(ms);
+                                        wld = WLD.Load(ms,archive.Name);
                                     }
                                     catch (Exception e)
                                     {

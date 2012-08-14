@@ -16,8 +16,7 @@
         <m:RibbonButton Label="View Query" x:Name="ViewQueryButton" Click="ViewQueryButton_Click" />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Models">
-        <m:RibbonButton Label="Open Global" ToolTip="ie. global_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenGlobalModelButton" Click="OpenGlobalModelButton_Click" />
-        <m:RibbonButton Label="Open Zone" ToolTip="ie. mistmoore_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenZoneModelButton" Click="OpenZoneModelButton_Click" />
+        <m:RibbonButton Label="Load Models" ToolTip="ie. global_chr.s3d" LargeImageSource="Images/OpenFile.png" x:Name="OpenGlobalModelButton" Click="OpenGlobalModelButton_Click" />        
     </m:RibbonGroup>
     <m:RibbonGroup Header="Selection">
         <m:RibbonButton Label="Apply Template" SmallImageSource="Images/112_ArrowCurve_Blue_Right_32x32_72.png" Command="{Binding ApplyTemplateCommand}" />

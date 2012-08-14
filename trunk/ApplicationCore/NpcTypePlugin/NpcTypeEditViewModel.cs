@@ -43,14 +43,8 @@ namespace NpcTypePlugin
         private Npc _selectedNpc;
         private string _zoneFilter;
 
-        private WldDisplay3D _globalChrDisplay3d;
-        private WldDisplay3D _zoneChrDisplay3d;
-
-        private WLD _globalChr;
-        private WLD _zoneChr;
-
-        private ModelVisual3D _globalModel = null;
-        private ModelVisual3D _zoneModel = null;
+        private WldModelDisplay _modelDisplay3d = new WldModelDisplay(null);
+        private ObservableCollection<WLD> _wlds = new ObservableCollection<WLD>();
 
         private ObservableCollection<object> _models = new ObservableCollection<object>();
 
@@ -114,69 +108,25 @@ namespace NpcTypePlugin
             var wld = s3d.Files.FirstOrDefault(x => x.Name.Contains(".wld"));
             if (wld != null)
             {
-                if (source == ModelSource.Global)
+                using (var ms = new MemoryStream(wld.Bytes))
                 {
-                    using(var ms = new MemoryStream(wld.Bytes))
+                    var pwld = WLD.Load(ms);
+                    pwld.Files = s3d;
+                    _modelDisplay3d.AddWld(pwld);
+
+                    System.Threading.ThreadPool.QueueUserWorkItem(x =>
                     {
-                        if (_globalModel != null && Models.Contains(_globalModel))
-                        {
-                            Models.Remove(_globalModel);
-                        }
+                        pwld.ResolveMeshNames();
+                    });
 
-                        _globalChr = WLD.Load(ms);
-                        _globalChr.Files = s3d;
-                        _globalChrDisplay3d = new WldDisplay3D(_globalChr);
-                        _globalChrDisplay3d.UpdateAll();
-
-                        System.Threading.ThreadPool.QueueUserWorkItem(x =>
-                        {
-                            _globalChr.ResolveMeshNames();
-                        });
-
-                        if (Models.Count == 0)
-                        {
-                            Models.Add(new DefaultLights());
-                            Models.Add(new CoordinateSystemVisual3D());
-                        }
-
-                        _globalModel = new ModelVisual3D(){
-                            Content = _globalChrDisplay3d.Model
-                        };
-
-                        Models.Add(_globalModel);
-                    }
-                }
-                else if (source == ModelSource.Zone)
-                {
-                    using (var ms = new MemoryStream(wld.Bytes))
+                    if (Models.Count == 0)
                     {
-                        if (_zoneModel != null && Models.Contains(_zoneModel))
+                        Models.Add(new DefaultLights());
+                        Models.Add(new CoordinateSystemVisual3D());
+                        Models.Add(new ModelVisual3D()
                         {
-                            Models.Remove(_zoneModel);
-                        }
-
-                        _zoneChr = WLD.Load(ms);
-                        _zoneChr.Files = s3d;
-                        _zoneChrDisplay3d = new WldDisplay3D(_zoneChr);
-                        _zoneChrDisplay3d.UpdateAll();
-
-                        System.Threading.ThreadPool.QueueUserWorkItem(x =>
-                        {
-                            _zoneChr.ResolveMeshNames();
+                            Content = _modelDisplay3d.Model
                         });
-
-                        if (Models.Count == 0)
-                        {
-                            Models.Add(new DefaultLights());
-                            Models.Add(new CoordinateSystemVisual3D());
-                        }
-
-                        _zoneModel = new ModelVisual3D()
-                        {
-                            Content = _zoneChrDisplay3d.Model
-                        };
-
-                        Models.Add(_zoneModel);
                     }
                 }
             }
@@ -293,30 +243,7 @@ namespace NpcTypePlugin
                             modelStr = modelStr.Replace('#', 'M');
                         }
                     }
-
-                    bool rendered = false;
-
-                    if (_globalChrDisplay3d != null)
-                    {
-                        rendered = _globalChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
-                        if (!rendered)
-                        {
-                            _globalChrDisplay3d.ClearVisuals();
-                        }
-                    }
-
-                    if (rendered == false && _zoneChrDisplay3d != null)
-                    {
-                        rendered = _zoneChrDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
-                        if (!rendered)
-                        {
-                            _zoneChrDisplay3d.ClearVisuals();
-                        }
-                    }
-                    else if (rendered == true && _zoneChrDisplay3d != null)
-                    {
-                        _zoneChrDisplay3d.ClearVisuals();
-                    }
+                    _modelDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
                 }
             }
 

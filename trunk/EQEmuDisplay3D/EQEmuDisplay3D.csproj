@@ -88,6 +88,7 @@
     <Compile Include="RoamAreasDisplay3D.cs" />
     <Compile Include="Spawn2Display3D.cs" />
     <Compile Include="WldDisplay3D.cs" />
+    <Compile Include="WldModelDisplay.cs" />
     <Compile Include="ZonePointsDisplay3D.cs" />
   </ItemGroup>
   <ItemGroup>
