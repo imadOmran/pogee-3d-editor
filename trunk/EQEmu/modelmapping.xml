@@ -99,7 +99,7 @@
   <race name="Cockatrice">96</race>
   <race name="DaisyMan">97</race>
   <race name="ElfVampire">VS#</race>
-  <race name="Denizen">99</race>
+  <race name="Denizen">DEN</race>
   <race name="Dervish">DER</race>
   <race name="Efreeti">101</race>
   <race name="FroglokTadpole">102</race>
@@ -121,8 +121,8 @@
   <race name="EruditeGhost">118</race>
   <race name="Sabertooth">119</race>
   <race name="WolfElemental">120</race>
-  <race name="Gorgon">121</race>
-  <race name="DragonSkeleton">122</race>
+  <race name="Gorgon">GRG</race>
+  <race name="DragonSkeleton">DRU</race>
   <race name="Innoruuk">INN</race>
   <race name="Unicorn">UNI</race>
   <race name="Pegasus">125</race>
@@ -134,7 +134,7 @@
   <race name="Sarnak">131</race>
   <race name="Draglock">132</race>
   <race name="Lycanthrope">133</race>
-  <race name="Mosquito">134</race>
+  <race name="Mosquito">MOS</race>
   <race name="Rhino">135</race>
   <race name="Xalgoz">136</race>
   <race name="KunarkGoblin">137</race>
@@ -163,7 +163,7 @@
   <race name="IksarGolem">IKG</race>
   <race name="IksarSkeleton">161</race>
   <race name="ManEatingPlant">162</race>
-  <race name="Raptor">163</race>
+  <race name="Raptor">RAP</race>
   <race name="SarnakGolem">164</race>
   <race name="WaterDragon">165</race>
   <race name="IksarHand">166</race>

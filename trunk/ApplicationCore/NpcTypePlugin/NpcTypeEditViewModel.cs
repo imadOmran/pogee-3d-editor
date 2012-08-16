@@ -32,6 +32,7 @@ namespace NpcTypePlugin
 
         private int _selectedNpcTexture = 0;
         private int _selectedNpcHead = 0;
+        private int _selectedNpcFace = 0;
 
         private readonly MySqlConnection _connection;
         private readonly QueryConfig _config;
@@ -57,6 +58,8 @@ namespace NpcTypePlugin
         private DelegateCommand _decrementTextureCommand;
         private DelegateCommand _incrementHeadCommand;
         private DelegateCommand _decrementHeadCommand;
+        private DelegateCommand _incrementFaceCommand;
+        private DelegateCommand _decrementFaceCommand;
 
         private Dictionary<Npc.TypeRace, string> _modelMappings;
 
@@ -205,6 +208,19 @@ namespace NpcTypePlugin
                 NotifyPropertyChanged("SelectedNpcHead");
             }
         }
+
+        public int SelectedNpcFace
+        {
+            get { return _selectedNpcFace; }
+            set
+            {
+                _selectedNpcFace = value;
+                SelectedNpc.Face = value;
+
+                RenderSelectedNpc();
+                NotifyPropertyChanged("SelectedNpcFace");
+            }
+        }
         
         public IEnumerable<Npc> SelectedNpcs
         {
@@ -243,7 +259,7 @@ namespace NpcTypePlugin
                             modelStr = modelStr.Replace('#', 'M');
                         }
                     }
-                    _modelDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture);
+                    _modelDisplay3d.RenderModel(modelStr, _selectedNpc.Texture, _selectedNpc.HelmTexture, _selectedNpc.Face);
                 }
             }
 
@@ -251,6 +267,8 @@ namespace NpcTypePlugin
             DecrementHeadCommand.RaiseCanExecuteChanged();
             IncrementTextureCommand.RaiseCanExecuteChanged();
             DecrementTextureCommand.RaiseCanExecuteChanged();
+            IncrementFaceCommand.RaiseCanExecuteChanged();
+            DecrementFaceCommand.RaiseCanExecuteChanged();
         }
         
         public Npc SelectedNpc
@@ -267,6 +285,7 @@ namespace NpcTypePlugin
                 {
                     SelectedNpcHead = _selectedNpc.HelmTexture;
                     SelectedNpcTexture = _selectedNpc.Texture;
+                    SelectedNpcFace = _selectedNpc.Face;
                 }
 
                 if (_selectedNpcs == null) _selectedNpcs = new List<Npc>() { value };
@@ -405,6 +424,48 @@ namespace NpcTypePlugin
                         });
                 }
                 return _decrementHeadCommand;
+            }
+        }
+
+        public DelegateCommand IncrementFaceCommand
+        {
+            get
+            {
+                if (_incrementFaceCommand == null)
+                {
+                    _incrementFaceCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcFace += 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null;
+                        });
+                }
+
+                return _incrementFaceCommand;
+            }
+        }
+
+        public DelegateCommand DecrementFaceCommand
+        {
+            get
+            {
+                if (_decrementFaceCommand == null)
+                {
+                    _decrementFaceCommand = new DelegateCommand(
+                        x =>
+                        {
+                            SelectedNpcFace -= 1;
+                        },
+                        y =>
+                        {
+                            return SelectedNpc != null && SelectedNpcFace > 0;
+                        });
+                }
+
+                return _decrementFaceCommand;
             }
         }
 

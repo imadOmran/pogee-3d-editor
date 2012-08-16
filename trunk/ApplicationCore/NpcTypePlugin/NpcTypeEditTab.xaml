@@ -42,6 +42,12 @@
                     <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="HeadUpButton" Command="{Binding IncrementHeadCommand}" />
                     <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="HeadDownButton" Command="{Binding DecrementHeadCommand}" />
                 </StackPanel>
+                <Label Foreground="White">Face</Label>
+                <TextBox Width="27" Text="{Binding Path=SelectedNpcFace}" />
+                <StackPanel VerticalAlignment="Center">
+                    <Button FontFamily="Marlett" FontSize="12" Content="5" x:Name="FaceUpButton" Command="{Binding IncrementFaceCommand}" />
+                    <Button FontFamily="Marlett" FontSize="12" Content="6" x:Name="FaceDownButton" Command="{Binding DecrementFaceCommand}" />
+                </StackPanel>                
             </StackPanel>            
         </Grid>
     </Grid>
