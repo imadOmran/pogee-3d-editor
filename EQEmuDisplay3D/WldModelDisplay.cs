@@ -34,7 +34,7 @@ namespace EQEmuDisplay3D
             _wldCollection.Add(wld);
         }
 
-        public bool RenderModel(string name, int textureNumber = 0, int headNumber = 0)
+        public bool RenderModel(string name, int textureNumber = 0, int headNumber = 0, int face=0)
         {
             ModelReference model = null;
             WLD modelWld = null;
@@ -46,13 +46,13 @@ namespace EQEmuDisplay3D
             }
             if (model != null)
             {
-                RenderModel(modelWld,model, textureNumber, headNumber);
+                RenderModel(modelWld,model, textureNumber, headNumber, face);
                 return true;
             }
             else return false;
         }
 
-        public void RenderModel(WLD modelWld,ModelReference model,int textureNumber=0,int headNumber=0)
+        public void RenderModel(WLD modelWld,ModelReference model,int textureNumber=0,int headNumber=0,int face=0)
         {
             var wld = modelWld;
             TrackAnimationBuilder animation = null;
@@ -104,11 +104,11 @@ namespace EQEmuDisplay3D
 
             if (meshes.Count > 0)
             {
-                RenderMesh(wld,meshes, animation, textureNumber);
+                RenderMesh(wld,meshes, animation, textureNumber,face);
             }            
         }
 
-        public void RenderMesh(WLD wld,IEnumerable<Mesh> meshes, TrackAnimationBuilder animation = null, int textureNum = 0)
+        public void RenderMesh(WLD wld,IEnumerable<Mesh> meshes, TrackAnimationBuilder animation = null, int textureNum = 0, int face = 0)
         {
             if (meshes == null) return;
             Model3DGroup group = Model as Model3DGroup;
@@ -148,26 +148,37 @@ namespace EQEmuDisplay3D
                     if (polytex.Value.ElementAt(0).BitmapInfo != null)
                     {
                         //mat = HelixToolkit.Wpf.MaterialHelper.CreateImageMaterial(polytex.Value.ElementAt(0).Image, 100.0);
-                        BitmapImage img = polytex.Value.ElementAt(0).BitmapInfo.Image;
-                        if (textureNum > 0)
+                        BitmapImage img = polytex.Value.ElementAt(0).BitmapInfo.Image;            
+                        if (textureNum > 0 || face > 0)
                         {
-                            string textureStr = "";
                             string baseTexture = polytex.Value.ElementAt(0).BitmapInfo.Name;
-
-                            textureStr = String.Format("{0:d2}", textureNum);
+                            var textureStr = String.Format("{0:d2}", textureNum);
+                            var faceStr = String.Format("{0:d1}", face);
 
                             var index = baseTexture.IndexOf("00");
                             if (index < 0) index = baseTexture.IndexOf("01");
 
                             if (index > 0)
                             {
-                                textureStr = baseTexture.Substring(0, index) + textureStr + baseTexture.Substring(index + textureStr.Length);
-                                if (wld.ImageMapping.ContainsKey(textureStr))
+                                var faceAndTexture = baseTexture.Substring(0, index) + textureStr + faceStr + baseTexture.Substring(index + textureStr.Length + faceStr.Length);
+                                var textureOnly = baseTexture.Substring(0, index) + textureStr + baseTexture.Substring(index + textureStr.Length);
+                                var faceOnly = baseTexture.Substring(0, index + textureStr.Length) + faceStr + baseTexture.Substring(index + textureStr.Length + faceStr.Length);
+
+                                if (wld.ImageMapping.ContainsKey(faceAndTexture))
                                 {
-                                    img = wld.ImageMapping[textureStr].Image;
+                                    img = wld.ImageMapping[faceAndTexture].Image;
+                                }
+                                else if (wld.ImageMapping.ContainsKey(textureOnly))
+                                {
+                                    img = wld.ImageMapping[textureOnly].Image;
+                                }
+                                else if (wld.ImageMapping.ContainsKey(faceOnly))
+                                {
+                                    img = wld.ImageMapping[faceOnly].Image;
                                 }
                             }
                         }
+                        
                         var brush = new System.Windows.Media.ImageBrush(img);                        
                         brush.ViewportUnits = System.Windows.Media.BrushMappingMode.Absolute;
                         //brush.TileMode
