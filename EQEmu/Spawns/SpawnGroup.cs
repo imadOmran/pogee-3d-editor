@@ -174,6 +174,7 @@ namespace EQEmu.Spawns
                     var newEntry = CreateEntry();
                     newEntry.SpawnGroupID = value;
                     newEntry.NpcID = entry.NpcID;
+                    newEntry.Chance = entry.Chance;
                     newEntry.NpcLevel = entry.NpcLevel;
                     newEntry.NpcName = entry.NpcName;
 
