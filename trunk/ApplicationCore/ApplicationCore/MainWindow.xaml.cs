@@ -120,7 +120,7 @@ namespace ApplicationCore
             {
                 double largeX = _selectionBoxEndPoint.X > _selectionBoxStartPoint.X ? _selectionBoxEndPoint.X : _selectionBoxStartPoint.X;
                 double smallX = largeX == _selectionBoxEndPoint.X ? _selectionBoxStartPoint.X : _selectionBoxEndPoint.X;
-                double largeY = _selectionBoxEndPoint.Y > _selectionBoxStartPoint.Y ? _selectionBoxEndPoint.Y : _selectionBoxStartPoint.X;
+                double largeY = _selectionBoxEndPoint.Y > _selectionBoxStartPoint.Y ? _selectionBoxEndPoint.Y : _selectionBoxStartPoint.Y;
                 double smallY = largeY == _selectionBoxEndPoint.Y ? _selectionBoxStartPoint.Y : _selectionBoxEndPoint.Y;
 
                 action = (point3D,distance) =>
