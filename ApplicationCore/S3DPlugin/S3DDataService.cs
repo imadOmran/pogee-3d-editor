@@ -152,7 +152,7 @@ namespace S3DPlugin
             }
         }
         
-        public void OpenFile(string file,bool getObjects=false)
+        public void OpenFile(string file,bool getObjects=false,bool useNewTextures=true)
         {
             if (File.Exists(file))
             {
@@ -202,6 +202,8 @@ namespace S3DPlugin
                                 try
                                 {
                                     wld = WLD.Load(ms,archive.Name);
+                                    if (useNewTextures) wld.TexturingFormat = WLD.TextureFormat.HighResolution;
+                                    else wld.TexturingFormat = WLD.TextureFormat.Original;
                                 }
                                 catch (Exception e)
                                 {

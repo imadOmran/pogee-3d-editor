@@ -239,7 +239,12 @@ namespace S3DPlugin
                     var result = System.Windows.MessageBox.Show("Load objects?", "Load objects?", System.Windows.MessageBoxButton.YesNo);
                     useObjects = result == System.Windows.MessageBoxResult.Yes ? true : false;
                 }
-                S3DService.OpenFile(fd.FileName,useObjects);                
+
+                bool useNewTextures = true;
+                var result2 = System.Windows.MessageBox.Show("Does this archive use hi-res files? If textures are flipped choose the opposite selection", "Texture Format", System.Windows.MessageBoxButton.YesNo);
+                useNewTextures = result2 == System.Windows.MessageBoxResult.Yes ? true : false;
+
+                S3DService.OpenFile(fd.FileName, useObjects, useNewTextures);
             }
         }
 

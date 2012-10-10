@@ -62,7 +62,7 @@ namespace DoorsPlugin
             get { return _dmanager; }
         }
 
-        public void OpenModels(string file)
+        public void OpenModels(string file,bool useNewTextures=true)
         {
             var s3d = S3D.Load(file);
             var wldFile = s3d.Files.FirstOrDefault(x => x.Name.Contains("_obj.wld"));
@@ -72,6 +72,9 @@ namespace DoorsPlugin
             using(var ms = new MemoryStream(wldFile.Bytes))
             {
                 wld = WLD.Load(ms,wldFile.Name);
+                if (useNewTextures) wld.TexturingFormat = WLD.TextureFormat.HighResolution;
+                else wld.TexturingFormat = WLD.TextureFormat.Original;
+
                 wld.Files = s3d;
                 wld.ResolveMeshNames();
             }

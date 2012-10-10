@@ -42,6 +42,12 @@ namespace EQEmu.Files.WLD
             New
         }
 
+        public enum TextureFormat
+        {
+            Original,
+            HighResolution
+        }
+
         private S3D.S3D _files = null;
         private Format _format;
         private List<object> _fragments = new List<object>();
@@ -50,6 +56,12 @@ namespace EQEmu.Files.WLD
         {
             get;
             private set;
+        }
+
+        public TextureFormat TexturingFormat
+        {
+            get;
+            set;
         }
 
         public Format FileVersion
@@ -236,16 +248,21 @@ namespace EQEmu.Files.WLD
                     }
                 }
             }
-            
+                        
             foreach (var f in Files.Files.Where(x => x.Name.ToLower().Contains(".dds") || x.Name.Contains(".bmp")))
             {
+                bool isBmp = f.Name.Contains(".bmp");
                 var bytes = f.Bytes;
 
                 using (var ms = new MemoryStream(bytes))
                 {
                     var converted = new MemoryStream();
                     var dib = FreeImage.LoadFromStream(ms);
-                    FreeImage.FlipVertical(dib);
+
+                    if (!isBmp || TexturingFormat == TextureFormat.HighResolution)
+                    {
+                        FreeImage.FlipVertical(dib);
+                    }
                     FreeImage.SaveToStream(dib, converted, FREE_IMAGE_FORMAT.FIF_BMP);
 
                     converted.Seek(0, SeekOrigin.Begin);
