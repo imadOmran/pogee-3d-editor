@@ -236,67 +236,8 @@ namespace EQEmu.Files.WLD
                     }
                 }
             }
-
-            //foreach (var f in fileNames.Where(x => x.ToLower().Contains(".bmp")))
-            //{
-            //    var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
-            //    if (img == null) continue;
-            //    var bmp = new BitmapImage();
-            //    bmp.CacheOption = BitmapCacheOption.OnLoad;
-
-            //    var ms = new MemoryStream(img.Bytes);
-            //    bmp.BeginInit();
-            //    bmp.StreamSource = ms;
-            //    bmp.EndInit();
-            //    bmp.Freeze();
-            //    _bitmaps[f.ToLower()] = bmp;
-            //}
-
-            foreach(var f in Files.Files.Where(x => x.Name.ToLower().Contains(".bmp")) )
-            {
-                //var img = Files.Files.FirstOrDefault(x => x.Name == f.Name.ToLower());
-                //if (img == null) continue;
-                var bmp = new BitmapImage();
-                bmp.CacheOption = BitmapCacheOption.OnLoad;
-
-                var ms = new MemoryStream(f.Bytes);
-                bmp.BeginInit();
-                bmp.StreamSource = ms;
-                bmp.EndInit();
-                bmp.Freeze();
-                var fname = f.Name.ToLower();
-                _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
-            }
-
-            //foreach (var f in fileNames.Where(x => x.ToLower().Contains(".dds")))
-            //{
-            //    //var tmpdir = Environment.GetEnvironmentVariable("TEMP") + "\\tmpimages";
-            //    //Directory.CreateDirectory(tmpdir);
-
-            //    var img = Files.Files.FirstOrDefault(x => x.Name == f.ToLower());
-            //    if (img == null) continue;
-
-            //    var bytes = img.Bytes;
-
-            //    using (var ms = new MemoryStream(bytes))
-            //    {
-            //        var converted = new MemoryStream();
-            //        var dib = FreeImage.LoadFromStream(ms);
-            //        FreeImage.FlipVertical(dib);
-            //        FreeImage.SaveToStream(dib, converted, FREE_IMAGE_FORMAT.FIF_BMP);
-
-            //        converted.Seek(0, SeekOrigin.Begin);
-            //        var bmp = new BitmapImage();
-            //        bmp.CacheOption = BitmapCacheOption.OnLoad;
-            //        bmp.BeginInit();
-            //        bmp.StreamSource = converted;
-            //        bmp.EndInit();
-            //        bmp.Freeze();
-            //        _bitmaps[f.ToLower()] = bmp;
-            //    }
-            //}
-
-            foreach (var f in Files.Files.Where(x => x.Name.ToLower().Contains(".dds")))
+            
+            foreach (var f in Files.Files.Where(x => x.Name.ToLower().Contains(".dds") || x.Name.Contains(".bmp")))
             {
                 var bytes = f.Bytes;
 
