@@ -114,6 +114,7 @@ namespace NpcTypePlugin
                 using (var ms = new MemoryStream(wld.Bytes))
                 {
                     var pwld = WLD.Load(ms);
+                    pwld.TexturingFormat = WLD.TextureFormat.Original;
                     pwld.Files = s3d;
                     _modelDisplay3d.AddWld(pwld);
 
