@@ -31,7 +31,7 @@ namespace DoorsPlugin
                 x =>
                 {
                     var fd = new OpenFileDialog();
-                    fd.Filter = "S3D Files | *.s3d";
+                    fd.Filter = "S3D Files | *_obj.s3d";
                     if((bool)fd.ShowDialog())
                     {
                         DoorService.OpenModels(fd.FileName);
