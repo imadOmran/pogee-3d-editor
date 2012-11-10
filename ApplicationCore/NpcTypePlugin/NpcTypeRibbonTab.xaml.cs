@@ -26,7 +26,7 @@ using ApplicationCore.ViewModels.Editors;
 namespace NpcTypePlugin
 {
     /// <summary>
-    /// Interaction logic for PathTab.xaml
+    /// 
     /// </summary>
     [AutoRegister]
     public partial class NpcTypeRibbonTab : RibbonTab, IRibbonTab
@@ -88,6 +88,7 @@ namespace NpcTypePlugin
         private void OpenGlobalModelButton_Click(object sender, RoutedEventArgs e)
         {
             var od = new OpenFileDialog();
+            od.Filter = "S3D Files | *_chr.s3d";
             if ((bool)od.ShowDialog())
             {
                 var file = od.FileName;
@@ -98,6 +99,7 @@ namespace NpcTypePlugin
         private void OpenZoneModelButton_Click(object sender, RoutedEventArgs e)
         {
             var od = new OpenFileDialog();
+            od.Filter = "S3D Files | *_chr.s3d";
             if ((bool)od.ShowDialog())
             {
                 var file = od.FileName;
