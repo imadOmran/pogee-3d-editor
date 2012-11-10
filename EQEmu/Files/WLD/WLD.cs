@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Threading.Tasks;
 
 using FreeImageAPI;
 
@@ -248,7 +249,39 @@ namespace EQEmu.Files.WLD
                     }
                 }
             }
-                        
+
+            Parallel.ForEach<ArchiveFile>(
+                Files.Files.Where(x => x.Name.ToLower().Contains(".dds") || x.Name.Contains(".bmp")),
+                (f) =>
+                {
+                    bool isBmp = f.Name.Contains(".bmp");
+                    var bytes = f.Bytes;
+
+                    using (var ms = new MemoryStream(bytes))
+                    {
+                        var converted = new MemoryStream();
+                        var dib = FreeImage.LoadFromStream(ms);
+
+                        if (!isBmp || TexturingFormat == TextureFormat.HighResolution)
+                        {
+                            FreeImage.FlipVertical(dib);
+                        }
+                        FreeImage.SaveToStream(dib, converted, FREE_IMAGE_FORMAT.FIF_BMP);
+
+                        converted.Seek(0, SeekOrigin.Begin);
+                        var bmp = new BitmapImage();
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.BeginInit();
+                        bmp.StreamSource = converted;
+                        bmp.EndInit();
+                        bmp.Freeze();
+                        var fname = f.Name.ToLower();
+                        _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
+                    }                    
+                });
+
+
+            /*            
             foreach (var f in Files.Files.Where(x => x.Name.ToLower().Contains(".dds") || x.Name.Contains(".bmp")))
             {
                 bool isBmp = f.Name.Contains(".bmp");
@@ -276,6 +309,7 @@ namespace EQEmu.Files.WLD
                     _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
                 }
             }
+            */
 
             foreach (var m in ZoneMeshes)
             {
