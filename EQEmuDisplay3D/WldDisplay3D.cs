@@ -157,7 +157,7 @@ namespace EQEmuDisplay3D
             */
             #endregion
 
-            Material mat = Materials.Gold;
+            Material mat = Materials.DarkGray;
             var builder = new MeshBuilder();           
             var rotate = new RotateTransform3D();
             rotate.Rotation = new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90);
