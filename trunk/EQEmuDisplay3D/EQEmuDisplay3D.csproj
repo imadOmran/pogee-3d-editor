@@ -67,6 +67,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoorsDisplay3D.cs" />
+    <Compile Include="Functions.cs" />
     <Compile Include="GridsDisplay3D.cs" />
     <Compile Include="GroundSpawnDisplay3D.cs" />
     <Compile Include="IDisplay3D.cs" />
