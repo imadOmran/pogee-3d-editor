@@ -250,6 +250,7 @@ namespace EQEmu.Files.WLD
                 }
             }
 
+            var lockObj = new object();
             Parallel.ForEach<ArchiveFile>(
                 Files.Files.Where(x => x.Name.ToLower().Contains(".dds") || x.Name.Contains(".bmp")),
                 (f) =>
@@ -276,7 +277,10 @@ namespace EQEmu.Files.WLD
                         bmp.EndInit();
                         bmp.Freeze();
                         var fname = f.Name.ToLower();
-                        _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
+                        lock (lockObj)
+                        {
+                            _bitmaps[fname] = new BitmapImageInfo(bmp, fname);
+                        }
                     }                    
                 });
 
